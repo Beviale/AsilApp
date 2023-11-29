@@ -15,5 +15,5 @@
     <!--TEXT-->
     <color name="titleColor">#2f6dd5</color>
     <color name="textColorOnButton">#ffffff</color>
-    <color name="textPlaceholderColor">#6e9ef0</color>
+    <color name="textPlaceholderColor">#919191</color>
 </resources>

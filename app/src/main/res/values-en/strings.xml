@@ -6,8 +6,11 @@
     <string name="loginFragmentProfLabel">Login Professore</string>
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Signup</string>
-    <string name="namePlaceholder">Insert your name...</string>
-    <string name ="nameSignupText">Name</string>
-    <string name ="surnameSignupText">Surname</string>
+    <string name="usernamePlaceholder">Insert your name...</string>
+    <string name="passwordPlaceholder">Insert password...</string>
+
+    <!--REGISTER FRAGMENT-->
+    <string name="nameSignupText">Name</string>
+    <string name="surnameSignupText">Surname</string>
 
 </resources>

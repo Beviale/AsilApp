@@ -8,4 +8,8 @@
     <string name="loginRegistrationButtonLabel">Registrati</string>
     <string name="usernamePlaceholder">Inserisci il tuo nome utente...</string>
     <string name="passwordPlaceholder">Inserisci la tua password...</string>
+
+    <!--REGISTER FRAGMENT-->
+    <string name="nameSignupText">Nome</string>
+    <string name="surnameSignupText">Cognome</string>
 </resources>

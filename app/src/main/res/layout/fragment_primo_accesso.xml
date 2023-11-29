@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
+        android:fontFamily="@font/titillium_web_bold"
         android:text="@string/loginFragmentTitle"
         android:textAlignment="center"
         android:textColor="@color/titleColor"
@@ -57,6 +58,7 @@
         android:layout_width="@dimen/buttonsLoginWidth"
         android:layout_height="@dimen/buttonsLoginHeight"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/buttonsColor"
         android:text="@string/loginRegistrationButtonLabel"
         android:textColor="@color/textColorOnButton" />
@@ -66,6 +68,7 @@
         android:layout_width="@dimen/buttonsLoginWidth"
         android:layout_height="@dimen/buttonsLoginHeight"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/buttonsColor"
         android:text="@string/loginFragmentProfLabel"
         android:textColor="@color/textColorOnButton" />
