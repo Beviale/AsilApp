@@ -74,6 +74,7 @@ public class SignupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageButton birthDatePicker = (ImageButton) getView().findViewById(R.id.birthDatePicker);
         TextView birthDate = (TextView) getView().findViewById(R.id.birthDate);
+        birthDate.setText(getResources().getString(R.string.birthDate));
 
         birthDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
