@@ -21,4 +21,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.primoAccessoFragmentView, PrimoAccesso.class, null);
         fragmentTransaction.commit();
     }
+
+    public void callRegisterFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupFragment.class, null);
+        fragmentTransaction.commit();
+    }
 }

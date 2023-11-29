@@ -9,6 +9,7 @@
     <string name="loginRegistrationButtonLabel">Signup</string>
     <string name="usernamePlaceholder">Insert your name...</string>
     <string name="passwordPlaceholder">Insert password...</string>
+    <string name="orText">Or</string>
 
     <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Name</string>

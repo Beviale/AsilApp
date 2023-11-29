@@ -56,22 +56,33 @@
         android:textColor="@color/textColorOnButton" />
 
     <TextView
-        android:id="@+id/registerLabel"
+        android:id="@+id/orText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:text="@string/loginRegistrationLabel"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/title3FontSize" />
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/orText"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/buttonProfessor"
         android:layout_width="@dimen/buttonsLoginWidth"
         android:layout_height="@dimen/buttonsLoginHeight"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
         android:backgroundTint="@color/buttonsColor"
         android:text="@string/loginFragmentProfLabel"
         android:textColor="@color/textColorOnButton" />
+
+    <TextView
+        android:id="@+id/registerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="@string/loginRegistrationLabel"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/title3FontSize" />
 </LinearLayout>
