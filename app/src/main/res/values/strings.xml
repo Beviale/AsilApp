@@ -7,12 +7,17 @@
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Registrati</string>
     <string name="loginRegistrationLabel">Non hai un account? Registrati</string>
-    <string name="usernamePlaceholder">Inserisci il tuo nome utente...</string>
-    <string name="passwordPlaceholder">Inserisci la tua password...</string>
+    <string name="usernamePlaceholder">Inserisci il tuo nome utente</string>
+    <string name="passwordPlaceholder">Inserisci la tua password</string>
     <string name="orText">Oppure</string>
 
     <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Nome</string>
     <string name="surnameSignupText">Cognome</string>
-    <string name="birthDate">La tua data di nascita è</string>
+    <string name="birthDate">Inserisci la data di nascita</string>
+    <string name="usernameSignupText">Nome utente</string>
+    <string name="passwordSignupText">Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
