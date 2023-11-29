@@ -34,8 +34,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/marginBetweenInputs"
         android:ems="10"
+        android:hint="@string/nameSignupText"
         android:inputType="text"
-        android:text="Nome"
         android:textColor="@color/textColor"
         android:textColorHint="@color/textPlaceholderColor" />
 
@@ -46,8 +46,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/marginBetweenInputs"
         android:ems="10"
+        android:hint="@string/surnameSignupText"
         android:inputType="text"
-        android:text="Cognome"
         android:textColor="@color/textColor"
         android:textColorHint="@color/textPlaceholderColor" />
 
@@ -60,15 +60,15 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/datePickerButton"
+            android:id="@+id/birthdayDatePicker"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@android:drawable/ic_menu_my_calendar"
+            android:src="@drawable/calendar_month_fill0_wght400_grad0_opsz24"
             android:text="Pick a Date" />
 
         <EditText
-            android:id="@+id/editTextDate"
+            android:id="@+id/birthdayDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
