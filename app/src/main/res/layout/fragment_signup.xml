@@ -60,19 +60,19 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/birthdayDatePicker"
-            android:layout_width="40dp"
+            android:id="@+id/birthDatePicker"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/calendar_month_fill0_wght400_grad0_opsz24"
             android:text="Pick a Date" />
 
-        <EditText
-            android:id="@+id/birthdayDate"
+        <TextView
+            android:id="@+id/birthDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:ems="10"
-            android:inputType="date" />
+            android:layout_weight="0.6"
+            android:ems="10" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,18 +72,28 @@ public class SignupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button birthdayDatePicker = getView().findViewById(R.id.birthdayDatePicker);
+        ImageButton birthDatePicker = (ImageButton) getView().findViewById(R.id.birthDatePicker);
+        TextView birthDate = (TextView) getView().findViewById(R.id.birthDate);
 
-        birthdayDatePicker.setOnClickListener(new View.OnClickListener() {
+        birthDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                showDatePickerDialog(birthDate);
             }
         });
     }
 
-    private void showDatePickerDialog() {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+    private void showDatePickerDialog(TextView bornDate) {
+        DatePickerDialog datePickerDialog= new DatePickerDialog(getActivity(), R.style.DialogTheme);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                bornDate.setText(new StringBuilder().append("Nascita: ").append(dayOfMonth).append("/").append(month+1).append("/").append(year));
+
+            }
+        });
+        datePickerDialog.show();
     }
 }
