@@ -9,6 +9,15 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/appBarColor"
+        android:minHeight="@dimen/abbBarHeight"
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="@drawable/common_google_signin_btn_icon_dark" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/PrimoAccessoFragmentView"
         android:layout_width="match_parent"
