@@ -7,5 +7,13 @@
     <color name="appBarColor">#000000</color>
 
     <!--APP-->
-    <color name="appBackground">#ad7cc4</color>
+    <color name="appBackground">#ffffff</color>
+
+    <!--BUTTONS-->
+    <color name="buttonsColor">#2f6dd5</color>
+
+    <!--TEXT-->
+    <color name="titleColor">#2f6dd5</color>
+    <color name="textColorOnButton">#ffffff</color>
+    <color name="textPlaceholderColor">#6e9ef0</color>
 </resources>

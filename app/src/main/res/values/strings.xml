@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">AsilApp</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--LOGIN FRAGMENT-->
+    <string name="loginFragmentTitle">LOGIN</string>
+    <string name="loginFragmentProfLabel">Login Professore</string>
+    <string name="loginButtonLabel">Login</string>
+    <string name="loginRegistrationButtonLabel">Registrati</string>
+    <string name="namePlaceholder">Inserisci il tuo nome...</string>
 </resources>

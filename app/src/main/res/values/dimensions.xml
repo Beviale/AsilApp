@@ -2,4 +2,19 @@
 <resources>
     <!--APP BAR-->
     <dimen name="abbBarHeight">80dp</dimen>
+
+    <!--TEXT-->
+    <dimen name="title1FontSize">30dp</dimen>
+    <dimen name="textInputFontSize">18dp</dimen>
+
+    <!--BUTTONS-->
+    <dimen name="buttonsLoginWidth">300dp</dimen>
+    <dimen name="buttonsLoginHeight">50dp</dimen>
+    
+    <!--INPUTS TEXTS-->
+    <dimen name="inputTextWidth">300dp</dimen>
+    <dimen name="inpuTextHeight">50dp</dimen>
+
+    <!--MARGIN-->
+    <dimen name="marginBetweenInputs">20dp</dimen>
 </resources>

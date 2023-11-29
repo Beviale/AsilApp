@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.PrimoAccessoFragmentView, PrimoAccesso.class, null);
+        fragmentTransaction.add(R.id.primoAccessoFragmentView, PrimoAccesso.class, null);
         fragmentTransaction.commit();
     }
 }

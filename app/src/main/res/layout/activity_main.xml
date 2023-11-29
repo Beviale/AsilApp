@@ -19,7 +19,7 @@
         app:navigationIcon="@drawable/common_google_signin_btn_icon_dark" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/PrimoAccessoFragmentView"
+        android:id="@+id/primoAccessoFragmentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>
