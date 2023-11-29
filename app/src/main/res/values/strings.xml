@@ -7,4 +7,7 @@
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Registrati</string>
     <string name="namePlaceholder">Inserisci il tuo nome...</string>
+    <string name ="nameSignupText">Nome</string>
+    <string name ="surnameSignupText">Cognome</string>
+
 </resources>
