@@ -5,6 +5,7 @@
     <string name="loginFragmentTitle">LOGIN</string>
     <string name="loginFragmentProfLabel">Login Professore</string>
     <string name="loginButtonLabel">Login</string>
+    <string name="loginRegistrationLabel">Do not have an account? Register</string>
     <string name="loginRegistrationButtonLabel">Signup</string>
     <string name="usernamePlaceholder">Insert your name...</string>
     <string name="passwordPlaceholder">Insert password...</string>

@@ -8,6 +8,8 @@
 
     <!--APP-->
     <color name="appBackground">#ffffff</color>
+    <color name="appMainColor">#2f6dd5</color>
+    <color name="appMainColorDark">#00368f</color>
 
     <!--BUTTONS-->
     <color name="buttonsColor">#2f6dd5</color>

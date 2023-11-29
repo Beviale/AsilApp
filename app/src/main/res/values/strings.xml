@@ -6,6 +6,7 @@
     <string name="loginFragmentProfLabel">Login Professore</string>
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Registrati</string>
+    <string name="loginRegistrationLabel">Non hai un account? Registrati</string>
     <string name="usernamePlaceholder">Inserisci il tuo nome utente...</string>
     <string name="passwordPlaceholder">Inserisci la tua password...</string>
 
