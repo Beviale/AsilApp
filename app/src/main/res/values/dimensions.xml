@@ -4,7 +4,7 @@
     <dimen name="abbBarHeight">80dp</dimen>
 
     <!--TEXT-->
-    <dimen name="title1FontSize">30dp</dimen>
+    <dimen name="title1FontSize">40dp</dimen>
     <dimen name="textInputFontSize">18dp</dimen>
 
     <!--BUTTONS-->

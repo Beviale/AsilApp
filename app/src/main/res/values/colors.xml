@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--APP BAR-->
-    <color name="appBarColor">#000000</color>
+    <color name="appBarColor">#00368f</color>
 
     <!--APP-->
     <color name="appBackground">#ffffff</color>

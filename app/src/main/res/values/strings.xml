@@ -2,14 +2,10 @@
     <string name="app_name">AsilApp</string>
 
     <!--LOGIN FRAGMENT-->
-    <string name="loginFragmentTitle">LOGIN</string>
+    <string name="loginFragmentTitle">Login</string>
     <string name="loginFragmentProfLabel">Login Professore</string>
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Registrati</string>
-    <string name="namePlaceholder">Inserisci il tuo nome...</string>
-    <string name="nameSignupText">Nome</string>
-    <string name="surnameSignupText">Cognome</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="usernamePlaceholder">Inserisci il tuo nome utente...</string>
+    <string name="passwordPlaceholder">Inserisci la tua password...</string>
 </resources>
