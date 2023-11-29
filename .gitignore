@@ -15,5 +15,7 @@
 local.properties
 .idea/
 .idea/*
-
+android/local.properties
+.android/local.properties
+local.properties
 local.properties
