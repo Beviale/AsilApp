@@ -50,4 +50,29 @@
         android:text="Cognome"
         android:textColor="@color/textColor"
         android:textColorHint="@color/textPlaceholderColor" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/datePickerButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            android:text="Pick a Date" />
+
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:inputType="date" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>
