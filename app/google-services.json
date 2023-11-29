@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676236585453",
+    "project_id": "asilapp-c762a",
+    "storage_bucket": "asilapp-c762a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676236585453:android:57c83d5ce9843a06211fe4",
+        "android_client_info": {
+          "package_name": "uniba.roadhouse.asilapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeH_Hqiw_G9xt4VCfiH3230BaScAM-ZfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
