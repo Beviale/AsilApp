@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--APP BAR-->
+    <color name="appBarColor">#000000</color>
+
+    <!--APP-->
+    <color name="appBackground">#ad7cc4</color>
 </resources>
