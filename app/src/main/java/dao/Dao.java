@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class Dao {
     private FirebaseFirestore db;
+    private String email="gliasphaltatori@gamil.com";
 
     public Dao() {
         db= FirebaseFirestore.getInstance();
