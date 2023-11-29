@@ -14,5 +14,6 @@
     <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Name</string>
     <string name="surnameSignupText">Surname</string>
+    <string name="birthDate">Your birth date is</string>
 
 </resources>

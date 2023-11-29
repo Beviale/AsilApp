@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import dao.Dao;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PrimoAccesso#newInstance} factory method to
@@ -63,7 +65,11 @@ public class PrimoAccesso extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        //importo il listener per la registrazione
         getView().findViewById(R.id.registerLabel).setOnClickListener(v->callRegisterFragment());
+        Dao d=new Dao();
+        getView().findViewById(R.id.buttonLogin).setOnClickListener(v->d.tryWriteData());
     }
 
     @Override

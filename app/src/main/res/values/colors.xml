@@ -10,13 +10,14 @@
     <color name="appBackground">#ffffff</color>
     <color name="appMainColor">#2f6dd5</color>
     <color name="appMainColorDark">#00368f</color>
+    <color name="appMainColorLight">#498cfc</color>
 
     <!--BUTTONS-->
     <color name="buttonsColor">#2f6dd5</color>
 
     <!--TEXT-->
     <color name="titleColor">#2f6dd5</color>
-    <color name="textColor">#498cfc</color>
+    <color name="textColor">#1B1B1B</color>
     <color name="textColorOnButton">#ffffff</color>
     <color name="textPlaceholderColor">#919191</color>
 </resources>
