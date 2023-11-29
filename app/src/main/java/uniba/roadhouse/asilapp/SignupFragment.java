@@ -1,8 +1,6 @@
 package uniba.roadhouse.asilapp;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
-import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,14 +9,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Button;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,14 +27,8 @@ import android.widget.TextView;
  */
 public class SignupFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //lista delle classi dei fragment che rappresenteranno le schermate dell'app
+    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{RegisterNameSurname.class, RegisterUsernamePassword.class}));
 
     public SignupFragment() {
         // Required empty public constructor
@@ -43,28 +37,18 @@ public class SignupFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment SignupFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignupFragment newInstance(String param1, String param2) {
+    public static SignupFragment newInstance() {
         SignupFragment fragment = new SignupFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onResume() {
+        super.onResume();
+        getView().findViewById(R.id.nextButton).setOnClickListener(v->nextScreen());
     }
 
     @Override
@@ -79,9 +63,37 @@ public class SignupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.add(R.id.registerSwitchView, RegisterNameUsername.class, null);
+        fragmentTransaction.add(R.id.registerSwitchView, RegisterNameSurname.class, null);
         fragmentTransaction.commit();
+    }
+
+    private void nextScreen(){
+        //prendo la classe dell'attuae fragment aperto
+        Class currentScreen=getActivity().getSupportFragmentManager().findFragmentById(R.id.registerSwitchView).getClass();
+        //prendo il numero di chermata che esso rappresenta dalla lista dei fragment che compongono le schermate
+        Integer currentScreenNumber=screenFragments.indexOf(currentScreen);
+        Log.d("ll",currentScreenNumber.toString());
+
+        //se non è l'ultima schermata
+        if(currentScreenNumber<screenFragments.size()-1){
+            //apro il fragment in rappresentanza della schermata successiva.
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.addToBackStack(currentScreen.getName());
+            fragmentTransaction.replace(R.id.registerSwitchView, screenFragments.get(currentScreenNumber+1), null);
+            fragmentTransaction.commit();
+        }
+
+        //se ho premuto "Prossimo" mentre è aperta l'ultima schermata, allora ho completato la registrazione e mostro a posto del
+        //fragment attuale, nell'activity Main, il fragment che mostra la scritta di Registrazione Completata
+        if(currentScreenNumber==screenFragments.size()-1){
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.primoAccessoFragmentView, RegisterCompleteScreen.class, null);
+            fragmentTransaction.commit();
+            Log.d("COMPLETE","Reg Complete");
+        }
+
     }
 
 

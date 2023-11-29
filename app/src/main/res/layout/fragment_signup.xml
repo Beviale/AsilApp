@@ -38,12 +38,13 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/nextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/buttonsLoginHeight"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
-            android:text="Button"
+            android:backgroundTint="@color/buttonsColor"
+            android:text="@string/nextButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

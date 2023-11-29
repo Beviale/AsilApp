@@ -15,5 +15,9 @@
     <string name="nameSignupText">Name</string>
     <string name="surnameSignupText">Surname</string>
     <string name="birthDate">Your birth date is</string>
+    <string name="usernameSignupText">Username</string>
+    <string name="passwordSignupText">Password</string>
+    <string name="nextButton">Next</string>
+    <string name="registrationComplete">Registration Complete!</string>
 
 </resources>
