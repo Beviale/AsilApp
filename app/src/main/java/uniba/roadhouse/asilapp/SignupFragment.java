@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,7 @@ public class SignupFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private void nextScreen(){
         //prendo la classe dell'attuae fragment aperto
         Class currentScreen=getActivity().getSupportFragmentManager().findFragmentById(R.id.registerSwitchView).getClass();

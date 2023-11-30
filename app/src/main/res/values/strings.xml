@@ -19,5 +19,6 @@
     <string name="passwordSignupText">Password</string>
     <string name="nextButton">Prossimo ➤</string>
     <string name="registrationComplete">Registrazione Completata!</string>
+    <string name="returnLoginButton">Accedi</string>
 
 </resources>

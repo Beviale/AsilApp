@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/buttonsColor"
     android:orientation="vertical"
-    tools:context=".SignupCompleteScreenFragment" >
+    tools:context=".SignupCompleteScreenFragment">
 
     <TextView
         android:id="@+id/textregistrationComplete"
@@ -26,4 +27,14 @@
         android:scaleX="1.5"
         android:scaleY="1.5"
         app:srcCompat="@mipmap/success" />
+
+    <Button
+        android:id="@+id/returnLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/buttonsColor"
+        android:text="@string/returnLoginButton" />
 </LinearLayout>
