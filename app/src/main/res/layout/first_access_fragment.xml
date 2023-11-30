@@ -84,5 +84,6 @@
         android:layout_marginTop="40dp"
         android:text="@string/loginRegistrationLabel"
         android:textColor="@color/textColor"
+        android:background="?attr/selectableItemBackground"
         android:textSize="@dimen/title3FontSize" />
 </LinearLayout>
