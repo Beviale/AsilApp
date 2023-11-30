@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:orientation="vertical"
+    tools:context=".PrimoAccesso">
+
+    <TextView
+        android:id="@+id/loginLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/loginFragmentTitle"
+        android:textAlignment="center"
+        android:textColor="@color/titleColor"
+        android:textSize="@dimen/title1FontSize" />
+
+    <EditText
+        android:id="@+id/userNameInput"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="@string/usernamePlaceholder"
+        android:inputType="text"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textPlaceholderColor"
+        android:textSize="@dimen/textInputFontSize" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:ems="10"
+        android:hint="@string/passwordPlaceholder"
+        android:inputType="textPassword"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textPlaceholderColor" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="@dimen/buttonsLoginWidth"
+        android:layout_height="@dimen/buttonsLoginHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/buttonsColor"
+        android:text="@string/loginButtonLabel"
+        android:textColor="@color/textColorOnButton" />
+
+    <TextView
+        android:id="@+id/orText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/orText"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/buttonProfessor"
+        android:layout_width="@dimen/buttonsLoginWidth"
+        android:layout_height="@dimen/buttonsLoginHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:backgroundTint="@color/buttonsColor"
+        android:text="@string/loginFragmentProfLabel"
+        android:textColor="@color/textColorOnButton" />
+
+    <TextView
+        android:id="@+id/registerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="@string/loginRegistrationLabel"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/title3FontSize" />
+</LinearLayout>
