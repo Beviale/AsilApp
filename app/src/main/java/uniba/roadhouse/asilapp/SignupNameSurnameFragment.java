@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RegisterNameSurname#newInstance} factory method to
+ * Use the {@link SignupNameSurnameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterNameSurname extends Fragment {
+public class SignupNameSurnameFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +30,7 @@ public class RegisterNameSurname extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RegisterNameSurname() {
+    public SignupNameSurnameFragment() {
         // Required empty public constructor
     }
 
@@ -43,8 +43,8 @@ public class RegisterNameSurname extends Fragment {
      * @return A new instance of fragment RegisterNameUsername.
      */
     // TODO: Rename and change types and number of parameters
-    public static RegisterNameSurname newInstance(String param1, String param2) {
-        RegisterNameSurname fragment = new RegisterNameSurname();
+    public static SignupNameSurnameFragment newInstance(String param1, String param2) {
+        SignupNameSurnameFragment fragment = new SignupNameSurnameFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +65,7 @@ public class RegisterNameSurname extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register_name_username, container, false);
+        return inflater.inflate(R.layout.signup_name_surname_fragment, container, false);
     }
 
     @Override

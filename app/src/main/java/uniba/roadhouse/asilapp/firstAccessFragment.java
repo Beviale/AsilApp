@@ -13,16 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import dao.Dao;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PrimoAccesso#newInstance} factory method to
+ * Use the {@link firstAccessFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PrimoAccesso extends Fragment {
+public class firstAccessFragment extends Fragment {
 
-    public PrimoAccesso() {
+    public firstAccessFragment() {
         // Required empty public constructor
     }
 
@@ -33,8 +31,8 @@ public class PrimoAccesso extends Fragment {
      * @return A new instance of fragment PrimoAccesso.
      */
     // TODO: Rename and change types and number of parameters
-    public static PrimoAccesso newInstance() {
-        PrimoAccesso fragment = new PrimoAccesso();
+    public static firstAccessFragment newInstance() {
+        firstAccessFragment fragment = new firstAccessFragment();
         return fragment;
     }
 
@@ -57,7 +55,7 @@ public class PrimoAccesso extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_primo_accesso, container, false);
+        return inflater.inflate(R.layout.first_access_fragment, container, false);
     }
 
     private void registerUnderlineText(){
@@ -69,6 +67,6 @@ public class PrimoAccesso extends Fragment {
 
     private void callRegisterFragment(){
         //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
-        ((MainActivity) getActivity()).callRegisterFragment();
+        ((SigninSignupActivity) getActivity()).callRegisterFragment();
     }
 }

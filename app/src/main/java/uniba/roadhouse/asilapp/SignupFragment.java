@@ -1,6 +1,5 @@
 package uniba.roadhouse.asilapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,12 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +24,7 @@ import java.util.Map;
 public class SignupFragment extends Fragment {
 
     //lista delle classi dei fragment che rappresenteranno le schermate dell'app
-    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{RegisterNameSurname.class, RegisterUsernamePassword.class}));
+    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{SignupNameSurnameFragment.class, SignupUsernamePasswordFragment.class}));
 
     public SignupFragment() {
         // Required empty public constructor
@@ -55,7 +51,7 @@ public class SignupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signup, container, false);
+        return inflater.inflate(R.layout.signup_fragment, container, false);
     }
 
     @Override
@@ -63,7 +59,7 @@ public class SignupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.registerSwitchView, RegisterNameSurname.class, null);
+        fragmentTransaction.add(R.id.registerSwitchView, SignupNameSurnameFragment.class, null);
         fragmentTransaction.commit();
     }
 
@@ -89,7 +85,7 @@ public class SignupFragment extends Fragment {
         if(currentScreenNumber==screenFragments.size()-1){
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.primoAccessoFragmentView, RegisterCompleteScreen.class, null);
+            fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragment.class, null);
             fragmentTransaction.commit();
             Log.d("COMPLETE","Reg Complete");
         }
