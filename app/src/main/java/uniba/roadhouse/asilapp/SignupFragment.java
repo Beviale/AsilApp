@@ -76,6 +76,7 @@ public class SignupFragment extends Fragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.addToBackStack(currentScreen.getName());
+            fragmentTransaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
             fragmentTransaction.replace(R.id.registerSwitchView, screenFragments.get(currentScreenNumber+1), null);
             fragmentTransaction.commit();
         }
@@ -85,6 +86,7 @@ public class SignupFragment extends Fragment {
         if(currentScreenNumber==screenFragments.size()-1){
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
             fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragment.class, null);
             fragmentTransaction.commit();
             Log.d("COMPLETE","Reg Complete");
