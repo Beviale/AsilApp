@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import dao.Dao;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PrimoAccesso#newInstance} factory method to
