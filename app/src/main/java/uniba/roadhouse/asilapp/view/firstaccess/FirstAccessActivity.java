@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp;
+package uniba.roadhouse.asilapp.view.firstaccess;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.Window;
+
+import uniba.roadhouse.asilapp.R;
 
 public class FirstAccessActivity extends AppCompatActivity {
 

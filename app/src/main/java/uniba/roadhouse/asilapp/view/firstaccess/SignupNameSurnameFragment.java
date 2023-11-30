@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp;
+package uniba.roadhouse.asilapp.view.firstaccess;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import uniba.roadhouse.asilapp.R;
 
 /**
  * A simple {@link Fragment} subclass.

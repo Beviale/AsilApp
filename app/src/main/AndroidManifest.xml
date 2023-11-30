@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AsilApp"
         tools:targetApi="31">
         <activity
-            android:name=".FirstAccessActivity"
+            android:name=".view.firstaccess.FirstAccessActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
