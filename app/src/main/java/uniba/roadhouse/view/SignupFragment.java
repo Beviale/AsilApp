@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp;
+package uniba.roadhouse.view;
 
 import android.os.Bundle;
 
@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import uniba.roadhouse.asilapp.R;
 
 /**
  * A simple {@link Fragment} subclass.

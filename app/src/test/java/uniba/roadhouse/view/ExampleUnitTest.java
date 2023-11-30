@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp;
+package uniba.roadhouse.view;
 
 import org.junit.Test;
 

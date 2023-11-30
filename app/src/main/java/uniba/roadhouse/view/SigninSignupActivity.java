@@ -1,17 +1,22 @@
-package uniba.roadhouse.asilapp;
+package uniba.roadhouse.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.Window;
 
+import uniba.roadhouse.asilapp.R;
+
 public class SigninSignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
         setContentView(R.layout.signin_singup_activity);
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));

@@ -1,4 +1,4 @@
-package dao;
+package uniba.roadhouse.dao;
 
 import android.util.Log;
 
