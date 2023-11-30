@@ -17,7 +17,12 @@
     <string name="birthDate">Inserisci la data di nascita</string>
     <string name="usernameSignupText">Nome utente</string>
     <string name="passwordSignupText">Password</string>
+<<<<<<< HEAD
     <string name="nextButton">Prossimo ➤</string>
     <string name="registrationComplete">Registrazione Completata!</string>
+=======
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+>>>>>>> parent of f959be8 (Schermate di registrazione)
 
 </resources>

@@ -44,6 +44,8 @@ public class firstAccessFragment extends Fragment {
 
         //importo il listener per la registrazione
         getView().findViewById(R.id.registerLabel).setOnClickListener(v->callRegisterFragment());
+        Dao d=new Dao();
+        getView().findViewById(R.id.buttonLogin).setOnClickListener(v->d.tryWriteData());
     }
 
     @Override

@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+<<<<<<< HEAD:app/src/main/res/layout/signup_name_surname_fragment.xml
     tools:context=".SignupNameSurnameFragment">
+=======
+    tools:context=".RegisterNameUsername">
+>>>>>>> parent of f959be8 (Schermate di registrazione):app/src/main/res/layout/fragment_register_name_username.xml
 
     <EditText
         android:id="@+id/nameInputRegister"
