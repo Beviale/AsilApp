@@ -17,7 +17,7 @@
     <string name="birthDate">Inserisci la data di nascita</string>
     <string name="usernameSignupText">Nome utente</string>
     <string name="passwordSignupText">Password</string>
-    <string name="nextButton">Prossimo</string>
+    <string name="nextButton">Prossimo ➤</string>
     <string name="registrationComplete">Registrazione Completata!</string>
 
 </resources>

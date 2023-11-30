@@ -7,18 +7,18 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Window;
 
-public class MainActivity extends AppCompatActivity {
+public class FirstAccessActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.first_access_activity);
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.primoAccessoFragmentView, PrimoAccesso.class, null);
+        fragmentTransaction.add(R.id.primoAccessoFragmentView, FirstAccessFragment.class, null);
         fragmentTransaction.commit();
     }
 

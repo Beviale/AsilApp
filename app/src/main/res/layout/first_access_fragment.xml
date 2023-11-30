@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     android:orientation="vertical"
-    tools:context=".PrimoAccesso">
+    tools:context=".FirstAccessFragment">
 
     <TextView
         android:id="@+id/loginLabel"
@@ -82,6 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
+        android:background="?attr/selectableItemBackground"
         android:text="@string/loginRegistrationLabel"
         android:textColor="@color/textColor"
         android:textSize="@dimen/title3FontSize" />
