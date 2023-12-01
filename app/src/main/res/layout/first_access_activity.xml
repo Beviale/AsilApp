@@ -16,8 +16,9 @@
         android:layout_height="wrap_content"
         android:background="@color/appBarColor"
         android:minHeight="@dimen/abbBarHeight"
+        android:pointerIcon="context_menu"
         android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@drawable/common_google_signin_btn_icon_dark" />
+        app:navigationIcon="@android:mipmap/sym_def_app_icon" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/primoAccessoFragmentView"

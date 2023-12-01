@@ -68,5 +68,4 @@ public class Dao {
         return nomiResidenze;
     }
 
-    public 
 }
