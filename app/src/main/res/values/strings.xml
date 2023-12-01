@@ -24,8 +24,16 @@
     <string name="female">Femmina</string>
     <string name="otherGender">Altro</string>
     <string name="genderSignupText">Sesso</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="citizenSignupText">Cittadinanza</string>
+    <string name="countrySignupText">Paese di provenienza</string>
+    <string name="personalData">1. Dati personali</string>
+    <string name="placeData">2. Dati di provenienza</string>
+    <string name="cityOrganizationSignupText">Città</string>
+    <string name="nameOrganizationSignupText">Struttura</string>
+    <string name="organizationData">3. Dati della struttura di accoglienza</string>
+    <string name="loginData">4. Dati di accesso</string>
+
+
 
 
 </resources>
