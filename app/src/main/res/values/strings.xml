@@ -7,8 +7,8 @@
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Registrati</string>
     <string name="loginRegistrationLabel">Non hai un account? Registrati</string>
-    <string name="usernamePlaceholder">Inserisci il tuo nome utente</string>
-    <string name="passwordPlaceholder">Inserisci la tua password</string>
+    <string name="usernamePlaceholder">Nome utente</string>
+    <string name="passwordPlaceholder">Password</string>
     <string name="orText">Oppure</string>
 
     <!--REGISTER FRAGMENT-->
@@ -20,5 +20,11 @@
     <string name="nextButton">Prossimo ➤</string>
     <string name="registrationComplete">Registrazione Completata!</string>
     <string name="returnLoginButton">Accedi</string>
+    <string name="male">Maschio</string>
+    <string name="female">Femmina</string>
+    <string name="otherGender">Altro</string>
+    <string name="genderSignupText">Sesso</string>
+
+
 
 </resources>

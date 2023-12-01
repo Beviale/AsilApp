@@ -43,5 +43,7 @@ dependencies {
     implementation("com.google.firebase:firebase-bom:32.6.0")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation ("androidx.core:core-splashscreen:1.0.0-beta01")
+    implementation ("com.google.android.material:material:1.4.0")
+
 
 }

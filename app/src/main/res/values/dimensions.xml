@@ -14,7 +14,7 @@
     
     <!--INPUTS TEXTS-->
     <dimen name="inputTextWidth">300dp</dimen>
-    <dimen name="inpuTextHeight">50dp</dimen>
+    <dimen name="inpuTextHeight">60dp</dimen>
 
     <!--MARGIN-->
     <dimen name="marginBetweenInputs">20dp</dimen>

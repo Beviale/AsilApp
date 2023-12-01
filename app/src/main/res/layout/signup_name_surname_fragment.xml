@@ -1,72 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:backgroundTint="@color/white"
     android:orientation="vertical"
+    android:outlineAmbientShadowColor="#3F1212"
+    android:outlineSpotShadowColor="#DC2B2B"
     tools:context=".view.firstaccess.SignupNameSurnameFragment">
 
-    <EditText
-        android:id="@+id/nameInputRegister"
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="@dimen/inputTextWidth"
         android:layout_height="@dimen/inpuTextHeight"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:ems="10"
         android:hint="@string/nameSignupText"
-        android:inputType="textCapWords"
-        android:textColor="@color/textColor"
-        android:textColorHint="@color/textPlaceholderColor" />
+        android:textColorHint="@color/textPlaceholderColor"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor">
 
-    <EditText
-        android:id="@+id/surnameInputRegister"
-        android:layout_width="@dimen/inputTextWidth"
-        android:layout_height="@dimen/inpuTextHeight"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:ems="10"
-        android:hint="@string/surnameSignupText"
-        android:inputType="textCapWords"
-        android:textColor="@color/textColor"
-        android:textColorHint="@color/textPlaceholderColor" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="@dimen/inputTextWidth"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/birthDatePicker"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/calendar_month_fill0_wght400_grad0_opsz24"
-            android:text="Pick a Date" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameInputRegister"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:inputType="textCapWords"
+            android:textColor="@color/textColor"
+             />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/birthDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="0dp"
-                android:textSize="18sp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:hint="@string/surnameSignupText"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        android:textColorHint="@color/textPlaceholderColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/surnameInputRegister"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textCapWords"
+            android:textColor="@color/textColor" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textPlaceholderColor"
+        android:hint="@string/genderSignupText"
+        android:layout_gravity="center">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/genderSelection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+
+</com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
