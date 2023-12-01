@@ -30,4 +30,10 @@
     <string name="nameOrganizationSignupText">Struttura</string>
     <string name="organizationData">3. Dati della struttura di accoglienza</string>
     <string name="loginData">4. Dati di accesso</string>
+
+    <!--MESSAGGES-->
+    <string name="regstrationComplete">Registration Complete!</string>
+    <string name="userAlreadyExists">A user with this username already exists</string>
+    <string name="passwordDoNotMatchRegEx">Password do not match the criterias</string>
+    <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
 </resources>

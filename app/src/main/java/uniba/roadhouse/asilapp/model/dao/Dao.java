@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.model.dao;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -73,4 +74,55 @@ public class Dao {
             nomiResidenze.add(document.getString("nome"));
         }
         return nomiResidenze;
-    }}
+    }
+
+    public String registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, Context context){
+        //verifico se esiste un utente con lo username dell'utente che si vuole registrare
+        Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
+        while (!query.isComplete()) {
+            //attenendo che la funzione asincrona chaimata termini la sua computazione
+        }
+        //quando la query è completata vedo se esiste un utente con lo username scelto
+        if(query.getResult().size()>0){
+            return context.getString(R.string.userAlreadyExists);
+        }
+        //verifico che la password rispetta i criteri previsti
+        //password deve avere almeno 8 caratteri, almeno una lettera maiuscola, un carattere speciale e un numero
+        if(!Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",password)){
+            return context.getString(R.string.passwordDoNotMatchRegEx);
+        }
+        //se va tutto bene faccio l'hash della password
+        //faccio l'hash della password
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        byte[] hashedPassword;
+        random.nextBytes(salt);
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+            md.update(salt);
+            hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        //se va tutto bene, creo la mappa che rappresenta i dati dell'utente
+        Map<String,String> user=new HashMap<>();
+        user.put("username",username);
+        user.put("password",hashedPassword.toString());
+        user.put("sesso",sesso);
+        user.put("nome",nome);
+        user.put("cognome",cognome);
+        user.put("paeseNativo",paese);
+        user.put("cittadinanza",cittadinanza);
+        //aggiungo l'utente al db
+        Task<DocumentReference> addToDb=db.collection("users").add(user);
+        while (!addToDb.isComplete()) {
+            //attenendo che la funzione asincrona chaimata termini la sua computazione
+        }
+        if(!addToDb.isSuccessful()){
+            return context.getString(R.string.insertUserFailed);
+        }
+        //se l'inserimento è avvenuto con successo ritono il messaggio
+        return context.getString(R.string.registrationComplete);
+    }
+}
