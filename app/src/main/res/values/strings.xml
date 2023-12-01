@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">AsilApp</string>
+    <!--LOGIN FRAGMENT-->
+    <string name="loginFragmentTitle">Login</string>
+    <string name="loginFragmentProfLabel">Login Professore</string>
+    <string name="loginButtonLabel">Login</string>
+    <string name="loginRegistrationButtonLabel">Registrati</string>
+    <string name="loginRegistrationLabel">Non hai un account? Registrati</string>
+    <string name="usernamePlaceholder">Nome utente</string>
+    <string name="passwordPlaceholder">Password</string>
+    <string name="orText">Oppure</string>
+        <!--REGISTER FRAGMENT-->
+    <string name="nameSignupText">Nome</string>
+    <string name="surnameSignupText">Cognome</string>
+    <string name="birthDateSignupText">Data di nascita</string>
+    <string name="usernameSignupText">Nome utente</string>
+    <string name="passwordSignupText">Password</string>
+    <string name="nextButton">Prossimo ➤</string>
+    <string name="registrationComplete">Registrazione Completata!</string>
+    <string name="returnLoginButton">Accedi</string>
+    <string name="male">Maschio</string>
+    <string name="female">Femmina</string>
+    <string name="otherGender">Altro</string>
+    <string name="genderSignupText">Sesso</string>
+    <string name="citizenSignupText">Cittadinanza</string>
+    <string name="countrySignupText">Paese di provenienza</string>
+    <string name="personalData">1. Dati personali</string>
+    <string name="placeData">2. Dati di provenienza</string>
+    <string name="cityOrganizationSignupText">Città</string>
+    <string name="nameOrganizationSignupText">Struttura</string>
+    <string name="organizationData">3. Dati della struttura di accoglienza</string>
+    <string name="loginData">4. Dati di accesso</string>
+</resources>

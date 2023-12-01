@@ -2,13 +2,28 @@ package uniba.roadhouse.asilapp.view.firstaccess;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.CountryService;
+import uniba.roadhouse.asilapp.model.dao.Country;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,5 +77,52 @@ public class SignupPlaceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.signup_place_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ProgressBar progressBar = view.findViewById(R.id.progressBarCountry);
+        LinearLayout layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);
+        Button nextButton = getActivity().findViewById(R.id.nextButton);
+        nextButton.setEnabled(false);
+        AutoCompleteTextView citizenSelection = view.findViewById(R.id.citizenSelection);
+        AutoCompleteTextView countrySelection = view.findViewById(R.id.countrySelection);
+
+
+        CountryService countryService = Country.RetrofitInstance.getRetrofitInstance().create(CountryService.class);
+        Call<List<Country>> call = countryService.getAllCountries();
+        Call<List<Country>> call2 = countryService.getAllCountries();
+        progressBar.setVisibility(View.VISIBLE);
+        layoutSignupFragment.setAlpha((float) 0.5);
+
+
+        call.enqueue(new Callback<List<Country>>() {
+            @Override
+            public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
+                if (response.isSuccessful()) {
+                    List<Country> countryList = response.body();
+                    List<String> countryListString = new ArrayList<String>();
+                    for (Country country : countryList) {
+                        countryListString.add(country.getName());
+
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, countryListString);
+                    citizenSelection.setAdapter(adapter);
+                    countrySelection.setAdapter(adapter);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    layoutSignupFragment.setAlpha((float) 1.0);
+                    nextButton.setEnabled(true);
+                    
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Country>> call, Throwable t) {
+                // Handle failure
+            }
+        });
+
     }
 }

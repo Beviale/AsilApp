@@ -23,12 +23,20 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="otherGender">Other</string>
-    <string name="genderSignupText">Sex</string>
+    <string name="genderSignupText">Gender</string>
+    <string name="citizenSignupText">Citizenship</string>
+    <string name="countrySignupText">Country of origin</string>
+    <string name="personalData">1. Personale data</string>
+    <string name="placeData">2. Provenance data</string>
+    <string name="cityOrganizationSignupText">City</string>
+    <string name="nameOrganizationSignupText">Organization</string>
+    <string name="organizationData">3. Organization data</string>
+    <string name="loginData">4. Login data</string>
 
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registration Complete!</string>
     <string name="userAlreadyExists">A user with this username already exists</string>
     <string name="passwordDoNotMatchRegEx">Password do not match the criterias</string>
-    <string name="insertUserFailed">User's insert falied</string>
+    <string name="insertUserFailed">User insert falied</string>
 
 </resources>
