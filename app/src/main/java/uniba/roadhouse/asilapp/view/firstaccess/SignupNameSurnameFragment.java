@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -75,7 +79,7 @@ public class SignupNameSurnameFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //ImageButton birthDatePicker = (ImageButton) getView().findViewById(R.id.birthDatePicker);
-        //TextView birthDate = (TextView) getView().findViewById(R.id.birthDate);
+        //EditText birthDate = (EditText) getView().findViewById(R.id);
         //birthDate.setHint(getResources().getString(R.string.birthDate));
         /*birthDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,18 +93,41 @@ public class SignupNameSurnameFragment extends Fragment {
         String[] gender = {getString(R.string.male), getString(R.string.female), getString(R.string.otherGender)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, gender);
         genderSelection.setAdapter(adapter);
+
+
+        // AutocompelteTextView relativo alla data di nascita
+        AutoCompleteTextView birthDateSelection = view.findViewById(R.id.birtDateSelection);
+        TextInputLayout birthDateSelectionLayout = view.findViewById(R.id.birtDateSelectionLayout);
+
+        birthDateSelection.setOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(birthDateSelection);
+
+            }
+        });
+
+        birthDateSelectionLayout.setEndIconOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(birthDateSelection);
+
+            }
+        });
     }
 
 
-    // Fa selezionare all'utente una data di nascita e la scrive nella TextView passata in input.
-    private void showDatePickerDialog(TextView bornDate) {
+    // Fa selezionare all'utente una data di nascita e la scrive nella AutoCompleteTextView passata in input.
+    private void showDatePickerDialog(AutoCompleteTextView bornDate) {
         DatePickerDialog datePickerDialog= new DatePickerDialog(getActivity(), R.style.DialogTheme);
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener()
         {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                bornDate.setText(new StringBuilder().append("Nascita: ").append(dayOfMonth).append("/").append(month+1).append("/").append(year));
+                bornDate.setText(new StringBuilder().append(dayOfMonth).append("/").append(month+1).append("/").append(year));
 
             }
         });

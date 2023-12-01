@@ -23,7 +23,9 @@
     <style name="MyAutoCompleteTextViewStyle" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense">
         <item name="android:popupBackground">@color/white</item> <!-- Sostituisci con il colore desiderato -->
     </style>
-
+    <style name="MyAutoCompleteTextViewStyleDate" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="android:popupBackground">@color/white</item> <!-- Sostituisci con il colore desiderato -->
+    </style>
 
 
 

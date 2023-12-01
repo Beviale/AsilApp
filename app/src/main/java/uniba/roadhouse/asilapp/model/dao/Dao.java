@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.dao;
+package uniba.roadhouse.asilapp.model.dao;
 
 import android.util.Log;
 

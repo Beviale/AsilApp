@@ -87,6 +87,37 @@
             android:textColorHighlight="@color/appMainColor"
             android:textColorLink="@color/appMainColor" />
 
-</com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/birtDateSelectionLayout"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textPlaceholderColor"
+        android:hint="@string/birthDateSignupText"
+        android:layout_gravity="center">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            style="@style/MyAutoCompleteTextViewStyleDate"
+            android:id="@+id/birtDateSelection"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
