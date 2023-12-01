@@ -114,6 +114,8 @@ public class Dao {
         user.put("cognome",cognome);
         user.put("paeseNativo",paese);
         user.put("cittadinanza",cittadinanza);
+        user.put("residenza",residenza);
+
         //aggiungo l'utente al db
         Task<DocumentReference> addToDb=db.collection("users").add(user);
         while (!addToDb.isComplete()) {
