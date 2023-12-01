@@ -13,6 +13,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +25,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
+
+import uniba.roadhouse.asilapp.R;
 
 public class Dao {
     private FirebaseFirestore db;
@@ -66,6 +73,4 @@ public class Dao {
             nomiResidenze.add(document.getString("nome"));
         }
         return nomiResidenze;
-    }
-
-}
+    }}

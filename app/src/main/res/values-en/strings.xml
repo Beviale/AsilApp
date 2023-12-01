@@ -25,4 +25,10 @@
     <string name="otherGender">Other</string>
     <string name="genderSignupText">Sex</string>
 
+    <!--MESSAGGES-->
+    <string name="regstrationComplete">Registration Complete!</string>
+    <string name="userAlreadyExists">A user with this username already exists</string>
+    <string name="passwordDoNotMatchRegEx">Password do not match the criterias</string>
+    <string name="insertUserFailed">User's insert falied</string>
+
 </resources>
