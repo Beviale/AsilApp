@@ -86,8 +86,9 @@
             android:inputType="none"
             android:textColorHighlight="@color/appMainColor"
             android:textColorLink="@color/appMainColor" />
-
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -119,5 +120,15 @@
             android:textColorLink="@color/appMainColor" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:text="@string/personalData"
+        android:textColor="@color/appMainColor"
+        android:fontFamily="@font/titillium_web_bold"></TextView>
 
 </LinearLayout>

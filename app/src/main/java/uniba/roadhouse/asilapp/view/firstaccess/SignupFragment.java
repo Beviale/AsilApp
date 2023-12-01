@@ -27,7 +27,7 @@ import uniba.roadhouse.asilapp.R;
 public class SignupFragment extends Fragment {
 
     //lista delle classi dei fragment che rappresenteranno le schermate dell'app
-    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{SignupNameSurnameFragment.class, SignupPlaceFragment.class, SignupUsernamePasswordFragment.class}));
+    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{SignupNameSurnameFragment.class, SignupPlaceFragment.class, SignupOrganizationFragment.class,  SignupUsernamePasswordFragment.class}));
 
     public SignupFragment() {
         // Required empty public constructor
