@@ -14,10 +14,15 @@
     <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Name</string>
     <string name="surnameSignupText">Surname</string>
-    <string name="birthDate">Your birth date is</string>
+    <string name="birthDateSignupText">Your birth date is</string>
     <string name="usernameSignupText">Username</string>
     <string name="passwordSignupText">Password</string>
     <string name="nextButton">Next</string>
     <string name="registrationComplete">Registration Complete!</string>
+    <string name="returnLoginButton">Login</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="otherGender">Other</string>
+    <string name="genderSignupText">Sex</string>
 
 </resources>

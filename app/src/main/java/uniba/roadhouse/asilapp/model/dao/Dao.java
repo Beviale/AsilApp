@@ -2,15 +2,25 @@ package uniba.roadhouse.asilapp.model.dao;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Dao {
     private FirebaseFirestore db;
@@ -42,4 +52,21 @@ public class Dao {
                     }
                 });
     }
+
+    public List<String> getNomiResidenze(){
+        List<String> nomiResidenze=new ArrayList<>();
+        Task<QuerySnapshot> query=db.collection("residenze").get();
+
+        while (!query.isComplete()) {
+            //attenendo che la funzione asincrona chaimata termini la sua computazione
+        }
+
+        //qui la query è completa e ciclo per i risultati ottenuti
+        for (QueryDocumentSnapshot document : query.getResult()) {
+            nomiResidenze.add(document.getString("nome"));
+        }
+        return nomiResidenze;
+    }
+
+    public 
 }

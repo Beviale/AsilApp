@@ -5,9 +5,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class FirstAccessActivity extends AppCompatActivity {
 
