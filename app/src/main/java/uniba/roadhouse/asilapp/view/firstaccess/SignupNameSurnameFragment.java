@@ -1,6 +1,5 @@
 package uniba.roadhouse.asilapp.view.firstaccess;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
@@ -11,13 +10,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
-import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import uniba.roadhouse.asilapp.R;
@@ -76,7 +71,6 @@ public class SignupNameSurnameFragment extends Fragment {
         return inflater.inflate(R.layout.signup_name_surname_fragment, container, false);
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -91,10 +85,10 @@ public class SignupNameSurnameFragment extends Fragment {
         });*/
 
         // Popolazione dell'AutocompleteTextView relativo alla scelta del sesso
-        AutoCompleteTextView genderSeelction = getActivity().findViewById(R.id.genderSelection);
-        String[] gender = {getString(R.string.male), getString(R.string.female), getString(R.string.otherGender),};
+        AutoCompleteTextView genderSelection = view.findViewById(R.id.genderSelection);
+        String[] gender = {getString(R.string.male), getString(R.string.female), getString(R.string.otherGender)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, gender);
-        genderSeelction.setAdapter(adapter);
+        genderSelection.setAdapter(adapter);
     }
 
 

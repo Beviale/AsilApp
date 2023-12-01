@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/appBackground"
     android:backgroundTint="@color/white"
     android:orientation="vertical"
     android:outlineAmbientShadowColor="#3F1212"
@@ -79,6 +79,7 @@
         android:layout_gravity="center">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            style="@style/MyAutoCompleteTextViewStyle"
             android:id="@+id/genderSelection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
