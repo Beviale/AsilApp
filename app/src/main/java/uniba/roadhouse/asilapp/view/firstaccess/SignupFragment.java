@@ -91,9 +91,11 @@ public class SignupFragment extends Fragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.empty);
+
             fragmentTransaction.disallowAddToBackStack();
             for(int i=0; i<screenFragments.size()-1; i++)
             fragmentManager.popBackStack();
+
             fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragment.class, null);
             fragmentTransaction.commit();
             Log.d("COMPLETE","Reg Complete");
