@@ -197,18 +197,18 @@ public class Dao {
         return context.getString(R.string.loginCompleted);
     }
 
-    public static String checkIsLogged(Context context){
+    public static boolean checkIsLogged(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
         String token = sharedPref.getString("token","notLogged");
 
         //verifico se il token esiste localmente
         if(token=="notLogged"){
-            return context.getString(R.string.authFailed);
+            return false;
         }
 
         //verifico che il token sia valido
         DecodedJWT decodedJWT;
-        String returnString=context.getString(R.string.authSuccess);
+        boolean isLogged=true;
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
@@ -216,9 +216,9 @@ public class Dao {
             decodedJWT = verifier.verify(token);
         } catch (JWTVerificationException exception){
             // Invalid signature/claims
-            returnString=context.getString(R.string.authFailed);
+            isLogged=false;
         }
 
-        return returnString;
+        return isLogged;
     }
 }
