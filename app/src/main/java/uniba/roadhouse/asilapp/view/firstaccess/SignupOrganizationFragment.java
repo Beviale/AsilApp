@@ -5,16 +5,27 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +36,8 @@ public class SignupOrganizationFragment extends Fragment {
     AutoCompleteTextView cityOrganizationSelection;
     AutoCompleteTextView nameOrganizationSelection;
     Button nextButton;
+    ProgressBar progressBar;
+    LinearLayout layoutOrganizationFragment;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,15 +92,50 @@ public class SignupOrganizationFragment extends Fragment {
         cityOrganizationSelection = getActivity().findViewById(R.id.cityOrganizationSelection);
         nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelection);
         nextButton = getActivity().findViewById(R.id.nextButton);
-        if (allFieldsEmpty()) {
+        progressBar = getActivity().findViewById((R.id.progressBarFirstActivity));
+        layoutOrganizationFragment = getActivity().findViewById(R.id.layoutOrganizationFragment);
+        nameOrganizationSelection.setEnabled(false);
+        if (atLeatOneFieldIsEmpty()) {
             nextButton.setEnabled(false);
             nextButton.setAlpha((float)(0.5));
         }
+        else
+        {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
         cityOrganizationSelection.addTextChangedListener(textWatcher);
         nameOrganizationSelection.addTextChangedListener(textWatcher);
+        List<String> allCity = new ArrayList<String>();
+        progressBar.setVisibility(View.VISIBLE);
+        layoutOrganizationFragment.setAlpha((float)0.5);
+        if(!Utility.isConnectedToInternet(getActivity()))
+        {
+            Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
+        }
+        allCity=Dao.getNomiCittaResidenze();
+        if(allCity.isEmpty())
+        {
+            Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
+        }
+        progressBar.setVisibility(View.GONE);
+        layoutOrganizationFragment.setAlpha(1);
+        ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allCity);
+        cityOrganizationSelection.setAdapter(adapterCity);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!atLeatOneFieldIsEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
+    }
 
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -102,7 +150,33 @@ public class SignupOrganizationFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!allFieldsEmpty()) {
+            if(!cityOrganizationSelection.getText().toString().trim().isEmpty())
+            {
+                nameOrganizationSelection.setEnabled(true);
+                nameOrganizationSelection.requestFocus();
+                List<String> allOrganization = new ArrayList<String>();
+                progressBar.setVisibility (View.VISIBLE);
+                layoutOrganizationFragment.setAlpha((float)0.5);
+                if(!Utility.isConnectedToInternet(getActivity()))
+                {
+                    Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.popBackStack();
+                }
+                allOrganization=Dao.getNomiResidenze(cityOrganizationSelection.getText().toString());
+                if(allOrganization.isEmpty())
+                {
+                    Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.popBackStack();
+                }
+                progressBar.setVisibility(View.GONE);
+                layoutOrganizationFragment.setAlpha(1);
+                ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
+                nameOrganizationSelection.setAdapter(adapterOrganization);
+
+            }
+            if (!atLeatOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
             }
@@ -116,7 +190,7 @@ public class SignupOrganizationFragment extends Fragment {
     };
 
 
-    private boolean allFieldsEmpty(){
+    private boolean atLeatOneFieldIsEmpty(){
         boolean empty= (cityOrganizationSelection.getText().toString().trim().isEmpty() ||
                 nameOrganizationSelection.getText().toString().trim().isEmpty());
         return empty;

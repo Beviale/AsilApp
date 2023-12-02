@@ -41,12 +41,12 @@ public class FirstAccessFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
+    @Override
+    public void onStart() {
+        super.onStart();
         //importo il listener per la registrazione
-         getView().findViewById(R.id.registerLabel).setOnClickListener(v->callRegisterFragment());
+        getView().findViewById(R.id.registerLabel).setOnClickListener(v->callRegisterFragment());
     }
 
     @Override
@@ -95,7 +95,15 @@ public class FirstAccessFragment extends Fragment {
     }
 
     private void callRegisterFragment(){
-        //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
-        ((FirstAccessActivity) getActivity()).callRegisterFragment();
+        if(!Utility.isConnectedToInternet(getActivity())) {
+            FirstAccessActivity.dialogConnection = true;
+            Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+        }
+        else
+        {
+            //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
+            ((FirstAccessActivity) getActivity()).callRegisterFragment();
+        }
+
     }
 }
