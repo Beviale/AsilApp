@@ -3,6 +3,9 @@ package uniba.roadhouse.asilapp.model.dao;
 import android.content.Context;
 import android.util.Log;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -142,5 +145,58 @@ public class Dao {
         }
         //se l'inserimento è avvenuto con successo ritono il messaggio
         return context.getString(R.string.registrationComplete);
+    }
+
+    public String loginUser(String username, String password, Context context){
+
+        //verifico se esiste un utente con lo username dell'utente che si vuole loggare
+        Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
+
+        while (!query.isComplete()) {
+            //attenendo che la funzione asincrona chaimata termini la sua computazione
+        }
+
+        //quando la query è completata vedo se non esiste un utente con il nome scelto
+        if(query.getResult().size()==0){
+            return context.getString(R.string.noUserExists);
+        }
+
+        //se l'utente esiste, ne prendo la password
+        String passwHash = "";
+
+        for (QueryDocumentSnapshot document : query.getResult()) {
+            passwHash=document.getString("password");
+        }
+
+        //verifico che l'ash della password immessa dall'utente è uguale a quella del db
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        byte[] hashedPassword;
+        random.nextBytes(salt);
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+            md.update(salt);
+            hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        //se l'hash della password immessa dall'utente èdiverso da quella nel db, allora il login non va a buon fine
+        if(hashedPassword.toString()!=passwHash){
+            return context.getString(R.string.wrongPassword);
+        }
+
+        //se passw e usename sono corretti, genero il token JWT da memorizzare localmente per l'autenticazione
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            String token = JWT.create()
+                    .withIssuer("auth0")
+                    .sign(algorithm);
+        } catch (JWTCreationException exception){
+            // Invalid Signing configuration / Couldn't convert Claims.
+        }
+
+        return context.getString(R.string.loginCompleted);
     }
 }

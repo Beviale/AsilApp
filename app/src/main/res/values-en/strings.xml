@@ -38,5 +38,8 @@
     <string name="userAlreadyExists">A user with this username already exists</string>
     <string name="passwordDoNotMatchRegEx">Password do not match the criterias</string>
     <string name="insertUserFailed">User insert falied</string>
+    <string name="noUserExists">No user exists with this username</string>
+    <string name="wrongPassword">Wrong password!</string>
+    <string name="loginCompleted">Login completed!</string>
 
 </resources>
