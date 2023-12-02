@@ -50,8 +50,6 @@
     <string name="internationalUser">Titolare di protezione internazionale</string>
 
 
-
-
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registrazione Completata!</string>
     <string name="userAlreadyExists">Esiste già un utente con questo username</string>
@@ -62,4 +60,6 @@
     <string name="loginCompleted">Login completato!</string>
     <string name="authFailed">Autenticazione Fallita, Rifare il login</string>
     <string name="authSuccess">Autenticazione avvenutacon successo!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

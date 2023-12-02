@@ -4,6 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +17,8 @@ import android.widget.ProgressBar;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.User;
+import uniba.roadhouse.asilapp.view.home.HomeActivity;
 
 public class FirstAccessActivity extends AppCompatActivity {
     public static Boolean dialogConnection=false;
@@ -68,12 +72,21 @@ public class FirstAccessActivity extends AppCompatActivity {
         });
 
 
-
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.primoAccessoFragmentView, FirstAccessFragment.class, null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(Dao.checkIsLogged(this))
+        {
+            User.setUsername("ciao");
+            Intent openHome = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(openHome);
+        }
     }
 
     public void callRegisterFragment(){

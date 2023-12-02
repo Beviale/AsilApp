@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.view.firstaccess;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,11 +13,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.User;
+import uniba.roadhouse.asilapp.view.home.HomeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +32,9 @@ import uniba.roadhouse.asilapp.controller.Utility;
  * create an instance of this fragment.
  */
 public class FirstAccessFragment extends Fragment {
+    Button buttonLogin;
+    TextInputEditText userNameInput;
+    TextInputEditText passwordInput;
 
     public FirstAccessFragment() {
         // Required empty public constructor
@@ -54,7 +65,9 @@ public class FirstAccessFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //funzione che sottilinea il testo di registrazione
         registerUnderlineText();
-        Button buttonLogin = view.findViewById(R.id.buttonLogin);
+        userNameInput = getActivity().findViewById(R.id.userNameInput);
+        passwordInput = getActivity().findViewById(R.id.passwordInput);
+        buttonLogin = view.findViewById(R.id.buttonLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -62,6 +75,21 @@ public class FirstAccessFragment extends Fragment {
                 if (!Utility.isConnectedToInternet(getActivity())) {
                     FirstAccessActivity.dialogConnection = true;
                     Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
+                }
+                else
+                {
+                    String loginResult = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+                    if(loginResult==getString(R.string.loginCompleted))
+                    {
+                        User.setUsername(userNameInput.getText().toString());
+                        Intent openHome = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(openHome);
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(),loginResult, Toast.LENGTH_LONG).show();
+
+                    }
                 }
             }
         });
@@ -77,8 +105,8 @@ public class FirstAccessFragment extends Fragment {
                 }
             }
         });
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,6 +132,6 @@ public class FirstAccessFragment extends Fragment {
             //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
             ((FirstAccessActivity) getActivity()).callRegisterFragment();
         }
-
     }
+
 }
