@@ -61,9 +61,24 @@ public class Dao {
                 });
     }
 
-    public List<String> getNomiResidenze(){
-        List<String> nomiResidenze=new ArrayList<>();
+    public List<String> getNomiCittaResidenze(){
+        List<String> nomiCitta=new ArrayList<>();
         Task<QuerySnapshot> query=db.collection("residenze").get();
+
+        while (!query.isComplete()) {
+            //attenendo che la funzione asincrona chaimata termini la sua computazione
+        }
+
+        //qui la query è completa e ciclo per i risultati ottenuti
+        for (QueryDocumentSnapshot document : query.getResult()) {
+            nomiCitta.add(document.getString("citta"));
+        }
+        return nomiCitta;
+    }
+
+    public List<String> getNomiResidenze(String citta){
+        List<String> nomiResidenze=new ArrayList<>();
+        Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("citta",citta).get();
 
         while (!query.isComplete()) {
             //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -76,7 +91,7 @@ public class Dao {
         return nomiResidenze;
     }
 
-    public String registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, Context context){
+    public String registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
         //verifico se esiste un utente con lo username dell'utente che si vuole registrare
         Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
         while (!query.isComplete()) {
@@ -112,9 +127,10 @@ public class Dao {
         user.put("sesso",sesso);
         user.put("nome",nome);
         user.put("cognome",cognome);
-        user.put("paeseNativo",paese);
-        user.put("cittadinanza",cittadinanza);
-        user.put("residenza",residenza);
+        if(paese!=null){user.put("paeseDiProvenienza",paese);}
+        if(cittadinanza!=null){user.put("cittadinanza",cittadinanza);}
+        user.put("nomeResidenza",residenza);
+        user.put("tipoUtente",tipoUtente);
 
         //aggiungo l'utente al db
         Task<DocumentReference> addToDb=db.collection("users").add(user);
