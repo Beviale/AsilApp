@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,10 @@ import uniba.roadhouse.asilapp.model.dao.Country;
  * create an instance of this fragment.
  */
 public class SignupPlaceFragment extends Fragment {
+    AutoCompleteTextView citizenSelection;
+    AutoCompleteTextView countrySelection;
+    AutoCompleteTextView typeUserSelection;
+    Button nextButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,10 +92,27 @@ public class SignupPlaceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ProgressBar progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
         LinearLayout layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);
-        Button nextButton = getActivity().findViewById(R.id.nextButton);
-        nextButton.setEnabled(false);
-        AutoCompleteTextView citizenSelection = view.findViewById(R.id.citizenSelection);
-        AutoCompleteTextView countrySelection = view.findViewById(R.id.countrySelection);
+        citizenSelection = view.findViewById(R.id.citizenSelection);
+        countrySelection = view.findViewById(R.id.countrySelection);
+        typeUserSelection = view.findViewById(R.id.typeUserSelection);
+        nextButton = getActivity().findViewById(R.id.nextButton);
+        if (allFieldsEmpty()) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)(0.5));
+        }
+
+        citizenSelection.addTextChangedListener(textWatcher);
+        countrySelection.addTextChangedListener(textWatcher);
+        typeUserSelection.addTextChangedListener(textWatcher);
+
+
+        List<String> typeUserString = new ArrayList<String>();
+        typeUserString.add(getString(R.string.asylumUser));
+        typeUserString.add(getString(R.string.internationalUser));
+        ArrayAdapter<String> adapterTypeUser = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, typeUserString);
+        typeUserSelection.setAdapter(adapterTypeUser);
+
+
 
 
         CountryService countryService = Country.RetrofitInstance.getRetrofitInstance().create(CountryService.class);
@@ -130,7 +153,6 @@ public class SignupPlaceFragment extends Fragment {
                 }
                 progressBar.setVisibility(View.GONE);
                 layoutSignupFragment.setAlpha((float) 1.0);
-                nextButton.setEnabled(true);
             }
 
             @Override
@@ -139,7 +161,6 @@ public class SignupPlaceFragment extends Fragment {
                 fragmentManager.popBackStack();
                 progressBar.setVisibility(View.GONE);
                 layoutSignupFragment.setAlpha((float) 1.0);
-                nextButton.setEnabled(true);
                 if(!Utility.isConnectedToInternet(getActivity()))
                 {
                     FirstAccessActivity.dialogConnection=true;
@@ -151,5 +172,40 @@ public class SignupPlaceFragment extends Fragment {
             }
         });
 
+    }
+
+
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!allFieldsEmpty()) {
+                nextButton.setEnabled(true);
+                nextButton.setAlpha(1);
+            }
+            else
+            {
+                nextButton.setEnabled(false);
+                nextButton.setAlpha((float)(0.5));
+            }
+        }
+
+    };
+
+
+    private boolean allFieldsEmpty(){
+        boolean empty= (typeUserSelection.getText().toString().trim().isEmpty() ||
+                citizenSelection.getText().toString().trim().isEmpty() ||
+                countrySelection.getText().toString().trim().isEmpty());
+        return empty;
     }
 }

@@ -38,11 +38,15 @@
     <string name="countrySignupText">Paese di provenienza</string>
     <string name="personalData">1. Dati personali</string>
     <string name="placeData">2. Dati di provenienza</string>
+    <string name="typeUserSignupText">Tipo di utente</string>
     <string name="cityOrganizationSignupText">Città</string>
     <string name="nameOrganizationSignupText">Struttura</string>
     <string name="organizationData">3. Dati della struttura di accoglienza</string>
     <string name="loginData">4. Dati di accesso</string>
     <string name="mandatoryFields">Tutti i campi sono obbligatori</string>
+    <string name="asylumUser">Richiedente asilo</string>
+    <string name="internationalUser">Titolare di protezione internazionale</string>
+
 
 
 
@@ -51,4 +55,7 @@
     <string name="userAlreadyExists">Esiste già un utente con questo username</string>
     <string name="passwordDoNotMatchRegEx">La password non rispetta i criteri</string>
     <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
+    <string name="noUserExists">Non esiste nessun utente con questo username</string>
+    <string name="wrongPassword">Password errata!</string>
+    <string name="loginCompleted">Login completato!</string>
 </resources>
