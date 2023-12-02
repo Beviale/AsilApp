@@ -50,6 +50,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="@dimen/inputTextWidth"
+        app:passwordToggleEnabled="true"
         android:layout_marginTop="@dimen/marginBetweenInputs"
         android:layout_height="@dimen/inpuTextHeight"
         android:layout_gravity="center"

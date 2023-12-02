@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.CountDownTimer;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
+import okio.Timeout;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -95,43 +98,43 @@ public class SignupOrganizationFragment extends Fragment {
         progressBar = getActivity().findViewById((R.id.progressBarFirstActivity));
         layoutOrganizationFragment = getActivity().findViewById(R.id.layoutOrganizationFragment);
         nameOrganizationSelection.setEnabled(false);
-        if (atLeatOneFieldIsEmpty()) {
-            nextButton.setEnabled(false);
-            nextButton.setAlpha((float)(0.5));
-        }
-        else
-        {
-            nextButton.setEnabled(true);
-            nextButton.setAlpha(1);
-        }
+
         cityOrganizationSelection.addTextChangedListener(textWatcher);
         nameOrganizationSelection.addTextChangedListener(textWatcher);
-        List<String> allCity = new ArrayList<String>();
-        progressBar.setVisibility(View.VISIBLE);
-        layoutOrganizationFragment.setAlpha((float)0.5);
+
         if(!Utility.isConnectedToInternet(getActivity()))
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack();
         }
-        allCity=Dao.getNomiCittaResidenze();
-        if(allCity.isEmpty())
-        {
-            Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.popBackStack();
-        }
-        progressBar.setVisibility(View.GONE);
-        layoutOrganizationFragment.setAlpha(1);
+        progressBar.setVisibility(View.VISIBLE);
+        layoutOrganizationFragment.setAlpha((float)0.5);
+        CompletableFuture<List<String>> future = Dao.getNomiCittaResidenze();
+        List<String> allCity = new ArrayList<String>();
+        future.thenAccept(result -> {
+            allCity.addAll(result);
+            progressBar.setVisibility(View.INVISIBLE);
+            layoutOrganizationFragment.setAlpha(1);
+            if(result.isEmpty())
+            {
+                Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
         ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allCity);
         cityOrganizationSelection.setAdapter(adapterCity);
+        if (atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)0.5);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!atLeatOneFieldIsEmpty()) {
+        if (!atLeastOneFieldIsEmpty()) {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
         }
@@ -176,21 +179,16 @@ public class SignupOrganizationFragment extends Fragment {
                 nameOrganizationSelection.setAdapter(adapterOrganization);
 
             }
-            if (!atLeatOneFieldIsEmpty()) {
+            if (!atLeastOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
-            }
-            else
-            {
-                nextButton.setEnabled(false);
-                nextButton.setAlpha((float)(0.5));
             }
         }
 
     };
 
 
-    private boolean atLeatOneFieldIsEmpty(){
+    private boolean atLeastOneFieldIsEmpty(){
         boolean empty= (cityOrganizationSelection.getText().toString().trim().isEmpty() ||
                 nameOrganizationSelection.getText().toString().trim().isEmpty());
         return empty;

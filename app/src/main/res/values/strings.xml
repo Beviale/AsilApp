@@ -14,6 +14,11 @@
     Si prega di connettersi ad una rete mobile o Wifi.</string>
     <!--LOGIN FRAGMENT-->
     <string name="loginFragmentTitle">Login</string>
+    <string name="usernameEmpty">Inserisci il nome utente</string>
+    <string name="passwordEmpty">Inserisci la password</string>
+    <string name="usernameAndPasswordEmpty">Inserisci il nome utente e la password</string>
+    <string name="successfulLogin">Login effettuato con successo</string>
+
     <string name="loginFragmentProfLabel">Login Professore</string>
     <string name="loginButtonLabel">Login</string>
     <string name="loginRegistrationButtonLabel">Registrati</string>
@@ -25,6 +30,8 @@
     <string name="orText">Oppure</string>
     <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Nome</string>
+    <string name="registrationCompleteError">Qualcosa è andato storto :(</string>
+    <string name="returnBack">Ritorna indietro</string>
     <string name="surnameSignupText">Cognome</string>
     <string name="birthDateSignupText">Data di nascita</string>
     <string name="usernameSignupText">Nome utente</string>
@@ -47,7 +54,7 @@
     <string name="loginData">4. Dati di accesso</string>
     <string name="mandatoryFields">Tutti i campi sono obbligatori</string>
     <string name="asylumUser">Richiedente asilo</string>
-    <string name="internationalUser">Titolare di protezione internazionale</string>
+    <string name="internationalUser">Protezione internazionale</string>
 
 
     <!--MESSAGGES-->

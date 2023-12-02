@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +118,7 @@ public class SignupNameSurnameFragment extends Fragment {
         surnameInputRegister.addTextChangedListener(textWatcher);
         genderSelection.addTextChangedListener(textWatcher);
         birthDateSelection.addTextChangedListener(textWatcher);
-        if (atLeatOneFieldIsEmpty()) {
+        if (atLeastOneFieldIsEmpty()) {
             nextButton.setEnabled(false);
             nextButton.setAlpha((float)(0.5));
         }
@@ -147,7 +146,7 @@ public class SignupNameSurnameFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!atLeatOneFieldIsEmpty()) {
+        if (!atLeastOneFieldIsEmpty()) {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
         }
@@ -169,7 +168,7 @@ public class SignupNameSurnameFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!atLeatOneFieldIsEmpty()) {
+            if (!atLeastOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
             }
@@ -183,7 +182,7 @@ public class SignupNameSurnameFragment extends Fragment {
     };
 
 
-    private boolean atLeatOneFieldIsEmpty(){
+    private boolean atLeastOneFieldIsEmpty(){
         boolean empty= (nameInputRegister.getText().toString().trim().isEmpty() ||
                 surnameInputRegister.getText().toString().trim().isEmpty() ||
                 genderSelection.getText().toString().trim().isEmpty() ||

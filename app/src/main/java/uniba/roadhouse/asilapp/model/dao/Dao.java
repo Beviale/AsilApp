@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -70,19 +71,22 @@ public class Dao {
                 });
     }
 
-    public static List<String> getNomiCittaResidenze(){
-        List<String> nomiCitta=new ArrayList<>();
-        Task<QuerySnapshot> query=db.collection("residenze").get();
+    public static CompletableFuture<List<String>> getNomiCittaResidenze(){
+        return CompletableFuture.supplyAsync(()->{
+            List<String> nomiCitta=new ArrayList<>();
+            Task<QuerySnapshot> query=db.collection("residenze").get();
 
-        while (!query.isComplete()) {
-            //attenendo che la funzione asincrona chaimata termini la sua computazione
-        }
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
 
-        //qui la query è completa e ciclo per i risultati ottenuti
-        for (QueryDocumentSnapshot document : query.getResult()) {
-            nomiCitta.add(document.getString("citta"));
-        }
-        return nomiCitta;
+            //qui la query è completa e ciclo per i risultati ottenuti
+            for (QueryDocumentSnapshot document : query.getResult()) {
+                nomiCitta.add(document.getString("citta"));
+            }
+            return nomiCitta;
+
+        });
     }
 
     public static List<String> getNomiResidenze(String citta){
@@ -100,48 +104,54 @@ public class Dao {
         return nomiResidenze;
     }
 
-    public static String registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
+    public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
+        return CompletableFuture.supplyAsync(()->{
         //verifico se esiste un utente con lo username dell'utente che si vuole registrare
         Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
-        while (!query.isComplete()) {
-            //attenendo che la funzione asincrona chaimata termini la sua computazione
-        }
-        //quando la query è completata vedo se esiste un utente con lo username scelto
-        if(query.getResult().size()>0){
-            return context.getString(R.string.userAlreadyExists);
-        }
-        //verifico che la password rispetta i criteri previsti
-        //password deve avere almeno 8 caratteri, almeno una lettera maiuscola, un carattere speciale e un numero
-        if(!Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",password)){
-            return context.getString(R.string.passwordDoNotMatchRegEx);
-        }
-        //se va tutto bene faccio l'hash della password
-        //faccio l'hash della password
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = bCryptPasswordEncoder.encode(password);
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            //quando la query è completata vedo se esiste un utente con lo username scelto
+            if (query.getResult().size() > 0) {
+                return context.getString(R.string.userAlreadyExists);
+            }
+            //verifico che la password rispetta i criteri previsti
+            //password deve avere almeno 8 caratteri, almeno una lettera maiuscola, un carattere speciale e un numero
+            if (!Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password)) {
+                return context.getString(R.string.passwordDoNotMatchRegEx);
+            }
+            //se va tutto bene faccio l'hash della password
+            //faccio l'hash della password
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = bCryptPasswordEncoder.encode(password);
 
-        //se va tutto bene, creo la mappa che rappresenta i dati dell'utente
-        Map<String,String> user=new HashMap<>();
-        user.put("username",username);
-        user.put("password",hashedPassword);
-        user.put("sesso",sesso);
-        user.put("nome",nome);
-        user.put("cognome",cognome);
-        if(paese!=null){user.put("paeseDiProvenienza",paese);}
-        if(cittadinanza!=null){user.put("cittadinanza",cittadinanza);}
-        user.put("nomeResidenza",residenza);
-        user.put("tipoUtente",tipoUtente);
+            //se va tutto bene, creo la mappa che rappresenta i dati dell'utente
+            Map<String, String> user = new HashMap<>();
+            user.put("username", username);
+            user.put("password", hashedPassword);
+            user.put("sesso", sesso);
+            user.put("nome", nome);
+            user.put("cognome", cognome);
+            if (paese != null) {
+                user.put("paeseDiProvenienza", paese);
+            }
+            if (cittadinanza != null) {
+                user.put("cittadinanza", cittadinanza);
+            }
+            user.put("nomeResidenza", residenza);
+            user.put("tipoUtente", tipoUtente);
 
-        //aggiungo l'utente al db
-        Task<DocumentReference> addToDb=db.collection("users").add(user);
-        while (!addToDb.isComplete()) {
-            //attenendo che la funzione asincrona chaimata termini la sua computazione
-        }
-        if(!addToDb.isSuccessful()){
-            return context.getString(R.string.insertUserFailed);
-        }
-        //se l'inserimento è avvenuto con successo ritono il messaggio
-        return context.getString(R.string.registrationComplete);
+            //aggiungo l'utente al db
+            Task<DocumentReference> addToDb = db.collection("users").add(user);
+            while (!addToDb.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!addToDb.isSuccessful()) {
+                return context.getString(R.string.insertUserFailed);
+            }
+            //se l'inserimento è avvenuto con successo ritono il messaggio
+            return context.getString(R.string.registrationComplete);
+        });
     }
 
     public static String loginUser(String username, String password, Context context){

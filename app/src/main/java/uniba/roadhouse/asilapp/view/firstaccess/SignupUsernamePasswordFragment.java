@@ -2,11 +2,18 @@ package uniba.roadhouse.asilapp.view.firstaccess;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -16,6 +23,9 @@ import uniba.roadhouse.asilapp.R;
  * create an instance of this fragment.
  */
 public class SignupUsernamePasswordFragment extends Fragment {
+    TextInputEditText usernameInputRegister;
+    TextInputEditText passwordInputRegister;
+    Button nextButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +72,64 @@ public class SignupUsernamePasswordFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.signup_username_password_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        usernameInputRegister = getActivity().findViewById(R.id.usernameInputRegister);
+        passwordInputRegister = getActivity().findViewById(R.id.passwordInputRegister);
+        nextButton = getActivity().findViewById(R.id.nextButton);
+
+        usernameInputRegister.addTextChangedListener(textWatcher);
+        passwordInputRegister.addTextChangedListener(textWatcher);
+        if (atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)(0.5));
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
+    }
+
+
+
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(!atLeastOneFieldIsEmpty()) {
+                nextButton.setEnabled(true);
+                nextButton.setAlpha(1);
+            }
+            else {
+                nextButton.setEnabled(false);
+                nextButton.setAlpha((float)(0.5));
+            }
+        }
+
+    };
+
+
+    private boolean atLeastOneFieldIsEmpty(){
+        boolean empty= (usernameInputRegister.getText().toString().trim().isEmpty() ||
+                passwordInputRegister.getText().toString().trim().isEmpty());
+        return empty;
     }
 }

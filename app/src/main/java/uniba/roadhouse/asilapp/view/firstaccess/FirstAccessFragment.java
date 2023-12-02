@@ -7,13 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,18 +19,33 @@ import com.google.android.material.textfield.TextInputEditText;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.model.dao.User;
+import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.view.home.HomeActivity;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FirstAccessFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment relativo alle schermata di login
  */
 public class FirstAccessFragment extends Fragment {
+    /**
+     * Bottone per effettuare il login.
+     */
     Button buttonLogin;
+    /**
+     * TextInputEditText per l'inserimento dell'username ai fini del login.
+     */
     TextInputEditText userNameInput;
+    /**
+     * TextInputEditText per l'inserimento della password ai fini del login.
+     */
     TextInputEditText passwordInput;
+    /**
+     * TextView che avvia la registrazione dell'utente.
+     */
+    TextView registerLabel;
+
+
+
+
 
     public FirstAccessFragment() {
         // Required empty public constructor
@@ -54,74 +65,96 @@ public class FirstAccessFragment extends Fragment {
 
 
     @Override
-    public void onStart() {
-        super.onStart();
-        //importo il listener per la registrazione
-        getView().findViewById(R.id.registerLabel).setOnClickListener(v->callRegisterFragment());
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //funzione che sottilinea il testo di registrazione
-        registerUnderlineText();
-        userNameInput = getActivity().findViewById(R.id.userNameInput);
-        passwordInput = getActivity().findViewById(R.id.passwordInput);
-        buttonLogin = view.findViewById(R.id.buttonLogin);
-        buttonLogin.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                if (!Utility.isConnectedToInternet(getActivity())) {
-                    FirstAccessActivity.dialogConnection = true;
-                    Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
-                }
-                else
-                {
-                    String loginResult = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
-                    if(loginResult==getString(R.string.loginCompleted))
-                    {
-                        User.setUsername(userNameInput.getText().toString());
-                        Intent openHome = new Intent(getActivity(), HomeActivity.class);
-                        startActivity(openHome);
-                    }
-                    else
-                    {
-                        Toast.makeText(getActivity(),loginResult, Toast.LENGTH_LONG).show();
-
-                    }
-                }
-            }
-        });
-
-        TextView registerLabel = view.findViewById(R.id.registerLabel);
-        registerLabel.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(!Utility.isConnectedToInternet(getActivity()))
-                {
-                    FirstAccessActivity.dialogConnection=true;
-                    Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
-                }
-            }
-        });
-    }
-
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.first_access_fragment, container, false);
     }
 
-    private void registerUnderlineText(){
-        TextView registerLabel=(TextView) getView().findViewById(R.id.registerLabel);
-        SpannableString str=new SpannableString(getString(R.string.loginRegistrationLabel));
-        str.setSpan(new UnderlineSpan(), 0, str.length(), 0);
-        registerLabel.setText(str);
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        //-------------RIFERIMENTI-------------------------
+
+        // riferimento al campo username del login
+        userNameInput = getActivity().findViewById(R.id.userNameInput);
+        // riferimento al campo password del login
+        passwordInput = getActivity().findViewById(R.id.passwordInput);
+        // riferimento al bottone che avvia il login
+        buttonLogin = view.findViewById(R.id.buttonLogin);
+        // Riferimento alla TextView che avvia la registrazione dell'utente
+        registerLabel = view.findViewById(R.id.registerLabel);
+
+
+        //funzione che sottilinea il testo di registrazione
+        Utility.textViewUnderlineText(registerLabel, getString(R.string.loginRegistrationLabel));
     }
 
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+        //------LISTENER----------------------
+
+        registerLabel.setOnClickListener(v->callRegisterFragment());
+        buttonLogin.setOnClickListener(v->login());
+    }
+
+
+
+
+    /**
+     * Avvia il login dell'utente. Se va a buon fine apre la HomeActivity.
+     */
+    private void login(){
+        if (!Utility.isConnectedToInternet(getActivity())) {
+            FirstAccessActivity.dialogConnection = true;
+            Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
+            return;
+        }
+        String username=userNameInput.getText().toString();
+        String password=passwordInput.getText().toString();
+        if(username.isEmpty() || password.isEmpty()) {
+            if(username.isEmpty() && password.isEmpty()) {
+                Toast.makeText(getActivity(),getString(R.string.usernameAndPasswordEmpty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(username.isEmpty()) {
+                Toast.makeText(getActivity(),getString(R.string.usernameEmpty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(password.isEmpty()) {
+                Toast.makeText(getActivity(),getString(R.string.passwordEmpty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+        }
+        String loginResult = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+        if(loginResult==getString(R.string.loginCompleted))
+        {
+            Toast.makeText(getActivity(),getString(R.string.successfulLogin), Toast.LENGTH_SHORT).show();
+            Access.setUsername(userNameInput.getText().toString());
+            Intent openHome = new Intent(getActivity(), HomeActivity.class);
+            startActivity(openHome);
+        }
+        else
+        {
+            Toast.makeText(getActivity(),loginResult, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    /**
+     * Se la connessione è assente, mostra un dialog.
+     * Se la connessione è presente, apre il fragment di registrazione.
+     */
     private void callRegisterFragment(){
         if(!Utility.isConnectedToInternet(getActivity())) {
             FirstAccessActivity.dialogConnection = true;
@@ -133,5 +166,4 @@ public class FirstAccessFragment extends Fragment {
             ((FirstAccessActivity) getActivity()).callRegisterFragment();
         }
     }
-
 }

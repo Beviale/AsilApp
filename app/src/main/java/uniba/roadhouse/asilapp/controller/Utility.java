@@ -6,9 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+
+import uniba.roadhouse.asilapp.R;
 
 public class Utility
 {
@@ -53,6 +58,18 @@ public class Utility
                             networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
         }
         return false;
+    }
+
+
+    /**
+     * Scrive su una TextView un testo sottolineato.
+     * @param textView TextView il cui testo deve essere sottolineato.
+     * @param text testo da sottolineare.
+     */
+    public static void textViewUnderlineText(TextView textView, String text){
+        SpannableString str=new SpannableString(text);
+        str.setSpan(new UnderlineSpan(), 0, str.length(), 0);
+        textView.setText(str);
     }
 }
 
