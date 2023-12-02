@@ -41,5 +41,7 @@
     <string name="noUserExists">No user exists with this username</string>
     <string name="wrongPassword">Wrong password!</string>
     <string name="loginCompleted">Login completed!</string>
+    <string name="authFailed">Authentication failed, please login</string>
+    <string name="authSuccess">Authentication success!</string>
 
 </resources>

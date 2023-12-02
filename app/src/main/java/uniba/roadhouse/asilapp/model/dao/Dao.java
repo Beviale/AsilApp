@@ -1,11 +1,15 @@
 package uniba.roadhouse.asilapp.model.dao;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,9 +25,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -34,14 +42,11 @@ import java.util.regex.Pattern;
 import uniba.roadhouse.asilapp.R;
 
 public class Dao {
-    private FirebaseFirestore db;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static String jwtSecret="roadhouseAsilApp";
     private String email="gliasphaltatori@gamil.com";
 
-    public Dao() {
-        db= FirebaseFirestore.getInstance();
-    }
-
-    public void tryWriteData(){
+    public static void tryWriteData(){
         Map<String, Object> user = new HashMap<>();
         user.put("first", "Ada");
         user.put("last", "Lovelace");
@@ -64,7 +69,7 @@ public class Dao {
                 });
     }
 
-    public List<String> getNomiCittaResidenze(){
+    public static List<String> getNomiCittaResidenze(){
         List<String> nomiCitta=new ArrayList<>();
         Task<QuerySnapshot> query=db.collection("residenze").get();
 
@@ -79,7 +84,7 @@ public class Dao {
         return nomiCitta;
     }
 
-    public List<String> getNomiResidenze(String citta){
+    public static List<String> getNomiResidenze(String citta){
         List<String> nomiResidenze=new ArrayList<>();
         Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("citta",citta).get();
 
@@ -94,7 +99,7 @@ public class Dao {
         return nomiResidenze;
     }
 
-    public String registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
+    public static String registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
         //verifico se esiste un utente con lo username dell'utente che si vuole registrare
         Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
         while (!query.isComplete()) {
@@ -147,7 +152,7 @@ public class Dao {
         return context.getString(R.string.registrationComplete);
     }
 
-    public String loginUser(String username, String password, Context context){
+    public static String loginUser(String username, String password, Context context){
 
         //verifico se esiste un utente con lo username dell'utente che si vuole loggare
         Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
@@ -189,14 +194,50 @@ public class Dao {
 
         //se passw e usename sono corretti, genero il token JWT da memorizzare localmente per l'autenticazione
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
+            Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             String token = JWT.create()
-                    .withIssuer("auth0")
+                    .withSubject(username)
+                    .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
                     .sign(algorithm);
+
+            //memrizzo iltoken localmente
+            SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("token", token);  // value is the string you want to save
+            editor.commit();
         } catch (JWTCreationException exception){
             // Invalid Signing configuration / Couldn't convert Claims.
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
 
         return context.getString(R.string.loginCompleted);
+    }
+
+    public static String jwtAuth(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("SomeName", context.MODE_PRIVATE);
+        String token = sharedPref.getString("token","notLogged");
+
+        //verifico se il token esiste localmente
+        if(token=="notLogged"){
+            return context.getString(R.string.authFailed);
+        }
+
+        //verifico che il token sia valido
+        DecodedJWT decodedJWT;
+        String returnString=context.getString(R.string.authSuccess);
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+            JWTVerifier verifier = JWT.require(algorithm)
+                    // reusable verifier instance
+                    .build();
+
+            decodedJWT = verifier.verify(token);
+        } catch (JWTVerificationException exception){
+            // Invalid signature/claims
+            returnString=context.getString(R.string.authFailed);
+        }
+
+        return returnString;
     }
 }
