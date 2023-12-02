@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -116,22 +117,13 @@ public class Dao {
         }
         //se va tutto bene faccio l'hash della password
         //faccio l'hash della password
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        byte[] hashedPassword;
-        random.nextBytes(salt);
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-512");
-            md.update(salt);
-            hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = bCryptPasswordEncoder.encode(password);
+
         //se va tutto bene, creo la mappa che rappresenta i dati dell'utente
         Map<String,String> user=new HashMap<>();
         user.put("username",username);
-        user.put("password",hashedPassword.toString());
+        user.put("password",hashedPassword);
         user.put("sesso",sesso);
         user.put("nome",nome);
         user.put("cognome",cognome);
@@ -174,21 +166,11 @@ public class Dao {
         }
 
         //verifico che l'ash della password immessa dall'utente è uguale a quella del db
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        byte[] hashedPassword;
-        random.nextBytes(salt);
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-512");
-            md.update(salt);
-            hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        boolean passwordIsValid = bCryptPasswordEncoder.matches(password, passwHash);
 
         //se l'hash della password immessa dall'utente èdiverso da quella nel db, allora il login non va a buon fine
-        if(hashedPassword.toString()!=passwHash){
+        if(!passwordIsValid){
             return context.getString(R.string.wrongPassword);
         }
 
@@ -199,6 +181,7 @@ public class Dao {
                     .withSubject(username)
                     .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
                     .sign(algorithm);
+            Log.d("DB",token);
 
             //memrizzo iltoken localmente
             SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
@@ -215,7 +198,7 @@ public class Dao {
     }
 
     public static String jwtAuth(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("SomeName", context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
         String token = sharedPref.getString("token","notLogged");
 
         //verifico se il token esiste localmente
@@ -228,9 +211,7 @@ public class Dao {
         String returnString=context.getString(R.string.authSuccess);
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
-            JWTVerifier verifier = JWT.require(algorithm)
-                    // reusable verifier instance
-                    .build();
+            JWTVerifier verifier = JWT.require(algorithm).build();
 
             decodedJWT = verifier.verify(token);
         } catch (JWTVerificationException exception){
