@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.CountryService;
+import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Country;
 
 /**
@@ -82,7 +84,7 @@ public class SignupPlaceFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ProgressBar progressBar = view.findViewById(R.id.progressBarCountry);
+        ProgressBar progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
         LinearLayout layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);
         Button nextButton = getActivity().findViewById(R.id.nextButton);
         nextButton.setEnabled(false);
@@ -92,7 +94,6 @@ public class SignupPlaceFragment extends Fragment {
 
         CountryService countryService = Country.RetrofitInstance.getRetrofitInstance().create(CountryService.class);
         Call<List<Country>> call = countryService.getAllCountries();
-        Call<List<Country>> call2 = countryService.getAllCountries();
         progressBar.setVisibility(View.VISIBLE);
         layoutSignupFragment.setAlpha((float) 0.5);
 
@@ -103,24 +104,50 @@ public class SignupPlaceFragment extends Fragment {
                 if (response.isSuccessful()) {
                     List<Country> countryList = response.body();
                     List<String> countryListString = new ArrayList<String>();
+                    countryListString.add(getString(R.string.nullValue).toUpperCase());
                     for (Country country : countryList) {
                         countryListString.add(country.getName());
-
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, countryListString);
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, countryListString);
                     citizenSelection.setAdapter(adapter);
                     countrySelection.setAdapter(adapter);
-                    progressBar.setVisibility(View.INVISIBLE);
-                    layoutSignupFragment.setAlpha((float) 1.0);
-                    nextButton.setEnabled(true);
-                    
 
                 }
+                else
+                {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.popBackStack();
+
+                    if(!Utility.isConnectedToInternet(getActivity()))
+                    {
+                        Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+                        FirstAccessActivity.dialogConnection=true;
+
+                    }
+                    else
+                        Utility.showAlertDialog(getActivity(), getString(R.string.serverErrorTitle), getString(R.string.serverError));
+                }
+                progressBar.setVisibility(View.GONE);
+                layoutSignupFragment.setAlpha((float) 1.0);
+                nextButton.setEnabled(true);
             }
 
             @Override
             public void onFailure(Call<List<Country>> call, Throwable t) {
-                // Handle failure
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+                progressBar.setVisibility(View.GONE);
+                layoutSignupFragment.setAlpha((float) 1.0);
+                nextButton.setEnabled(true);
+                if(!Utility.isConnectedToInternet(getActivity()))
+                {
+                    FirstAccessActivity.dialogConnection=true;
+                    Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+                }
+                else
+                    Utility.showAlertDialog(getActivity(), getString(R.string.serverErrorTitle), getString(R.string.serverError));
+
             }
         });
 

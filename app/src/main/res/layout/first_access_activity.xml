@@ -18,12 +18,35 @@
         android:minHeight="@dimen/abbBarHeight"
         android:pointerIcon="context_menu"
         android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@android:mipmap/sym_def_app_icon" />
+        app:navigationIcon="@android:mipmap/sym_def_app_icon">
+        <ImageView
+            android:id="@+id/noConnectionIcon"
+            android:visibility="invisible"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="right"
+            android:src="@mipmap/no_connection"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/progressBarFirstActivity"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:outlineAmbientShadowColor="#853737"
+        android:indeterminateTint="@color/appMainColor"
+        android:visibility="gone" />
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/primoAccessoFragmentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
 </LinearLayout>
 
 

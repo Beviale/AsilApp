@@ -11,6 +11,15 @@
     android:outlineSpotShadowColor="#8C5454"
     tools:context=".view.firstaccess.SignupPlaceFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:text="@string/mandatoryFields"
+        android:textColor="@color/textAlertColor"
+        android:fontFamily="@font/titillium_web_bold"></TextView>
+
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -77,16 +86,5 @@
         android:text="@string/placeData"
         android:textColor="@color/appMainColor"></TextView>
 
-
-    <ProgressBar
-        android:id="@+id/progressBarCountry"
-        android:layout_width="93dp"
-        android:layout_height="69dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:outlineAmbientShadowColor="#853737"
-        android:indeterminateTint="@color/appMainColor"
-        android:visibility="visible" />
 
 </LinearLayout>

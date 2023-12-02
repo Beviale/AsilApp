@@ -11,6 +11,16 @@
     android:outlineSpotShadowColor="#DC2B2B"
     tools:context=".view.firstaccess.SignupNameSurnameFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:text="@string/mandatoryFields"
+        android:textColor="@color/textAlertColor"
+        android:fontFamily="@font/titillium_web_bold"></TextView>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="@dimen/inputTextWidth"
@@ -130,5 +140,9 @@
         android:text="@string/personalData"
         android:textColor="@color/appMainColor"
         android:fontFamily="@font/titillium_web_bold"></TextView>
+
+
+
+
 
 </LinearLayout>

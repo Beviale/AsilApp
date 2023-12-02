@@ -7,11 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +31,11 @@ import uniba.roadhouse.asilapp.R;
  * create an instance of this fragment.
  */
 public class SignupNameSurnameFragment extends Fragment {
+    TextInputEditText nameInputRegister;
+    TextInputEditText surnameInputRegister;
+    AutoCompleteTextView genderSelection;
+    AutoCompleteTextView birthDateSelection;
+    Button nextButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,29 +87,20 @@ public class SignupNameSurnameFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //ImageButton birthDatePicker = (ImageButton) getView().findViewById(R.id.birthDatePicker);
-        //EditText birthDate = (EditText) getView().findViewById(R.id);
-        //birthDate.setHint(getResources().getString(R.string.birthDate));
-        /*birthDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(birthDate);
-            }
-        });*/
-
+        nameInputRegister = getActivity().findViewById(R.id.nameInputRegister);
+        surnameInputRegister = getActivity().findViewById(R.id.surnameInputRegister);
         // Popolazione dell'AutocompleteTextView relativo alla scelta del sesso
-        AutoCompleteTextView genderSelection = view.findViewById(R.id.genderSelection);
+        genderSelection = view.findViewById(R.id.genderSelection);
         String[] gender = {getString(R.string.male), getString(R.string.female), getString(R.string.otherGender)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, gender);
         genderSelection.setAdapter(adapter);
 
 
         // AutocompelteTextView relativo alla data di nascita
-        AutoCompleteTextView birthDateSelection = view.findViewById(R.id.birtDateSelection);
+        birthDateSelection = view.findViewById(R.id.birtDateSelection);
         TextInputLayout birthDateSelectionLayout = view.findViewById(R.id.birtDateSelectionLayout);
 
-        birthDateSelection.setOnClickListener( new View.OnClickListener()
-        {
+        birthDateSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(birthDateSelection);
@@ -108,29 +108,74 @@ public class SignupNameSurnameFragment extends Fragment {
             }
         });
 
-        birthDateSelectionLayout.setEndIconOnClickListener( new View.OnClickListener()
-        {
+        birthDateSelectionLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(birthDateSelection);
 
             }
         });
+
+        nextButton = getActivity().findViewById(R.id.nextButton);
+        nameInputRegister.addTextChangedListener(textWatcher);
+        surnameInputRegister.addTextChangedListener(textWatcher);
+        genderSelection.addTextChangedListener(textWatcher);
+        birthDateSelection.addTextChangedListener(textWatcher);
+        if (allFieldsEmpty()) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)(0.5));
+        }
+
+
     }
 
 
     // Fa selezionare all'utente una data di nascita e la scrive nella AutoCompleteTextView passata in input.
     private void showDatePickerDialog(AutoCompleteTextView bornDate) {
-        DatePickerDialog datePickerDialog= new DatePickerDialog(getActivity(), R.style.DialogTheme);
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener()
-        {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                bornDate.setText(new StringBuilder().append(dayOfMonth).append("/").append(month+1).append("/").append(year));
+                bornDate.setText(new StringBuilder().append(dayOfMonth).append("/").append(month + 1).append("/").append(year));
 
             }
         });
         datePickerDialog.show();
+    }
+
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!allFieldsEmpty()) {
+                nextButton.setEnabled(true);
+                nextButton.setAlpha(1);
+            }
+            else
+            {
+                nextButton.setEnabled(false);
+                nextButton.setAlpha((float)(0.5));
+            }
+        }
+
+    };
+
+
+    private boolean allFieldsEmpty(){
+        boolean empty= (nameInputRegister.getText().toString().trim().isEmpty() ||
+                surnameInputRegister.getText().toString().trim().isEmpty() ||
+                genderSelection.getText().toString().trim().isEmpty() ||
+                birthDateSelection.getText().toString().trim().isEmpty());
+        return empty;
     }
 }

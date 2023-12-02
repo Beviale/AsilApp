@@ -20,4 +20,5 @@
     <color name="textColor">#1B1B1B</color>
     <color name="textColorOnButton">#ffffff</color>
     <color name="textPlaceholderColor">#919191</color>
+    <color name="textAlertColor">#ff2800</color>
 </resources>
