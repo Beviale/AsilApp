@@ -197,7 +197,7 @@ public class Dao {
         return context.getString(R.string.loginCompleted);
     }
 
-    public static String jwtAuth(Context context){
+    public static String checkIsLogged(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
         String token = sharedPref.getString("token","notLogged");
 
