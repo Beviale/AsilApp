@@ -32,8 +32,8 @@
     <string name="loginData">4. Dati di accesso</string>
 
     <!--MESSAGGES-->
-    <string name="regstrationComplete">Registration Complete!</string>
-    <string name="userAlreadyExists">A user with this username already exists</string>
-    <string name="passwordDoNotMatchRegEx">Password do not match the criterias</string>
+    <string name="regstrationComplete">Registrazione Completata!</string>
+    <string name="userAlreadyExists">Esiste già un utente con questo username</string>
+    <string name="passwordDoNotMatchRegEx">La password non rispetta i criteri</string>
     <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
 </resources>
