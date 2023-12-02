@@ -58,4 +58,6 @@
     <string name="noUserExists">Non esiste nessun utente con questo username</string>
     <string name="wrongPassword">Password errata!</string>
     <string name="loginCompleted">Login completato!</string>
+    <string name="authFailed">Autenticazione Fallita, Rifare il login</string>
+    <string name="authSuccess">Autenticazione avvenutacon successo!</string>
 </resources>
