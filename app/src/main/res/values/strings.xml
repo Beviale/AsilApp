@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">AsilApp</string>
+    <string name="serverErrorTitle">Errore server</string>
+    <string name="serverError">Si prega di riprovare più tardi</string>
+    <string name="nullValue">Non specificato</string>
+
+
+    <!--FirstAccessActivity-->
+    <string name="noConnectionTitle">Nessuna connessione a Internet</string>
+    <string name="noConnection">Il tuo dispositivo non risulta connesso ad una rete Internet.
+    Questo fa sì che l app non riesca a poter garantire il supporto a tutte le funzionalità normalmente previste.
+    Si prega di connettersi ad una rete mobile o Wifi.</string>
     <!--LOGIN FRAGMENT-->
     <string name="loginFragmentTitle">Login</string>
     <string name="loginFragmentProfLabel">Login Professore</string>
@@ -8,8 +18,10 @@
     <string name="loginRegistrationLabel">Non hai un account? Registrati</string>
     <string name="usernamePlaceholder">Nome utente</string>
     <string name="passwordPlaceholder">Password</string>
+    <string name="noConnectionTitleLogin">Impossibile effettuare il login</string>
+    <string name="noConnectionLogin">Non puoi effettuare il login in quanto non sei connesso ad una rete Internet.</string>
     <string name="orText">Oppure</string>
-        <!--REGISTER FRAGMENT-->
+    <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Nome</string>
     <string name="surnameSignupText">Cognome</string>
     <string name="birthDateSignupText">Data di nascita</string>
@@ -30,6 +42,9 @@
     <string name="nameOrganizationSignupText">Struttura</string>
     <string name="organizationData">3. Dati della struttura di accoglienza</string>
     <string name="loginData">4. Dati di accesso</string>
+    <string name="mandatoryFields">Tutti i campi sono obbligatori</string>
+
+
 
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registrazione Completata!</string>
