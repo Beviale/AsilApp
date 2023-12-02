@@ -96,11 +96,10 @@ public class SignupPlaceFragment extends Fragment {
         countrySelection = view.findViewById(R.id.countrySelection);
         typeUserSelection = view.findViewById(R.id.typeUserSelection);
         nextButton = getActivity().findViewById(R.id.nextButton);
-        if (allFieldsEmpty()) {
+        if (atLeatOneFieldIsEmpty()) {
             nextButton.setEnabled(false);
             nextButton.setAlpha((float)(0.5));
         }
-
         citizenSelection.addTextChangedListener(textWatcher);
         countrySelection.addTextChangedListener(textWatcher);
         typeUserSelection.addTextChangedListener(textWatcher);
@@ -174,6 +173,14 @@ public class SignupPlaceFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!atLeatOneFieldIsEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
+    }
 
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -188,7 +195,7 @@ public class SignupPlaceFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!allFieldsEmpty()) {
+            if (!atLeatOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
             }
@@ -202,7 +209,7 @@ public class SignupPlaceFragment extends Fragment {
     };
 
 
-    private boolean allFieldsEmpty(){
+    private boolean atLeatOneFieldIsEmpty(){
         boolean empty= (typeUserSelection.getText().toString().trim().isEmpty() ||
                 citizenSelection.getText().toString().trim().isEmpty() ||
                 countrySelection.getText().toString().trim().isEmpty());

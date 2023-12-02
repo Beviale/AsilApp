@@ -3,6 +3,8 @@
     <string name="serverErrorTitle">Errore server</string>
     <string name="serverError">Si prega di riprovare più tardi</string>
     <string name="nullValue">Non specificato</string>
+    <string name="genericErrorTitle">Errore</string>
+    <string name="genericError">Si è verificato un errore inatteso</string>
 
 
     <!--FirstAccessActivity-->

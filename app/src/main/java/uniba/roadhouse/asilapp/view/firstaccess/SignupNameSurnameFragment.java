@@ -17,8 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -121,10 +119,11 @@ public class SignupNameSurnameFragment extends Fragment {
         surnameInputRegister.addTextChangedListener(textWatcher);
         genderSelection.addTextChangedListener(textWatcher);
         birthDateSelection.addTextChangedListener(textWatcher);
-        if (allFieldsEmpty()) {
+        if (atLeatOneFieldIsEmpty()) {
             nextButton.setEnabled(false);
             nextButton.setAlpha((float)(0.5));
         }
+
 
 
     }
@@ -144,6 +143,19 @@ public class SignupNameSurnameFragment extends Fragment {
         datePickerDialog.show();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!atLeatOneFieldIsEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
+
+    }
+
+
+
     TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -157,7 +169,7 @@ public class SignupNameSurnameFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!allFieldsEmpty()) {
+            if (!atLeatOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
             }
@@ -171,11 +183,13 @@ public class SignupNameSurnameFragment extends Fragment {
     };
 
 
-    private boolean allFieldsEmpty(){
+    private boolean atLeatOneFieldIsEmpty(){
         boolean empty= (nameInputRegister.getText().toString().trim().isEmpty() ||
                 surnameInputRegister.getText().toString().trim().isEmpty() ||
                 genderSelection.getText().toString().trim().isEmpty() ||
                 birthDateSelection.getText().toString().trim().isEmpty());
         return empty;
     }
+
+
 }
