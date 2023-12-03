@@ -105,11 +105,7 @@ public class SignupPlaceFragment extends Fragment {
         typeUserSelection.addTextChangedListener(textWatcher);
 
 
-        List<String> typeUserString = new ArrayList<String>();
-        typeUserString.add(getString(R.string.asylumUser));
-        typeUserString.add(getString(R.string.internationalUser));
-        ArrayAdapter<String> adapterTypeUser = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, typeUserString);
-        typeUserSelection.setAdapter(adapterTypeUser);
+
 
 
 
@@ -150,6 +146,7 @@ public class SignupPlaceFragment extends Fragment {
                     else
                         Utility.showAlertDialog(getActivity(), getString(R.string.serverErrorTitle), getString(R.string.serverError));
                 }
+
                 progressBar.setVisibility(View.GONE);
                 layoutSignupFragment.setAlpha((float) 1.0);
             }
@@ -180,6 +177,11 @@ public class SignupPlaceFragment extends Fragment {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
         }
+        List<String> typeUserString = new ArrayList<String>();
+        typeUserString.add(getString(R.string.asylumUser));
+        typeUserString.add(getString(R.string.internationalUser));
+        ArrayAdapter<String> adapterTypeUser = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, typeUserString);
+        typeUserSelection.setAdapter(adapterTypeUser);
     }
 
     TextWatcher textWatcher = new TextWatcher() {

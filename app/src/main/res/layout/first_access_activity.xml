@@ -23,8 +23,7 @@
             android:background="@color/appBarColor"
             android:minHeight="@dimen/abbBarHeight"
             android:pointerIcon="context_menu"
-            android:theme="?attr/actionBarTheme"
-            app:navigationIcon="@android:mipmap/sym_def_app_icon">
+            android:theme="?attr/actionBarTheme">
             <ImageView
                 android:id="@+id/noConnectionIcon"
                 android:visibility="invisible"
@@ -33,6 +32,15 @@
                 android:layout_marginRight="20dp"
                 android:layout_gravity="right"
                 android:src="@mipmap/no_connection"/>
+            <ImageView
+                android:id="@+id/toolBarIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="left"
+                android:src="@mipmap/ic_launcher_round">
+
+            </ImageView>
         </androidx.appcompat.widget.Toolbar>
 
 

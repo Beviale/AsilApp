@@ -8,14 +8,24 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +36,25 @@ public class SignupUsernamePasswordFragment extends Fragment {
     TextInputEditText usernameInputRegister;
     TextInputEditText passwordInputRegister;
     Button nextButton;
+    ProgressBar progressBarUsername;
+    TextInputLayout layoutUsernameReigster;
+    ImageView usernameResult;
+    TextView usernameResultText;
+    LinearLayout layoutUsernameCheck;
+
+    //
+    TextInputLayout layoutPasswordReigster;
+    ImageView passwordResult;
+    TextView passwordResultText;
+    LinearLayout layoutPasswordCheck;
+
+    private static Boolean showNextButtonUsername=false;
+    private static Boolean showNextButtonPassword=false;
+
+
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,27 +110,45 @@ public class SignupUsernamePasswordFragment extends Fragment {
         passwordInputRegister = getActivity().findViewById(R.id.passwordInputRegister);
         nextButton = getActivity().findViewById(R.id.nextButton);
 
-        usernameInputRegister.addTextChangedListener(textWatcher);
-        passwordInputRegister.addTextChangedListener(textWatcher);
-        if (atLeastOneFieldIsEmpty()) {
-            nextButton.setEnabled(false);
-            nextButton.setAlpha((float)(0.5));
-        }
+        usernameInputRegister.addTextChangedListener(textWatcherUsername);
+        passwordInputRegister.addTextChangedListener(textWatcherPassword);
+
+        nextButton.setEnabled(false);
+        nextButton.setAlpha((float) (0.5));
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!atLeastOneFieldIsEmpty()) {
+        if (showNextButtonUsername==true && showNextButtonPassword==true) {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
         }
+        else
+        {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)0.5);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        progressBarUsername = getActivity().findViewById(R.id.progressBarUsername);
+        layoutUsernameReigster = getActivity().findViewById(R.id.layoutUsernameReigster);
+        usernameResult = getActivity().findViewById(R.id.usernameResult);
+        usernameResultText = getActivity().findViewById(R.id.usernameResultText);
+        layoutUsernameCheck = getActivity().findViewById(R.id.layoutUsernameCheck);
+
+        layoutPasswordReigster = getActivity().findViewById(R.id.layoutPasswordReigster);
+        passwordResult = getActivity().findViewById(R.id.passwordResult);
+        passwordResultText = getActivity().findViewById(R.id.passwordResultText);
+        layoutPasswordCheck = getActivity().findViewById(R.id.layoutPasswordCheck);
     }
 
 
-
-    TextWatcher textWatcher = new TextWatcher() {
+    TextWatcher textWatcherUsername = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -114,22 +161,92 @@ public class SignupUsernamePasswordFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if(!atLeastOneFieldIsEmpty()) {
-                nextButton.setEnabled(true);
-                nextButton.setAlpha(1);
-            }
-            else {
-                nextButton.setEnabled(false);
-                nextButton.setAlpha((float)(0.5));
-            }
-        }
+            String usernameInserted = usernameInputRegister.getText().toString();
+            layoutUsernameCheck.setVisibility(View.GONE);
+            usernameResult.setVisibility(View.GONE);
+            usernameResultText.setVisibility(View.GONE);
+            progressBarUsername.setVisibility(View.VISIBLE);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameReigster.getLayoutParams();
+            params.topMargin = 0;
+            CompletableFuture<Boolean> future = Dao.checkUsernameIsAvailable(usernameInserted, getActivity());
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                progressBarUsername.setVisibility(View.GONE);
+                layoutUsernameCheck.setVisibility(View.VISIBLE);
+                    usernameResult.setVisibility(View.VISIBLE);
+                    if (result == true) {
+                        showNextButtonUsername=true;
+                        if(showNextButtonPassword==true)
+                        {
+                            nextButton.setEnabled(true);
+                            nextButton.setAlpha(1);
+                        }
+                        usernameResultText.setVisibility(View.VISIBLE);
+                        usernameResultText.setText(getString(R.string.usernameAvailable));
+                        usernameResult.setImageResource(R.mipmap.verified);
+                    } else {
+                        showNextButtonUsername=false;
+                        nextButton.setEnabled(false);
+                        nextButton.setAlpha((float)0.5);
+                        usernameResultText.setVisibility(View.VISIBLE);
+                        usernameResultText.setText(getString(R.string.userAlreadyExists));
+                        usernameResult.setImageResource(R.mipmap.error);
+                    }
+                });
+            });
 
+        }
     };
 
 
-    private boolean atLeastOneFieldIsEmpty(){
-        boolean empty= (usernameInputRegister.getText().toString().trim().isEmpty() ||
-                passwordInputRegister.getText().toString().trim().isEmpty());
-        return empty;
+
+
+
+
+    TextWatcher textWatcherPassword = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String passwordInserted = passwordInputRegister.getText().toString();
+            layoutPasswordCheck.setVisibility(View.VISIBLE);
+            passwordResult.setVisibility(View.VISIBLE);
+            passwordResultText.setVisibility(View.VISIBLE);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutPasswordReigster.getLayoutParams();
+            params.topMargin = 0;
+            if(checkRegexPassword(passwordInserted)==true)
+            {
+                passwordResultText.setText(getString(R.string.passwordRegexOk));
+                passwordResult.setImageResource(R.mipmap.verified);
+                showNextButtonPassword=true;
+                if(showNextButtonUsername==true)
+                {
+                    nextButton.setEnabled(true);
+                    nextButton.setAlpha(1);
+                }
+            }
+            else
+            {
+                passwordResultText.setText(getString(R.string.passwordRegexError));
+                passwordResult.setImageResource(R.mipmap.error);
+                showNextButtonPassword=false;
+                nextButton.setEnabled(false);
+                nextButton.setAlpha((float)0.5);
+            }
+
+        }
+    };
+
+    private static Boolean checkRegexPassword(String password)
+    {
+       return Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password);
     }
 }

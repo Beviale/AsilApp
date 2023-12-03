@@ -169,23 +169,26 @@ public class SignupFragment extends Fragment {
                 User.setUsername(usernameInputRegister.getText().toString());
                 User.setPassword(passwordInputRegister.getText().toString());
                 ProgressBar progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
-                CompletableFuture<String> future = Dao.registerUser(User.getUsername(), User.getPassword(), User.getName(), User.getUsername(), User.getCitizen(), User.getGender(), User.getCountry(), User.getNameOrganization(), User.getTypeUser(), getActivity());
                 progressBar.setVisibility(View.VISIBLE);
-                String registerResult = future.join();
-                progressBar.setVisibility(View.GONE);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.empty);
-                fragmentTransaction.disallowAddToBackStack();
-                if(registerResult!=getString(R.string.registrationComplete))
-                {
-                    Toast.makeText(getActivity(),registerResult, Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragment.class, null);
-                    fragmentTransaction.commit();
-                }
+                CompletableFuture<String> future = Dao.registerUser(User.getUsername(), User.getPassword(), User.getName(), User.getUsername(), User.getCitizen(), User.getGender(), User.getCountry(), User.getNameOrganization(), User.getTypeUser(), getActivity());
+                future.thenAccept(result -> {
+                    getActivity().runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        if(result.equals(getString(R.string.registrationComplete)))
+                        {
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.empty);
+                            fragmentTransaction.disallowAddToBackStack();
+                            fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragment.class, null);
+                            fragmentTransaction.commit();
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
                 break;
         }
 

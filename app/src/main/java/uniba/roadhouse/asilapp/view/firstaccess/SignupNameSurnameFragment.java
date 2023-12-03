@@ -88,9 +88,6 @@ public class SignupNameSurnameFragment extends Fragment {
         surnameInputRegister = getActivity().findViewById(R.id.surnameInputRegister);
         // Popolazione dell'AutocompleteTextView relativo alla scelta del sesso
         genderSelection = view.findViewById(R.id.genderSelection);
-        String[] gender = {getString(R.string.male), getString(R.string.female), getString(R.string.otherGender)};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, gender);
-        genderSelection.setAdapter(adapter);
 
 
         // AutocompelteTextView relativo alla data di nascita
@@ -150,6 +147,9 @@ public class SignupNameSurnameFragment extends Fragment {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
         }
+        String[] gender = {getString(R.string.male), getString(R.string.female), getString(R.string.otherGender)};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, gender);
+        genderSelection.setAdapter(adapter);
 
     }
 

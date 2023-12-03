@@ -144,18 +144,20 @@ public class Dao {
         });
     }
 
-    public String checkUsernameIsAvailable(String username,Context context){
-        //verifico se esiste un utente con lo username dell'utente che si vuole registrare
-        Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
-        while (!query.isComplete()) {
-            //attenendo che la funzione asincrona chaimata termini la sua computazione
-        }
-        //quando la query è completata vedo se esiste un utente con lo username scelto
-        if (query.getResult().size() > 0) {
-            return context.getString(R.string.userAlreadyExists);
-        }
+    public static CompletableFuture<Boolean> checkUsernameIsAvailable(String username,Context context){
+        return CompletableFuture.supplyAsync(()-> {
+            //verifico se esiste un utente con lo username dell'utente che si vuole registrare
+            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            //quando la query è completata vedo se esiste un utente con lo username scelto
+            if (query.getResult().size() > 0) {
+                return false;
+            }
 
-        return context.getString(R.string.usernameAvailable);
+            return true;
+        });
     }
 
     public static CompletableFuture<String> loginUser(String username, String password, Context context){

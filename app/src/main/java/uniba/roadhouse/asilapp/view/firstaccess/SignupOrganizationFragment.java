@@ -102,6 +102,20 @@ public class SignupOrganizationFragment extends Fragment {
         cityOrganizationSelection.addTextChangedListener(textWatcher);
         nameOrganizationSelection.addTextChangedListener(textWatcher);
 
+        if (atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)0.5);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
+
         if(!Utility.isConnectedToInternet(getActivity()))
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
@@ -125,19 +139,6 @@ public class SignupOrganizationFragment extends Fragment {
         });
         ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allCity);
         cityOrganizationSelection.setAdapter(adapterCity);
-        if (atLeastOneFieldIsEmpty()) {
-            nextButton.setEnabled(false);
-            nextButton.setAlpha((float)0.5);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!atLeastOneFieldIsEmpty()) {
-            nextButton.setEnabled(true);
-            nextButton.setAlpha(1);
-        }
     }
 
     TextWatcher textWatcher = new TextWatcher() {

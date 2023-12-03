@@ -55,12 +55,13 @@
     <string name="mandatoryFields">Tutti i campi sono obbligatori</string>
     <string name="asylumUser">Richiedente asilo</string>
     <string name="internationalUser">Protezione internazionale</string>
+    <string name="passwordRegexOk">La password va bene</string>
+    <string name="passwordRegexError">La password non è sicura</string>
 
 
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registrazione Completata!</string>
-    <string name="userAlreadyExists">Esiste già un utente con questo username</string>
-    <string name="passwordDoNotMatchRegEx">La password non rispetta i criteri</string>
+    <string name="userAlreadyExists">Username non dispinibile</string>
     <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
     <string name="noUserExists">Non esiste nessun utente con questo username</string>
     <string name="usernameAvailable">Username disponibile</string>

@@ -1,12 +1,16 @@
 package uniba.roadhouse.asilapp.view.firstaccess;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -55,7 +62,9 @@ public class FirstAccessFragment extends Fragment {
     /**
      * Layout da oscurare durante la fase di login, mentre la progressBar è attiva.
      */
-    LinearLayout layoutSignupFragment;
+    LinearLayout layoutLogin;
+    TextInputLayout usernameLayout;
+    TextInputLayout passwordLayout;
 
 
 
@@ -104,6 +113,11 @@ public class FirstAccessFragment extends Fragment {
         registerLabel = getActivity().findViewById(R.id.registerLabel);
         // Riferimento alla ProgressBar da mostrare durante la chiamata al database
         progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
+        // Riferimento al layout da oscurare duranta la chiamata al database.
+        layoutLogin = getActivity().findViewById(R.id.layoutLogin);
+        usernameLayout = getActivity().findViewById(R.id.usernameLayout);
+        passwordLayout = getActivity().findViewById(R.id.passwordLayout);
+
 
 
         //funzione che sottilinea il testo di registrazione
@@ -116,20 +130,21 @@ public class FirstAccessFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-
         //------LISTENER----------------------
-
         registerLabel.setOnClickListener(v->callRegisterFragment());
         buttonLogin.setOnClickListener(v->login());
+
     }
-
-
 
 
     /**
      * Avvia il login dell'utente. Se va a buon fine apre la HomeActivity.
      */
     private void login(){
+        usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
+        usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.appMainColor)));
+        passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
+        passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.appMainColor)));
         if (!Utility.isConnectedToInternet(getActivity())) {
             FirstAccessActivity.dialogConnection = true;
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
@@ -140,34 +155,63 @@ public class FirstAccessFragment extends Fragment {
         if(username.isEmpty() || password.isEmpty()) {
             if(username.isEmpty() && password.isEmpty()) {
                 Toast.makeText(getActivity(),getString(R.string.usernameAndPasswordEmpty), Toast.LENGTH_SHORT).show();
+
                 return;
             }
             if(username.isEmpty()) {
+                usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
+                usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
+                usernameLayout.requestFocus();
                 Toast.makeText(getActivity(),getString(R.string.usernameEmpty), Toast.LENGTH_SHORT).show();
                 return;
             }
             if(password.isEmpty()) {
                 Toast.makeText(getActivity(),getString(R.string.passwordEmpty), Toast.LENGTH_SHORT).show();
+                passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
+                passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
+                passwordLayout.requestFocus();
                 return;
             }
 
         }
 
+
+
         progressBar.setVisibility(View.VISIBLE);
-
+        layoutLogin.setAlpha((float)0.5);
         CompletableFuture<String> future = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                layoutLogin.setAlpha(1);
+                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
 
-        if(loginResult==getString(R.string.loginCompleted))
-        {
-            Toast.makeText(getActivity(),getString(R.string.successfulLogin), Toast.LENGTH_SHORT).show();
-            Access.setUsername(userNameInput.getText().toString());
-            Intent openHome = new Intent(getActivity(), HomeActivity.class);
-            startActivity(openHome);
-        }
-        else
-        {
-            Toast.makeText(getActivity(),loginResult, Toast.LENGTH_SHORT).show();
-        }
+                if(result==getString(R.string.loginCompleted))
+                {
+                    Access.setUsername(userNameInput.getText().toString());
+                    Intent openHome = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(openHome);
+                }
+                else if (result==getString(R.string.noUserExists))
+                {
+                    usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
+                    usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
+                    usernameLayout.requestFocus();
+                }
+                else if (result==getString(R.string.wrongPassword))
+                {
+                    passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
+                    passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
+                    passwordLayout.requestFocus();
+                }
+
+            });
+
+        });
+
+
+
+
     }
 
 

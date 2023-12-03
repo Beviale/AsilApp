@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutLogin"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
@@ -22,6 +22,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameLayout"
         android:layout_width="@dimen/inputTextWidth"
         android:layout_height="@dimen/inpuTextHeight"
         android:layout_gravity="center"
@@ -49,6 +50,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayout"
         android:layout_width="@dimen/inputTextWidth"
         app:passwordToggleEnabled="true"
         android:layout_marginTop="@dimen/marginBetweenInputs"
