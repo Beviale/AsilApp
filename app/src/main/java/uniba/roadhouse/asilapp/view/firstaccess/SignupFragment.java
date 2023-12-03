@@ -39,6 +39,7 @@ public class SignupFragment extends Fragment {
      * Button che permette di passare da un fragment di compilazione di registrazione a un altro.
      */
     Button nextButton;
+    ProgressBar progressBar;
 
     /**
      * Lista di tutti i fragment di compilazione di registrazione.
@@ -81,6 +82,8 @@ public class SignupFragment extends Fragment {
          * Riferimento del bottone che consente di passare da un fragment di compilazione di registrazione a un altro
          */
         nextButton=view.findViewById(R.id.nextButton);
+         progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
+
 
 
 
@@ -168,7 +171,6 @@ public class SignupFragment extends Fragment {
 
                 User.setUsername(usernameInputRegister.getText().toString());
                 User.setPassword(passwordInputRegister.getText().toString());
-                ProgressBar progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
                 progressBar.setVisibility(View.VISIBLE);
                 CompletableFuture<String> future = Dao.registerUser(User.getUsername(), User.getPassword(), User.getName(), User.getUsername(), User.getCitizen(), User.getGender(), User.getCountry(), User.getNameOrganization(), User.getTypeUser(), getActivity());
                 future.thenAccept(result -> {

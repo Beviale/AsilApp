@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import uniba.roadhouse.asilapp.R;
@@ -35,6 +36,7 @@ public class FirstAccessActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.first_access_activity);
+
         // Renndo di colore blu la StatusBar.
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));

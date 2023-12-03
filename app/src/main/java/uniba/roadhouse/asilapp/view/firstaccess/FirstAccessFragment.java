@@ -112,7 +112,7 @@ public class FirstAccessFragment extends Fragment {
         // Riferimento alla TextView che avvia la registrazione dell'utente
         registerLabel = view.findViewById(R.id.registerLabel);
         // Riferimento alla ProgressBar da mostrare durante la chiamata al database
-        progressBar = view.findViewById(R.id.progressBarFirstActivity);
+        progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
         // Riferimento al layout da oscurare duranta la chiamata al database.
         layoutLogin = view.findViewById(R.id.layoutLogin);
         usernameLayout = view.findViewById(R.id.usernameLayout);

@@ -26,6 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
@@ -165,15 +166,16 @@ public class SignupUsernamePasswordFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             String usernameInserted = usernameInputRegister.getText().toString();
+            Log.d("stringa", usernameInserted);
 
             layoutUsernameCheck.setVisibility(View.GONE);
             usernameResult.setVisibility(View.GONE);
             usernameResultText.setVisibility(View.GONE);
+            progressBarUsername.setVisibility(View.VISIBLE);
             if(TextUtils.isEmpty(usernameInserted))
             {
                 return;
             }
-            progressBarUsername.setVisibility(View.VISIBLE);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameReigster.getLayoutParams();
             params.topMargin = 0;
             CompletableFuture<Boolean> future = Dao.checkUsernameIsAvailable(usernameInserted, getActivity());
@@ -243,7 +245,15 @@ public class SignupUsernamePasswordFragment extends Fragment {
             }
             else
             {
-                passwordResultText.setText(getString(R.string.passwordRegexError));
+                Utility.textViewUnderlineText(passwordResultText,getString(R.string.passwordRegexError));
+                passwordResult.setClickable(true);
+                passwordResultText.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v) {
+                        Utility.showAlertDialog(getActivity(), getString(R.string.passwordExplantationTitle), getString(R.string.passwordExplanation));
+                    }
+                });
                 passwordResult.setImageResource(R.mipmap.error);
                 showNextButtonPassword=false;
                 nextButton.setEnabled(false);
