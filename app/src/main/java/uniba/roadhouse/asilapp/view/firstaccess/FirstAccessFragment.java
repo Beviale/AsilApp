@@ -11,10 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
@@ -42,6 +46,16 @@ public class FirstAccessFragment extends Fragment {
      * TextView che avvia la registrazione dell'utente.
      */
     TextView registerLabel;
+
+    /**
+     * ProgressBar da mostrare durante la chiamata al database
+     */
+    ProgressBar progressBar;
+
+    /**
+     * Layout da oscurare durante la fase di login, mentre la progressBar è attiva.
+     */
+    LinearLayout layoutSignupFragment;
 
 
 
@@ -85,9 +99,11 @@ public class FirstAccessFragment extends Fragment {
         // riferimento al campo password del login
         passwordInput = getActivity().findViewById(R.id.passwordInput);
         // riferimento al bottone che avvia il login
-        buttonLogin = view.findViewById(R.id.buttonLogin);
+        buttonLogin = getActivity().findViewById(R.id.buttonLogin);
         // Riferimento alla TextView che avvia la registrazione dell'utente
-        registerLabel = view.findViewById(R.id.registerLabel);
+        registerLabel = getActivity().findViewById(R.id.registerLabel);
+        // Riferimento alla ProgressBar da mostrare durante la chiamata al database
+        progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
 
 
         //funzione che sottilinea il testo di registrazione
@@ -136,7 +152,11 @@ public class FirstAccessFragment extends Fragment {
             }
 
         }
-        String loginResult = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        CompletableFuture<String> future = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+
         if(loginResult==getString(R.string.loginCompleted))
         {
             Toast.makeText(getActivity(),getString(R.string.successfulLogin), Toast.LENGTH_SHORT).show();

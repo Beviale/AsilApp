@@ -89,19 +89,21 @@ public class Dao {
         });
     }
 
-    public static List<String> getNomiResidenze(String citta){
-        List<String> nomiResidenze=new ArrayList<>();
-        Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("citta",citta).get();
+    public static CompletableFuture<List<String>> getNomiResidenze(String citta){
+        return CompletableFuture.supplyAsync(()-> {
+            List<String> nomiResidenze = new ArrayList<>();
+            Task<QuerySnapshot> query = db.collection("residenze").whereEqualTo("citta", citta).get();
 
-        while (!query.isComplete()) {
-            //attenendo che la funzione asincrona chaimata termini la sua computazione
-        }
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
 
-        //qui la query è completa e ciclo per i risultati ottenuti
-        for (QueryDocumentSnapshot document : query.getResult()) {
-            nomiResidenze.add(document.getString("nome"));
-        }
-        return nomiResidenze;
+            //qui la query è completa e ciclo per i risultati ottenuti
+            for (QueryDocumentSnapshot document : query.getResult()) {
+                nomiResidenze.add(document.getString("nome"));
+            }
+            return nomiResidenze;
+        });
     }
 
     public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
@@ -154,57 +156,59 @@ public class Dao {
         });
     }
 
-    public static String loginUser(String username, String password, Context context){
+    public static CompletableFuture<String> loginUser(String username, String password, Context context){
+        return CompletableFuture.supplyAsync(()-> {
 
-        //verifico se esiste un utente con lo username dell'utente che si vuole loggare
-        Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
+            //verifico se esiste un utente con lo username dell'utente che si vuole loggare
+            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();
 
-        while (!query.isComplete()) {
-            //attenendo che la funzione asincrona chaimata termini la sua computazione
-        }
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
 
-        //quando la query è completata vedo se non esiste un utente con il nome scelto
-        if(query.getResult().size()==0){
-            return context.getString(R.string.noUserExists);
-        }
+            //quando la query è completata vedo se non esiste un utente con il nome scelto
+            if (query.getResult().size() == 0) {
+                return context.getString(R.string.noUserExists);
+            }
 
-        //se l'utente esiste, ne prendo la password
-        String passwHash = "";
+            //se l'utente esiste, ne prendo la password
+            String passwHash = "";
 
-        for (QueryDocumentSnapshot document : query.getResult()) {
-            passwHash=document.getString("password");
-        }
+            for (QueryDocumentSnapshot document : query.getResult()) {
+                passwHash = document.getString("password");
+            }
 
-        //verifico che l'ash della password immessa dall'utente è uguale a quella del db
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        boolean passwordIsValid = bCryptPasswordEncoder.matches(password, passwHash);
+            //verifico che l'ash della password immessa dall'utente è uguale a quella del db
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            boolean passwordIsValid = bCryptPasswordEncoder.matches(password, passwHash);
 
-        //se l'hash della password immessa dall'utente èdiverso da quella nel db, allora il login non va a buon fine
-        if(!passwordIsValid){
-            return context.getString(R.string.wrongPassword);
-        }
+            //se l'hash della password immessa dall'utente èdiverso da quella nel db, allora il login non va a buon fine
+            if (!passwordIsValid) {
+                return context.getString(R.string.wrongPassword);
+            }
 
-        //se passw e usename sono corretti, genero il token JWT da memorizzare localmente per l'autenticazione
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
-            String token = JWT.create()
-                    .withSubject(username)
-                    .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
-                    .sign(algorithm);
-            Log.d("DB",token);
+            //se passw e usename sono corretti, genero il token JWT da memorizzare localmente per l'autenticazione
+            try {
+                Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+                String token = JWT.create()
+                        .withSubject(username)
+                        .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
+                        .sign(algorithm);
+                Log.d("DB", token);
 
-            //memrizzo iltoken localmente
-            SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("token", token);  // value is the string you want to save
-            editor.commit();
-        } catch (JWTCreationException exception){
-            // Invalid Signing configuration / Couldn't convert Claims.
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+                //memrizzo iltoken localmente
+                SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("token", token);  // value is the string you want to save
+                editor.commit();
+            } catch (JWTCreationException exception) {
+                // Invalid Signing configuration / Couldn't convert Claims.
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
 
-        return context.getString(R.string.loginCompleted);
+            return context.getString(R.string.loginCompleted);
+        });
     }
 
     public static boolean checkIsLogged(Context context){

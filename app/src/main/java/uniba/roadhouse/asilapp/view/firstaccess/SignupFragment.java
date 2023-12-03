@@ -180,8 +180,6 @@ public class SignupFragment extends Fragment {
                 if(registerResult!=getString(R.string.registrationComplete))
                 {
                     Toast.makeText(getActivity(),registerResult, Toast.LENGTH_SHORT).show();
-                    fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragmentError.class, null);
-                    fragmentTransaction.commit();
                 }
                 else
                 {

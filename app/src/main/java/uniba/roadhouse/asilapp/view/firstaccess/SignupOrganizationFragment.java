@@ -40,7 +40,7 @@ public class SignupOrganizationFragment extends Fragment {
     AutoCompleteTextView nameOrganizationSelection;
     Button nextButton;
     ProgressBar progressBar;
-    LinearLayout layoutOrganizationFragment;
+    LinearLayout layoutSignupFragment;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,7 +96,7 @@ public class SignupOrganizationFragment extends Fragment {
         nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelection);
         nextButton = getActivity().findViewById(R.id.nextButton);
         progressBar = getActivity().findViewById((R.id.progressBarFirstActivity));
-        layoutOrganizationFragment = getActivity().findViewById(R.id.layoutOrganizationFragment);
+        layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);
         nameOrganizationSelection.setEnabled(false);
 
         cityOrganizationSelection.addTextChangedListener(textWatcher);
@@ -109,13 +109,13 @@ public class SignupOrganizationFragment extends Fragment {
             fragmentManager.popBackStack();
         }
         progressBar.setVisibility(View.VISIBLE);
-        layoutOrganizationFragment.setAlpha((float)0.5);
+        layoutSignupFragment.setAlpha((float)0.5);
         CompletableFuture<List<String>> future = Dao.getNomiCittaResidenze();
         List<String> allCity = new ArrayList<String>();
         future.thenAccept(result -> {
             allCity.addAll(result);
             progressBar.setVisibility(View.INVISIBLE);
-            layoutOrganizationFragment.setAlpha(1);
+            layoutSignupFragment.setAlpha(1);
             if(result.isEmpty())
             {
                 Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
@@ -159,22 +159,26 @@ public class SignupOrganizationFragment extends Fragment {
                 nameOrganizationSelection.requestFocus();
                 List<String> allOrganization = new ArrayList<String>();
                 progressBar.setVisibility (View.VISIBLE);
-                layoutOrganizationFragment.setAlpha((float)0.5);
+                layoutSignupFragment.setAlpha((float)0.5);
                 if(!Utility.isConnectedToInternet(getActivity()))
                 {
                     Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.popBackStack();
                 }
-                allOrganization=Dao.getNomiResidenze(cityOrganizationSelection.getText().toString());
-                if(allOrganization.isEmpty())
-                {
-                    Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-                }
-                progressBar.setVisibility(View.GONE);
-                layoutOrganizationFragment.setAlpha(1);
+                CompletableFuture<List<String>> future = Dao.getNomiResidenze(cityOrganizationSelection.getText().toString());
+                future.thenAccept(result -> {
+                    allOrganization.addAll(result);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    layoutSignupFragment.setAlpha(1);
+                    if(allOrganization.isEmpty())
+                    {
+                        Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.popBackStack();
+                    }
+
+                });
                 ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
                 nameOrganizationSelection.setAdapter(adapterOrganization);
 

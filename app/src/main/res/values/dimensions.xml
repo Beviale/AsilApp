@@ -18,4 +18,8 @@
 
     <!--MARGIN-->
     <dimen name="marginBetweenInputs">20dp</dimen>
+
+
+    <!--PROGRESS BAR-->
+    <dimen name="progressBarDim">70dp</dimen>
 </resources>
