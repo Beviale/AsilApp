@@ -55,7 +55,7 @@
     <string name="mandatoryFields">Tutti i campi sono obbligatori</string>
     <string name="asylumUser">Richiedente asilo</string>
     <string name="internationalUser">Protezione internazionale</string>
-    <string name="passwordRegexOk">La password va bene</string>
+    <string name="passwordRegexOk">La password è sicura</string>
     <string name="passwordRegexError">La password non è sicura</string>
 
 

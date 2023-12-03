@@ -24,7 +24,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/typeUserSelectionInput"
         android:layout_width="@dimen/inputTextWidth"
+        android:enabled="false"
         android:layout_height="@dimen/inpuTextHeight"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/marginBetweenInputs"

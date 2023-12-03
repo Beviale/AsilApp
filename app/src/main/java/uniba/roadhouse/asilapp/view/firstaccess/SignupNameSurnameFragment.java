@@ -84,10 +84,12 @@ public class SignupNameSurnameFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        nameInputRegister = getActivity().findViewById(R.id.nameInputRegister);
-        surnameInputRegister = getActivity().findViewById(R.id.surnameInputRegister);
+        nameInputRegister = view.findViewById(R.id.nameInputRegister);
+        surnameInputRegister = view.findViewById(R.id.surnameInputRegister);
         // Popolazione dell'AutocompleteTextView relativo alla scelta del sesso
         genderSelection = view.findViewById(R.id.genderSelection);
+        nextButton = getActivity().findViewById(R.id.nextButton);
+
 
 
         // AutocompelteTextView relativo alla data di nascita
@@ -110,7 +112,6 @@ public class SignupNameSurnameFragment extends Fragment {
             }
         });
 
-        nextButton = getActivity().findViewById(R.id.nextButton);
         nameInputRegister.addTextChangedListener(textWatcher);
         surnameInputRegister.addTextChangedListener(textWatcher);
         genderSelection.addTextChangedListener(textWatcher);

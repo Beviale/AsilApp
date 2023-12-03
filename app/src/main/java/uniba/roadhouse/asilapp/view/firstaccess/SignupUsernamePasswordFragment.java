@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -106,9 +107,20 @@ public class SignupUsernamePasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        usernameInputRegister = getActivity().findViewById(R.id.usernameInputRegister);
-        passwordInputRegister = getActivity().findViewById(R.id.passwordInputRegister);
+        usernameInputRegister = view.findViewById(R.id.usernameInputRegister);
+        passwordInputRegister = view.findViewById(R.id.passwordInputRegister);
         nextButton = getActivity().findViewById(R.id.nextButton);
+
+        progressBarUsername = view.findViewById(R.id.progressBarUsername);
+        layoutUsernameReigster = view.findViewById(R.id.layoutUsernameReigster);
+        usernameResult = view.findViewById(R.id.usernameResult);
+        usernameResultText = view.findViewById(R.id.usernameResultText);
+        layoutUsernameCheck = view.findViewById(R.id.layoutUsernameCheck);
+
+        layoutPasswordReigster = view.findViewById(R.id.layoutPasswordReigster);
+        passwordResult = view.findViewById(R.id.passwordResult);
+        passwordResultText = view.findViewById(R.id.passwordResultText);
+        layoutPasswordCheck = view.findViewById(R.id.layoutPasswordCheck);
 
         usernameInputRegister.addTextChangedListener(textWatcherUsername);
         passwordInputRegister.addTextChangedListener(textWatcherPassword);
@@ -135,16 +147,7 @@ public class SignupUsernamePasswordFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        progressBarUsername = getActivity().findViewById(R.id.progressBarUsername);
-        layoutUsernameReigster = getActivity().findViewById(R.id.layoutUsernameReigster);
-        usernameResult = getActivity().findViewById(R.id.usernameResult);
-        usernameResultText = getActivity().findViewById(R.id.usernameResultText);
-        layoutUsernameCheck = getActivity().findViewById(R.id.layoutUsernameCheck);
 
-        layoutPasswordReigster = getActivity().findViewById(R.id.layoutPasswordReigster);
-        passwordResult = getActivity().findViewById(R.id.passwordResult);
-        passwordResultText = getActivity().findViewById(R.id.passwordResultText);
-        layoutPasswordCheck = getActivity().findViewById(R.id.layoutPasswordCheck);
     }
 
 
@@ -162,9 +165,14 @@ public class SignupUsernamePasswordFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             String usernameInserted = usernameInputRegister.getText().toString();
+
             layoutUsernameCheck.setVisibility(View.GONE);
             usernameResult.setVisibility(View.GONE);
             usernameResultText.setVisibility(View.GONE);
+            if(TextUtils.isEmpty(usernameInserted))
+            {
+                return;
+            }
             progressBarUsername.setVisibility(View.VISIBLE);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameReigster.getLayoutParams();
             params.topMargin = 0;

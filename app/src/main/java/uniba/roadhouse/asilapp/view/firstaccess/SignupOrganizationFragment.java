@@ -92,8 +92,8 @@ public class SignupOrganizationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cityOrganizationSelection = getActivity().findViewById(R.id.cityOrganizationSelection);
-        nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelection);
+        cityOrganizationSelection = view.findViewById(R.id.cityOrganizationSelection);
+        nameOrganizationSelection = view.findViewById(R.id.nameOrganizationSelection);
         nextButton = getActivity().findViewById(R.id.nextButton);
         progressBar = getActivity().findViewById((R.id.progressBarFirstActivity));
         layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);

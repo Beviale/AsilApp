@@ -74,7 +74,6 @@ public class FirstAccessActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.primoAccessoFragmentView, FirstAccessFragment.class, null);
         fragmentTransaction.commit();
     }
-
     /**
      * Sostituisce il fragment di login con quello di registrazione.
      */

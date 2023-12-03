@@ -80,7 +80,7 @@ public class SignupFragment extends Fragment {
         /**
          * Riferimento del bottone che consente di passare da un fragment di compilazione di registrazione a un altro
          */
-        nextButton=getActivity().findViewById(R.id.nextButton);
+        nextButton=view.findViewById(R.id.nextButton);
 
 
 

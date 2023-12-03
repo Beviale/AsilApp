@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class SignupPlaceFragment extends Fragment {
     AutoCompleteTextView citizenSelection;
     AutoCompleteTextView countrySelection;
     AutoCompleteTextView typeUserSelection;
+    TextInputLayout typeUserSelectionInput;
     Button nextButton;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -52,6 +55,7 @@ public class SignupPlaceFragment extends Fragment {
     public SignupPlaceFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -95,6 +99,9 @@ public class SignupPlaceFragment extends Fragment {
         citizenSelection = view.findViewById(R.id.citizenSelection);
         countrySelection = view.findViewById(R.id.countrySelection);
         typeUserSelection = view.findViewById(R.id.typeUserSelection);
+        typeUserSelectionInput = view.findViewById(R.id.typeUserSelectionInput);
+
+
         nextButton = getActivity().findViewById(R.id.nextButton);
         if (atLeastOneFieldIsEmpty()) {
             nextButton.setEnabled(false);
@@ -103,11 +110,6 @@ public class SignupPlaceFragment extends Fragment {
         citizenSelection.addTextChangedListener(textWatcher);
         countrySelection.addTextChangedListener(textWatcher);
         typeUserSelection.addTextChangedListener(textWatcher);
-
-
-
-
-
 
 
         CountryService countryService = Country.RetrofitInstance.getRetrofitInstance().create(CountryService.class);
@@ -146,7 +148,7 @@ public class SignupPlaceFragment extends Fragment {
                     else
                         Utility.showAlertDialog(getActivity(), getString(R.string.serverErrorTitle), getString(R.string.serverError));
                 }
-
+                typeUserSelectionInput.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 layoutSignupFragment.setAlpha((float) 1.0);
             }

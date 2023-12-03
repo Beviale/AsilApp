@@ -104,21 +104,19 @@ public class FirstAccessFragment extends Fragment {
         //-------------RIFERIMENTI-------------------------
 
         // riferimento al campo username del login
-        userNameInput = getActivity().findViewById(R.id.userNameInput);
+        userNameInput = view.findViewById(R.id.userNameInput);
         // riferimento al campo password del login
-        passwordInput = getActivity().findViewById(R.id.passwordInput);
+        passwordInput = view.findViewById(R.id.passwordInput);
         // riferimento al bottone che avvia il login
-        buttonLogin = getActivity().findViewById(R.id.buttonLogin);
+        buttonLogin = view.findViewById(R.id.buttonLogin);
         // Riferimento alla TextView che avvia la registrazione dell'utente
-        registerLabel = getActivity().findViewById(R.id.registerLabel);
+        registerLabel = view.findViewById(R.id.registerLabel);
         // Riferimento alla ProgressBar da mostrare durante la chiamata al database
-        progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
+        progressBar = view.findViewById(R.id.progressBarFirstActivity);
         // Riferimento al layout da oscurare duranta la chiamata al database.
-        layoutLogin = getActivity().findViewById(R.id.layoutLogin);
-        usernameLayout = getActivity().findViewById(R.id.usernameLayout);
-        passwordLayout = getActivity().findViewById(R.id.passwordLayout);
-
-
+        layoutLogin = view.findViewById(R.id.layoutLogin);
+        usernameLayout = view.findViewById(R.id.usernameLayout);
+        passwordLayout = view.findViewById(R.id.passwordLayout);
 
         //funzione che sottilinea il testo di registrazione
         Utility.textViewUnderlineText(registerLabel, getString(R.string.loginRegistrationLabel));
@@ -133,7 +131,6 @@ public class FirstAccessFragment extends Fragment {
         //------LISTENER----------------------
         registerLabel.setOnClickListener(v->callRegisterFragment());
         buttonLogin.setOnClickListener(v->login());
-
     }
 
 
