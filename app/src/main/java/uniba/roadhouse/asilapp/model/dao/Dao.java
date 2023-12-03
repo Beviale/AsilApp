@@ -108,20 +108,8 @@ public class Dao {
 
     public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
         return CompletableFuture.supplyAsync(()->{
-        //verifico se esiste un utente con lo username dell'utente che si vuole registrare
-        Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
-            while (!query.isComplete()) {
-                //attenendo che la funzione asincrona chaimata termini la sua computazione
-            }
-            //quando la query è completata vedo se esiste un utente con lo username scelto
-            if (query.getResult().size() > 0) {
-                return context.getString(R.string.userAlreadyExists);
-            }
-            //verifico che la password rispetta i criteri previsti
-            //password deve avere almeno 8 caratteri, almeno una lettera maiuscola, un carattere speciale e un numero
-            if (!Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password)) {
-                return context.getString(R.string.passwordDoNotMatchRegEx);
-            }
+            //so gia che username è disponibile e che lapassword rispeta i criteri
+
             //se va tutto bene faccio l'hash della password
             //faccio l'hash della password
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -156,9 +144,22 @@ public class Dao {
         });
     }
 
+    public String checkUsernameIsAvailable(String username,Context context){
+        //verifico se esiste un utente con lo username dell'utente che si vuole registrare
+        Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
+        while (!query.isComplete()) {
+            //attenendo che la funzione asincrona chaimata termini la sua computazione
+        }
+        //quando la query è completata vedo se esiste un utente con lo username scelto
+        if (query.getResult().size() > 0) {
+            return context.getString(R.string.userAlreadyExists);
+        }
+
+        return context.getString(R.string.usernameAvailable);
+    }
+
     public static CompletableFuture<String> loginUser(String username, String password, Context context){
         return CompletableFuture.supplyAsync(()-> {
-
             //verifico se esiste un utente con lo username dell'utente che si vuole loggare
             Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();
 

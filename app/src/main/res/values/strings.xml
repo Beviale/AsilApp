@@ -63,10 +63,10 @@
     <string name="passwordDoNotMatchRegEx">La password non rispetta i criteri</string>
     <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
     <string name="noUserExists">Non esiste nessun utente con questo username</string>
+    <string name="usernameAvailable">Username disponibile</string>
     <string name="wrongPassword">Password errata!</string>
     <string name="loginCompleted">Login completato!</string>
     <string name="authFailed">Autenticazione Fallita, Rifare il login</string>
     <string name="authSuccess">Autenticazione avvenutacon successo!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
