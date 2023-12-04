@@ -5,6 +5,7 @@
 
     <!--APP BAR-->
     <color name="appBarColor">#00368f</color>
+    <color name="appBarDownColor">#FFFFFF	</color>
 
     <!--APP-->
     <color name="appBackground">#ffffff</color>

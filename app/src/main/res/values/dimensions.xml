@@ -2,6 +2,7 @@
 <resources>
     <!--APP BAR-->
     <dimen name="abbBarHeight">80dp</dimen>
+    <dimen name="iconAppBarDown">40dp</dimen>
 
     <!--TEXT-->
     <dimen name="title1FontSize">40dp</dimen>

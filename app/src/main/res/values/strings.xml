@@ -7,7 +7,7 @@
     <string name="genericError">Si è verificato un errore inatteso</string>
 
 
-    <!--FirstAccessActivity-->
+    <!--SigninSignupActivity-->
     <string name="noConnectionTitle">Nessuna connessione a Internet</string>
     <string name="noConnection">Il tuo dispositivo non risulta connesso ad una rete Internet.
     Questo fa sì che l app non riesca a poter garantire il supporto a tutte le funzionalità normalmente previste.
@@ -74,5 +74,13 @@
     <string name="loginCompleted">Login completato!</string>
     <string name="authFailed">Autenticazione Fallita, Rifare il login</string>
     <string name="authSuccess">Autenticazione avvenutacon successo!</string>
+
+
+    <!--MedicalParameters-->
+    <string name="healthHistory">Storico salute</string>
+    <string name="myPathologies">Le mie patologie</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

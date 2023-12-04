@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.home.HomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarHomeActivityUpper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/appBarColor"
+            android:minHeight="@dimen/abbBarHeight"
+            android:elevation="2dp"
+            android:pointerIcon="context_menu"
+            android:theme="?attr/actionBarTheme">
+        <ImageView
+            android:id="@+id/toolBarIconHomeActivity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="left"
+            android:src="@mipmap/ic_launcher_round"/>
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/homeContainerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+        </androidx.fragment.app.FragmentContainerView>
+
+
+
+        <View
+            android:background="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarHomeActivityDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.30"
+            android:background="@color/appBarDownColor"
+            android:elevation="5dp"
+            android:minHeight="@dimen/abbBarHeight"
+            android:pointerIcon="context_menu"
+            android:theme="?attr/actionBarTheme">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/toolBarDownIconMedicalParameters"
+                    android:layout_width="@dimen/iconAppBarDown"
+                    android:layout_height="@dimen/iconAppBarDown"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:src="@mipmap/heart" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
+
+</FrameLayout>
