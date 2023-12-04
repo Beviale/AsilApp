@@ -86,6 +86,11 @@
     <!--MedicalParameters-->
     <string name="healthHistory">Storico salute</string>
     <string name="myPathologies">Le mie patologie</string>
+    <string name="temperatureHealthHistory">Temperatura corporea</string>
+    <string name="bloodPressureHealthHistory">Pressione sanguigna</string>
+    <string name="weightHealthHistory">Peso corporeo</string>
+    <string name="bpmHealthHistory">BPM</string>
+
 
 
 </resources>

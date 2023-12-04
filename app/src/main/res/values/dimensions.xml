@@ -20,7 +20,15 @@
     <!--MARGIN-->
     <dimen name="marginBetweenInputs">20dp</dimen>
 
-
     <!--PROGRESS BAR-->
     <dimen name="progressBarDim">70dp</dimen>
+
+    <!--MedicalParameters-->
+    <dimen name="heightHealthHistory">100dp</dimen>
+    <dimen name="marginHealthHistory">24dp</dimen>
+    <dimen name="textHealthHistory">17dp</dimen>
+
+
+
+
 </resources>

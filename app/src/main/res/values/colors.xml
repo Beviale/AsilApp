@@ -22,4 +22,8 @@
     <color name="textColorOnButton">#ffffff</color>
     <color name="textPlaceholderColor">#919191</color>
     <color name="textAlertColor">#ff3333</color>
+
+    <!--MedicalParameters-->
+    <color name="colorHealthHistory">#92bbfc</color>
+
 </resources>

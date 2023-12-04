@@ -3,12 +3,124 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.home.HealthHistoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bodyTemperatureView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="patologei" />
+        android:layout_height="@dimen/heightHealthHistory"
+        android:layout_marginStart="24dp"
+        android:background="@color/colorHealthHistory"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="@string/temperatureHealthHistory"
+            android:textSize="@dimen/textHealthHistory"
+            android:textColor="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bloodPressureView"
+        android:layout_width="match_parent"
+        android:background="@color/colorHealthHistory"
+        android:layout_height="@dimen/heightHealthHistory"
+        android:layout_marginStart="@dimen/marginHealthHistory"
+        android:layout_marginTop="@dimen/marginHealthHistory"
+        android:layout_marginEnd="@dimen/marginHealthHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginLeft="@dimen/marginBetweenInputs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bodyTemperatureView">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/bloodPressureView"
+        app:layout_constraintLeft_toLeftOf="@+id/bloodPressureView"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/bloodPressureHealthHistory"
+        android:textSize="@dimen/textHealthHistory"
+        android:textColor="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/weightView"
+        android:layout_width="match_parent"
+        android:background="@color/colorHealthHistory"
+        android:layout_height="@dimen/heightHealthHistory"
+        android:layout_marginStart="@dimen/marginHealthHistory"
+        android:layout_marginTop="@dimen/marginHealthHistory"
+        android:layout_marginEnd="@dimen/marginHealthHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginLeft="@dimen/marginBetweenInputs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bloodPressureView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="@string/weightHealthHistory"
+            android:textSize="@dimen/textHealthHistory"
+            android:textColor="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bpmView"
+        android:layout_width="match_parent"
+        android:background="@color/colorHealthHistory"
+        android:layout_height="@dimen/heightHealthHistory"
+        android:layout_marginStart="@dimen/marginHealthHistory"
+        android:layout_marginTop="@dimen/marginHealthHistory"
+        android:layout_marginEnd="@dimen/marginHealthHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginLeft="@dimen/marginBetweenInputs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weightView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="@string/bpmHealthHistory"
+            android:textSize="@dimen/textHealthHistory"
+            android:textColor="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
