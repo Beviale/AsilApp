@@ -57,8 +57,8 @@
     <string name="mandatoryFields">Tutti i campi sono obbligatori</string>
     <string name="asylumUser">Richiedente asilo</string>
     <string name="internationalUser">Protezione internazionale</string>
-    <string name="passwordRegexOk">La password è sicura</string>
-    <string name="passwordRegexError">La password non è sicura</string>
+    <string name="passwordRegexOk">La password rispetta i criteri</string>
+    <string name="passwordRegexError">La password non rispetta i criteri</string>
     <string name="passwordExplantationTitle">Criteri di sicurezza per le password</string>
     <string name="passwordExplanation">Una password viene considerata sicura quando contiene almeno 8 caratteri. Di questi, ci devono
     essere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale (#\?!\@$%^&amp;*-).</string>

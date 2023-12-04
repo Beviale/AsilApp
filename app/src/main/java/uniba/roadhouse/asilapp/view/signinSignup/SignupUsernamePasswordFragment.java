@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,26 +29,79 @@ import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
- * Fragment di compilazione di registrazione
+ * Fragment di compilazione di registrazione.
  * Permette l'inserimento delle credenziali di accessi quali username e password.
  */
 public class SignupUsernamePasswordFragment extends Fragment {
-    TextInputEditText usernameInputRegister;
-    TextInputEditText passwordInputRegister;
-    Button nextButton;
+    //--------------WIDGET USERNAME----------------------------
+    /**
+     * TextInputEditText relativo all'inserimento dell'username
+     */
+    TextInputEditText usernameInputSignup;
+    /**
+     * ProgressBar da mostrare mentre il DB verifica se esiste già un username uguale a quello inserito dall'utente.
+     */
     ProgressBar progressBarUsername;
-    TextInputLayout layoutUsernameReigster;
-    ImageView usernameResult;
+    /**
+     * Layout relativo al campo username
+     */
+    TextInputLayout layoutUsernameSignup;
+    /**
+     * Icona che indica il risultato dell'username inserito (se è disponibile oppure no).
+     */
+    ImageView usernameResultImage;
+    /**
+     * Testo che indica il risultato dell'username inserito (se è disponibile oppure no
+     */
     TextView usernameResultText;
+    /**
+     * Layout che contiene i risultati dell'username inserito sia come immagine che come testo.
+     */
     LinearLayout layoutUsernameCheck;
 
-    //
-    TextInputLayout layoutPasswordReigster;
-    ImageView passwordResult;
+
+    //--------------WIDGET PASSWORD----------------------------
+
+    /**
+     * Layout relativo all'inserimento della password
+     */
+    TextInputLayout layoutPasswordSignup;
+    /**
+     * Icona che indica il risultato della password inserita (se rispetta i criteri di sicurezza oppure no).
+     */
+    ImageView passwordResultImage;
+    /**
+     * TextInputEditText relativo all'inserimento della password.
+     */
+    TextInputEditText passwordInputSignup;
+    /**
+     * Testo che indica il risultato della password inserita (se rispetta i criteri di sicurezza oppure no).
+     */
     TextView passwordResultText;
+    /**
+     * Layout che contiene i risultati della password inserita sia come immagine che come testo.
+     */
     LinearLayout layoutPasswordCheck;
 
+
+
+
+
+
+    /**
+     * Bottone che permette di terminare la registrazione.
+     */
+    Button nextButton;
+
+
+
+    /**
+     * Indica che il campo username è compilato correttamente.
+     */
     private static Boolean showNextButtonUsername=false;
+    /**
+     * Indica che il campo password è compilato correttamente.
+     */
     private static Boolean showNextButtonPassword=false;
 
 
@@ -107,32 +159,69 @@ public class SignupUsernamePasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        usernameInputRegister = view.findViewById(R.id.usernameInputRegister);
-        passwordInputRegister = view.findViewById(R.id.passwordInputRegister);
+        //----------RIFERIMENTI----------------
+        usernameInputSignup = view.findViewById(R.id.usernameInputSignup);
+        passwordInputSignup = view.findViewById(R.id.passwordInputSignup);
         nextButton = getActivity().findViewById(R.id.nextButtonSignup);
+        progressBarUsername = view.findViewById(R.id.progressBarUsernameSignup);
+        layoutUsernameSignup = view.findViewById(R.id.layoutUsernameSignup);
+        usernameResultImage = view.findViewById(R.id.usernameResultImageSignup);
+        usernameResultText = view.findViewById(R.id.usernameResultTextSignup);
+        layoutUsernameCheck = view.findViewById(R.id.layoutUsernameCheckSignup);
+        layoutPasswordSignup = view.findViewById(R.id.layoutPasswordSignup);
+        passwordResultImage = view.findViewById(R.id.passwordResultImageSignup);
+        passwordResultText = view.findViewById(R.id.passwordResultTextSignup);
+        layoutPasswordCheck = view.findViewById(R.id.layoutPasswordCheckSignup);
 
-        progressBarUsername = view.findViewById(R.id.progressBarUsername);
-        layoutUsernameReigster = view.findViewById(R.id.layoutUsernameReigster);
-        usernameResult = view.findViewById(R.id.usernameResult);
-        usernameResultText = view.findViewById(R.id.usernameResultText);
-        layoutUsernameCheck = view.findViewById(R.id.layoutUsernameCheck);
 
-        layoutPasswordReigster = view.findViewById(R.id.layoutPasswordReigster);
-        passwordResult = view.findViewById(R.id.passwordResult);
-        passwordResultText = view.findViewById(R.id.passwordResultText);
-        layoutPasswordCheck = view.findViewById(R.id.layoutPasswordCheck);
+        // Aggiunto i rispettivi TextWatcher
+        usernameInputSignup.addTextChangedListener(textWatcherUsername);
+        passwordInputSignup.addTextChangedListener(textWatcherPassword);
 
-        usernameInputRegister.addTextChangedListener(textWatcherUsername);
-        passwordInputRegister.addTextChangedListener(textWatcherPassword);
-
+        // Inizialmente il nextButton viene disattivato.
         nextButton.setEnabled(false);
         nextButton.setAlpha((float) (0.5));
+    }
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //-----------LISTENER------------------
+        usernameInputSignup.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus==false)
+                    checkUsername();
+            }
+        });
+
+        passwordResultText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                if(passwordResultText.getText().toString().equals(getString(R.string.passwordRegexError)))
+                showInfoPasswordSecurity();
+            }
+        });
+
+        passwordResultImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                if(passwordResultImage.getDrawable().equals(getResources().getDrawable(R.drawable.error)));
+                    showInfoPasswordSecurity();
+            }
+        });
+
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
+        // Se sia il campo username che password sono compilati correttamente attivo il nextButton, altrimento lo disattivo.
         if (showNextButtonUsername==true && showNextButtonPassword==true) {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
@@ -145,45 +234,38 @@ public class SignupUsernamePasswordFragment extends Fragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        usernameInputRegister.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus==false)
-                checkUsername();
-            }
-        });
 
-        passwordResult.setOnClickListener(v->showInfoPasswordImage());
-    }
-
-
-    private void showInfoPasswordImage()
+    /**
+     * Mostra un dialog che spiega all'utente quali sono i criteri di sicurezza per le password.
+     */
+    private void showInfoPasswordSecurity()
     {
         Utility.showAlertDialog(getActivity(), getString(R.string.passwordExplantationTitle), getString(R.string.passwordExplanation));
     }
 
+    /**
+     * Chiama il DB e verifica se l'username già esiste.
+     * Fornisce il risultato all'utente.
+     */
     private void checkUsername()
     {
-        String usernameInserted = usernameInputRegister.getText().toString();
+        String usernameInserted = usernameInputSignup.getText().toString();
         layoutUsernameCheck.setVisibility(View.GONE);
-        usernameResult.setVisibility(View.GONE);
+        usernameResultImage.setVisibility(View.GONE);
         usernameResultText.setVisibility(View.GONE);
         progressBarUsername.setVisibility(View.VISIBLE);
         if(TextUtils.isEmpty(usernameInserted))
         {
             return;
         }
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameReigster.getLayoutParams();
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameSignup.getLayoutParams();
         params.topMargin = 0;
         CompletableFuture<Boolean> future = Dao.checkUsernameIsAvailable(usernameInserted, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBarUsername.setVisibility(View.GONE);
                 layoutUsernameCheck.setVisibility(View.VISIBLE);
-                usernameResult.setVisibility(View.VISIBLE);
+                usernameResultImage.setVisibility(View.VISIBLE);
                 if (result == true) {
                     showNextButtonUsername=true;
                     if(showNextButtonPassword==true)
@@ -193,14 +275,14 @@ public class SignupUsernamePasswordFragment extends Fragment {
                     }
                     usernameResultText.setVisibility(View.VISIBLE);
                     usernameResultText.setText(getString(R.string.usernameAvailable));
-                    usernameResult.setImageResource(R.mipmap.verified);
+                    usernameResultImage.setImageResource(R.mipmap.verified);
                 } else {
                     showNextButtonUsername=false;
                     nextButton.setEnabled(false);
                     nextButton.setAlpha((float)0.5);
                     usernameResultText.setVisibility(View.VISIBLE);
                     usernameResultText.setText(getString(R.string.userAlreadyExists));
-                    usernameResult.setImageResource(R.mipmap.error);
+                    usernameResultImage.setImageResource(R.mipmap.error);
                 }
             });
         });
@@ -225,18 +307,22 @@ public class SignupUsernamePasswordFragment extends Fragment {
 
         }
 
+        /**
+         * Chiama checkRegexPassword();
+         * @param s
+         */
         @Override
         public void afterTextChanged(Editable s) {
-            String passwordInserted = passwordInputRegister.getText().toString();
+            String passwordInserted = passwordInputSignup.getText().toString();
             layoutPasswordCheck.setVisibility(View.VISIBLE);
-            passwordResult.setVisibility(View.VISIBLE);
+            passwordResultImage.setVisibility(View.VISIBLE);
             passwordResultText.setVisibility(View.VISIBLE);
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutPasswordReigster.getLayoutParams();
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutPasswordSignup.getLayoutParams();
             params.topMargin = 0;
             if(checkRegexPassword(passwordInserted)==true)
             {
                 passwordResultText.setText(getString(R.string.passwordRegexOk));
-                passwordResult.setImageResource(R.mipmap.verified);
+                passwordResultImage.setImageResource(R.mipmap.verified);
                 showNextButtonPassword=true;
                 if(showNextButtonUsername==true)
                 {
@@ -247,15 +333,8 @@ public class SignupUsernamePasswordFragment extends Fragment {
             else
             {
                 Utility.textViewUnderlineText(passwordResultText,getString(R.string.passwordRegexError));
-                passwordResult.setClickable(true);
-                passwordResultText.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v) {
-                        Utility.showAlertDialog(getActivity(), getString(R.string.passwordExplantationTitle), getString(R.string.passwordExplanation));
-                    }
-                });
-                passwordResult.setImageResource(R.mipmap.error);
+                passwordResultImage.setClickable(true);
+                passwordResultImage.setImageResource(R.mipmap.error);
                 showNextButtonPassword=false;
                 nextButton.setEnabled(false);
                 nextButton.setAlpha((float)0.5);
@@ -264,6 +343,11 @@ public class SignupUsernamePasswordFragment extends Fragment {
         }
     };
 
+    /**
+     * Verifica se una password rispetta i criteri di sicurezza.
+     * @param password, password da scansionare
+     * @return true se la password rispetta i criteri di sicurezza, false altrimenti.
+     */
     private static Boolean checkRegexPassword(String password)
     {
        return Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password);

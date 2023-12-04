@@ -160,8 +160,8 @@ public class SignupFragment extends Fragment {
                 User.setNameOrganization(nameOrganizationSelection.getText().toString());
                 break;
             case "class uniba.roadhouse.asilapp.view.signinSignup.SignupUsernamePasswordFragment":
-                TextInputEditText usernameInputRegister = getActivity().findViewById(R.id.usernameInputRegister);
-                TextInputEditText passwordInputRegister = getActivity().findViewById(R.id.passwordInputRegister);
+                TextInputEditText usernameInputRegister = getActivity().findViewById(R.id.usernameInputSignup);
+                TextInputEditText passwordInputRegister = getActivity().findViewById(R.id.passwordInputSignup);
 
 
                 User.setUsername(usernameInputRegister.getText().toString());
