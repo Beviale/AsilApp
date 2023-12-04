@@ -80,8 +80,9 @@ public class MedicalParametersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        healthHistoryTabItem = view.findViewById(R.id.healthHistoryTabItem);
-        myPathologiesTabItem = view.findViewById(R.id.myPathologiesTabItem);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        openHealthHistory(fragmentManager);
+        tabLayoutMedical = view.findViewById(R.id.tabLayoutMedical);
     }
 
     @Override
@@ -95,13 +96,11 @@ public class MedicalParametersFragment extends Fragment {
                 int position = tab.getPosition();
                 if(position==0)
                 {
-                    Log.d("a", "0");
+                    openHealthHistory(fragmentManager);
                 }
                 else
                 {
-                    Log.d("a", "0");
-
-
+                    openMyPahtologies(fragmentManager);
                 }
 
             }

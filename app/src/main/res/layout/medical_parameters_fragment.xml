@@ -9,6 +9,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutMedical"
+        app:tabSelectedTextColor="@color/appMainColor"
+        app:tabIndicatorColor="@color/appMainColor"
+        app:tabRippleColor="@color/appMainColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
