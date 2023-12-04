@@ -90,6 +90,7 @@
     <string name="bloodPressureHealthHistory">Pressione sanguigna</string>
     <string name="weightHealthHistory">Peso corporeo</string>
     <string name="bpmHealthHistory">BPM</string>
+    <string name="lastRecordLabel">Ultima rilevazione</string>
 
 
 

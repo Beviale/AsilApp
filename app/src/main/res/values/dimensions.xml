@@ -27,6 +27,12 @@
     <dimen name="heightHealthHistory">100dp</dimen>
     <dimen name="marginHealthHistory">24dp</dimen>
     <dimen name="textHealthHistory">17dp</dimen>
+    <dimen name="resultUnityHealthHistory">12dp</dimen>
+    <dimen name="marginTopHealthHistory">20dp</dimen>
+    <dimen name="resultHealthHistory">50dp</dimen>
+    <dimen name="resultMaxPressureHealthHistory">35dp</dimen>
+    <dimen name="resultMinPressureHealthHistory">25dp</dimen>
+
 
 
 
