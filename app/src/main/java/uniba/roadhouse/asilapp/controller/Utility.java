@@ -23,6 +23,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -85,8 +86,8 @@ public class Utility
 
     public static Bitmap generateQrCodeBitmap(String data) throws WriterException {
         BitMatrix bm = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
-        int width = 400;
-        int height = 400;
+        int width = bm.getWidth();
+        int height = bm.getHeight();
         Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
