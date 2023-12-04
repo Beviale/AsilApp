@@ -69,18 +69,23 @@
     <string name="userAlreadyExists">Username non dispinibile</string>
     <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
     <string name="noUserExists">Non esiste nessun utente con questo username</string>
+    <string name="passwordDoNotMatchRegEx">Password non rispetta i criteri</string>
     <string name="usernameAvailable">Username disponibile</string>
     <string name="wrongPassword">Password errata!</string>
     <string name="loginCompleted">Login completato!</string>
     <string name="authFailed">Autenticazione Fallita, Rifare il login</string>
     <string name="authSuccess">Autenticazione avvenutacon successo!</string>
+    <string name="qrStoreError">Errore nella memorizzazione del QR sul Database</string>
+    <string name="qrReadError">Errore nella lettura del QR dal Database</string>
+    <string name="qrGenerateError">Errore nella generazione del QR code</string>
+
+    <!--HOME-->
+    <string name="healthMenuIcon">Salute</string>
 
 
     <!--MedicalParameters-->
     <string name="healthHistory">Storico salute</string>
     <string name="myPathologies">Le mie patologie</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

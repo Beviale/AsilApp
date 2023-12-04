@@ -2,6 +2,7 @@ package uniba.roadhouse.asilapp.model.dao;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.auth0.jwt.JWT;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.WriterException;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,12 +38,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.DatabaseException;
+import uniba.roadhouse.asilapp.controller.Utility;
 
 public class Dao {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -108,46 +113,61 @@ public class Dao {
 
     public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
         return CompletableFuture.supplyAsync(()->{
-            //so gia che username è disponibile e che lapassword rispeta i criteri
+            try{
+                //so gia che username è disponibile e che lapassword rispeta i criteri
 
-            //se va tutto bene faccio l'hash della password
-            //faccio l'hash della password
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = bCryptPasswordEncoder.encode(password);
+                //se va tutto bene faccio l'hash della password
+                //faccio l'hash della password
+                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+                String hashedPassword = bCryptPasswordEncoder.encode(password);
 
-            //se va tutto bene, creo la mappa che rappresenta i dati dell'utente
-            Map<String, String> user = new HashMap<>();
-            user.put("username", username);
-            user.put("password", hashedPassword);
-            user.put("sesso", sesso);
-            user.put("nome", nome);
-            user.put("cognome", cognome);
-            if (paese != null) {
-                user.put("paeseDiProvenienza", paese);
-            }
-            if (cittadinanza != null) {
-                user.put("cittadinanza", cittadinanza);
-            }
-            user.put("nomeResidenza", residenza);
-            user.put("tipoUtente", tipoUtente);
+                //creo il qrCode associato all'username dell'utente
+                String qrCode="";
+                try {
+                    Bitmap bm=Utility.generateQrCodeBitmap(username);
+                    qrCode=Utility.BitMapToString(bm);
+                } catch (WriterException e) {
+                    throw new DatabaseException(context.getString(R.string.qrGenerateError));
+                }
 
-            //aggiungo l'utente al db
-            Task<DocumentReference> addToDb = db.collection("users").add(user);
-            while (!addToDb.isComplete()) {
-                //attenendo che la funzione asincrona chaimata termini la sua computazione
+                //se va tutto bene, creo la mappa che rappresenta i dati dell'utente
+                Map<String, String> user = new HashMap<>();
+                user.put("username", username);
+                user.put("password", hashedPassword);
+                user.put("sesso", sesso);
+                user.put("nome", nome);
+                user.put("cognome", cognome);
+                if (paese != null) {
+                    user.put("paeseDiProvenienza", paese);
+                }
+                if (cittadinanza != null) {
+                    user.put("cittadinanza", cittadinanza);
+                }
+                user.put("nomeResidenza", residenza);
+                user.put("tipoUtente", tipoUtente);
+                user.put("qrCode",qrCode);
+
+                //aggiungo l'utente al db
+                Task addToDb = db.collection("users").document(username).set(user);
+                while (!addToDb.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+                if (!addToDb.isSuccessful()) {
+                    return context.getString(R.string.insertUserFailed);
+                }
+
+                //se l'inserimento è avvenuto con successo ritono il messaggio
+                return context.getString(R.string.registrationComplete);
+            }catch (final DatabaseException d){
+                throw new CompletionException(d.getMessage(),d);
             }
-            if (!addToDb.isSuccessful()) {
-                return context.getString(R.string.insertUserFailed);
-            }
-            //se l'inserimento è avvenuto con successo ritono il messaggio
-            return context.getString(R.string.registrationComplete);
         });
     }
 
     public static CompletableFuture<Boolean> checkUsernameIsAvailable(String username,Context context){
         return CompletableFuture.supplyAsync(()-> {
             //verifico se esiste un utente con lo username dell'utente che si vuole registrare
-            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();
+            Task<QuerySnapshot> query=db.collection("users").whereEqualTo("username",username).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
@@ -155,7 +175,6 @@ public class Dao {
             if (query.getResult().size() > 0) {
                 return false;
             }
-
             return true;
         });
     }
@@ -237,5 +256,81 @@ public class Dao {
         }
 
         return isLogged;
+    }
+
+    /**
+     * Metodo che dato in input lo username dell'utente, ne prende dal db i dati
+     * @param username username dell'utente da prelevare dal db
+     * @param context contesto attuale, cioè this
+     * @return ritorna una Map<String,String> che conterrà le key: nome, cognome, sesso, cittadinanza, paeseDiProvenienza, tipoUtente, nomeResidenza
+     * @throws DatabaseException eccezione lanciata se si verificano die problemi. Ha come messaggio la stringa rappresentante il problema verificato
+     */
+    public static CompletableFuture<Map<String,Object>> getUserData(String username,Context context) throws DatabaseException{
+        return CompletableFuture.supplyAsync(()->{
+            try{
+                Map<String,Object> userData = new HashMap<>();
+                Task<QuerySnapshot> query = db.collection("users").whereEqualTo("unsername", username).get();
+
+                while (!query.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+
+                //quando la query è completata vedo se esiste un utente con lo username espresso
+                if (query.getResult().size() > 0) {
+                    throw new DatabaseException(context.getString(R.string.noUserExists));
+                }
+
+                //se l'utente esiste, ne prendo tutti i dati
+                //qui la query è completa e ciclo per i risultati ottenuti
+                for (QueryDocumentSnapshot document : query.getResult()) {
+                    userData.put("nome",document.getString("nome"));
+                    userData.put("cognome",document.getString("cognome"));
+                    userData.put("cittadinanza",document.getString("cittadinanza"));
+                    userData.put("paeseDiProvenienza",document.getString("paeseDiProvenienza"));
+                    userData.put("sesso",document.getString("sesso"));
+                    userData.put("tipoUtente",document.getString("tipoUtente"));
+                    userData.put("nomeResidenza",document.getString("nomeResidenza"));
+                    String qr=document.getString("qrCode");
+                    //memorizzo il bitmap del qrcode nella mappa da ritornare
+                    userData.put("qrCode",Utility.StringToBitMap(qr));
+                    break;
+                }
+
+                return userData;
+
+            }catch (final DatabaseException d){
+                throw new CompletionException(d.getMessage(),d);
+            }
+        });
+    }
+
+    public static CompletableFuture<Bitmap> getQrCodeUser(String username, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            try{
+                String qr="";
+
+                //prendo il qr code dall'utente nel db
+                Task<QuerySnapshot> query = db.collection("users").whereEqualTo("unsername", username).get();
+                while (!query.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+                if (!query.isSuccessful()) {
+                    throw new DatabaseException(context.getString(R.string.qrReadError));
+                }
+
+                //se la query è andata a buon fine, prendo il qrCode
+                for (QueryDocumentSnapshot document : query.getResult()) {
+                    qr=document.getString("qrCode");
+                }
+
+                Bitmap bm=Utility.StringToBitMap(qr);
+
+                return bm;
+            }catch (final DatabaseException d){
+                throw new CompletionException(d.getMessage(),d);
+            }finally {
+                return null;
+            }
+        });
     }
 }

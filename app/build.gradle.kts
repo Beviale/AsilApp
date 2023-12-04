@@ -49,4 +49,6 @@ dependencies {
     implementation ("com.auth0:java-jwt:4.4.0")
     implementation("org.springframework.security","spring-security-crypto","5.2.2.RELEASE")
     implementation("commons-logging:commons-logging-api:1.1")
+    implementation("com.google.zxing:core:3.5.2")
+    implementation("com.google.zxing:javase:3.5.2")
 }

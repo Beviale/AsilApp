@@ -4,14 +4,25 @@ package uniba.roadhouse.asilapp.controller;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
+import java.io.ByteArrayOutputStream;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -70,6 +81,38 @@ public class Utility
         SpannableString str=new SpannableString(text);
         str.setSpan(new UnderlineSpan(), 0, str.length(), 0);
         textView.setText(str);
+    }
+
+    public static Bitmap generateQrCodeBitmap(String data) throws WriterException {
+        BitMatrix bm = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
+        int width = 400;
+        int height = 400;
+        Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                bmp.setPixel(x, y, bm.get(x, y) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        return bmp;
+    }
+
+    public static String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public static Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }
 
