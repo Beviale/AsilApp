@@ -44,5 +44,11 @@
     <string name="loginCompleted">Login completed!</string>
     <string name="authFailed">Authentication failed, please login</string>
     <string name="authSuccess">Authentication success!</string>
+    <string name="qrStoreError">Error while storing QR code in Database</string>
+    <string name="qrReadError">Error while reading QR code in Database</string>
+    <string name="qrGenerateError">Error in Qr code generation</string>
+
+    <!--HOME-->
+    <string name="healthMenuIcon">Health</string>
 
 </resources>
