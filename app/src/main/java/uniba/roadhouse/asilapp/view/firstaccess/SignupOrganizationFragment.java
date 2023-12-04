@@ -31,16 +31,30 @@ import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignupOrganizationFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment di compilazione di registrazione.
+ * Permette l'inserimento della città e del nome della struttura di accoglienza.
  */
 public class SignupOrganizationFragment extends Fragment {
+    /**
+     * AutoCompelteTextView relativo alla selezione della città.
+     */
     AutoCompleteTextView cityOrganizationSelection;
+    /**
+     * AutoCompleteTextView relativo alla selezione della struttura di accoglienza.
+     */
     AutoCompleteTextView nameOrganizationSelection;
+    /**
+     * Bottine che permette di passare al fragmente di compilazione di registrazione successivo.
+     */
     Button nextButton;
+    /**
+     * ProgressBar da mostrare durante le chiamate al database.
+     */
     ProgressBar progressBar;
-    LinearLayout layoutSignupFragment;
+    /**
+     * Layout del fragment principale di registrazione.
+     */
+    LinearLayout layoutFragmentSignup;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,16 +106,20 @@ public class SignupOrganizationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cityOrganizationSelection = view.findViewById(R.id.cityOrganizationSelection);
-        nameOrganizationSelection = view.findViewById(R.id.nameOrganizationSelection);
-        nextButton = getActivity().findViewById(R.id.nextButton);
-        progressBar = getActivity().findViewById((R.id.progressBarFirstActivity));
-        layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);
+        //------------RIFERIMENTI-------------
+        cityOrganizationSelection = view.findViewById(R.id.cityOrganizationSelectionSignup);
+        nameOrganizationSelection = view.findViewById(R.id.nameOrganizationSelectionSignup);
+        nextButton = getActivity().findViewById(R.id.nextButtonSignup);
+        progressBar = getActivity().findViewById((R.id.progressBarSigninSignupActivity));
+        layoutFragmentSignup = getActivity().findViewById(R.id.layoutFragmentSignup);
         nameOrganizationSelection.setEnabled(false);
 
+        // Aggiunto il TextWatcher
         cityOrganizationSelection.addTextChangedListener(textWatcher);
         nameOrganizationSelection.addTextChangedListener(textWatcher);
 
+
+        // Disattivo il pulsante di next se almeno uno dei campi risulta vuoto.
         if (atLeastOneFieldIsEmpty()) {
             nextButton.setEnabled(false);
             nextButton.setAlpha((float)0.5);
@@ -115,7 +133,18 @@ public class SignupOrganizationFragment extends Fragment {
             nextButton.setEnabled(true);
             nextButton.setAlpha(1);
         }
+        getCityFromDB();
+        if(!cityOrganizationSelection.getText().toString().isEmpty())
+        {
+            getNameOrganizationFromDB(cityOrganizationSelection.getText().toString());
+        }
+    }
 
+    /**
+     * Prende dal database tutte le città che hanno almeno una struttura di accoglienza e riempie l'AutoComplteteTextView apposita.
+     */
+    private void getCityFromDB()
+    {
         if(!Utility.isConnectedToInternet(getActivity()))
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
@@ -123,13 +152,13 @@ public class SignupOrganizationFragment extends Fragment {
             fragmentManager.popBackStack();
         }
         progressBar.setVisibility(View.VISIBLE);
-        layoutSignupFragment.setAlpha((float)0.5);
+        layoutFragmentSignup.setAlpha((float)0.5);
         CompletableFuture<List<String>> future = Dao.getNomiCittaResidenze();
         List<String> allCity = new ArrayList<String>();
         future.thenAccept(result -> {
             allCity.addAll(result);
             progressBar.setVisibility(View.INVISIBLE);
-            layoutSignupFragment.setAlpha(1);
+            layoutFragmentSignup.setAlpha(1);
             if(result.isEmpty())
             {
                 Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
@@ -140,6 +169,8 @@ public class SignupOrganizationFragment extends Fragment {
         ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allCity);
         cityOrganizationSelection.setAdapter(adapterCity);
     }
+
+
 
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -152,45 +183,63 @@ public class SignupOrganizationFragment extends Fragment {
 
         }
 
+        /**
+         * Attiva o disattiva il pulsante di next.
+         * @param s, città appena inserita.
+         */
         @Override
         public void afterTextChanged(Editable s) {
-            if(!cityOrganizationSelection.getText().toString().trim().isEmpty())
-            {
-                nameOrganizationSelection.setEnabled(true);
-                nameOrganizationSelection.requestFocus();
-                List<String> allOrganization = new ArrayList<String>();
-                progressBar.setVisibility (View.VISIBLE);
-                layoutSignupFragment.setAlpha((float)0.5);
-                if(!Utility.isConnectedToInternet(getActivity()))
-                {
-                    Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-                }
-                CompletableFuture<List<String>> future = Dao.getNomiResidenze(cityOrganizationSelection.getText().toString());
-                future.thenAccept(result -> {
-                    allOrganization.addAll(result);
-                    progressBar.setVisibility(View.INVISIBLE);
-                    layoutSignupFragment.setAlpha(1);
-                    if(allOrganization.isEmpty())
-                    {
-                        Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.popBackStack();
-                    }
-
-                });
-                ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
-                nameOrganizationSelection.setAdapter(adapterOrganization);
-
-            }
+           getNameOrganizationFromDB(s.toString());
             if (!atLeastOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
             }
+            else
+            {
+                nextButton.setEnabled(false);
+                nextButton.setAlpha((float)(0.5));
+            }
         }
 
     };
+
+    /**
+     * Prende dal database tutti i nomi delle strutture di accoglienza che si trvano nelle città s e riempie l'AutoComplteteTextView apposita.
+     * @param city, città inserita  dall'utente.
+    */
+    private void getNameOrganizationFromDB(String city)
+    {
+        if(!cityOrganizationSelection.getText().toString().trim().isEmpty())
+        {
+            nameOrganizationSelection.setEnabled(true);
+            nameOrganizationSelection.requestFocus();
+            List<String> allOrganization = new ArrayList<String>();
+            progressBar.setVisibility (View.VISIBLE);
+            layoutFragmentSignup.setAlpha((float)0.5);
+            if(!Utility.isConnectedToInternet(getActivity()))
+            {
+                Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+            CompletableFuture<List<String>> future = Dao.getNomiResidenze(city);
+            future.thenAccept(result -> {
+                allOrganization.addAll(result);
+                progressBar.setVisibility(View.INVISIBLE);
+                layoutFragmentSignup.setAlpha(1);
+                if(allOrganization.isEmpty())
+                {
+                    Utility.showAlertDialog(getActivity(), getString(R.string.genericErrorTitle), getString(R.string.genericError));
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.popBackStack();
+                }
+
+            });
+            ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
+            nameOrganizationSelection.setAdapter(adapterOrganization);
+
+        }
+    }
 
 
     private boolean atLeastOneFieldIsEmpty(){

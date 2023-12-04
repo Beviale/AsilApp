@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.firstaccess;
+package uniba.roadhouse.asilapp.view.signinSignup;
 
 import android.os.Bundle;
 
@@ -110,7 +110,7 @@ public class SignupUsernamePasswordFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         usernameInputRegister = view.findViewById(R.id.usernameInputRegister);
         passwordInputRegister = view.findViewById(R.id.passwordInputRegister);
-        nextButton = getActivity().findViewById(R.id.nextButton);
+        nextButton = getActivity().findViewById(R.id.nextButtonSignup);
 
         progressBarUsername = view.findViewById(R.id.progressBarUsername);
         layoutUsernameReigster = view.findViewById(R.id.layoutUsernameReigster);

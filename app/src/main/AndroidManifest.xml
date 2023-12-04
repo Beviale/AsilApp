@@ -19,7 +19,7 @@
             android:name=".view.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".view.firstaccess.FirstAccessActivity"
+            android:name=".view.signinSignup.SigninSingupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutSignupFragment"
+    android:id="@+id/layoutFragmentSignup"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/appBackground"
-    tools:context=".view.firstaccess.SignupFragment">
+    tools:context=".view.signinSignup.SignupFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="70dp">
+        android:layout_marginTop="50dp">
 
         <TextView
-            android:id="@+id/signupTextView"
+            android:id="@+id/signupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/titillium_web_bold"
@@ -29,18 +29,18 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:id="@+id/registerSwitchView"
+        android:id="@+id/signupSwitchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </FrameLayout>
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <Button
-            android:id="@+id/nextButton"
+            android:id="@+id/nextButtonSignup"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/buttonsLoginHeight"
             android:layout_marginRight="30dp"
@@ -50,6 +50,4 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </LinearLayout>

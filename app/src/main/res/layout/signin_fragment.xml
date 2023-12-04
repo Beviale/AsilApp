@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutLogin"
+    android:id="@+id/layoutFragmentSignin"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     android:orientation="vertical"
-    tools:context=".view.firstaccess.FirstAccessFragment">
+    tools:context=".view.signinSignup.SiginFragment">
 
     <TextView
         android:id="@+id/loginLabel"
@@ -22,7 +22,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/usernameLayout"
+        android:id="@+id/usernameLayoutSignin"
         android:layout_width="@dimen/inputTextWidth"
         android:layout_height="@dimen/inpuTextHeight"
         android:layout_gravity="center"
@@ -38,7 +38,7 @@
         app:suffixTextColor="@color/appMainColor">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/userNameInput"
+            android:id="@+id/usernameInputSignin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
@@ -50,7 +50,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordLayout"
+        android:id="@+id/passwordLayoutSignin"
         android:layout_width="@dimen/inputTextWidth"
         app:passwordToggleEnabled="true"
         android:layout_marginTop="@dimen/marginBetweenInputs"
@@ -67,7 +67,7 @@
         android:hint="@string/passwordPlaceholder">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordInput"
+            android:id="@+id/passwordInputSignin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/textColor"
@@ -76,7 +76,7 @@
 
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonSignin"
         android:layout_width="@dimen/buttonsLoginWidth"
         android:layout_height="@dimen/buttonsLoginHeight"
         android:layout_gravity="center"
@@ -86,7 +86,7 @@
         android:textColor="@color/textColorOnButton" />
 
     <TextView
-        android:id="@+id/orText"
+        android:id="@+id/orTextSignin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -96,7 +96,7 @@
         android:textColor="@color/black" />
 
     <Button
-        android:id="@+id/buttonProfessor"
+        android:id="@+id/buttonProfessorSignin"
         android:layout_width="@dimen/buttonsLoginWidth"
         android:layout_height="@dimen/buttonsLoginHeight"
         android:layout_gravity="center"
@@ -106,7 +106,7 @@
         android:textColor="@color/textColorOnButton" />
 
     <TextView
-        android:id="@+id/registerLabel"
+        android:id="@+id/registerLabelSignin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

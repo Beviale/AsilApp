@@ -1,6 +1,5 @@
-package uniba.roadhouse.asilapp.view.firstaccess;
+package uniba.roadhouse.asilapp.view.signinSignup;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -8,9 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +20,6 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -34,9 +29,9 @@ import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.view.home.HomeActivity;
 
 /**
- * Fragment relativo alle schermata di login
+ * Fragment relativo alle schermata di login.
  */
-public class FirstAccessFragment extends Fragment {
+public class SiginFragment extends Fragment {
     /**
      * Bottone per effettuare il login.
      */
@@ -63,14 +58,20 @@ public class FirstAccessFragment extends Fragment {
      * Layout da oscurare durante la fase di login, mentre la progressBar è attiva.
      */
     LinearLayout layoutLogin;
+    /**
+     * Layout per l'inserimento dell'username.
+     */
     TextInputLayout usernameLayout;
+    /**
+     * Layout per l'inserimento della password.
+     */
     TextInputLayout passwordLayout;
 
 
 
 
 
-    public FirstAccessFragment() {
+    public SiginFragment() {
         // Required empty public constructor
     }
 
@@ -81,8 +82,8 @@ public class FirstAccessFragment extends Fragment {
      * @return A new instance of fragment PrimoAccesso.
      */
     // TODO: Rename and change types and number of parameters
-    public static FirstAccessFragment newInstance() {
-        FirstAccessFragment fragment = new FirstAccessFragment();
+    public static SiginFragment newInstance() {
+        SiginFragment fragment = new SiginFragment();
         return fragment;
     }
 
@@ -91,7 +92,7 @@ public class FirstAccessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.first_access_fragment, container, false);
+        return inflater.inflate(R.layout.signin_fragment, container, false);
     }
 
 
@@ -104,21 +105,23 @@ public class FirstAccessFragment extends Fragment {
         //-------------RIFERIMENTI-------------------------
 
         // riferimento al campo username del login
-        userNameInput = view.findViewById(R.id.userNameInput);
+        userNameInput = view.findViewById(R.id.usernameInputSignin);
         // riferimento al campo password del login
-        passwordInput = view.findViewById(R.id.passwordInput);
+        passwordInput = view.findViewById(R.id.passwordInputSignin);
         // riferimento al bottone che avvia il login
-        buttonLogin = view.findViewById(R.id.buttonLogin);
+        buttonLogin = view.findViewById(R.id.buttonSignin);
         // Riferimento alla TextView che avvia la registrazione dell'utente
-        registerLabel = view.findViewById(R.id.registerLabel);
+        registerLabel = view.findViewById(R.id.registerLabelSignin);
         // Riferimento alla ProgressBar da mostrare durante la chiamata al database
-        progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
+        progressBar = getActivity().findViewById(R.id.progressBarSigninSignupActivity);
         // Riferimento al layout da oscurare duranta la chiamata al database.
-        layoutLogin = view.findViewById(R.id.layoutLogin);
-        usernameLayout = view.findViewById(R.id.usernameLayout);
-        passwordLayout = view.findViewById(R.id.passwordLayout);
+        layoutLogin = view.findViewById(R.id.layoutFragmentSignin);
+        // Riferimento al layout del campo relativo all'inserimento dell'username.
+        usernameLayout = view.findViewById(R.id.usernameLayoutSignin);
+        // Riferimento al layout del campo relativo all'inserimento della password..
+        passwordLayout = view.findViewById(R.id.passwordLayoutSignin);
 
-        //funzione che sottilinea il testo di registrazione
+        // Funzione che sottilinea il testo di registrazione
         Utility.textViewUnderlineText(registerLabel, getString(R.string.loginRegistrationLabel));
     }
 
@@ -135,7 +138,7 @@ public class FirstAccessFragment extends Fragment {
 
 
     /**
-     * Avvia il login dell'utente. Se va a buon fine apre la HomeActivity.
+     * Avvia il login dell'utente. Se va a buon fine apre la HomeActivity, altrimenti mostra un Toast di errore.
      */
     private void login(){
         usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
@@ -143,7 +146,7 @@ public class FirstAccessFragment extends Fragment {
         passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
         passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.appMainColor)));
         if (!Utility.isConnectedToInternet(getActivity())) {
-            FirstAccessActivity.dialogConnection = true;
+            SigninSingupActivity.dialogConnection = true;
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
             return;
         }
@@ -205,10 +208,6 @@ public class FirstAccessFragment extends Fragment {
             });
 
         });
-
-
-
-
     }
 
 
@@ -218,13 +217,13 @@ public class FirstAccessFragment extends Fragment {
      */
     private void callRegisterFragment(){
         if(!Utility.isConnectedToInternet(getActivity())) {
-            FirstAccessActivity.dialogConnection = true;
+            SigninSingupActivity.dialogConnection = true;
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
         else
         {
             //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
-            ((FirstAccessActivity) getActivity()).callRegisterFragment();
+            ((SigninSingupActivity) getActivity()).callRegisterFragment();
         }
     }
 }

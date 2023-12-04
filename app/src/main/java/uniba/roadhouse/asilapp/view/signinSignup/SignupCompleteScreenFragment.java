@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.firstaccess;
+package uniba.roadhouse.asilapp.view.signinSignup;
 
 import android.os.Bundle;
 
@@ -81,7 +81,7 @@ public class SignupCompleteScreenFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.empty);
                 fragmentTransaction.disallowAddToBackStack();
-                fragmentTransaction.replace(R.id.primoAccessoFragmentView, FirstAccessFragment.class, null);
+                fragmentTransaction.replace(R.id.signinFragmentView, SiginFragment.class, null);
                 fragmentTransaction.commit();
             }
         });

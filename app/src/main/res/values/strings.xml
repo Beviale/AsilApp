@@ -28,6 +28,8 @@
     <string name="noConnectionTitleLogin">Impossibile effettuare il login</string>
     <string name="noConnectionLogin">Non puoi effettuare il login in quanto non sei connesso ad una rete Internet.</string>
     <string name="orText">Oppure</string>
+
+
     <!--REGISTER FRAGMENT-->
     <string name="nameSignupText">Nome</string>
     <string name="registrationCompleteError">Qualcosa è andato storto :(</string>
@@ -60,6 +62,7 @@
     <string name="passwordExplantationTitle">Inserisci una password sicura</string>
     <string name="passwordExplanation">Una password viene considerata sicura quando contiene almeno 8 caratteri. Di questi, ci devono
     essere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale.</string>
+    <string name="ageLess18">Pre registrarti devi avere almeno 18 anni!</string>
 
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registrazione Completata!</string>

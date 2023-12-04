@@ -1,6 +1,5 @@
-package uniba.roadhouse.asilapp.view.firstaccess;
+package uniba.roadhouse.asilapp.view.signinSignup;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,19 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.User;
+import uniba.roadhouse.asilapp.view.firstaccess.SignupOrganizationFragment;
 
 /**
  * Fragment relativo alla schermata principale di registrazione.
@@ -39,12 +35,15 @@ public class SignupFragment extends Fragment {
      * Button che permette di passare da un fragment di compilazione di registrazione a un altro.
      */
     Button nextButton;
+    /**
+     * ProgressBar da mostrare mentre l'utente sta effettuando la registrazione con tutti i campi compilati.
+     */
     ProgressBar progressBar;
 
     /**
      * Lista di tutti i fragment di compilazione di registrazione.
      */
-    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{SignupNameSurnameFragment.class, SignupPlaceFragment.class, SignupOrganizationFragment.class,  SignupUsernamePasswordFragment.class}));
+    private ArrayList<Class> screenFragments=new ArrayList<>(List.of(new Class[]{SignupNameSurnameFragment.class, SignupPlaceOriginFragment.class, SignupOrganizationFragment.class,  SignupUsernamePasswordFragment.class}));
 
 
 
@@ -78,19 +77,16 @@ public class SignupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //------------RIFERIMENTI-------
-        /**
-         * Riferimento del bottone che consente di passare da un fragment di compilazione di registrazione a un altro
-         */
-        nextButton=view.findViewById(R.id.nextButton);
-         progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
-
-
+         // Riferimento del bottone che consente di passare da un fragment di compilazione di registrazione a un altro
+        nextButton=view.findViewById(R.id.nextButtonSignup);
+        // Riferimento alla progressBar che viene visualizzata durante l'ultimo step di registrazione.
+        progressBar = getActivity().findViewById(R.id.progressBarSigninSignupActivity);
 
 
         // Si passa al primo fragment di compilazione di registrazione, ovvero quello relativo all'inserimento dei dati personali (nome, cognome, etc..)..
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.registerSwitchView, SignupNameSurnameFragment.class, null);
+        fragmentTransaction.add(R.id.signupSwitchView, SignupNameSurnameFragment.class, null);
         fragmentTransaction.commit();
     }
 
@@ -103,12 +99,11 @@ public class SignupFragment extends Fragment {
     }
 
     /**
-     * Salva i dati dell'attuale fragment di compilazione di registrazione e apre il successivo seguendo l'ordine della lista "screenFragments".
+     * Salva i dati dell'attuale fragment di compilazione di registrazione (chiamando saveData()) e apre il successivo seguendo l'ordine della lista "screenFragments".
      */
-    @SuppressLint("SuspiciousIndentation")
     private void nextScreen(){
         //prendo la classe dell'attuae fragment aperto
-        Class currentScreen=getActivity().getSupportFragmentManager().findFragmentById(R.id.registerSwitchView).getClass();
+        Class currentScreen=getActivity().getSupportFragmentManager().findFragmentById(R.id.signupSwitchView).getClass();
         // Salvo i dati inseriti nel fragment di compilazione di registrazione attuale.
         saveData(currentScreen);
         //prendo il numero di chermata che esso rappresenta dalla lista dei fragment che compongono le schermate
@@ -121,7 +116,7 @@ public class SignupFragment extends Fragment {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.addToBackStack(currentScreen.getName());
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-            fragmentTransaction.replace(R.id.registerSwitchView, screenFragments.get(currentScreenNumber+1), null);
+            fragmentTransaction.replace(R.id.signupSwitchView, screenFragments.get(currentScreenNumber+1), null);
             fragmentTransaction.commit();
         }
     }
@@ -137,34 +132,34 @@ public class SignupFragment extends Fragment {
     {
         switch (currentScreen.toString())
         {
-            case "class uniba.roadhouse.asilapp.view.firstaccess.SignupNameSurnameFragment":
-                TextInputEditText nameInputRegister = getActivity().findViewById(R.id.nameInputRegister);
-                TextInputEditText surnameInputRegister = getActivity().findViewById(R.id.surnameInputRegister);
-                AutoCompleteTextView genderSelection = getActivity().findViewById(R.id.genderSelection);
-                AutoCompleteTextView birthDateSelection = getActivity().findViewById(R.id.birtDateSelection);
+            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupNameSurnameFragment":
+                TextInputEditText nameInputRegister = getActivity().findViewById(R.id.nameInputSignup);
+                TextInputEditText surnameInputRegister = getActivity().findViewById(R.id.surnameInputSignup);
+                AutoCompleteTextView genderSelection = getActivity().findViewById(R.id.genderSelectionSignup);
+                AutoCompleteTextView birthDateSelection = getActivity().findViewById(R.id.birtDateSelectionSignup);
 
                 User.setName(nameInputRegister.getText().toString());
                 User.setSurname(surnameInputRegister.getText().toString());
                 User.setGender(genderSelection.getText().toString());
                 User.setBirthDate(birthDateSelection.getText().toString());
                 break;
-            case "class uniba.roadhouse.asilapp.view.firstaccess.SignupPlaceFragment":
-                AutoCompleteTextView typeUserSelection = getActivity().findViewById(R.id.typeUserSelection);
-                AutoCompleteTextView citizenSelection = getActivity().findViewById(R.id.citizenSelection);
-                AutoCompleteTextView countrySelection = getActivity().findViewById(R.id.countrySelection);
+            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupPlaceOriginFragment":
+                AutoCompleteTextView typeUserSelection = getActivity().findViewById(R.id.typeUserSelectionSignup);
+                AutoCompleteTextView citizenSelection = getActivity().findViewById(R.id.citizenSelectionSignup);
+                AutoCompleteTextView countrySelection = getActivity().findViewById(R.id.countrySelectionSignup);
 
                 User.setTypeUser(typeUserSelection.getText().toString());
                 User.setCitizen(citizenSelection.getText().toString());
                 User.setCountry(countrySelection.getText().toString());
                 break;
-            case "class uniba.roadhouse.asilapp.view.firstaccess.SignupOrganizationFragment":
-                AutoCompleteTextView cityOrganizationSelection = getActivity().findViewById(R.id.cityOrganizationSelection);
-                AutoCompleteTextView nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelection);
+            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupOrganizationFragment":
+                AutoCompleteTextView cityOrganizationSelection = getActivity().findViewById(R.id.cityOrganizationSelectionSignup);
+                AutoCompleteTextView nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelectionSignup);
 
                 User.setCityOrganization(cityOrganizationSelection.getText().toString());
                 User.setNameOrganization(nameOrganizationSelection.getText().toString());
                 break;
-            case "class uniba.roadhouse.asilapp.view.firstaccess.SignupUsernamePasswordFragment":
+            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupUsernamePasswordFragment":
                 TextInputEditText usernameInputRegister = getActivity().findViewById(R.id.usernameInputRegister);
                 TextInputEditText passwordInputRegister = getActivity().findViewById(R.id.passwordInputRegister);
 
@@ -182,7 +177,7 @@ public class SignupFragment extends Fragment {
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.empty);
                             fragmentTransaction.disallowAddToBackStack();
-                            fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupCompleteScreenFragment.class, null);
+                            fragmentTransaction.replace(R.id.signinFragmentView, SignupCompleteScreenFragment.class, null);
                             fragmentTransaction.commit();
                         }
                         else

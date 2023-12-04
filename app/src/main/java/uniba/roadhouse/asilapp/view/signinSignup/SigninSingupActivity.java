@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.firstaccess;
+package uniba.roadhouse.asilapp.view.signinSignup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import uniba.roadhouse.asilapp.R;
@@ -22,7 +21,7 @@ import uniba.roadhouse.asilapp.view.home.HomeActivity;
 /**
  * Activity relativa alle schermate di login e registrazione.
  */
-public class FirstAccessActivity extends AppCompatActivity {
+public class SigninSingupActivity extends AppCompatActivity {
     /**
      * Icona di connessione assente.
      */
@@ -35,16 +34,16 @@ public class FirstAccessActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.first_access_activity);
+        setContentView(R.layout.signin_singnup_activity);
 
         // Renndo di colore blu la StatusBar.
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
         // Riferimento all'icona di connessione assente.
-        noConnectionIcon = findViewById(R.id.noConnectionIcon);
+        noConnectionIcon = findViewById(R.id.noConnectionIconSigninSignupActivity);
         // Se non c'è connessione, rendo visibile l'icona di connessione assente e mostro il dialog all'utente.
         if (!Utility.isConnectedToInternet(this)) {
-            Utility.showAlertDialog(FirstAccessActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+            Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
             noConnectionIcon.setVisibility(View.VISIBLE);
             dialogConnection = true;
         }
@@ -54,7 +53,7 @@ public class FirstAccessActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Se l'utente risulta già loggato, salvo il suo username e pass direttamente ad HomeActivity.
+        // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
         if(Dao.checkIsLogged(this))
         {
             Access.setUsername("ciao");
@@ -66,14 +65,14 @@ public class FirstAccessActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                Utility.showAlertDialog(FirstAccessActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+                Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
             }
         });
 
         // Se l'utente non risulta loggato, apro il fragment di login.
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.primoAccessoFragmentView, FirstAccessFragment.class, null);
+        fragmentTransaction.add(R.id.signinFragmentView, SiginFragment.class, null);
         fragmentTransaction.commit();
     }
     /**
@@ -83,7 +82,7 @@ public class FirstAccessActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.replace(R.id.primoAccessoFragmentView, SignupFragment.class, null);
+        fragmentTransaction.replace(R.id.signinFragmentView, SignupFragment.class, null);
         fragmentTransaction.commit();
     }
 
@@ -100,11 +99,11 @@ public class FirstAccessActivity extends AppCompatActivity {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                if (!Utility.isConnectedToInternet(FirstAccessActivity.this))
+                if (!Utility.isConnectedToInternet(SigninSingupActivity.this))
                 {
                     if(dialogConnection==false)
                     {
-                        Utility.showAlertDialog(FirstAccessActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+                        Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
                     }
                     noConnectionIcon.setVisibility(View.VISIBLE);
                     handler.postDelayed(this, delay);

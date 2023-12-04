@@ -3,6 +3,9 @@ package uniba.roadhouse.asilapp.model.dao;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Classe che rappresenta i vari paesi visualizzabili dall'utente.
+ */
 public class Country {
     private String name;
 
@@ -10,6 +13,9 @@ public class Country {
         return name;
     }
 
+    /**
+     * Classe che prende i paesi dalle API.
+     */
     public static class RetrofitInstance {
         private static final String BASE_URL = "https://restcountries.com/v2/";
 

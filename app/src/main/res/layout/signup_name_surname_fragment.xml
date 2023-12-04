@@ -9,17 +9,18 @@
     android:orientation="vertical"
     android:outlineAmbientShadowColor="#3F1212"
     android:outlineSpotShadowColor="#DC2B2B"
-    tools:context=".view.firstaccess.SignupNameSurnameFragment">
+    tools:context=".view.signinSignup.SignupNameSurnameFragment">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
-        android:text="@string/mandatoryFields"
-        android:textColor="@color/textAlertColor"
+        android:layout_marginTop="0dp"
+        android:text="@string/personalData"
+        android:textColor="@color/appMainColor"
         android:fontFamily="@font/titillium_web_bold"></TextView>
-
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -38,7 +39,7 @@
         app:suffixTextColor="@color/appMainColor">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nameInputRegister"
+            android:id="@+id/nameInputSignup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textCapWords"
@@ -62,7 +63,7 @@
         app:suffixTextColor="@color/appMainColor">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/surnameInputRegister"
+            android:id="@+id/surnameInputSignup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textCapWords"
@@ -90,7 +91,7 @@
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             style="@style/MyAutoCompleteTextViewStyle"
-            android:id="@+id/genderSelection"
+            android:id="@+id/genderSelectionSignup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="none"
@@ -102,7 +103,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:id="@+id/birtDateSelectionLayout"
+        android:id="@+id/birtDateSelectionLayoutSignup"
         android:layout_width="@dimen/inputTextWidth"
         android:layout_height="@dimen/inpuTextHeight"
         android:layout_marginTop="@dimen/marginBetweenInputs"
@@ -120,7 +121,7 @@
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             style="@style/MyAutoCompleteTextViewStyleDate"
-            android:id="@+id/birtDateSelection"
+            android:id="@+id/birtDateSelectionSignup"
             android:clickable="false"
             android:focusable="false"
             android:layout_width="match_parent"
@@ -131,17 +132,16 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:text="@string/personalData"
-        android:textColor="@color/appMainColor"
+        android:text="@string/mandatoryFields"
+        android:textColor="@color/textAlertColor"
         android:fontFamily="@font/titillium_web_bold"></TextView>
-
-
 
 
 

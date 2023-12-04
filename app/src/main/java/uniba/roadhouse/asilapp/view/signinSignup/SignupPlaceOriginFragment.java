@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.firstaccess;
+package uniba.roadhouse.asilapp.view.signinSignup;
 
 import android.os.Bundle;
 
@@ -32,16 +32,50 @@ import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Country;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignupPlaceFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment di compilazione di registrazione.
+ * Permette l'inserimento del tipo di utente, cittadinanza e paese di provenienza;
  */
-public class SignupPlaceFragment extends Fragment {
+public class SignupPlaceOriginFragment extends Fragment {
+    /**
+     * AutoCompeltTextView relativo alla selezione della cittadinanza.
+     */
     AutoCompleteTextView citizenSelection;
+    /**
+     * AutoCompleteTextView relativo alla selezione del paese di provenienza.
+     */
     AutoCompleteTextView countrySelection;
+    /**
+     * AutoCompelteTextView relativo alla selezione del tipo di utente.
+     */
     AutoCompleteTextView typeUserSelection;
-    TextInputLayout typeUserSelectionInput;
+    /**
+     * Layout relativo alla selezione del tipo di utente.
+     */
+    TextInputLayout typeUserSelectionLayout;
+    /**
+     * Layout relativo alla selezione della cittadinanza
+     */
+    TextInputLayout citizenSelectionLayout;
+    /**
+     * Layout relativo alla selezione del paese di provenienza
+     */
+    TextInputLayout countrySelectionLayout;
+    /**
+     * ProgressBar da mostrare durante il caricamento dei paesi.
+     */
+    ProgressBar progressBar;
+    /**
+     * Bottone che permette di passare al successivo fragment di compilazione di registrazione.
+     */
     Button nextButton;
+    /**
+     *   Layout del fragment principale di registrazione.
+     */
+    LinearLayout layoutFragmentSignup;
+
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,7 +86,7 @@ public class SignupPlaceFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SignupPlaceFragment() {
+    public SignupPlaceOriginFragment() {
         // Required empty public constructor
     }
 
@@ -66,8 +100,8 @@ public class SignupPlaceFragment extends Fragment {
      * @return A new instance of fragment SignupDomicile.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignupPlaceFragment newInstance(String param1, String param2) {
-        SignupPlaceFragment fragment = new SignupPlaceFragment();
+    public static SignupPlaceOriginFragment newInstance(String param1, String param2) {
+        SignupPlaceOriginFragment fragment = new SignupPlaceOriginFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -88,35 +122,65 @@ public class SignupPlaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.signup_place_fragment, container, false);
+        return inflater.inflate(R.layout.signup_place_origin_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ProgressBar progressBar = getActivity().findViewById(R.id.progressBarFirstActivity);
-        LinearLayout layoutSignupFragment = getActivity().findViewById(R.id.layoutSignupFragment);
-        citizenSelection = view.findViewById(R.id.citizenSelection);
-        countrySelection = view.findViewById(R.id.countrySelection);
-        typeUserSelection = view.findViewById(R.id.typeUserSelection);
-        typeUserSelectionInput = view.findViewById(R.id.typeUserSelectionInput);
+        //-----------Riferimenti--------------
+        progressBar = getActivity().findViewById(R.id.progressBarSigninSignupActivity);
+        layoutFragmentSignup = getActivity().findViewById(R.id.layoutFragmentSignup);
+        citizenSelection = view.findViewById(R.id.citizenSelectionSignup);
+        countrySelection = view.findViewById(R.id.countrySelectionSignup);
+        typeUserSelection = view.findViewById(R.id.typeUserSelectionSignup);
+        typeUserSelectionLayout = view.findViewById(R.id.typeUserSelectionLayoutSignup);
+        nextButton = getActivity().findViewById(R.id.nextButtonSignup);
+        typeUserSelectionLayout = view.findViewById(R.id.typeUserSelectionLayoutSignup);
+        citizenSelectionLayout = view.findViewById(R.id.citizenSelectionLayoutSignup);
+        countrySelectionLayout = view.findViewById(R.id.countrySelectionLayoutSignup);
 
 
-        nextButton = getActivity().findViewById(R.id.nextButton);
-        if (atLeastOneFieldIsEmpty()) {
-            nextButton.setEnabled(false);
-            nextButton.setAlpha((float)(0.5));
-        }
+        // Aggiungo il TextWatcher
         citizenSelection.addTextChangedListener(textWatcher);
         countrySelection.addTextChangedListener(textWatcher);
         typeUserSelection.addTextChangedListener(textWatcher);
 
+        // Disattivo il pulsante di next se almeno uno dei campi risulta vuoto.
+        if (atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)(0.5));
+        }
+    }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Attivo il pulsante se tutti i campi sono pieni.
+        if (!atLeastOneFieldIsEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setAlpha(1);
+        }
+        getCountryFromApi();
+        // Popolo il campo relativo al tipo di utente.
+        List<String> typeUserString = new ArrayList<String>();
+        typeUserString.add(getString(R.string.asylumUser));
+        typeUserString.add(getString(R.string.internationalUser));
+        ArrayAdapter<String> adapterTypeUser = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, typeUserString);
+        typeUserSelection.setAdapter(adapterTypeUser);
+    }
+
+
+    /**
+     * Popola i vari campi relativi alla cittadinanza e al paese di provenienza utilizzando la classe Country.
+     */
+    private void getCountryFromApi()
+    {
         CountryService countryService = Country.RetrofitInstance.getRetrofitInstance().create(CountryService.class);
         Call<List<Country>> call = countryService.getAllCountries();
         progressBar.setVisibility(View.VISIBLE);
-        layoutSignupFragment.setAlpha((float) 0.5);
-
+        layoutFragmentSignup.setAlpha((float) 0.5);
 
         call.enqueue(new Callback<List<Country>>() {
             @Override
@@ -142,15 +206,18 @@ public class SignupPlaceFragment extends Fragment {
                     if(!Utility.isConnectedToInternet(getActivity()))
                     {
                         Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-                        FirstAccessActivity.dialogConnection=true;
+                        SigninSingupActivity.dialogConnection=true;
 
                     }
                     else
                         Utility.showAlertDialog(getActivity(), getString(R.string.serverErrorTitle), getString(R.string.serverError));
                 }
-                typeUserSelectionInput.setEnabled(true);
+                citizenSelectionLayout.setEnabled(true);
+                countrySelectionLayout.setEnabled(true);
+                typeUserSelectionLayout.setEnabled(true);
+                typeUserSelectionLayout.requestFocus();
                 progressBar.setVisibility(View.GONE);
-                layoutSignupFragment.setAlpha((float) 1.0);
+                layoutFragmentSignup.setAlpha((float) 1.0);
             }
 
             @Override
@@ -158,10 +225,10 @@ public class SignupPlaceFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack();
                 progressBar.setVisibility(View.GONE);
-                layoutSignupFragment.setAlpha((float) 1.0);
+                layoutFragmentSignup.setAlpha((float) 1.0);
                 if(!Utility.isConnectedToInternet(getActivity()))
                 {
-                    FirstAccessActivity.dialogConnection=true;
+                    SigninSingupActivity.dialogConnection=true;
                     Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
                 }
                 else
@@ -169,22 +236,9 @@ public class SignupPlaceFragment extends Fragment {
 
             }
         });
-
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!atLeastOneFieldIsEmpty()) {
-            nextButton.setEnabled(true);
-            nextButton.setAlpha(1);
-        }
-        List<String> typeUserString = new ArrayList<String>();
-        typeUserString.add(getString(R.string.asylumUser));
-        typeUserString.add(getString(R.string.internationalUser));
-        ArrayAdapter<String> adapterTypeUser = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, typeUserString);
-        typeUserSelection.setAdapter(adapterTypeUser);
-    }
+
 
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -197,6 +251,10 @@ public class SignupPlaceFragment extends Fragment {
 
         }
 
+        /**
+         * Attiva o disattiva il pulsante di next.
+         * @param s testo appena modificato.
+         */
         @Override
         public void afterTextChanged(Editable s) {
             if (!atLeastOneFieldIsEmpty()) {
@@ -213,6 +271,12 @@ public class SignupPlaceFragment extends Fragment {
     };
 
 
+
+
+    /**
+     * Verifica se almeno un campo di compilazione è vuoto.
+     * @return true se almeno un campo è vuoto, false altrimenti.
+     */
     private boolean atLeastOneFieldIsEmpty(){
         boolean empty= (typeUserSelection.getText().toString().trim().isEmpty() ||
                 citizenSelection.getText().toString().trim().isEmpty() ||

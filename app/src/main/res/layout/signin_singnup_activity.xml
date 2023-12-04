@@ -8,7 +8,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayoutSinginSignupActivity"
         android:background="@color/appBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
         android:paddingRight="0dp">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarSigninSingupActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appBarColor"
@@ -25,7 +25,7 @@
             android:pointerIcon="context_menu"
             android:theme="?attr/actionBarTheme">
             <ImageView
-                android:id="@+id/noConnectionIcon"
+                android:id="@+id/noConnectionIconSigninSignupActivity"
                 android:visibility="invisible"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -33,7 +33,7 @@
                 android:layout_gravity="right"
                 android:src="@mipmap/no_connection"/>
             <ImageView
-                android:id="@+id/toolBarIcon"
+                android:id="@+id/toolBarIconSigninSisngupActivity"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
@@ -45,14 +45,14 @@
 
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/primoAccessoFragmentView"
+            android:id="@+id/signinFragmentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     </LinearLayout>
 
     <ProgressBar
-    android:id="@+id/progressBarFirstActivity"
+    android:id="@+id/progressBarSigninSignupActivity"
     android:layout_width="@dimen/progressBarDim"
     android:layout_height="@dimen/progressBarDim"
     android:layout_centerInParent="true"
