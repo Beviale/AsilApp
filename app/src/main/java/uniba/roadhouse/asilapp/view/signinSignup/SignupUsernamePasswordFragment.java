@@ -30,9 +30,8 @@ import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignupUsernamePasswordFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment di compilazione di registrazione
+ * Permette l'inserimento delle credenziali di accessi quali username e password.
  */
 public class SignupUsernamePasswordFragment extends Fragment {
     TextInputEditText usernameInputRegister;
@@ -143,70 +142,72 @@ public class SignupUsernamePasswordFragment extends Fragment {
             nextButton.setEnabled(false);
             nextButton.setAlpha((float)0.5);
         }
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        usernameInputRegister.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus==false)
+                checkUsername();
+            }
+        });
+
+        passwordResult.setOnClickListener(v->showInfoPasswordImage());
+    }
+
+
+    private void showInfoPasswordImage()
+    {
+        Utility.showAlertDialog(getActivity(), getString(R.string.passwordExplantationTitle), getString(R.string.passwordExplanation));
+    }
+
+    private void checkUsername()
+    {
+        String usernameInserted = usernameInputRegister.getText().toString();
+        layoutUsernameCheck.setVisibility(View.GONE);
+        usernameResult.setVisibility(View.GONE);
+        usernameResultText.setVisibility(View.GONE);
+        progressBarUsername.setVisibility(View.VISIBLE);
+        if(TextUtils.isEmpty(usernameInserted))
+        {
+            return;
+        }
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameReigster.getLayoutParams();
+        params.topMargin = 0;
+        CompletableFuture<Boolean> future = Dao.checkUsernameIsAvailable(usernameInserted, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBarUsername.setVisibility(View.GONE);
+                layoutUsernameCheck.setVisibility(View.VISIBLE);
+                usernameResult.setVisibility(View.VISIBLE);
+                if (result == true) {
+                    showNextButtonUsername=true;
+                    if(showNextButtonPassword==true)
+                    {
+                        nextButton.setEnabled(true);
+                        nextButton.setAlpha(1);
+                    }
+                    usernameResultText.setVisibility(View.VISIBLE);
+                    usernameResultText.setText(getString(R.string.usernameAvailable));
+                    usernameResult.setImageResource(R.mipmap.verified);
+                } else {
+                    showNextButtonUsername=false;
+                    nextButton.setEnabled(false);
+                    nextButton.setAlpha((float)0.5);
+                    usernameResultText.setVisibility(View.VISIBLE);
+                    usernameResultText.setText(getString(R.string.userAlreadyExists));
+                    usernameResult.setImageResource(R.mipmap.error);
+                }
+            });
+        });
 
     }
 
 
-    TextWatcher textWatcherUsername = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String usernameInserted = usernameInputRegister.getText().toString();
-            Log.d("stringa", usernameInserted);
-
-            layoutUsernameCheck.setVisibility(View.GONE);
-            usernameResult.setVisibility(View.GONE);
-            usernameResultText.setVisibility(View.GONE);
-            progressBarUsername.setVisibility(View.VISIBLE);
-            if(TextUtils.isEmpty(usernameInserted))
-            {
-                return;
-            }
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutUsernameReigster.getLayoutParams();
-            params.topMargin = 0;
-            CompletableFuture<Boolean> future = Dao.checkUsernameIsAvailable(usernameInserted, getActivity());
-            future.thenAccept(result -> {
-                getActivity().runOnUiThread(() -> {
-                progressBarUsername.setVisibility(View.GONE);
-                layoutUsernameCheck.setVisibility(View.VISIBLE);
-                    usernameResult.setVisibility(View.VISIBLE);
-                    if (result == true) {
-                        showNextButtonUsername=true;
-                        if(showNextButtonPassword==true)
-                        {
-                            nextButton.setEnabled(true);
-                            nextButton.setAlpha(1);
-                        }
-                        usernameResultText.setVisibility(View.VISIBLE);
-                        usernameResultText.setText(getString(R.string.usernameAvailable));
-                        usernameResult.setImageResource(R.mipmap.verified);
-                    } else {
-                        showNextButtonUsername=false;
-                        nextButton.setEnabled(false);
-                        nextButton.setAlpha((float)0.5);
-                        usernameResultText.setVisibility(View.VISIBLE);
-                        usernameResultText.setText(getString(R.string.userAlreadyExists));
-                        usernameResult.setImageResource(R.mipmap.error);
-                    }
-                });
-            });
-
-        }
-    };
 
 
 
@@ -267,4 +268,25 @@ public class SignupUsernamePasswordFragment extends Fragment {
     {
        return Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password);
     }
+
+
+
+    TextWatcher textWatcherUsername = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            nextButton.setEnabled(false);
+            nextButton.setAlpha((float)0.5);
+
+        }
+    };
 }

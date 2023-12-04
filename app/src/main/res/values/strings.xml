@@ -59,9 +59,9 @@
     <string name="internationalUser">Protezione internazionale</string>
     <string name="passwordRegexOk">La password è sicura</string>
     <string name="passwordRegexError">La password non è sicura</string>
-    <string name="passwordExplantationTitle">Inserisci una password sicura</string>
+    <string name="passwordExplantationTitle">Criteri di sicurezza per le password</string>
     <string name="passwordExplanation">Una password viene considerata sicura quando contiene almeno 8 caratteri. Di questi, ci devono
-    essere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale.</string>
+    essere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale (#\?!\@$%^&amp;*-).</string>
     <string name="ageLess18">Pre registrarti devi avere almeno 18 anni!</string>
 
     <!--MESSAGGES-->
