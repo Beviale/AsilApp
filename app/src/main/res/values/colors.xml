@@ -24,6 +24,6 @@
     <color name="textAlertColor">#ff3333</color>
 
     <!--MedicalParameters-->
-    <color name="colorHealthHistory">#92bbfc</color>
+    <color name="colorHealthHistory">#498cfc</color>
 
 </resources>

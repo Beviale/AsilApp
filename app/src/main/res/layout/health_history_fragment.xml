@@ -11,6 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bodyTemperatureView"
+        android:elevation="10dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/heightHealthHistory"
         android:layout_marginStart="24dp"
@@ -33,7 +34,7 @@
             android:fontFamily="@font/titillium_web_bold"
             android:layout_marginLeft="20dp"
             android:text="@string/temperatureHealthHistory"
-            android:textSize="@dimen/textHealthHistory"
+            android:textSize="@dimen/textTitleHealthHistory"
             android:textColor="@color/white"/>
 
 
@@ -42,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/titillium_web_bold"
             android:text="36°"
             android:textColor="@color/white"
@@ -52,59 +53,56 @@
 
 
         <TextView
-            android:id="@+id/stateHealthHistoryLabel"
+            android:id="@+id/unityTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="C"
+            android:textColor="@color/white"
+            android:textSize="@dimen/resultUnityHealthHistory"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/resultTemperature" />
+
+
+        <TextView
+            android:id="@+id/evalutationHealthHistoryLabelTemperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="25dp"
-            android:text="Stato: "
+            android:text="@string/evalutationHealthHistoryLabel"
             android:textColor="@color/white"
-            android:textSize="15dp"
+            android:textSize="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
 
         <TextView
-            android:id="@+id/stateHealthHistory"
+            android:id="@+id/evalutationHealthHistoryTemperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginBottom="25dp"
-            android:text="Buono 🟢"
+            android:text="buono 🟢"
             android:textColor="@color/white"
-            android:textSize="15dp"
+            android:textSize="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/stateHealthHistoryLabel" />
-
-        <TextView
-            android:id="@+id/lastRecordTemperatureLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lastRecordLabel"
-            android:textColor="@color/white"
-            android:textSize="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <TextView
-            android:id="@+id/lastRecordTemperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20/11/2023"
-            android:textColor="@color/white"
-            android:textSize="10dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/lastRecordTemperatureLabel" />
+            app:layout_constraintStart_toEndOf="@+id/evalutationHealthHistoryLabelTemperature" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bloodPressureView"
         android:layout_width="match_parent"
+        android:elevation="10dp"
         android:background="@color/colorHealthHistory"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
@@ -127,7 +125,7 @@
         android:layout_marginLeft="20dp"
         android:fontFamily="@font/titillium_web_bold"
         android:text="@string/bloodPressureHealthHistory"
-        android:textSize="@dimen/textHealthHistory"
+        android:textSize="@dimen/textTitleHealthHistory"
         android:textColor="@color/white"/>
 
         <TextView
@@ -135,13 +133,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="3dp"
             android:fontFamily="@font/titillium_web_bold"
             android:text="mmHg"
             android:textColor="@color/white"
             android:textSize="@dimen/resultUnityHealthHistory"
-            app:layout_constraintTop_toBottomOf="@+id/resultBloodPressureMax"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/resultBloodPressureMax" />
 
         <TextView
             android:id="@+id/resultBloodPressureMax"
@@ -169,37 +168,40 @@
             app:layout_constraintLeft_toRightOf="@+id/resultBloodPressureMax" />
 
         <TextView
-            android:id="@+id/lastRecordBloodPressureLabel"
+            android:id="@+id/evalutationHealthHistoryLabelBloodPressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/titillium_web_bold"
-            android:text="@string/lastRecordLabel"
-            android:textColor="@color/white"
-            android:textSize="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/evalutationHealthHistoryLabel"
+            android:textColor="@color/white"
+            android:textSize="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
+
         <TextView
-            android:id="@+id/lastRecordBloodPressure"
+            android:id="@+id/evalutationHealthHistoryBloodPressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/titillium_web_bold"
-            android:text="20/11/2023"
+            android:layout_marginStart="3dp"
+            android:layout_marginBottom="25dp"
+            android:text="buono 🟢"
             android:textColor="@color/white"
-            android:textSize="10dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="10dp"
+            android:textSize="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/lastRecordBloodPressureLabel" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/evalutationHealthHistoryLabelBloodPressure" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/weightView"
+        android:elevation="10dp"
         android:layout_width="match_parent"
         android:background="@color/colorHealthHistory"
         android:clickable="true"
@@ -223,15 +225,75 @@
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/titillium_web_bold"
             android:text="@string/weightHealthHistory"
-            android:textSize="@dimen/textHealthHistory"
+            android:textSize="@dimen/textTitleHealthHistory"
             android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/resultWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="98"
+            android:textColor="@color/white"
+            android:textSize="@dimen/resultHealthHistory"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <TextView
+            android:id="@+id/unityWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="KG"
+            android:textColor="@color/white"
+            android:textSize="@dimen/resultUnityHealthHistory"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/resultWeight" />
+
+        <TextView
+            android:id="@+id/evalutationHealthHistoryLabelWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/evalutationHealthHistoryLabel"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+
+        <TextView
+            android:id="@+id/evalutationHealthHistoryWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginBottom="25dp"
+            android:text="cattivo 🔴"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/evalutationHealthHistoryLabelWeight" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bpmView"
+        android:elevation="10dp"
         android:layout_width="match_parent"
         android:background="@color/colorHealthHistory"
         android:clickable="true"
@@ -255,9 +317,62 @@
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/titillium_web_bold"
             android:text="@string/bpmHealthHistory"
-            android:textSize="@dimen/textHealthHistory"
+            android:textSize="@dimen/textTitleHealthHistory"
             android:textColor="@color/white"/>
 
+        <TextView
+            android:id="@+id/resultBPM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="98"
+            android:textColor="@color/white"
+            android:textSize="@dimen/resultHealthHistory"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <TextView
+            android:id="@+id/unityBPM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="BPM"
+            android:textColor="@color/white"
+            android:textSize="@dimen/resultUnityHealthHistory"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/resultBPM" />
+
+        <TextView
+            android:id="@+id/evalutationHealthHistoryLabelBPM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/evalutationHealthHistoryLabel"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+
+        <TextView
+            android:id="@+id/evalutationHealthHistoryBPM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginBottom="25dp"
+            android:text="cattivo 🔴"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/evalutationHealthHistoryLabelBPM" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
