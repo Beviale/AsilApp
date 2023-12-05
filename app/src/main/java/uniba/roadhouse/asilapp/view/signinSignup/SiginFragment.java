@@ -67,6 +67,11 @@ public class SiginFragment extends Fragment {
      */
     TextInputLayout passwordLayout;
 
+    /**
+     * Bottone che permette l'accesso diretto al professore con credenziali già impostate.
+     */
+    Button loginProfessore;
+
 
 
 
@@ -120,6 +125,7 @@ public class SiginFragment extends Fragment {
         usernameLayout = view.findViewById(R.id.usernameLayoutSignin);
         // Riferimento al layout del campo relativo all'inserimento della password..
         passwordLayout = view.findViewById(R.id.passwordLayoutSignin);
+        loginProfessore = view.findViewById(R.id.buttonProfessorSignin);
 
         // Funzione che sottilinea il testo di registrazione
         Utility.textViewUnderlineText(registerLabel, getString(R.string.loginRegistrationLabel));
@@ -134,6 +140,7 @@ public class SiginFragment extends Fragment {
         //------LISTENER----------------------
         registerLabel.setOnClickListener(v->callRegisterFragment());
         buttonLogin.setOnClickListener(v->login());
+        loginProfessore.setOnClickListener(v->loginDirettoProfessore());
     }
 
 
@@ -225,5 +232,17 @@ public class SiginFragment extends Fragment {
             //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
             ((SigninSingupActivity) getActivity()).callRegisterFragment();
         }
+    }
+
+
+    /**
+     * Effettua il login con credenziali preimpostate.
+     */
+    private void loginDirettoProfessore()
+    {
+        userNameInput.setText("asilapp");
+        passwordInput.setText("Asilapp@1");
+        login();
+
     }
 }

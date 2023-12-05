@@ -2,8 +2,14 @@ package uniba.roadhouse.asilapp.view.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +22,13 @@ import uniba.roadhouse.asilapp.R;
  * create an instance of this fragment.
  */
 public class HealthHistoryFragment extends Fragment {
+    ConstraintLayout bodyTemperatureView;
+    ConstraintLayout bloodPressureView;
+    ConstraintLayout weightView;
+    ConstraintLayout bpmView;
+    ConstraintLayout tremblingView;
+    ConstraintLayout glucoseView;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +75,41 @@ public class HealthHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.health_history_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //-----------RIFERIMENTI-----------
+        bodyTemperatureView = view.findViewById(R.id.bodyTemperatureView);
+        bloodPressureView = view.findViewById(R.id.bloodPressureView);
+        weightView = view.findViewById(R.id.weightView);
+        bpmView = view.findViewById(R.id.bpmView);
+        tremblingView = view.findViewById(R.id.tremblingView);
+        glucoseView = view.findViewById(R.id.glucoseView);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //-----------LISTENER--------------
+        bodyTemperatureView.setOnClickListener(v->openDetailFragment("temperature"));
+        bloodPressureView.setOnClickListener(v->openDetailFragment("bloodPressure"));
+        weightView.setOnClickListener(v->openDetailFragment("weight"));
+        bpmView.setOnClickListener(v->openDetailFragment("bpm"));
+        tremblingView.setOnClickListener(v->openDetailFragment("treambling"));
+        glucoseView.setOnClickListener(v->openDetailFragment("glucose"));
+
+    }
+
+    private void openDetailFragment(String clicked)
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("itemClicked", clicked);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
+        fragmentTransaction.commit();
     }
 }
