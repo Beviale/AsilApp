@@ -94,6 +94,17 @@
     <string name="evalutationHealthHistoryLabel">Valutazione:</string>
     <string name="tremblingHealthHistory">Tremolio</string>
     <string name="glucoseHealthHistory">Glucosio</string>
+    <string name="lastRecordHealtHistory">Ultima rilevazione</string>
+    <string name="dateLastRecordHealthHistoryLabel">Data:</string>
+    <string name="valueLastRecordHealthHistoryLabel">Valore registrato:</string>
+    <string name="timeLastRecordHealthHistoryLabel">Ora:</string>
+    <!-- Unità di misura-->
+    <string name="unityTemperature">C</string>
+    <string name="unityBloodPressure">mmHg</string>
+    <string name="unityWeight">KG</string>
+    <string name="unityBPM">BPM</string>
+    <string name="unityTrembling">Hz</string>
+    <string name="unityGlucose">mg/dL</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

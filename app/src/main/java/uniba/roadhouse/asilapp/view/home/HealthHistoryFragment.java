@@ -93,12 +93,12 @@ public class HealthHistoryFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //-----------LISTENER--------------
-        bodyTemperatureView.setOnClickListener(v->openDetailFragment("temperature"));
-        bloodPressureView.setOnClickListener(v->openDetailFragment("bloodPressure"));
-        weightView.setOnClickListener(v->openDetailFragment("weight"));
-        bpmView.setOnClickListener(v->openDetailFragment("bpm"));
-        tremblingView.setOnClickListener(v->openDetailFragment("treambling"));
-        glucoseView.setOnClickListener(v->openDetailFragment("glucose"));
+        bodyTemperatureView.setOnClickListener(v->openDetailFragment(getString(R.string.temperatureHealthHistory)));
+        bloodPressureView.setOnClickListener(v->openDetailFragment(getString(R.string.bloodPressureHealthHistory)));
+        weightView.setOnClickListener(v->openDetailFragment(getString(R.string.weightHealthHistory)));
+        bpmView.setOnClickListener(v->openDetailFragment(getString(R.string.bpmHealthHistory)));
+        tremblingView.setOnClickListener(v->openDetailFragment(getString(R.string.tremblingHealthHistory)));
+        glucoseView.setOnClickListener(v->openDetailFragment(getString(R.string.glucoseHealthHistory)));
 
     }
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -19,6 +20,7 @@ import uniba.roadhouse.asilapp.R;
  * create an instance of this fragment.
  */
 public class DetailHealthHistoryFragment extends Fragment {
+    TextView detailHealthHistoryTitle;
 
     String itemCliecked;
 
@@ -53,7 +55,8 @@ public class DetailHealthHistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        //-----------RIFERIMENTI-------------
+        detailHealthHistoryTitle = view.findViewById(R.id.detailHealthHistoryTitle);
+        detailHealthHistoryTitle.setText(itemCliecked);
     }
 }
