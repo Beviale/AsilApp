@@ -51,5 +51,7 @@ dependencies {
     implementation("commons-logging:commons-logging-api:1.1")
     implementation("com.google.zxing:core:3.5.2")
     implementation("com.google.zxing:javase:3.5.2")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
 
 }

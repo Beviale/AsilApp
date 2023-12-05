@@ -4,338 +4,333 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.home.DetailHealthHistoryFragment">
-
-
-    <TextView
-        android:id="@+id/detailHealthHistoryTitle"
-        android:layout_width="270dp"
-        android:layout_height="103dp"
-        android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="28dp"
-        android:layout_marginRight="@dimen/marginLeftRightDetailHealthHistory"
-        android:fontFamily="@font/titillium_web_bold"
-        android:text="Glucosio"
-        android:textSize="@dimen/textDetailHealthHistoryTitle"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/iconDetailTitle"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iconDetailTitle"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="48dp"
-        android:src="@drawable/medical_history"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </ImageView>
-
-    <TextView
-        android:id="@+id/lastRecordHealthHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/titillium_web_bold"
-        android:text="@string/lastRecordHealtHistory"
-        android:textSize="25dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailHealthHistoryTitle" />
-
-
-    <TextView
-        android:id="@+id/dateLastRecordHealthHistoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="5dp"
-        android:text="@string/dateLastRecordHealthHistoryLabel"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastRecordHealthHistory" />
-
-    <TextView
-        android:id="@+id/dateLastRecordHealthHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="20/11/2023"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        app:layout_constraintLeft_toRightOf="@+id/dateLastRecordHealthHistoryLabel"
-        app:layout_constraintTop_toBottomOf="@+id/lastRecordHealthHistory" />
-
-
-    <TextView
-        android:id="@+id/timeLastRecordHealthHistoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="5dp"
-        android:text="@string/timeLastRecordHealthHistoryLabel"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateLastRecordHealthHistory" />
-
-    <TextView
-        android:id="@+id/timeLastRecordHealthHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="18:28"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        app:layout_constraintLeft_toRightOf="@+id/timeLastRecordHealthHistoryLabel"
-        app:layout_constraintTop_toBottomOf="@+id/dateLastRecordHealthHistory" />
-
-
-
-    <TextView
-        android:id="@+id/valueLastRecordHealthHistoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/valueLastRecordHealthHistoryLabel"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeLastRecordHealthHistory" />
-
-    <TextView
-        android:id="@+id/valueLastRecordHealthHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="48"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        app:layout_constraintLeft_toRightOf="@+id/valueLastRecordHealthHistoryLabel"
-        app:layout_constraintTop_toBottomOf="@+id/timeLastRecordHealthHistory" />
-
-    <TextView
-        android:id="@+id/unityDetaildHealthHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/unityTemperature"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        app:layout_constraintLeft_toRightOf="@+id/valueLastRecordHealthHistory"
-        app:layout_constraintTop_toBottomOf="@+id/timeLastRecordHealthHistory" />
-
-
-
-    <TextView
-        android:id="@+id/evalutationLastRecordHealthHistoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="5dp"
-        android:text="@string/evalutationLastRecordHealthHistoryLabel"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/valueLastRecordHealthHistory" />
-
-    <TextView
-        android:id="@+id/evalutationLastRecordHealthHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Buono 🟢"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        app:layout_constraintLeft_toRightOf="@+id/evalutationLastRecordHealthHistoryLabel"
-        app:layout_constraintTop_toBottomOf="@+id/valueLastRecordHealthHistory" />
-
-
-
-    <TextView
-        android:id="@+id/doctorNotesLastRecordHealthHistoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="5dp"
-        android:text="@string/doctorNotesLastRecordHealthHistoryLabel"
-        android:textSize="@dimen/valueDetailHealthHistory"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/evalutationLastRecordHealthHistory" />
-
-
-    <EditText
-        android:id="@+id/doctorNotesLastRecordHealthHistory"
-        android:elevation="10dp"
-        android:background="@drawable/rounded"
-        android:padding="10dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:cursorVisible="true"
-        android:layout_height="200dp"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:fadeScrollbars="false"
-        android:layout_marginTop="5dp"
-        android:editable="false"
-        android:layout_marginEnd="@dimen/marginLeftRightDetailHealthHistory"
-        android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:scrollbars="vertical"
-        android:textSize="@dimen/textSizeDoctorNotes"
-        android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doctorNotesLastRecordHealthHistoryLabel" />
+        android:layout_height="match_parent"
+        tools:context=".view.home.DetailHealthHistoryFragment">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/blackLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
-        android:textColor="@color/white"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@color/appMainColorDark"
-        android:text="Rilevazioni precedenti"
-        android:layout_height="wrap_content">
-    </TextView>
+        <TextView
+            android:id="@+id/detailHealthHistoryTitle"
+            android:layout_width="270dp"
+            android:layout_height="103dp"
+            android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="28dp"
+            android:layout_marginRight="@dimen/marginLeftRightDetailHealthHistory"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="Glucosio"
+            android:textSize="@dimen/textDetailHealthHistoryTitle"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/iconDetailTitle"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/blackLine"
-        app:layout_constraintTop_toBottomOf="@+id/doctorNotesLastRecordHealthHistory"
-        android:background="@color/appMainColorDark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginEnd="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginTop="70dp"
-        android:layout_width = "match_parent"
-        android:layout_height="5dp"/>
+        <ImageView
+            android:id="@+id/iconDetailTitle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="48dp"
+            android:src="@drawable/medical_history"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/lastRecordHealthHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="@string/lastRecordHealtHistory"
+            android:textSize="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailHealthHistoryTitle" />
+
+
+        <TextView
+            android:id="@+id/dateLastRecordHealthHistoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="5dp"
+            android:text="@string/dateLastRecordHealthHistoryLabel"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lastRecordHealthHistory" />
+
+        <TextView
+            android:id="@+id/dateLastRecordHealthHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="20/11/2023"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            app:layout_constraintLeft_toRightOf="@+id/dateLastRecordHealthHistoryLabel"
+            app:layout_constraintTop_toBottomOf="@+id/lastRecordHealthHistory" />
+
+
+        <TextView
+            android:id="@+id/timeLastRecordHealthHistoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="5dp"
+            android:text="@string/timeLastRecordHealthHistoryLabel"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateLastRecordHealthHistory" />
+
+        <TextView
+            android:id="@+id/timeLastRecordHealthHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="18:28"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            app:layout_constraintLeft_toRightOf="@+id/timeLastRecordHealthHistoryLabel"
+            app:layout_constraintTop_toBottomOf="@+id/dateLastRecordHealthHistory" />
 
 
 
+        <TextView
+            android:id="@+id/valueLastRecordHealthHistoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/valueLastRecordHealthHistoryLabel"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeLastRecordHealthHistory" />
+
+        <TextView
+            android:id="@+id/valueLastRecordHealthHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="48"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            app:layout_constraintLeft_toRightOf="@+id/valueLastRecordHealthHistoryLabel"
+            app:layout_constraintTop_toBottomOf="@+id/timeLastRecordHealthHistory" />
+
+        <TextView
+            android:id="@+id/unityDetaildHealthHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/unityTemperature"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            app:layout_constraintLeft_toRightOf="@+id/valueLastRecordHealthHistory"
+            app:layout_constraintTop_toBottomOf="@+id/timeLastRecordHealthHistory" />
 
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
-        android:layout_marginRight="@dimen/marginLeftRightDetailHealthHistory"
-        app:layout_constraintTop_toBottomOf="@+id/blackLine"
-        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/evalutationLastRecordHealthHistoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="5dp"
+            android:text="@string/evalutationLastRecordHealthHistoryLabel"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valueLastRecordHealthHistory" />
+
+        <TextView
+            android:id="@+id/evalutationLastRecordHealthHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Buono 🟢"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            app:layout_constraintLeft_toRightOf="@+id/evalutationLastRecordHealthHistoryLabel"
+            app:layout_constraintTop_toBottomOf="@+id/valueLastRecordHealthHistory" />
+
+
+
+        <TextView
+            android:id="@+id/doctorNotesLastRecordHealthHistoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="5dp"
+            android:text="@string/doctorNotesLastRecordHealthHistoryLabel"
+            android:textSize="@dimen/valueDetailHealthHistory"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/evalutationLastRecordHealthHistory" />
+
+
+        <EditText
+            android:id="@+id/doctorNotesLastRecordHealthHistory"
+            android:elevation="10dp"
+            android:background="@drawable/rounded"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:cursorVisible="true"
+            android:layout_height="200dp"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:fadeScrollbars="false"
+            android:layout_marginTop="5dp"
+            android:editable="false"
+            android:layout_marginEnd="@dimen/marginLeftRightDetailHealthHistory"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/textSizeDoctorNotes"
+            android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doctorNotesLastRecordHealthHistoryLabel" />
+
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginTopHealthHistory"
+            app:layout_constraintBottom_toTopOf="@+id/blackLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
+            android:textColor="@color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:background="@color/appMainColorDark"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:text="22/22/2023"
-            android:textColor="@color/white" />
+            android:text="Rilevazioni precedenti"
+            android:layout_height="wrap_content">
+        </TextView>
 
         <View
-            android:layout_width="match_parent"
+            android:id="@+id/blackLine"
+            app:layout_constraintTop_toBottomOf="@+id/doctorNotesLastRecordHealthHistory"
             android:background="@color/appMainColorDark"
-            android:layout_height="2dp"></View>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginEnd="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginTop="70dp"
+            android:layout_width = "match_parent"
+            android:layout_height="5dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutOldHealthHistory"
+
+
+
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:background="@color/colodOldHealthHistory"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_height="@dimen/heightHealthHistory"
-            android:layout_marginTop="0dp">
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
+            android:layout_marginRight="@dimen/marginLeftRightDetailHealthHistory"
+            app:layout_constraintTop_toBottomOf="@+id/blackLine"
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/oldTitleHealthHistoryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/titillium_web_bold"
-                android:text="@string/temperatureHealthHistory"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textTitleHealthHistory"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="@dimen/marginTopHealthHistory"
+                android:background="@color/appMainColorDark"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="22/22/2023"
+                android:textColor="@color/white" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/appMainColorDark"
+                android:layout_height="2dp"></View>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutOldHealthHistory"
+                android:layout_width="match_parent"
+                android:background="@color/colodOldHealthHistory"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_height="@dimen/heightHealthHistory"
+                android:layout_marginTop="0dp">
+
+                <TextView
+                    android:id="@+id/oldTitleHealthHistoryLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/titillium_web_bold"
+                    android:text="@string/temperatureHealthHistory"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textTitleHealthHistory"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/oldTitleHealthHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/titillium_web_bold"
-                android:text="36°"
-                android:textColor="@color/white"
-                android:textSize="@dimen/resultHealthHistory"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                <TextView
+                    android:id="@+id/oldTitleHealthHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/titillium_web_bold"
+                    android:text="36°"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/resultHealthHistory"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
 
-            <TextView
-                android:id="@+id/unityOldHealthHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="3dp"
-                android:fontFamily="@font/titillium_web_bold"
-                android:text="@string/unityTemperature"
-                android:textColor="@color/white"
-                android:textSize="@dimen/resultUnityHealthHistory"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/oldTitleHealthHistory" />
+                <TextView
+                    android:id="@+id/unityOldHealthHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:fontFamily="@font/titillium_web_bold"
+                    android:text="@string/unityTemperature"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/resultUnityHealthHistory"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/oldTitleHealthHistory" />
 
 
-            <TextView
-                android:id="@+id/oldTitleHealthHistoryEvalutationLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
-                android:layout_marginBottom="25dp"
-                android:text="@string/evalutationHealthHistoryLabel"
-                android:textColor="@color/white"
-                android:textSize="13dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                <TextView
+                    android:id="@+id/oldTitleHealthHistoryEvalutationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
+                    android:layout_marginBottom="25dp"
+                    android:text="@string/evalutationHealthHistoryLabel"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
 
 
-            <TextView
-                android:id="@+id/oldTitleHealthHistoryEvalutation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginBottom="25dp"
-                android:text="buono 🟢"
-                android:textColor="@color/white"
-                android:textSize="13dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/oldTitleHealthHistoryEvalutationLabel" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/oldTitleHealthHistoryEvalutation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginBottom="25dp"
+                    android:text="buono 🟢"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/oldTitleHealthHistoryEvalutationLabel" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
