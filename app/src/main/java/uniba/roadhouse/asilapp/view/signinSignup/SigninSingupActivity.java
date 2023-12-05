@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
+import java.util.Map;
+
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -53,10 +55,12 @@ public class SigninSingupActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Map<String,String> verifyLogged=Dao.checkIsLogged(this);
         // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
-        if(Dao.checkIsLogged(this))
+        if(verifyLogged.get("username")!="")
         {
-            Access.setUsername("ciao");
+            Access.setUsername(verifyLogged.get("username"));
+            Access.setNome(verifyLogged.get("nome"));
             Intent openHome = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(openHome);
         }

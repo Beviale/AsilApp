@@ -6,10 +6,13 @@ package uniba.roadhouse.asilapp.model.dao;
 public class Access
 {
     private static String username;
+    private static String nome;
     public static String getUsername()
     {
         return username;
     }
+    public static String getNome(){return nome;}
+    public static void setNome(String n){nome=n;}
     public static void setUsername(String usernameAdd)
     {
         username=usernameAdd;

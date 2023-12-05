@@ -49,7 +49,11 @@
     <string name="qrGenerateError">Error in Qr code generation</string>
 
     <!--HOME-->
-    <string name="healthMenuIcon">Health</string>
+    <string name="healthMenuScreen">Health</string>
+    <string name="homeMenuScreen">Home</string>
+    <string name="userMenuScreen">User</string>
+    <string name="healthBoxMenuScreen">Health Box</string>
+    <string name="settingsMenuScreen">Settings</string>
     <string name="welcome">Welcome</string>
 
 </resources>

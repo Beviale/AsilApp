@@ -34,6 +34,11 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.view.home.HealthBoxFragment;
+import uniba.roadhouse.asilapp.view.home.HomeFragment;
+import uniba.roadhouse.asilapp.view.home.MedicalParametersFragment;
+import uniba.roadhouse.asilapp.view.home.SettingsFragment;
+import uniba.roadhouse.asilapp.view.home.UserProfileFragment;
 
 public class Dao {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -178,9 +183,11 @@ public class Dao {
 
             //se l'utente esiste, ne prendo la password
             String passwHash = "";
+            String nome="";
 
             for (QueryDocumentSnapshot document : query.getResult()) {
                 passwHash = document.getString("password");
+                nome=document.getString("nome");
             }
 
             //verifico che l'ash della password immessa dall'utente è uguale a quella del db
@@ -198,6 +205,7 @@ public class Dao {
                 String token = JWT.create()
                         .withSubject(username)
                         .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
+                        .withClaim("nome",nome)
                         .sign(algorithm);
                 Log.d("DB", token);
 
@@ -216,29 +224,48 @@ public class Dao {
         });
     }
 
-    public static boolean checkIsLogged(Context context){
+    /**
+     * Questo metodo verifica se un utente ha gia effettuato il login, verificando l'autenticità del token JWT memorizzato nelle shared preferences
+     *
+     * @param context contesto attuale (this)
+     * @return ritorna una Map con valore "" per la key "username" se l'utente non è loggato (token non valido o non trovato) o come valore lo username dell'utente se esso è loggato.
+     * inoltre vi è la chiave "nome" per il nome dell'utente
+     */
+    public static Map<String,String> checkIsLogged(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
         String token = sharedPref.getString("token","notLogged");
 
         //verifico se il token esiste localmente
         if(token=="notLogged"){
-            return false;
+            return new HashMap<String,String>() {{
+                put("username", "");
+            }};
         }
 
         //verifico che il token sia valido
         DecodedJWT decodedJWT;
-        boolean isLogged=true;
+        String username;
+        String nome="";
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
 
             decodedJWT = verifier.verify(token);
+
+            //se la verifica è andata a buon fine, cioè se non sono andato nel catch, prendo lo username dal token jwt
+            username=decodedJWT.getSubject();
+            nome=decodedJWT.getClaim("nome").asString();
         } catch (JWTVerificationException exception){
             // Invalid signature/claims
-            isLogged=false;
+            username="";
         }
 
-        return isLogged;
+        String finalUsername = username;
+        String finalNome = nome;
+        return new HashMap<String,String>() {{
+            put("username", finalUsername);
+            put("nome", finalNome);
+        }};
     }
 
     /**
