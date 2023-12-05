@@ -39,6 +39,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         welcomeText=getView().findViewById(R.id.welcomeText);
-        welcomeText.setText(getString(R.string.welcome)+"\n"+Access.getNome()+"!");
+        welcomeText.setText(getString(R.string.welcome)+"\n"+Access.getNome()+"\uD83D\uDC4B!");
     }
 }

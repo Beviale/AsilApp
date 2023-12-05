@@ -148,7 +148,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/health_icon_layout"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.6">
+                app:layout_constraintVertical_bias="0.5">
 
                 <ImageView
                     android:id="@+id/home_icon_bg"
@@ -187,7 +187,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/home_icon_layout"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.8">
+                app:layout_constraintVertical_bias="0.5">
 
                 <ImageView
                     android:id="@+id/user_icon_bg"
@@ -226,7 +226,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/user_icon_layout"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.65">
+                app:layout_constraintVertical_bias="0.5">
 
                 <ImageView
                     android:id="@+id/settings_icon_bg"
