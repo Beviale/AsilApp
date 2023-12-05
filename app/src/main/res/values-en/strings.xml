@@ -50,5 +50,6 @@
 
     <!--HOME-->
     <string name="healthMenuIcon">Health</string>
+    <string name="welcome">Welcome</string>
 
 </resources>

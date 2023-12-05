@@ -81,6 +81,7 @@
 
     <!--HOME-->
     <string name="healthMenuIcon">Salute</string>
+    <string name="welcome">Benvenuto</string>
 
 
     <!--MedicalParameters-->

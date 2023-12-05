@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/healthMenuIcon"
-        android:icon="@mipmap/heart"
+        android:icon="@mipmap/hearth_icon"
         android:title="@string/healthMenuIcon"
         app:showAsAction="ifRoom"
     />
