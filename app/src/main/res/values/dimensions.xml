@@ -6,7 +6,7 @@
 
     <!--TEXT-->
     <dimen name="title1FontSize">40dp</dimen>
-    <dinem name="title2FontSize">35dp</dinem>
+    <dimen name="title2FontSize">35dp</dinem>
     <dimen name="title3FontSize">15dp</dimen>
     <dimen name="textInputFontSize">18dp</dimen>
 
@@ -35,8 +35,6 @@
     <dimen name="resultMinPressureHealthHistory">25dp</dimen>
     <dimen name="textDetailHealthHistoryTitle">35dp</dimen>
     <dimen name="valueDetailHealthHistory">16dp</dimen>
-
-
 
 
 
