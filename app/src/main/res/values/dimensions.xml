@@ -35,6 +35,7 @@
     <dimen name="resultMinPressureHealthHistory">25dp</dimen>
     <dimen name="textDetailHealthHistoryTitle">35dp</dimen>
     <dimen name="valueDetailHealthHistory">16dp</dimen>
+    <dimen name ="textSizeDoctorNotes">14dp</dimen>
 
 
 

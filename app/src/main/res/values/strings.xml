@@ -102,6 +102,8 @@
     <string name="dateLastRecordHealthHistoryLabel">Data:</string>
     <string name="valueLastRecordHealthHistoryLabel">Valore registrato:</string>
     <string name="timeLastRecordHealthHistoryLabel">Ora:</string>
+    <string name="evalutationLastRecordHealthHistoryLabel">Valutazione:</string>
+    <string name="doctorNotesLastRecordHealthHistoryLabel">Note del medico</string>
     <!-- Unità di misura-->
     <string name="unityTemperature">C</string>
     <string name="unityBloodPressure">mmHg</string>
