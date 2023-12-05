@@ -124,16 +124,16 @@ public class HomeActivity extends AppCompatActivity {
                 //in quetso caso chiudo l'activiy, in quanto ho premuto back e non ho altri fragment (shermate) da mostrare
                 finishAffinity();
             }else{  //se ho un fragment prima di quello attualmente visibile
-                //prendo il nome con cui ho memorizzato il fragment attualmente visibile
-                String currScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
-                //prendo il nome con cui ho messo nel backstack il fragment che si aprirà alla pressione del back
-                String prevScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
+                //prendo il nome della sezione del fragment attuale con cui lo ho memorizzato
+                String currScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
+                //prendo il nome della sezione del fragment che devo aprira andando back
+                String prevScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
                 //elimino dal backstack il fragment attualmentein visione
-                fragmentManager.popBackStack(currScreenOpen,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.popBackStack(currScreenOpenSection,FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-                //se la scehrmata precedente non ha class nel nome, allora cambio il colore dell'icona
-                if(!currScreenOpen.contains("class")){
-                    changeIcons(currScreenOpen,prevScreenOpen);
+                //se la sezione del fragment da aprire è diversa da quella del fragment attuale, cambio il colore dell'icona nel menu
+                if(prevScreenOpenSection!=currScreenOpenSection){
+                    changeIcons(prevScreenOpenSection);
                 }
             }
         }
@@ -141,8 +141,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void changeScreen(String screen){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //prendo il nome dell'attuale schermata aperta
-        String currScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
 
         //apro il fragment che inidca la sezione cliccata da aprire
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -150,18 +148,19 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(screen);
         fragmentTransaction.commit();
 
-        //se la scehrmata precedente non ha class nel nome ed è diversa da quella che devo aprire, allora cambio il colore dell'icona
-        if(!currScreenOpen.contains("class") && currScreenOpen!=screen){
-            changeIcons(currScreenOpen,screen);
-        }//altrimenti, i colori non sono da cambiare perche la sezione del menu in cui sono è sempre la stessa
+        //cambio l'icona attivando quella cliccata
+        changeIcons(screen);
 
     }
 
-    private void changeIcons(String currScreen, String newScreen){
+    private void changeIcons(String newScreen){
+
+        for(String key:screenIcons.keySet()){
+            findViewById(screenIconsBg.get(key)).setVisibility(View.INVISIBLE);
+            ((ImageView) findViewById(screenIcons.get(key))).setImageResource(screenMipmapIcons.get(key));
+        }
         findViewById(screenIconsBg.get(newScreen)).setVisibility(View.VISIBLE);
-        findViewById(screenIconsBg.get(currScreen)).setVisibility(View.INVISIBLE);
         ((ImageView) findViewById(screenIcons.get(newScreen))).setImageResource(screenActiveMipmapIcons.get(newScreen));
-        ((ImageView) findViewById(screenIcons.get(currScreen))).setImageResource(screenMipmapIcons.get(currScreen));
         homeText.setText(newScreen);
     }
 }
