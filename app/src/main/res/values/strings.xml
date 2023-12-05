@@ -80,7 +80,11 @@
     <string name="qrGenerateError">Errore nella generazione del QR code</string>
 
     <!--HOME-->
-    <string name="healthMenuIcon">Salute</string>
+    <string name="healthMenuScreen">Salute</string>
+    <string name="homeMenuScreen">Home</string>
+    <string name="userMenuScreen">Utente</string>
+    <string name="healthBoxMenuScreen">Scatola Salute</string>
+    <string name="settingsMenuScreen">Impostazioni</string>
     <string name="welcome">Benvenuto</string>
 
 
