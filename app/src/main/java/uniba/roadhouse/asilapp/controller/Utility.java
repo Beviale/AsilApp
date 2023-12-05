@@ -120,7 +120,10 @@ public class Utility
     }
 
 
-
+    /**
+     * Rende una TextView scrollabile
+     * @param view, textview da rendere scrollabile
+     */
     public static void enableScroll(View view) {
         if (view instanceof TextView) {
             TextView textView = (TextView) view;
