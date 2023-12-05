@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,10 @@ public class HomeActivity extends AppCompatActivity {
 
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
+
+        if(savedInstanceState!=null){
+            currentSectionOpen=savedInstanceState.getString("currentSection");
+        }
     }
 
     @Override
@@ -123,12 +128,22 @@ public class HomeActivity extends AppCompatActivity {
                 //in quetso caso chiudo l'activiy, in quanto ho premuto back e non ho altri fragment (shermate) da mostrare
                 finishAffinity();
             }else{  //se ho un fragment prima di quello attualmente visibile
-                //prendo il nome con cui ho messo nel backstack il fragment che si aprirà alla pressione del back
+                //prendo il nome e classe con cui ho messo nel backstack il fragment che si aprirà alla pressione del back
                 String prevScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
+                Class prevScreenClass=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getClass();
                 //elimino dal backstack il fragment attualmentein visione
                 fragmentManager.popBackStack(currentSectionOpen,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                //cambio il colore dell'icona, mettendo ad attiva il fragment da aprire e disattiva quello che stava aperto fino a questo momento
-                changeIcons(prevScreenOpen);
+
+                //se la scehrmata precedente nonha un nome, allora la apro semplicemente, senza cambiare le icone del menu e il loro colore
+                if(prevScreenOpen==null){
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.homeContainerView, prevScreenClass, null);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }else{  //se invece la rpecedente scherata ha un nome, allora cambio il colore dell'icona e vado a tale schermata
+                    //cambio il colore dell'icona, mettendo ad attiva il fragment da aprire e disattiva quello che stava aperto fino a questo momento
+                    changeIcons(prevScreenOpen);
+                }
             }
         }
     };
@@ -156,5 +171,11 @@ public class HomeActivity extends AppCompatActivity {
         ((ImageView) findViewById(screenIcons.get(currentSectionOpen))).setImageResource(screenMipmapIcons.get(currentSectionOpen));
         currentSectionOpen=screen;
         homeText.setText(screen);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString("currentSection",currentSectionOpen);
     }
 }
