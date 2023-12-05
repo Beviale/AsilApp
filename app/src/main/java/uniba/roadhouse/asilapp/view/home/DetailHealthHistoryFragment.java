@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,11 +62,11 @@ public class DetailHealthHistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //-----------RIFERIMENTI-------------
         doctorNotesLastRecordHealthHistory = view.findViewById(R.id.doctorNotesLastRecordHealthHistory);
+        Utility.enableScroll(doctorNotesLastRecordHealthHistory);
         detailHealthHistoryTitle = view.findViewById(R.id.detailHealthHistoryTitle);
         detailHealthHistoryTitle.setText(itemCliecked);
         unityDetaildHealthHistory = view.findViewById(R.id.unityDetaildHealthHistory);
         unityDetaildHealthHistory.setText(setUnity());
-
     }
 
     private String setUnity()

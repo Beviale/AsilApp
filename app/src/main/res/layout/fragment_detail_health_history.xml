@@ -191,5 +191,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/doctorNotesLastRecordHealthHistoryLabel" />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/blackLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/white"
+        android:background="@color/appMainColor"
+        android:text="Rilevazioni precedenti"
+        android:layout_height="20dp">
+
+    </TextView>
+
+    <View
+        android:id="@+id/blackLine"
+        app:layout_constraintTop_toBottomOf="@+id/doctorNotesLastRecordHealthHistory"
+        android:background="@color/appMainColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_width = "match_parent"
+        android:layout_height="5dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
