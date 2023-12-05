@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -186,26 +187,27 @@ public class SiginFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
         layoutLogin.setAlpha((float)0.5);
-        CompletableFuture<String> future = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+        CompletableFuture<Map<String,String>> future = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.INVISIBLE);
                 layoutLogin.setAlpha(1);
-                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), result.get("esito"), Toast.LENGTH_SHORT).show();
 
-                if(result==getString(R.string.loginCompleted))
+                if(result.get("esito")==getString(R.string.loginCompleted))
                 {
                     Access.setUsername(userNameInput.getText().toString());
+                    Access.setNome(result.get("nome"));
                     Intent openHome = new Intent(getActivity(), HomeActivity.class);
                     startActivity(openHome);
                 }
-                else if (result==getString(R.string.noUserExists))
+                else if (result.get("esito")==getString(R.string.noUserExists))
                 {
                     usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
                     usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
                     usernameLayout.requestFocus();
                 }
-                else if (result==getString(R.string.wrongPassword))
+                else if (result.get("esito")==getString(R.string.wrongPassword))
                 {
                     passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
                     passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));

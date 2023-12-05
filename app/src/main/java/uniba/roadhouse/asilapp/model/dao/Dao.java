@@ -167,7 +167,7 @@ public class Dao {
         });
     }
 
-    public static CompletableFuture<String> loginUser(String username, String password, Context context){
+    public static CompletableFuture<Map<String,String>> loginUser(String username, String password, Context context){
         return CompletableFuture.supplyAsync(()-> {
             //verifico se esiste un utente con lo username dell'utente che si vuole loggare
             Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();
@@ -178,7 +178,9 @@ public class Dao {
 
             //quando la query è completata vedo se non esiste un utente con il nome scelto
             if (query.getResult().size() == 0) {
-                return context.getString(R.string.noUserExists);
+                return new HashMap<String,String>() {{
+                    put("esito", context.getString(R.string.noUserExists));
+                }};
             }
 
             //se l'utente esiste, ne prendo la password
@@ -196,7 +198,9 @@ public class Dao {
 
             //se l'hash della password immessa dall'utente èdiverso da quella nel db, allora il login non va a buon fine
             if (!passwordIsValid) {
-                return context.getString(R.string.wrongPassword);
+                return new HashMap<String,String>() {{
+                    put("esito", context.getString(R.string.wrongPassword));
+                }};
             }
 
             //se passw e usename sono corretti, genero il token JWT da memorizzare localmente per l'autenticazione
@@ -220,7 +224,11 @@ public class Dao {
                 throw new RuntimeException(e);
             }
 
-            return context.getString(R.string.loginCompleted);
+            String finalNome = nome;
+            return new HashMap<String,String>() {{
+                put("esito", context.getString(R.string.loginCompleted));
+                put("nome", finalNome);
+            }};
         });
     }
 
