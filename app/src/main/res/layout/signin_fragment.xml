@@ -100,6 +100,7 @@
         android:layout_width="@dimen/buttonsLoginWidth"
         android:layout_height="@dimen/buttonsLoginHeight"
         android:layout_gravity="center"
+        android:clickable="true"
         android:layout_marginTop="@dimen/marginBetweenInputs"
         android:backgroundTint="@color/buttonsColor"
         android:text="@string/loginFragmentProfLabel"

@@ -92,7 +92,10 @@
     <string name="weightHealthHistory">Peso corporeo</string>
     <string name="bpmHealthHistory">Battico cardiaco</string>
     <string name="evalutationHealthHistoryLabel">Valutazione:</string>
-
+    <string name="tremblingHealthHistory">Tremolio</string>
+    <string name="glucoseHealthHistory">Glucosio</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
