@@ -34,9 +34,6 @@ public class HomeActivity extends AppCompatActivity {
     Map<String,Integer> screenActiveMipmapIcons;
     Map<String,Integer> screenMipmapIcons;
 
-    //stringa che indica l'attuale schermata (fragment) aperta
-    String currentSectionOpen;
-
     TextView homeText;
 
 
@@ -50,10 +47,6 @@ public class HomeActivity extends AppCompatActivity {
 
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
-
-        if(savedInstanceState!=null){
-            currentSectionOpen=savedInstanceState.getString("currentSection");
-        }
     }
 
     @Override
@@ -109,12 +102,12 @@ public class HomeActivity extends AppCompatActivity {
 
         findViewById(R.id.toolBarIconHomeActivity).setOnClickListener(v->changeScreen(getResources().getString(R.string.homeMenuScreen)));
 
-
-        //imposto l'attuale schermata aperta ad una schermata non home
-        currentSectionOpen=getResources().getString(R.string.userMenuScreen);
-
         //avvio il fragment di home che schermata da aprire all'avvio dell'activity
-        changeScreen(getResources().getString(R.string.homeMenuScreen));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.homeContainerView, screenFragments.get(getResources().getString(R.string.homeMenuScreen)), null);
+        fragmentTransaction.addToBackStack(getResources().getString(R.string.homeMenuScreen));
+        fragmentTransaction.commit();
     }
 
     //callback chiamata quando si preme il tasto back fisico
@@ -128,54 +121,44 @@ public class HomeActivity extends AppCompatActivity {
                 //in quetso caso chiudo l'activiy, in quanto ho premuto back e non ho altri fragment (shermate) da mostrare
                 finishAffinity();
             }else{  //se ho un fragment prima di quello attualmente visibile
-                //prendo il nome e classe con cui ho messo nel backstack il fragment che si aprirà alla pressione del back
+                //prendo il nome con cui ho memorizzato il fragment attualmente visibile
+                String currScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
+                //prendo il nome con cui ho messo nel backstack il fragment che si aprirà alla pressione del back
                 String prevScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
-                Class prevScreenClass=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getClass();
                 //elimino dal backstack il fragment attualmentein visione
-                fragmentManager.popBackStack(currentSectionOpen,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.popBackStack(currScreenOpen,FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-                //se la scehrmata precedente nonha un nome, allora la apro semplicemente, senza cambiare le icone del menu e il loro colore
-                if(prevScreenOpen==null){
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.homeContainerView, prevScreenClass, null);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }else{  //se invece la rpecedente scherata ha un nome, allora cambio il colore dell'icona e vado a tale schermata
-                    //cambio il colore dell'icona, mettendo ad attiva il fragment da aprire e disattiva quello che stava aperto fino a questo momento
-                    changeIcons(prevScreenOpen);
+                //se la scehrmata precedente non ha class nel nome, allora cambio il colore dell'icona
+                if(!currScreenOpen.contains("class")){
+                    changeIcons(currScreenOpen,prevScreenOpen);
                 }
             }
         }
     };
 
     private void changeScreen(String screen){
-        //apro il fragment che inidca la sezione cliccata da aprire
         FragmentManager fragmentManager = getSupportFragmentManager();
+        //prendo il nome dell'attuale schermata aperta
+        String currScreenOpen=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
+
+        //apro il fragment che inidca la sezione cliccata da aprire
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.homeContainerView, screenFragments.get(screen), null);
         fragmentTransaction.addToBackStack(screen);
         fragmentTransaction.commit();
 
-        //se la schermata attuale non è quella che sto aprendo, allora imposto l'icona della schermata da aprire
-        //come schermata attiva (è illuminata)
-        if(currentSectionOpen!=screen) {
-            changeIcons(screen);
-        }
+        //se la scehrmata precedente non ha class nel nome ed è diversa da quella che devo aprire, allora cambio il colore dell'icona
+        if(!currScreenOpen.contains("class") && currScreenOpen!=screen){
+            changeIcons(currScreenOpen,screen);
+        }//altrimenti, i colori non sono da cambiare perche la sezione del menu in cui sono è sempre la stessa
 
     }
 
-    private void changeIcons(String screen){
-        findViewById(screenIconsBg.get(screen)).setVisibility(View.VISIBLE);
-        findViewById(screenIconsBg.get(currentSectionOpen)).setVisibility(View.INVISIBLE);
-        ((ImageView) findViewById(screenIcons.get(screen))).setImageResource(screenActiveMipmapIcons.get(screen));
-        ((ImageView) findViewById(screenIcons.get(currentSectionOpen))).setImageResource(screenMipmapIcons.get(currentSectionOpen));
-        currentSectionOpen=screen;
-        homeText.setText(screen);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putString("currentSection",currentSectionOpen);
+    private void changeIcons(String currScreen, String newScreen){
+        findViewById(screenIconsBg.get(newScreen)).setVisibility(View.VISIBLE);
+        findViewById(screenIconsBg.get(currScreen)).setVisibility(View.INVISIBLE);
+        ((ImageView) findViewById(screenIcons.get(newScreen))).setImageResource(screenActiveMipmapIcons.get(newScreen));
+        ((ImageView) findViewById(screenIcons.get(currScreen))).setImageResource(screenMipmapIcons.get(currScreen));
+        homeText.setText(newScreen);
     }
 }

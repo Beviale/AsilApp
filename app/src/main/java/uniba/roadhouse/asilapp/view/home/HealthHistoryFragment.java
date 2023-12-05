@@ -108,7 +108,7 @@ public class HealthHistoryFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString("itemClicked", clicked);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(DetailHealthHistoryFragment.class.toString());
         fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
         fragmentTransaction.commit();
     }
