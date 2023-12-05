@@ -6,7 +6,7 @@
 
     <!--TEXT-->
     <dimen name="title1FontSize">40dp</dimen>
-    <dimen name="title2FontSize">35dp</dinem>
+    <dimen name="title2FontSize">35dp</dimen>
     <dimen name="title3FontSize">15dp</dimen>
     <dimen name="textInputFontSize">18dp</dimen>
 
