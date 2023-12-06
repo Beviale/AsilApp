@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="Priorità: media 🔴"
+                android:text="Priorità: alta 🔴"
                 android:textColor="@color/white"
                 android:textSize="13dp"
                 app:layout_constraintStart_toStartOf="parent"

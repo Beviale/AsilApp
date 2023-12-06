@@ -14,6 +14,12 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
@@ -24,6 +30,12 @@ import uniba.roadhouse.asilapp.controller.Utility;
  * create an instance of this fragment.
  */
 public class DetailMyPathologiesFragment extends Fragment {
+    static String itemCliecked;
+    TextView detailMyPathologiesTitle;
+    TextView dateLastVisitMyPathologies;
+    TextView timeLastVisitMyPathologies;
+    TextView priorityLastVisitMyPathologies;
+
     EditText doctorNotesLastVisitMyPahologies;
     ImageView shareDetailMyPathologies;
 
@@ -33,15 +45,7 @@ public class DetailMyPathologiesFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DetailMyPathologies.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static DetailMyPathologiesFragment newInstance(String param1, String param2) {
         DetailMyPathologiesFragment fragment = new DetailMyPathologiesFragment();
         Bundle args = new Bundle();
@@ -53,6 +57,9 @@ public class DetailMyPathologiesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            if (getArguments() != null) {
+                itemCliecked = getArguments().getString("itemClicked");
+            }
         }
     }
 
@@ -68,9 +75,78 @@ public class DetailMyPathologiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //---------------RIFERIMENTI-------------
         doctorNotesLastVisitMyPahologies = view.findViewById(R.id.doctorNotesLastVisitMyPahologies);
+        timeLastVisitMyPathologies = view.findViewById(R.id.timeLastVisitMyPathologies);
+        dateLastVisitMyPathologies = view.findViewById(R.id.dateLastVisitMyPathologies);
+        detailMyPathologiesTitle = view.findViewById(R.id.detailMyPathologiesTitle);
+        priorityLastVisitMyPathologies = view.findViewById(R.id.priorityLastVisitMyPathologies);
         Utility.enableScroll(doctorNotesLastVisitMyPahologies);
         shareDetailMyPathologies = view.findViewById(R.id.shareDetailMyPathologies);
+
+        setDetailMyPathologiesTitle();
+        setDateLastVisitMyPathologies();
+        setTimeLastVisitMyPathologies();
+        setPrioprityLastVisitMyPathologies();
+
+
+
     }
+
+
+    private void setDetailMyPathologiesTitle()
+    {
+        detailMyPathologiesTitle.setText(itemCliecked);
+    }
+
+    private void setDateLastVisitMyPathologies()
+    {
+        if(itemCliecked.equals(getString(R.string.diabete)))
+        {
+            dateLastVisitMyPathologies.setText("20/10/2023");
+        }
+        if(itemCliecked.equals(getString(R.string.dermatitis)))
+        {
+            dateLastVisitMyPathologies.setText("10/05/2023");
+        }
+        if(itemCliecked.equals(getString(R.string.brochitis)))
+        {
+            dateLastVisitMyPathologies.setText("20/10/2022");
+        }
+    }
+
+    private void setTimeLastVisitMyPathologies()
+    {
+        if(itemCliecked.equals(getString(R.string.diabete)))
+        {
+            timeLastVisitMyPathologies.setText("10:20");
+        }
+        if(itemCliecked.equals(getString(R.string.dermatitis)))
+        {
+            timeLastVisitMyPathologies.setText("15:00");
+        }
+        if(itemCliecked.equals(getString(R.string.brochitis)))
+        {
+            timeLastVisitMyPathologies.setText("17:30");
+        }
+    }
+
+
+    private void setPrioprityLastVisitMyPathologies()
+    {
+        if(itemCliecked.equals(getString(R.string.diabete)))
+        {
+            priorityLastVisitMyPathologies.setText("alta \uD83D\uDD34");
+        }
+        if(itemCliecked.equals(getString(R.string.dermatitis)))
+        {
+            priorityLastVisitMyPathologies.setText("media \uD83D\uDFE0");
+        }
+        if(itemCliecked.equals(getString(R.string.brochitis)))
+        {
+            priorityLastVisitMyPathologies.setText("bassa \uD83D\uDFE2");
+        }
+
+    }
+
 
     @Override
     public void onStart() {
@@ -95,8 +171,15 @@ public class DetailMyPathologiesFragment extends Fragment {
 
         CheckBox checkBoxDate = view.findViewById(R.id.dialogShareDetailPathologiesDate);
         CheckBox checkBoxTime = view.findViewById(R.id.dialogShareDetailPathologiesTime);
-        CheckBox checkBoxEvalutation = view.findViewById(R.id.dialogShareDetailPathologiesPriority);
+        CheckBox checkBoxPriority = view.findViewById(R.id.dialogShareDetailPathologiesPriority);
         CheckBox checkBoxDoctorNotes = view.findViewById(R.id.dialogShareDetailPathologiesDoctorNotes);
+        List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+        checkBoxes.add(checkBoxDate);
+        checkBoxes.add(checkBoxTime);
+        checkBoxes.add(checkBoxPriority);
+        checkBoxes.add(checkBoxDoctorNotes);
+        Utility.colorAllCheckbox(checkBoxes, getActivity());
+
 
         builder.setView(view)
                 .setTitle(getString(R.string.titleShareDialogPrivacy))

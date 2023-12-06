@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 
@@ -36,7 +37,7 @@ public class DetailHealthHistoryFragment extends Fragment {
     TextView detailHealthHistoryTitle;
     EditText doctorNotesLastRecordHealthHistory;
 
-    String itemCliecked;
+    static String itemCliecked;
 
 
 

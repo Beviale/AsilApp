@@ -125,7 +125,7 @@
             app:layout_constraintTop_toBottomOf="@+id/timeLastVisitMyPathologies" />
 
         <TextView
-            android:id="@+id/evalutationLastVisitMyPathologies"
+            android:id="@+id/priorityLastVisitMyPathologies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -147,7 +147,7 @@
             android:textSize="@dimen/valueDetailHealthHistory"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/evalutationLastVisitMyPathologies" />
+            app:layout_constraintTop_toBottomOf="@+id/priorityLastVisitMyPathologies" />
 
 
         <EditText
