@@ -104,6 +104,13 @@
     <string name="timeLastRecordHealthHistoryLabel">Ora:</string>
     <string name="evalutationLastRecordHealthHistoryLabel">Valutazione:</string>
     <string name="doctorNotesLastRecordHealthHistoryLabel">Note del medico</string>
+    <string name="diabete">Diabete</string>
+    <string name="dermatitis">Dermatite</string>
+    <string name="brochitis">Bronchite</string>
+    <string name="lastVisitLabel">Ultima visita:</string>
+    <string name="sendBase">Condividi parzialmente i dati (privacy alta)</string>
+    <string name="sendComplete">Condividi tutti i dati (privacy bassa)</string>
+
     <!-- Unità di misura-->
     <string name="unityTemperature">C</string>
     <string name="unityBloodPressure">mmHg</string>

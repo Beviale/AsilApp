@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fadeScrollbars="false"
+    android:scrollbars="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,6 +15,7 @@
         <TextView
             android:id="@+id/detailHealthHistoryTitle"
             android:layout_width="270dp"
+            android:fadeScrollbars="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
             android:layout_marginTop="28dp"
@@ -51,6 +54,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailHealthHistoryTitle" />
 
+
+        <ImageView
+            android:id="@+id/shareDetailHealthHistory"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/share_fill0_wght400_grad0_opsz24"
+            app:layout_constraintLeft_toRightOf="@+id/lastRecordHealthHistory"
+            app:layout_constraintTop_toBottomOf="@+id/detailHealthHistoryTitle" />
 
         <TextView
             android:id="@+id/dateLastRecordHealthHistoryLabel"

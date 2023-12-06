@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/baseShareContext"
+            android:title="@string/sendBase">
+        </item>
+        <item
+            android:id="@+id/completeShareContext"
+            android:title="@string/sendComplete">
+        </item>
+    </group>
+
+</menu>

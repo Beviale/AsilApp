@@ -4,15 +4,21 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
@@ -23,11 +29,14 @@ import uniba.roadhouse.asilapp.controller.Utility;
  * create an instance of this fragment.
  */
 public class DetailHealthHistoryFragment extends Fragment {
+
+    ImageView shareDetailHealthHistory;
     TextView unityDetaildHealthHistory;
     TextView detailHealthHistoryTitle;
     EditText doctorNotesLastRecordHealthHistory;
 
     String itemCliecked;
+
 
 
 
@@ -61,12 +70,31 @@ public class DetailHealthHistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //-----------RIFERIMENTI-------------
+        shareDetailHealthHistory = view.findViewById(R.id.shareDetailHealthHistory);
+        registerForContextMenu(shareDetailHealthHistory);
         doctorNotesLastRecordHealthHistory = view.findViewById(R.id.doctorNotesLastRecordHealthHistory);
         Utility.enableScroll(doctorNotesLastRecordHealthHistory);
         detailHealthHistoryTitle = view.findViewById(R.id.detailHealthHistoryTitle);
         detailHealthHistoryTitle.setText(itemCliecked);
         unityDetaildHealthHistory = view.findViewById(R.id.unityDetaildHealthHistory);
         unityDetaildHealthHistory.setText(setUnity());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        shareDetailHealthHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.showContextMenu();
+            }
+        });
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.share_context, menu);
     }
 
     private String setUnity()
@@ -88,5 +116,8 @@ public class DetailHealthHistoryFragment extends Fragment {
             unity=getString(R.string.unityGlucose);
         return unity;
     }
+
+
+
 }
 
