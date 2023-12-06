@@ -2,7 +2,12 @@ package uniba.roadhouse.asilapp.view.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +21,10 @@ import uniba.roadhouse.asilapp.R;
  * create an instance of this fragment.
  */
 public class MyPathologiesFragment extends Fragment {
+
+    ConstraintLayout diabetisLayout;
+    ConstraintLayout dermatitisLayout;
+    ConstraintLayout bronchitisLayout;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +71,34 @@ public class MyPathologiesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.my_pathologies_fragment, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //---------RIFERIMENTI------------
+        diabetisLayout = view.findViewById(R.id.diabetisLayout);
+        dermatitisLayout = view.findViewById(R.id.dermatitisLayout);
+        bronchitisLayout = view.findViewById(R.id.bronchitisLayout);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        diabetisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.diabete)));
+        dermatitisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.dermatitis)));
+        bronchitisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.brochitis)));
+    }
+
+    private void openDetailFragment(String itemClicked)
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("itemClicked", itemClicked);
+        fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
+        fragmentTransaction.replace(R.id.homeContainerView, DetailMyPathologiesFragment.class, bundle);
+        fragmentTransaction.commit();
     }
 }

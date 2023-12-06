@@ -1,9 +1,11 @@
 package uniba.roadhouse.asilapp.controller;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,9 +18,11 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.CompoundButtonCompat;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -27,6 +31,7 @@ import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.List;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -142,6 +147,20 @@ public class Utility
                 return false;
             }
         });
+    }
+
+
+    /**
+     * Colora le checkbox con il colore appMainColor
+     * @param checkBoxes, lista di checkbox da colorare
+     * @param context, contesto
+     */
+    public static void colorAllCheckbox(List<CheckBox> checkBoxes, Context context)
+    {
+        for(CheckBox checkBox: checkBoxes)
+        {
+            CompoundButtonCompat.setButtonTintList(checkBox, ColorStateList.valueOf(context.getColor(R.color.appMainColor)));
+        }
     }
 }
 

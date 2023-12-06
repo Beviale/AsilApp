@@ -26,5 +26,6 @@
     <!--MedicalParameters-->
     <color name="colorHealthHistory">#498cfc</color>
     <color name="colodOldHealthHistory">#cfcccc</color>
+    <color name="colodOldMyPathologies">#cfcccc</color>
 
 </resources>

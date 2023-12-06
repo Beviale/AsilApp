@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/dialogShareDetailPathologiesDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dateLastVisitMyPathologiesShare"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareDetailPathologiesTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timeLastVisitMyPathologiesShare"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareDetailPathologiesPriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/priorityLastVisitMyPathologiesShare"/>
+    <CheckBox
+        android:id="@+id/dialogShareDetailPathologiesDoctorNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/doctorNotesLastVisitMyPathologiesShare"/>
+</LinearLayout>

@@ -5,6 +5,8 @@
     <string name="nullValue">Non specificato</string>
     <string name="genericErrorTitle">Errore</string>
     <string name="genericError">Si è verificato un errore inatteso</string>
+    <string name="share">Condividi</string>
+    <string name="cancel">Annulla</string>
 
 
     <!--SigninSignupActivity-->
@@ -108,8 +110,21 @@
     <string name="dermatitis">Dermatite</string>
     <string name="brochitis">Bronchite</string>
     <string name="lastVisitLabel">Ultima visita:</string>
-    <string name="sendBase">Condividi parzialmente i dati (privacy alta)</string>
-    <string name="sendComplete">Condividi tutti i dati (privacy bassa)</string>
+    <string name="titleShareDialogPrivacy">Scegli cosa condividere</string>
+    <string name="dateLastRecordHealthHistoryShare">Data</string>
+    <string name="timeLastRecordHealthHistoryShare">Ora</string>
+    <string name="valueLastRecordHealthHistoryShare">Valore registrato</string>
+    <string name="evalutationHealthHistoryShare">Valutazione</string>
+    <string name="doctorNotesLastRecordHealthHistoryShare">Note del medico</string>
+    <string name="dateLastVisitMyPathologiesLabel">Data: </string>
+    <string name="timeLastVisitMyPathologiesLabel">Ora: </string>
+    <string name="evalutationLastVisitMyPathologiesLabel">Priorià: </string>
+    <string name="doctorNotesLastVisitMyPahologiesLabel">Note del  medico</string>
+    <string name="lastVisitsMyPathologiesLabel">Visite precedenti</string>
+    <string name="dateLastVisitMyPathologiesShare">Data</string>
+    <string name="timeLastVisitMyPathologiesShare">Tempo</string>
+    <string name="priorityLastVisitMyPathologiesShare">Priorità</string>
+    <string name="doctorNotesLastVisitMyPathologiesShare">Note del medico</string>
 
     <!-- Unità di misura-->
     <string name="unityTemperature">C</string>

@@ -1,24 +1,25 @@
 package uniba.roadhouse.asilapp.view.home;
 
+import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
@@ -71,7 +72,6 @@ public class DetailHealthHistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //-----------RIFERIMENTI-------------
         shareDetailHealthHistory = view.findViewById(R.id.shareDetailHealthHistory);
-        registerForContextMenu(shareDetailHealthHistory);
         doctorNotesLastRecordHealthHistory = view.findViewById(R.id.doctorNotesLastRecordHealthHistory);
         Utility.enableScroll(doctorNotesLastRecordHealthHistory);
         detailHealthHistoryTitle = view.findViewById(R.id.detailHealthHistoryTitle);
@@ -86,15 +86,45 @@ public class DetailHealthHistoryFragment extends Fragment {
         shareDetailHealthHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.showContextMenu();
+                showCheckboxDialogForSharePrivacy();
             }
         });
     }
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.share_context, menu);
+    private void showCheckboxDialogForSharePrivacy() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.checkbox_dialog_health_history, null);
+        CheckBox checkBoxDate = view.findViewById(R.id.dialogShareDetailHistoryDate);
+        CheckBox checkBoxTime = view.findViewById(R.id.dialogShareDetailHistoryTime);
+        CheckBox checkBoxValue = view.findViewById(R.id.dialogShareDetailHistoryValue);
+        CheckBox checkBoxEvalutation = view.findViewById(R.id.dialogShareDetailHistoryEvalutation);
+        CheckBox checkBoxDoctorNotes = view.findViewById(R.id.dialogShareDetailHistoryDoctorNotes);
+        List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+        checkBoxes.add(checkBoxDate);
+        checkBoxes.add(checkBoxTime);
+        checkBoxes.add(checkBoxValue);
+        checkBoxes.add(checkBoxEvalutation);
+        checkBoxes.add(checkBoxDoctorNotes);
+        Utility.colorAllCheckbox(checkBoxes, getActivity());
+        builder.setView(view)
+                .setTitle(getString(R.string.titleShareDialogPrivacy))
+                .setPositiveButton(getString(R.string.share), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Handle negative button click
+                        dialogInterface.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private String setUnity()
