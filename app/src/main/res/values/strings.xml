@@ -9,6 +9,7 @@
     <string name="cancel">Annulla</string>
     <string name="open">Apri</string>
     <string name="connection">Connessione</string>
+    <string name="edit">Modifica</string>
 
 
 
@@ -35,7 +36,7 @@
     <string name="orText">Oppure</string>
 
 
-    <!--REGISTER FRAGMENT-->
+    <!--REGISTER FRAGMENTS-->
     <string name="nameSignupText">Nome</string>
     <string name="registrationCompleteError">Qualcosa è andato storto :(</string>
     <string name="returnBack">Ritorna indietro</string>
@@ -68,6 +69,7 @@
     <string name="passwordExplanation">Una password viene considerata sicura quando contiene almeno 8 caratteri. Di questi, ci devono
     essere almeno una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale (#\?!\@$%^&amp;*-).</string>
     <string name="ageLess18">Per registrarti devi avere almeno 18 anni!</string>
+
 
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registrazione Completata!</string>
@@ -137,6 +139,11 @@
     <string name="idLastRecordHealthHistoryShare">ID</string>
     <string name="idLastVisitMyPathologiesShare">ID</string>
     <string name="recordHealthHistoryOld">Dati rilevazione</string>
+
+    <!--SETTINGS-->
+    <string name="settingsUpperCase">IMPOSTAZIONI</string>
+    <string name="editProfileTitle">Modifica profilo</string>
+
 
     <!-- Unità di misura-->
     <string name="unityTemperature">C</string>

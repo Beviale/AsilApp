@@ -39,5 +39,14 @@
     <dimen name="marginLeftRightDetailHealthHistory">20dp</dimen>
 
 
+    <!--Settings-->
+    <dimen name="marginLeftSettings">20dp</dimen>
+    <dimen name="marginRightSettings">20dp</dimen>
+    <dimen name="textSettingsTitle">35dp</dimen>
+    <dimen name="textSettingsOption">20dp</dimen>
+
+
+
+
 
 </resources>
