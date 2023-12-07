@@ -351,7 +351,7 @@ public class Dao {
     public static CompletableFuture<String> storeMisuration(String username, LocalDate data, Integer valore, String nota, String valutazione, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
-            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username", username).orderBy("dataEora").limit(1).get();
+            Task<QuerySnapshot> query = db.collection("misurazioni").orderBy("dataEora").limit(1).get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -418,6 +418,43 @@ public class Dao {
             misuration.put("valore",query.getResult().getString("valore"));
             misuration.put("notamedico",query.getResult().getString("nota"));
             misuration.put("valutazione",query.getResult().getString("valutazione"));
+            misuration.put("id",query.getResult().getId());
+            misuration.put("esito",context.getString(R.string.misurationGetSuccessfully));
+
+            return misuration;
+        });
+    }
+
+    public static CompletableFuture<Object> getAllPastMisurationByUsername(String username, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            List<Map<String,Object>> misurations = new ArrayList<>();
+            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return new ArrayList<Map<String,Object>>(){{
+                    add(new HashMap<String,Object>(){{
+                        put("esito",context.getString(R.string.misurationGetFailed));
+                    }});
+                }};
+            }
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                Map<String,Object> mis=new HashMap<>(){{
+                    put("username",document.getString("username"));
+                    put("data",document.getString("dataEora"));
+                    put("valore",document.getString("valore"));
+                    put("notamedico",document.getString("nota"));
+                    put("valutazione",document.getString("valutazione"));
+                    put("id",document.getId());
+                }};
+                misurations.add(mis);
+
+            }
+
             misuration.put("esito",context.getString(R.string.misurationGetSuccessfully));
 
             return misuration;
