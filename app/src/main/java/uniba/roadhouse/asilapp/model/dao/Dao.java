@@ -443,7 +443,7 @@ public class Dao {
             }
 
             for(QueryDocumentSnapshot document:query.getResult()){
-                Map<String,Object> mis=new HashMap<>(){{
+                Map<String,Object> mis=new HashMap<String,Object>(){{
                     put("username",document.getString("username"));
                     put("data",document.getString("dataEora"));
                     put("valore",document.getString("valore"));
@@ -455,9 +455,7 @@ public class Dao {
 
             }
 
-            misuration.put("esito",context.getString(R.string.misurationGetSuccessfully));
-
-            return misuration;
+            return misurations;
         });
     }
 }
