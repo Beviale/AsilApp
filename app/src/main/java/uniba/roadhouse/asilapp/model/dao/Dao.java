@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,11 +36,6 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
-import uniba.roadhouse.asilapp.view.home.HealthBoxFragment;
-import uniba.roadhouse.asilapp.view.home.HomeFragment;
-import uniba.roadhouse.asilapp.view.home.MedicalParametersFragment;
-import uniba.roadhouse.asilapp.view.home.SettingsFragment;
-import uniba.roadhouse.asilapp.view.home.UserProfileFragment;
 
 public class Dao {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -337,6 +334,76 @@ public class Dao {
             Bitmap bm=Utility.StringToBitMap(qr);
 
             return bm;
+        });
+    }
+
+    public static CompletableFuture<String> storeMisuration(String username, LocalDate data, Integer valore, String nota, String valutazione, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo l'ultima misurazione effettuata
+            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("unsername", username).orderBy("dataEora").limit(1).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.insertMisurationFailed);
+            }
+
+            //prendo l'id dell'ultima misurazione effettuata
+            Integer id=-1;
+            for(QueryDocumentSnapshot document:query.getResult()){
+                id=Integer.valueOf(document.getId());
+                break;
+            }
+
+            if(id==-1){
+                return context.getString(R.string.insertMisurationFailed);
+            }
+
+            Map<String, Object> misuration = new HashMap<>();
+            misuration.put("username",username);
+            misuration.put("dataEora",data);
+            misuration.put("valore",valore);
+            misuration.put("notamedico",nota);
+            misuration.put("valutazione",valutazione);
+
+            //memorizzo la misurazione con id incermentato di 1 rispetto all'ultima misurazione effettuata
+            Task addToDb = db.collection("misurazioni").document(String.valueOf(id+1)).set(misuration);
+            while (!addToDb.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!addToDb.isSuccessful()) {
+                return context.getString(R.string.insertMisurationFailed);
+            }
+
+            return context.getString(R.string.misurationStoredSuccessfully);
+        });
+    }
+
+    public static CompletableFuture<Map<String, ?>> getMisuration(Integer id, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Map<String,Object> misuration = new HashMap<>();
+            Task<DocumentSnapshot> query = db.collection("misurazioni").document(String.valueOf(id)).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return new HashMap<String,String>() {{
+                    put("esito", context.getString(R.string.misurationGetFailed));
+                }};
+            }
+
+            misuration.put("username",query.getResult().getString("username"));
+            misuration.put("data",query.getResult().getString("dataEora"));
+            misuration.put("valore",query.getResult().getString("valore"));
+            misuration.put("notamedico",query.getResult().getString("nota"));
+            misuration.put("valutazione",query.getResult().getString("valutazione"));
+            misuration.put("esito",context.getString(R.string.misurationGetSuccessfully));
+
+            return misuration;
         });
     }
 }

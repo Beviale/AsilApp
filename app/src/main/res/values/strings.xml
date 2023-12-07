@@ -83,6 +83,10 @@
     <string name="qrStoreError">Errore nella memorizzazione del QR sul Database</string>
     <string name="qrReadError">Errore nella lettura del QR dal Database</string>
     <string name="qrGenerateError">Errore nella generazione del QR code</string>
+    <string name="insertMisurationFailed">Inserimento della misurazione fallito</string>
+    <string name="misurationStoredSuccessfully">Misurazione memorizzata correttamente</string>
+    <string name="misurationGetSuccessfully">Misurazione letta con successo</string>
+    <string name="misurationGetFailed">Errore nella lettura della misurazione</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
