@@ -337,6 +337,17 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo per la memorizzazione dele misurazioni effettuate sull'utente
+     * @param username
+     * @param data
+     * @param valore
+     * @param nota
+     * @param valutazione
+     * @param context
+     * @return ritorna una stringa che indica se la computazione è adata a buon fine o meno
+     */
+
     public static CompletableFuture<String> storeMisuration(String username, LocalDate data, Integer valore, String nota, String valutazione, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
@@ -381,6 +392,12 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodoper prendere una misurazione dato un id
+     * @param id
+     * @param context
+     * @return ritorna una Map con i dati della misurazione al suo interno ed un campo "esito" che indica l'esito della computazione
+     */
     public static CompletableFuture<Map<String, ?>> getMisuration(Integer id, Context context){
         return CompletableFuture.supplyAsync(()->{
             Map<String,Object> misuration = new HashMap<>();
