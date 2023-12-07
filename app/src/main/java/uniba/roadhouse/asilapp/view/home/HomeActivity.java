@@ -20,13 +20,18 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialCalendar;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class HomeActivity extends AppCompatActivity {
     Map<String,Integer> screenIcons;
@@ -49,6 +54,13 @@ public class HomeActivity extends AppCompatActivity {
         homeText=findViewById(R.id.homeScreenTextView);
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
+        String lorem = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+        CompletableFuture<String> future = Dao.storeMisuration(Access.getUsername(), LocalDate.now(), 36, lorem, "Buono \uD83D\uDFE2", this);
+        future.thenAccept(result -> {
+            this.runOnUiThread(() -> {
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            });
+        });
     }
 
 
