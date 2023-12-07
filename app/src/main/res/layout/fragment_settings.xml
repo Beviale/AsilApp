@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -100,6 +105,7 @@
 
 
     <Button
+        android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginBetweenInputs"
@@ -109,4 +115,86 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/changePasswordLayout"></Button>
 
+    <View
+        android:id="@+id/greyLine"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:backgroundTint="#dbdbdb"
+        android:background="@color/greyLine"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginRight="@dimen/marginRightSettings"
+        app:layout_constraintTop_toBottomOf="@+id/editProfileButton"
+        android:layout_height="2dp">
+    </View>
+
+
+    <TextView
+        android:id="@+id/evalutationAppTitle"
+        android:layout_width="270dp"
+        android:fadeScrollbars="false"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/evalutationAppTitle"
+        android:textSize="@dimen/textSettingsOption"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/greyLine" />
+
+    <RatingBar
+        android:id="@+id/ratingApp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:numStars="5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        app:layout_constraintTop_toBottomOf="@+id/evalutationAppTitle"/>
+
+
+    <View
+        android:id="@+id/greyLine2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:backgroundTint="#dbdbdb"
+        android:background="@color/greyLine"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginRight="@dimen/marginRightSettings"
+        app:layout_constraintTop_toBottomOf="@+id/ratingApp"
+        android:layout_height="2dp">
+    </View>
+
+    <TextView
+        android:id="@+id/exitAccountTitle"
+        android:layout_width="270dp"
+        android:fadeScrollbars="false"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/exitAccountTitle"
+        android:textSize="@dimen/textSettingsOption"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/greyLine2" />
+
+    <Button
+        android:id="@+id/exitAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:backgroundTint="@color/textAlertColor"
+        android:text="@string/exit"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exitAccountTitle"></Button>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

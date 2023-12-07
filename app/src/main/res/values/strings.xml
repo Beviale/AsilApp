@@ -10,6 +10,7 @@
     <string name="open">Apri</string>
     <string name="connection">Connessione</string>
     <string name="edit">Modifica</string>
+    <string name="exit">Esci</string>
 
 
 
@@ -143,6 +144,8 @@
     <!--SETTINGS-->
     <string name="settingsUpperCase">IMPOSTAZIONI</string>
     <string name="editProfileTitle">Modifica profilo</string>
+    <string name="evalutationAppTitle">Valuta app</string>
+    <string name="exitAccountTitle">Esci dall\'account</string>
 
 
     <!-- Unità di misura-->
