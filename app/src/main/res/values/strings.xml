@@ -7,6 +7,9 @@
     <string name="genericError">Si è verificato un errore inatteso</string>
     <string name="share">Condividi</string>
     <string name="cancel">Annulla</string>
+    <string name="open">Apri</string>
+    <string name="connection">Connessione</string>
+
 
 
     <!--SigninSignupActivity-->
@@ -118,13 +121,18 @@
     <string name="doctorNotesLastRecordHealthHistoryShare">Note del medico</string>
     <string name="dateLastVisitMyPathologiesLabel">Data: </string>
     <string name="timeLastVisitMyPathologiesLabel">Ora: </string>
-    <string name="evalutationLastVisitMyPathologiesLabel">Priorià: </string>
+    <string name="priorityLastVisitMyPathologiesLabel">Priorità: </string>
     <string name="doctorNotesLastVisitMyPahologiesLabel">Note del  medico</string>
     <string name="lastVisitsMyPathologiesLabel">Visite precedenti</string>
     <string name="dateLastVisitMyPathologiesShare">Data</string>
     <string name="timeLastVisitMyPathologiesShare">Tempo</string>
     <string name="priorityLastVisitMyPathologiesShare">Priorità</string>
     <string name="doctorNotesLastVisitMyPathologiesShare">Note del medico</string>
+    <string name="idLastVisitMyPathologiesLabel">ID:</string>
+    <string name="idLastRecordHealthHistoryLabel">ID:</string>
+    <string name="idLastRecordHealthHistoryShare">ID</string>
+    <string name="idLastVisitMyPathologiesShare">ID</string>
+    <string name="recordHealthHistoryOld">Dati rilevazione</string>
 
     <!-- Unità di misura-->
     <string name="unityTemperature">C</string>

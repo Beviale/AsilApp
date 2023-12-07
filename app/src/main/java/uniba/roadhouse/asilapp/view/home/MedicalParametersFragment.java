@@ -121,14 +121,12 @@ public class MedicalParametersFragment extends Fragment {
     private void openHealthHistory(FragmentManager fragmentManager)
     {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
         fragmentTransaction.replace(R.id.medicalTabFragmentContainer,HealthHistoryFragment.class, null);
         fragmentTransaction.commit();
     }
     private void openMyPahtologies(FragmentManager fragmentManager)
     {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
         fragmentTransaction.replace(R.id.medicalTabFragmentContainer, MyPathologiesFragment.class, null);
         fragmentTransaction.commit();
     }

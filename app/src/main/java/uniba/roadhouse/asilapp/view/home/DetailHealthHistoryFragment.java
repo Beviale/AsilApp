@@ -1,6 +1,7 @@
 package uniba.roadhouse.asilapp.view.home;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -19,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,11 @@ import uniba.roadhouse.asilapp.controller.Utility;
  * create an instance of this fragment.
  */
 public class DetailHealthHistoryFragment extends Fragment {
+    TextView idLastRecordHealthHistory;
+    TextView dateLastRecordHealthHistory;
+    TextView timeLastRecordHealthHistory;
+    TextView valueLastRecordHealthHistory;
+    TextView evalutationLastRecordHealthHistory;
 
     ImageView shareDetailHealthHistory;
     TextView unityDetaildHealthHistory;
@@ -79,29 +87,30 @@ public class DetailHealthHistoryFragment extends Fragment {
         detailHealthHistoryTitle.setText(itemCliecked);
         unityDetaildHealthHistory = view.findViewById(R.id.unityDetaildHealthHistory);
         unityDetaildHealthHistory.setText(setUnity());
+        idLastRecordHealthHistory = view.findViewById(R.id.idLastRecordHealthHistory);
+        dateLastRecordHealthHistory = view.findViewById(R.id.dateLastRecordHealthHistory);
+        timeLastRecordHealthHistory = view.findViewById(R.id.timeLastRecordHealthHistory);
+        evalutationLastRecordHealthHistory = view.findViewById(R.id.evalutationLastRecordHealthHistory);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        shareDetailHealthHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCheckboxDialogForSharePrivacy();
-            }
-        });
+        shareDetailHealthHistory.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
     }
 
     private void showCheckboxDialogForSharePrivacy() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.checkbox_dialog_health_history, null);
+        CheckBox checkBoxId = view.findViewById(R.id.dialogShareDetailHistoryId);
         CheckBox checkBoxDate = view.findViewById(R.id.dialogShareDetailHistoryDate);
         CheckBox checkBoxTime = view.findViewById(R.id.dialogShareDetailHistoryTime);
         CheckBox checkBoxValue = view.findViewById(R.id.dialogShareDetailHistoryValue);
         CheckBox checkBoxEvalutation = view.findViewById(R.id.dialogShareDetailHistoryEvalutation);
         CheckBox checkBoxDoctorNotes = view.findViewById(R.id.dialogShareDetailHistoryDoctorNotes);
         List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+        checkBoxes.add(checkBoxId);
         checkBoxes.add(checkBoxDate);
         checkBoxes.add(checkBoxTime);
         checkBoxes.add(checkBoxValue);
@@ -113,6 +122,22 @@ public class DetailHealthHistoryFragment extends Fragment {
                 .setPositiveButton(getString(R.string.share), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        String share = new String();
+                        if(checkBoxId.isChecked())
+                            share = share.concat(getString(R.string.idLastRecordHealthHistoryLabel)).concat(idLastRecordHealthHistory.getText().toString().concat("\n"));
+                        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                        if(checkBoxDate.isChecked())
+                            share = share.concat(getString(R.string.dateLastRecordHealthHistoryLabel).concat(dateLastRecordHealthHistory.getText().toString()).concat("\n"));
+                        if(checkBoxTime.isChecked())
+                            share = share.concat(getString(R.string.timeLastRecordHealthHistoryLabel).concat(timeLastRecordHealthHistory.getText().toString()).concat("\n"));
+                        if(checkBoxEvalutation.isChecked())
+                            share = share.concat(getString(R.string.evalutationLastRecordHealthHistoryLabel).concat(evalutationLastRecordHealthHistory.getText().toString()).concat("\n"));
+                        if(checkBoxDoctorNotes.isChecked())
+                            share = share.concat(getString(R.string.doctorNotesLastRecordHealthHistoryLabel).concat("\n").concat(doctorNotesLastRecordHealthHistory.getText().toString()).concat("\n"));
+                        intent.setType("text/plain");
+                        intent.putExtra(android.content.Intent.EXTRA_TEXT, share);
+                        startActivity(intent);
+
 
                     }
                 })

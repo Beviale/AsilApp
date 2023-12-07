@@ -47,10 +47,10 @@ public class HomeActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
         homeText=findViewById(R.id.homeScreenTextView);
-
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
     }
+
 
     @Override
     protected void onStart() {
@@ -107,11 +107,16 @@ public class HomeActivity extends AppCompatActivity {
 
         //avvio il fragment di home che schermata da aprire all'avvio dell'activity
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.homeContainerView, screenFragments.get(getResources().getString(R.string.homeMenuScreen)), null);
-        fragmentTransaction.addToBackStack(getResources().getString(R.string.homeMenuScreen));
-        fragmentTransaction.commit();
+        if(fragmentManager.getFragments().size()==0)
+        {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.homeContainerView, screenFragments.get(getResources().getString(R.string.homeMenuScreen)), null);
+            fragmentTransaction.addToBackStack(getResources().getString(R.string.homeMenuScreen));
+            fragmentTransaction.commit();
+        }
     }
+
+
 
     //callback chiamata quando si preme il tasto back fisico
     private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
