@@ -90,6 +90,8 @@
     <string name="misurationStoredSuccessfully">Misurazione memorizzata correttamente</string>
     <string name="misurationGetSuccessfully">Misurazione letta con successo</string>
     <string name="misurationGetFailed">Errore nella lettura della misurazione</string>
+    <string name="changeResidenceError">Errore nel cambio della residenza</string>
+    <string name="changeResidenzaSuccessfully">Cambio di resienza avvenuto con successo</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>

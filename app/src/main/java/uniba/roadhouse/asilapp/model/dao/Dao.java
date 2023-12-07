@@ -14,6 +14,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +38,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.tipoMisurazioneEnum;
 
 public class Dao {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -348,7 +351,7 @@ public class Dao {
      * @return ritorna una stringa che indica se la computazione è adata a buon fine o meno
      */
 
-    public static CompletableFuture<String> storeMisuration(String username, LocalDate data, Integer valore, String nota, String valutazione, Context context){
+    public static CompletableFuture<String> storeMisuration(String username, Timestamp data, Double valore, String nota, String valutazione, String tipo, Double valoreMax, Double valoreMin, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
             Task<QuerySnapshot> query = db.collection("misurazioni").orderBy("dataEora").limit(1).get();
@@ -378,6 +381,9 @@ public class Dao {
             misuration.put("valore",valore);
             misuration.put("notamedico",nota);
             misuration.put("valutazione",valutazione);
+            misuration.put("tipo",tipo);
+            misuration.put("valoreMax",(valoreMax==null)?null:valoreMax);
+            misuration.put("valoreMin",(valoreMin==null)?null:valoreMin);
 
             //memorizzo la misurazione con id incermentato di 1 rispetto all'ultima misurazione effettuata
             Task addToDb = db.collection("misurazioni").document(String.valueOf(id+1)).set(misuration);
@@ -414,21 +420,24 @@ public class Dao {
             }
 
             misuration.put("username",query.getResult().getString("username"));
-            misuration.put("data",query.getResult().getString("dataEora"));
-            misuration.put("valore",query.getResult().getString("valore"));
+            misuration.put("data",query.getResult().getTimestamp("dataEora"));
+            misuration.put("valore",query.getResult().getDouble("valore"));
             misuration.put("notamedico",query.getResult().getString("nota"));
             misuration.put("valutazione",query.getResult().getString("valutazione"));
             misuration.put("id",query.getResult().getId());
+            misuration.put("tipo",query.getResult().getString("tipo"));
+            misuration.put("valoreMax",query.getResult().getDouble("valoreMax"));
+            misuration.put("valoreMin",query.getResult().getDouble("valoreMin"));
             misuration.put("esito",context.getString(R.string.misurationGetSuccessfully));
 
             return misuration;
         });
     }
 
-    public static CompletableFuture<Object> getAllPastMisurationByUsername(String username, Context context){
+    public static CompletableFuture<Object> getAllPastMisurationByUsername(String username, String tipo, Context context){
         return CompletableFuture.supplyAsync(()->{
             List<Map<String,Object>> misurations = new ArrayList<>();
-            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).get();
+            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).whereEqualTo("tipo",tipo).orderBy("dataEora").get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -445,17 +454,100 @@ public class Dao {
             for(QueryDocumentSnapshot document:query.getResult()){
                 Map<String,Object> mis=new HashMap<String,Object>(){{
                     put("username",document.getString("username"));
-                    put("data",document.getString("dataEora"));
-                    put("valore",document.getString("valore"));
+                    put("data",document.getTimestamp("dataEora"));
+                    put("valore",document.getDouble("valore"));
                     put("notamedico",document.getString("nota"));
                     put("valutazione",document.getString("valutazione"));
                     put("id",document.getId());
+                    put("tipo",document.getString("tipo"));
+                    put("valoreMin",document.getDouble("valoreMin"));
+                    put("valoreMax",document.getDouble("valoreMax"));
                 }};
                 misurations.add(mis);
 
             }
 
             return misurations;
+        });
+    }
+
+    /**
+     * Metodo per prendere tutte le ultime misurazioni effettuate per un utente di ognitipo di misurazione
+     * @param username
+     * @param context
+     * @return Ritorna una mappa di mappe. per accedere al valore dell'ultima misurazione del tipo "t" fare risultato.get("t").get("valore")
+     * Per accedere al'esito della comutazione fare risultato.get("esito").get("risultato"); l'esito è una stringa
+     */
+    public static CompletableFuture<Object> getAllLastMisurationsUsername(String username, Context context) {
+        return CompletableFuture.supplyAsync(() -> {
+            Map<String,Map<String,Object>> misurations = new HashMap<>();
+            List<String> typesMisuration=new ArrayList<String>(){{
+               add(tipoMisurazioneEnum.TEMPERATURA.toString());add(tipoMisurazioneEnum.PRESSIONE.toString());
+               add(tipoMisurazioneEnum.PESO.toString());add(tipoMisurazioneEnum.BATTITOCARDIACO.toString());
+               add(tipoMisurazioneEnum.GLUCOSIO.toString());add(tipoMisurazioneEnum.TREMOLIO.toString());
+            }};
+
+            for(String tipo:typesMisuration){
+                Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).whereEqualTo("tipo",tipo).orderBy("dataEora").limit(1).get();
+
+                while (!query.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+
+                if(!query.isSuccessful()){
+                    return new HashMap<String,HashMap<String,Object>>(){{
+                        put("esito",new HashMap<String,Object>(){{
+                            put("risultato",context.getString(R.string.misurationGetFailed));
+                        }});
+                    }};
+                }
+
+                //se l'utente non ha mai fatto nessuna misurazione di queso tipo, allora passo al prossimo tipo
+                if(query.getResult().size()==0){
+                    continue;
+                }
+
+                //prendo la misurazioneeffettuata e la aggiungo alla mappa
+                for(QueryDocumentSnapshot document:query.getResult()){
+                    Map<String,Object> mis=new HashMap<String,Object>(){{
+                        put("username",document.getString("username"));
+                        put("data",document.getTimestamp("dataEora"));
+                        put("valore",document.getDouble("valore"));
+                        put("notamedico",document.getString("nota"));
+                        put("valutazione",document.getString("valutazione"));
+                        put("id",document.getId());
+                        put("tipo",document.getString("tipo"));
+                        put("valoreMin",document.getDouble("valoreMin"));
+                        put("valoreMax",document.getDouble("valoreMax"));
+                    }};
+                    misurations.put(tipo,mis);
+                    break;
+                }
+            }
+
+            misurations.put("esito",new HashMap<String,Object>(){{
+                put("risultato",context.getString(R.string.misurationGetSuccessfully));
+            }});
+
+            return misurations;
+        });
+    }
+
+    public static CompletableFuture<String> editResidenzaUtente(String username, String nuovaresidenza, Context context){
+        return CompletableFuture.supplyAsync(() -> {
+            Task<QuerySnapshot> query = db.collection("misurazioni").document(username).update((Map)new HashMap<String,String>(){{
+                put("nomeResidenza",nuovaresidenza);
+            }});
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.changeResidenceError);
+            }
+
+            return context.getString(R.string.changeResidenzaSuccessfully);
         });
     }
 }
