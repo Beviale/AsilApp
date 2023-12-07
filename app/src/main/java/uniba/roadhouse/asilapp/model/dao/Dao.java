@@ -550,4 +550,12 @@ public class Dao {
             return context.getString(R.string.changeResidenzaSuccessfully);
         });
     }
+
+    public static CompletableFuture<String> logOutUser(Context context){
+        return CompletableFuture.supplyAsync(() -> {
+            SharedPreferences preferences = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
+            preferences.edit().remove("token").commit();
+            return context.getString(R.string.logoutSuccessfull);
+        });
+    }
 }
