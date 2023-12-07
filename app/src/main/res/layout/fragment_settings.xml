@@ -3,7 +3,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.home.SettingsFragment">
 
+
+
+    <TextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
+        android:fadeScrollbars="false"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/settingsUpperCase"
+        android:textSize="@dimen/textSettingsTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/editProfile"
+        android:layout_width="270dp"
+        android:fadeScrollbars="false"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/editProfileTitle"
+        android:textSize="@dimen/textSettingsOption"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/changeUsernameLayout"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:hint="@string/usernamePlaceholder"
+        android:textColorHint="@color/textPlaceholderColor"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginTop="40dp"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editProfile"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/changeUsernameInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:textColor="@color/textColor"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/changePasswordLayout"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:hint="@string/passwordPlaceholder"
+        android:textColorHint="@color/textPlaceholderColor"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeUsernameLayout"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/changePasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:textColor="@color/textColor"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:backgroundTint="@color/appMainColor"
+        android:text="@string/edit"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePasswordLayout"></Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
