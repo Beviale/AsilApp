@@ -1,6 +1,6 @@
 package uniba.roadhouse.asilapp.controller;
 
-public enum tipoMisurazioneEnum {
+public enum TipoMisurazioneEnum {
     TEMPERATURA,
     PRESSIONE,
     PESO,
