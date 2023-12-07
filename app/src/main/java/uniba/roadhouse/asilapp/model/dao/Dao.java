@@ -340,7 +340,7 @@ public class Dao {
     public static CompletableFuture<String> storeMisuration(String username, LocalDate data, Integer valore, String nota, String valutazione, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
-            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).orderBy("dataEora").limit(1).get();
+            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username", username).orderBy("dataEora").limit(1).get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
