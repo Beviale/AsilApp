@@ -260,5 +260,15 @@
 
 
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/homeActivityProgressBar"
+        android:layout_width="@dimen/progressBarDim"
+        android:layout_height="@dimen/progressBarDim"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:outlineAmbientShadowColor="#853737"
+        android:indeterminateTint="@color/appMainColor"
+        android:visibility="gone"/>
 
 </FrameLayout>

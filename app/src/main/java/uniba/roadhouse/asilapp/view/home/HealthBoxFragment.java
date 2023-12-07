@@ -1,10 +1,17 @@
 package uniba.roadhouse.asilapp.view.home;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -17,6 +24,7 @@ import android.widget.ImageView;
 import org.checkerframework.checker.units.qual.C;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.Utility;
 
 
 public class HealthBoxFragment extends Fragment {
@@ -63,6 +71,11 @@ public class HealthBoxFragment extends Fragment {
         chronometer.start();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        verifyBluetoothConnection();
+    }
 
     @Override
     public void onStart() {
@@ -126,5 +139,48 @@ public class HealthBoxFragment extends Fragment {
             handlerAnimation.postDelayed(this, 1500);
         }
     };
+
+    private void verifyBluetoothConnection()
+    {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            Utility.showAlertDialog(getActivity(), getString(R.string.bluetoothNotSupportedTitle), getString(R.string.bluetoothNotSupported));
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
+        } else if (!mBluetoothAdapter.isEnabled()) {
+            showAlertDialogBluetoothEnabled();
+        } else {
+            // Bluetooth is enabled
+        }
+    }
+
+
+    public void showAlertDialogBluetoothEnabled() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        // Set the dialog title and message
+        builder.setTitle(getActivity().getString(R.string.bluetoothNotEnabledTitle))
+                .setMessage(getActivity().getString(R.string.bluetoothNotEnabledTitle))
+                .setPositiveButton(getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        getActivity().onBackPressed();
+                    }
+                })
+                .setNegativeButton(getActivity().getString(R.string.activateBluetooth), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        Intent intentOpenBluetoothSettings = new Intent();
+                        intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                        startActivity(intentOpenBluetoothSettings);
+                    }
+
+                });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
 }

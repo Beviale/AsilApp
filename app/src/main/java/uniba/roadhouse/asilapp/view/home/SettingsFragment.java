@@ -1,25 +1,48 @@
 package uniba.roadhouse.asilapp.view.home;
 
+import static android.content.Context.MODE_APPEND;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.w3c.dom.Text;
+
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 public class SettingsFragment extends Fragment {
-    TextInputEditText changeUsername;
-    TextInputEditText changePassword;
-
+    TextInputEditText changePasswordInput;
+    AutoCompleteTextView cityModify;
+    AutoCompleteTextView nameOrganizationModify;
+    Button editProfileButton;
+    ProgressBar homeActivityProgressBar;
+    ConstraintLayout settingsLayout;
+    RatingBar ratingApp;
+    TextView valueRatingApp;
+    Button exitAccountButton;
 
 
 
@@ -52,8 +75,59 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //----------RIFERIMENTI-----------------
-        changeUsername = view.findViewById(R.id.changeUsernameInput);
-        changePassword = view.findViewById(R.id.changePasswordInput);
-        changeUsername.setText(Access.getUsername());
+        changePasswordInput = view.findViewById(R.id.changePasswordInput);
+        cityModify = view.findViewById(R.id.cityModify);
+        nameOrganizationModify = view.findViewById(R.id.nameOrganizationModify);
+        ratingApp = view.findViewById(R.id.ratingApp);
+        exitAccountButton = view.findViewById(R.id.exitAccountButton);
+        editProfileButton = view.findViewById(R.id.editProfileButton);
+        settingsLayout = view.findViewById(R.id.settingsLayout);
+        valueRatingApp = view.findViewById(R.id.valueRatingApp);
+        SharedPreferences sh = getActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        Float ratingSharedPref = sh.getFloat("ratingApp", (float)0);
+        ratingApp.setRating(ratingSharedPref);
+        valueRatingApp.setText(String.valueOf(ratingApp.getRating()));
+        homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        editProfileButton.setEnabled(false);
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        settingsLayout.setAlpha((float)0.5);
+        getData();
+
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ratingApp.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+               valueRatingApp.setText(String.valueOf(rating));
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putFloat("ratingApp", rating);
+                myEdit.commit();
+            }
+        });
+
+        exitAccountButton.setOnClickListener(v->exitAccount());
+    }
+
+    private void getData()
+    {
+        CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                homeActivityProgressBar.setVisibility(View.GONE);
+                settingsLayout.setAlpha((float)1);
+                if(result!=null)
+                Log.d("aa", String.valueOf(result.size()));
+            });
+        });
+    }
+
+    private void exitAccount()
+    {
+
     }
 }

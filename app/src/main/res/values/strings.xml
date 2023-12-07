@@ -11,7 +11,8 @@
     <string name="connection">Connessione</string>
     <string name="edit">Modifica</string>
     <string name="exit">Esci</string>
-
+    <string name="iAmLoading">Sto caricando</string>
+    <string name="ok">Ok</string>
 
 
     <!--SigninSignupActivity-->
@@ -143,12 +144,21 @@
     <string name="idLastRecordHealthHistoryShare">ID</string>
     <string name="idLastVisitMyPathologiesShare">ID</string>
     <string name="recordHealthHistoryOld">Dati rilevazione</string>
+    <string name="typeHealthHistory">Tipo di registrazione</string>
 
     <!--SETTINGS-->
     <string name="settingsUpperCase">IMPOSTAZIONI</string>
     <string name="editProfileTitle">Modifica profilo</string>
     <string name="evalutationAppTitle">Valuta app</string>
     <string name="exitAccountTitle">Esci dall\'account</string>
+
+
+    <!--HEALTHBOX-->
+    <string name="bluetoothNotSupportedTitle">Non puoi usare questa funzionalità!</string>
+    <string name="bluetoothNotSupported">Siccome il tuo dispositivo non supporta la connessione Bluetooth, allora non puoi usare la funzionalità \"Scatola Salute\"! Ti invitiamo ad utilizzare le altre funzioni dell\'app disponibili.</string>
+    <string name="bluetoothNotEnabledTitle">Bluetooth non abilitato</string>
+    <string name="bluetoothNotEnabled">Per utilizzare questa funzionalità devi attivare la connessione Belutooth del tuo dispositivo!</string>
+    <string name="activateBluetooth">Abilita Bluetooth</string>
 
 
     <!-- Unità di misura-->

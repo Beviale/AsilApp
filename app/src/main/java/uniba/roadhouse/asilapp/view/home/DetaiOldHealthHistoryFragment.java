@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.view.home;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,4 +141,5 @@ public class DetaiOldHealthHistoryFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
 }

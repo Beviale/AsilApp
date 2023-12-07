@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
+<ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -43,40 +45,14 @@
         app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/changeUsernameLayout"
-        android:layout_width="@dimen/inputTextWidth"
-        android:layout_height="@dimen/inpuTextHeight"
-        android:layout_gravity="center"
-        android:hint="@string/usernamePlaceholder"
-        android:textColorHint="@color/textPlaceholderColor"
-        android:layout_marginLeft="@dimen/marginLeftSettings"
-        android:layout_marginTop="40dp"
-        app:boxStrokeColor="@color/appMainColor"
-        app:counterTextColor="@color/appMainColor"
-        app:helperTextTextColor="@color/appMainColor"
-        app:hintTextColor="@color/appMainColor"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editProfile"
-        app:placeholderTextColor="@color/appMainColor"
-        app:prefixTextColor="@color/appMainColor"
-        app:suffixTextColor="@color/appMainColor">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/changeUsernameInput"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="text"
-            android:textColor="@color/textColor"
-            android:textColorHighlight="@color/appMainColor"
-            android:textColorLink="@color/appMainColor" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/changePasswordLayout"
         android:layout_width="@dimen/inputTextWidth"
         android:layout_height="@dimen/inpuTextHeight"
+        app:passwordToggleEnabled="true"
         android:layout_gravity="center"
         android:hint="@string/passwordPlaceholder"
         android:textColorHint="@color/textPlaceholderColor"
@@ -87,7 +63,7 @@
         app:helperTextTextColor="@color/appMainColor"
         app:hintTextColor="@color/appMainColor"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsernameLayout"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile"
         app:placeholderTextColor="@color/appMainColor"
         app:prefixTextColor="@color/appMainColor"
         app:suffixTextColor="@color/appMainColor">
@@ -103,6 +79,67 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="@dimen/inputTextWidth"
+        android:id="@+id/cityModifyLayout"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:hint="@string/cityOrganizationSignupText"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:textColorHint="@color/textPlaceholderColor"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePasswordLayout"
+        app:suffixTextColor="@color/appMainColor">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/cityModify"
+            style="@style/MyAutoCompleteTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/nameOrganizationModifyLayout"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:layout_margin="@dimen/marginLeftSettings"
+        android:hint="@string/nameOrganizationSignupText"
+        android:textColorHint="@color/textPlaceholderColor"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cityModifyLayout"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/nameOrganizationModify"
+            style="@style/MyAutoCompleteTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <Button
         android:id="@+id/editProfileButton"
@@ -113,7 +150,7 @@
         android:text="@string/edit"
         android:layout_marginLeft="@dimen/marginLeftSettings"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changePasswordLayout"></Button>
+        app:layout_constraintTop_toBottomOf="@+id/nameOrganizationModifyLayout"></Button>
 
     <View
         android:id="@+id/greyLine"
@@ -148,11 +185,23 @@
         android:id="@+id/ratingApp"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:stepSize="0.5"
+        android:rating="0"
         android:layout_marginTop="20dp"
         android:numStars="5"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/marginLeftSettings"
         app:layout_constraintTop_toBottomOf="@+id/evalutationAppTitle"/>
+
+    <TextView
+        android:id="@+id/valueRatingApp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/evalutationAppTitle"
+        app:layout_constraintLeft_toRightOf="@+id/ratingApp"
+        android:layout_height="wrap_content"/>
 
 
     <View

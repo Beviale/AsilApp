@@ -1,20 +1,39 @@
 package uniba.roadhouse.asilapp.view.home;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +47,10 @@ public class HealthHistoryFragment extends Fragment {
     ConstraintLayout bpmView;
     ConstraintLayout tremblingView;
     ConstraintLayout glucoseView;
+    ProgressBar homeActivityProgressBar;
+    SwipeRefreshLayout swipereFreshLayout;
+    Button share;
+    View viewClickedContext;
 
 
 
@@ -73,7 +96,12 @@ public class HealthHistoryFragment extends Fragment {
         bpmView = view.findViewById(R.id.bpmView);
         tremblingView = view.findViewById(R.id.tremblingView);
         glucoseView = view.findViewById(R.id.glucoseView);
-    }
+        swipereFreshLayout = view.findViewById(R.id.swipereFreshLayout);
+        homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        swipereFreshLayout.setAlpha((float)0.5);
+        getData();
+        }
 
     @Override
     public void onStart() {
@@ -85,6 +113,19 @@ public class HealthHistoryFragment extends Fragment {
         bpmView.setOnClickListener(v->openDetailFragment(getString(R.string.bpmHealthHistory)));
         tremblingView.setOnClickListener(v->openDetailFragment(getString(R.string.tremblingHealthHistory)));
         glucoseView.setOnClickListener(v->openDetailFragment(getString(R.string.glucoseHealthHistory)));
+        registerForContextMenu(bodyTemperatureView);
+        registerForContextMenu(bloodPressureView);
+        registerForContextMenu(weightView);
+        registerForContextMenu(bpmView);
+        registerForContextMenu(tremblingView);
+        registerForContextMenu(glucoseView);
+        swipereFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+               swipereFreshLayout.setRefreshing(false);
+            }
+        });
 
     }
 
@@ -94,8 +135,39 @@ public class HealthHistoryFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString("itemClicked", clicked);
+        bundle.putBoolean("share", false);
         fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
         fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
         fragmentTransaction.commit();
+    }
+
+
+    private void getData()
+    {
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        swipereFreshLayout.setAlpha((float)0.5);
+        CompletableFuture<Map<String, ?>> future = Dao.getAllLastMisurationsUsername(Access.getUsername(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                homeActivityProgressBar.setVisibility(View.GONE);
+                swipereFreshLayout.setAlpha((float)1);
+
+            });
+        });
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        viewClickedContext = v;
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.health_history_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        return super.onContextItemSelected(item);
     }
 }
