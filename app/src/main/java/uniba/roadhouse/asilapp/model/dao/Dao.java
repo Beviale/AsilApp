@@ -289,7 +289,7 @@ public class Dao {
             }
 
             //quando la query è completata vedo se esiste un utente con lo username espresso
-            if (query.getResult().size() > 0) {
+            if (query.getResult().size()==0) {
                 return null;
             }
 
@@ -339,11 +339,7 @@ public class Dao {
 
     /**
      * Metodo per la memorizzazione dele misurazioni effettuate sull'utente
-     * @param username
-     * @param data
-     * @param valore
-     * @param nota
-     * @param valutazione
+     * @param mis
      * @param context
      * @return ritorna una stringa che indica se la computazione è adata a buon fine o meno
      */

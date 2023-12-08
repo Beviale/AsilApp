@@ -124,7 +124,7 @@ public class SettingsFragment extends Fragment {
                 homeActivityProgressBar.setVisibility(View.GONE);
                 settingsLayout.setAlpha((float)1);
                 if(result!=null)
-                Log.d("aa", String.valueOf(result.size()));
+                    Log.d("aa", String.valueOf(result.size()));
             });
         });
     }
