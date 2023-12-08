@@ -100,6 +100,29 @@ public class Dao {
         });
     }
 
+    public static CompletableFuture<List<String>> getCittaResidenza(String nomeResidenza, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            String nomeCitta="";
+            Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("nomeResidenza",nomeResidenza).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.getCittaError);
+            }
+
+            //qui la query è completa e ciclo per i risultati ottenuti
+            for (QueryDocumentSnapshot document : query.getResult()) {
+                nomeCitta=document.getString("citta");
+                break;
+            }
+
+            return nomeCitta;
+        });
+    }
+
     public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
         return CompletableFuture.supplyAsync(()->{
             //so gia che username è disponibile e che lapassword rispeta i criteri
@@ -282,7 +305,7 @@ public class Dao {
     public static CompletableFuture<Map<String,Object>> getUserData(String username,Context context){
         return CompletableFuture.supplyAsync(()->{
             Map<String,Object> userData = new HashMap<>();
-            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("unsername", username).get();
+            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("username", username).get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -371,7 +394,7 @@ public class Dao {
             Map<String, Object> misuration = new HashMap<>();
             misuration.put("username",mis.getUsername());
             misuration.put("dataEora",mis.getData());
-            misuration.put("valore",mis.getValore());
+            misuration.put("valutazione",mis.getValutazione());
             misuration.put("notamedico",mis.getNotaMedico());
             misuration.put("valore",mis.getValore());
             misuration.put("tipo",mis.getTipo().toString());
@@ -415,6 +438,7 @@ public class Dao {
 
             Misurazione misuration = new Misurazione(
                     query.getResult().getString("username"),
+                    query.getResult().getString("valutazione"),
                     query.getResult().getDouble("valore"),
                     query.getResult().getDouble("valoreMax"),
                     query.getResult().getDouble("valoreMin"),
@@ -459,6 +483,7 @@ public class Dao {
             for(QueryDocumentSnapshot document:query.getResult()){
                 misurazioni.add(new Misurazione(
                         document.getString("username"),
+                        document.getString("valutazione"),
                         document.getDouble("valore"),
                         document.getDouble("valoreMax"),
                         document.getDouble("valoreMin"),
@@ -501,7 +526,7 @@ public class Dao {
 
                 if(!query.isSuccessful()){
                     return new HashMap<String,Object>(){{
-                        put("esito",context.getString(R.string.misurationGetFailed));
+                        put("esito",query.getException().getMessage());
                     }};
                 }
 
@@ -514,6 +539,7 @@ public class Dao {
                 for(QueryDocumentSnapshot document:query.getResult()){
                     Misurazione mis=new Misurazione(
                             document.getString("username"),
+                            document.getString("valutazione"),
                             document.getDouble("valore"),
                             document.getDouble("valoreMax"),
                             document.getDouble("valoreMin"),
