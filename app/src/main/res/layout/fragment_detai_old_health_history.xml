@@ -7,6 +7,7 @@
     android:scrollbars="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutOldHealthHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.home.DetailHealthHistoryFragment">
@@ -15,13 +16,13 @@
         <TextView
             android:id="@+id/detailHealthHistoryTitleOld"
             android:layout_width="270dp"
-            android:fadeScrollbars="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
             android:layout_marginTop="28dp"
             android:layout_marginRight="@dimen/marginLeftRightDetailHealthHistory"
+            android:fadeScrollbars="false"
             android:fontFamily="@font/titillium_web_bold"
-            android:text="Glucosio"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/textDetailHealthHistoryTitle"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -87,10 +88,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="18"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/valueDetailHealthHistory"
             app:layout_constraintLeft_toRightOf="@+id/idRecordHealthHistoryLabelOld"
-            app:layout_constraintTop_toBottomOf="@+id/recordHealthHistoryOld"/>
+            app:layout_constraintTop_toBottomOf="@+id/recordHealthHistoryOld" />
 
         <TextView
             android:id="@+id/dateRecordHealthHistoryLabelOld"
@@ -110,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="20/11/2023"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/valueDetailHealthHistory"
             app:layout_constraintLeft_toRightOf="@+id/dateRecordHealthHistoryLabelOld"
             app:layout_constraintTop_toBottomOf="@+id/idRecordHealthHistoryLabelOld" />
@@ -134,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="18:28"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/valueDetailHealthHistory"
             app:layout_constraintLeft_toRightOf="@+id/timeRecordHealthHistoryLabelOld"
             app:layout_constraintTop_toBottomOf="@+id/dateRecordHealthHistoryOld" />
@@ -159,22 +160,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="48"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/valueDetailHealthHistory"
             app:layout_constraintLeft_toRightOf="@+id/valueRecordHealthHistoryLabelOld"
             app:layout_constraintTop_toBottomOf="@+id/timeRecordHealthHistoryOld" />
-
-        <TextView
-            android:id="@+id/unityDetaildHealthHistoryOld"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/unityTemperature"
-            android:textSize="@dimen/valueDetailHealthHistory"
-            app:layout_constraintLeft_toRightOf="@+id/valueLastRecordHealthHistoryOld"
-            app:layout_constraintTop_toBottomOf="@+id/timeRecordHealthHistoryOld" />
-
 
 
         <TextView
@@ -195,7 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="Buono 🟢"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/valueDetailHealthHistory"
             app:layout_constraintLeft_toRightOf="@+id/evalutationRecordHealthHistoryLabelOld"
             app:layout_constraintTop_toBottomOf="@+id/valueLastRecordHealthHistoryOld" />
@@ -217,22 +206,22 @@
 
         <EditText
             android:id="@+id/doctorNotesRecordHealthHistoryOld"
-            android:elevation="10dp"
-            android:background="@drawable/rounded"
-            android:padding="10dp"
             android:layout_width="match_parent"
-            android:cursorVisible="true"
             android:layout_height="200dp"
             android:layout_marginStart="@dimen/marginLeftRightDetailHealthHistory"
-            android:fadeScrollbars="false"
             android:layout_marginTop="5dp"
-            android:editable="false"
             android:layout_marginEnd="@dimen/marginLeftRightDetailHealthHistory"
+            android:background="@drawable/rounded"
+            android:cursorVisible="true"
+            android:editable="false"
+            android:elevation="10dp"
+            android:fadeScrollbars="false"
+            android:padding="10dp"
             android:scrollbarAlwaysDrawHorizontalTrack="false"
             android:scrollbarAlwaysDrawVerticalTrack="false"
             android:scrollbars="vertical"
+            android:text="@string/iAmLoading"
             android:textSize="@dimen/textSizeDoctorNotes"
-            android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/doctorNotesRecordHealthHistoryLabelOld" />

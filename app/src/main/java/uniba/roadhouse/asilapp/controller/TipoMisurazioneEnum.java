@@ -2,9 +2,11 @@ package uniba.roadhouse.asilapp.controller;
 
 public enum TipoMisurazioneEnum {
     TEMPERATURA,
-    PRESSIONE,
+    PRESSIONESANGUIGNA,
     PESO,
     BATTITOCARDIACO,
     GLUCOSIO,
     TREMOLIO
 }
+
+

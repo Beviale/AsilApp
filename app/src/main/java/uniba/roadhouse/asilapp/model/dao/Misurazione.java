@@ -6,6 +6,9 @@ import java.sql.Time;
 
 import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
 
+/**
+ * Rappresenta una misurazione effettuata dall'utente. Puè riguardare un determinato parametro.
+ */
 public class Misurazione {
     private String username;
     private Double valore;

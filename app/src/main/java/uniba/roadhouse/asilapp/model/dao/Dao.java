@@ -466,7 +466,7 @@ public class Dao {
     public static CompletableFuture<Map<String,Object>> getAllPastMisurationByUsername(String username, String tipo, Context context){
         return CompletableFuture.supplyAsync(()->{
             List<Map<String,Object>> misurations = new ArrayList<>();
-            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).whereEqualTo("tipo",tipo).orderBy("dataEora").get();
+            Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).whereEqualTo("tipo",tipo).orderBy("dataEora", Query.Direction.DESCENDING).get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -513,7 +513,7 @@ public class Dao {
         return CompletableFuture.supplyAsync(() -> {
             Map<String,Object> misurations = new HashMap<>();
             List<String> typesMisuration=new ArrayList<String>(){{
-               add(TipoMisurazioneEnum.TEMPERATURA.toString());add(TipoMisurazioneEnum.PRESSIONE.toString());
+               add(TipoMisurazioneEnum.TEMPERATURA.toString());add(TipoMisurazioneEnum.PRESSIONESANGUIGNA.toString());
                add(TipoMisurazioneEnum.PESO.toString());add(TipoMisurazioneEnum.BATTITOCARDIACO.toString());
                add(TipoMisurazioneEnum.GLUCOSIO.toString());add(TipoMisurazioneEnum.TREMOLIO.toString());
             }};

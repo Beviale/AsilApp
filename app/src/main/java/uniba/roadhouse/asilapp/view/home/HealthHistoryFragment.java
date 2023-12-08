@@ -1,19 +1,15 @@
 package uniba.roadhouse.asilapp.view.home;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -21,62 +17,147 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
-import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link HealthHistoryFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment che consente di visualizzare le ultime registrazioni dei vari parametri.
  */
 public class HealthHistoryFragment extends Fragment {
+
+    // Cliccabili dall'utente
+    /**
+     * View cliccabile relativa alla temperatura corporea.
+     */
     ConstraintLayout bodyTemperatureView;
+    /**
+     * View cliccabile relativa alla pressione sanguignea.
+     */
     ConstraintLayout bloodPressureView;
+    /**
+     * View cliccabile relativa al peso corporeo.
+     */
     ConstraintLayout weightView;
+    /**
+     * View cliccabile relativa al battito cardiaco.
+     */
     ConstraintLayout bpmView;
+    /**
+     * View cliccabile relativa al tremolio.
+     */
     ConstraintLayout tremblingView;
+    /**
+     * View cliccabile relativo al glucosio.
+     */
     ConstraintLayout glucoseView;
-    ProgressBar homeActivityProgressBar;
+    /**
+     * Layout che consente di effettuare il refresh della pagina.
+     */
     SwipeRefreshLayout swipereFreshLayout;
-    Button share;
+
+
+    /**
+     * ProgressBar di HomeActivity
+     */
+    ProgressBar homeActivityProgressBar;
+
+    /**
+     * View che viene cliccata dall'utente quando seleziona il menu contestuale. Permette di effettuare la condivisione dei dati.
+     */
     View viewClickedContext;
 
-    //Valutazione
+    //Valutazioni
+    /**
+     * Valutazione della temperatura
+     */
     TextView evalutationHealthHistoryTemperature;
+    /**
+     * Valutazione della pressione
+     */
     TextView evalutationHealthHistoryBloodPressure;
+    /**
+     * Valutazione del peso
+     */
     TextView evalutationHealthHistoryWeight;
+    /**
+     * Valutazione del battito cardiaco
+     */
     TextView evalutationHealthHistoryBPM;
+    /**
+     * Valutazione del tremolio.
+     */
     TextView evalutationHealthHistoryTrembling;
+    /**
+     * Valutazione del glucosio
+     */
     TextView evalutationHealthHistoryGlucose;
 
     // Valore
+    /**
+     * Valore registrato per la temperatura.
+     */
     TextView resultTemperature;
+    /**
+     * Valore registrato per la pressione massima.
+     */
     TextView resultBloodPressureMax;
+    /**
+     * Valore registrato per la pressione minima
+     */
     TextView resultBloodPressureMin;
+    /**
+     * Valore registrato per il peso
+     */
     TextView resultWeight;
+    /**
+     * Valore registrato per il battito cardiaco
+     */
     TextView resultBPM;
+    /**
+     * Valore registrato per il tremolio
+     */
     TextView resultTrembling;
+    /**
+     * Valore registrato per il glucosio.
+     */
     TextView resultGlucose;
+
+
+
     // ID
+    /**
+     * id della misurazione relativa alla temperatura
+     */
     private int idTemperature;
+    /**
+     * id della misurazione relativa alla pressione
+     */
     private int idBloodPressure;
+    /**
+     * id della misurazione relativa al peso
+     */
     private int idWeight;
+    /**
+     * id della misurazione relativa al battito cardiaco
+     */
     private int idBPM;
+    /**
+     * id della misurazione relativa al tremolio
+     */
     private int idTrembling;
+    /**
+     * id della misurazione relativa al glucosio
+     */
     private int idGlucose;
 
 
@@ -86,19 +167,10 @@ public class HealthHistoryFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HealthHistoryFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static HealthHistoryFragment newInstance(String param1, String param2) {
         HealthHistoryFragment fragment = new HealthHistoryFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -110,7 +182,6 @@ public class HealthHistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.health_history_fragment, container, false);
     }
 
@@ -143,50 +214,72 @@ public class HealthHistoryFragment extends Fragment {
         resultBPM = view.findViewById(R.id.resultBPM);
         resultTrembling = view.findViewById(R.id.resultTrembling);
         resultGlucose = view.findViewById(R.id.resultGlucose);
-
         getData();
         }
+
+
 
     @Override
     public void onStart() {
         super.onStart();
         //-----------LISTENER--------------
-        bodyTemperatureView.setOnClickListener(v->openDetailFragment(getString(R.string.temperatureHealthHistory), idTemperature));
-        bloodPressureView.setOnClickListener(v->openDetailFragment(getString(R.string.bloodPressureHealthHistory), idBloodPressure));
-        weightView.setOnClickListener(v->openDetailFragment(getString(R.string.weightHealthHistory), idWeight));
-        bpmView.setOnClickListener(v->openDetailFragment(getString(R.string.bpmHealthHistory), idBPM));
-        tremblingView.setOnClickListener(v->openDetailFragment(getString(R.string.tremblingHealthHistory), idTrembling));
-        glucoseView.setOnClickListener(v->openDetailFragment(getString(R.string.glucoseHealthHistory), idGlucose));
+        bodyTemperatureView.setOnClickListener(v->openDetailFragment(idTemperature, false));
+        bloodPressureView.setOnClickListener(v->openDetailFragment(idBloodPressure, false));
+        weightView.setOnClickListener(v->openDetailFragment(idWeight, false));
+        bpmView.setOnClickListener(v->openDetailFragment(idBPM, false));
+        tremblingView.setOnClickListener(v->openDetailFragment(idTrembling, false));
+        glucoseView.setOnClickListener(v->openDetailFragment(idGlucose, false));
+        // Utilizzo del menu contestuale per la condivisione dei dati.
         registerForContextMenu(bodyTemperatureView);
         registerForContextMenu(bloodPressureView);
         registerForContextMenu(weightView);
         registerForContextMenu(bpmView);
         registerForContextMenu(tremblingView);
         registerForContextMenu(glucoseView);
+
+        // Permette di aggiornare i dati dal database facendo una pull to refresh
         swipereFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getData();
-               swipereFreshLayout.setRefreshing(false);
+                swipereFreshLayout.setRefreshing(false);
             }
         });
 
     }
 
-    private void openDetailFragment(String clicked, int id)
+
+    /**
+     * Apre il fragment relativo alla singola misurazione.
+     * @param id, identificativo della misurazione da visualizzare.
+     * @param share, se true indica la volontà di avviare il menu di convidivisione all'apertura del nuovo fragment.
+     */
+    private void openDetailFragment(int id, Boolean share)
     {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putString("itemClicked", clicked);
-        bundle.putInt("id", id);
-        bundle.putBoolean("share", false);
-        fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
-        fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
-        fragmentTransaction.commit();
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        CompletableFuture<Map<String, ?>> future = Dao.getMisuration(id, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                homeActivityProgressBar.setVisibility(View.GONE);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("itemClicked", ((Misurazione) result.get("misurazione")).getTipo().toString());
+                bundle.putInt("id", id);
+                bundle.putBoolean("share", share);
+                fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
+                fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
+                fragmentTransaction.commit();
+
+            });
+        });
+
     }
 
 
+    /**
+     * Acquisice dal database i dati di tutte le ultime misurazioni e compila le view apposite.
+     */
     private void getData()
     {
         homeActivityProgressBar.setVisibility(View.VISIBLE);
@@ -207,7 +300,7 @@ public class HealthHistoryFragment extends Fragment {
                                 resultTemperature.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))).concat("°"));
                                 idTemperature = ((Misurazione) result.get(key)).getId();
                                 break;
-                            case PRESSIONE:
+                            case PRESSIONESANGUIGNA:
                                 evalutationHealthHistoryBloodPressure.setText(((Misurazione) result.get(key)).getValutazione());
                                 resultBloodPressureMax.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMax()))).concat("/"));
                                 resultBloodPressureMin.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMin()))));
@@ -258,6 +351,30 @@ public class HealthHistoryFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if((viewClickedContext.equals(getActivity().findViewById(R.id.bodyTemperatureView))))
+        {
+            openDetailFragment(idTemperature, true);
+        }
+        if((viewClickedContext.equals(getActivity().findViewById(R.id.bloodPressureView))))
+        {
+            openDetailFragment(idBloodPressure, true);
+        }
+        if((viewClickedContext.equals(getActivity().findViewById(R.id.weightView))))
+        {
+            openDetailFragment(idWeight, true);
+        }
+        if((viewClickedContext.equals(getActivity().findViewById(R.id.bpmView))))
+        {
+            openDetailFragment(idBPM, true);
+        }
+        if((viewClickedContext.equals(getActivity().findViewById(R.id.tremblingView))))
+        {
+            openDetailFragment(idTrembling, true);
+        }
+        if((viewClickedContext.equals(getActivity().findViewById(R.id.glucoseView))))
+        {
+            openDetailFragment(idGlucose, true);
+        }
         return super.onContextItemSelected(item);
     }
 }

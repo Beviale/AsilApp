@@ -60,17 +60,17 @@ public class HomeActivity extends AppCompatActivity {
         homeText=findViewById(R.id.homeScreenTextView);
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
-        String lorem = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-        Misurazione misurazione = new Misurazione();
+         /*String lorem = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+       Misurazione misurazione = new Misurazione();
         misurazione.setUsername(Access.getUsername());
-        misurazione.setTipo(TipoMisurazioneEnum.GLUCOSIO);
+        misurazione.setTipo(TipoMisurazioneEnum.PRESSIONESANGUIGNA);
         misurazione.setData(Timestamp.now());
-        misurazione.setValore((Double) 140.2);
-        misurazione.setValoreMax(null);
-        misurazione.setValoreMin(null);
+        misurazione.setValore(null);
+        misurazione.setValoreMax((double)102.0);
+        misurazione.setValoreMin((double)85.0);
         misurazione.setNotaMedico(lorem);
-        misurazione.setValutazione("Cattivo \uD83D\uDD34");
-       /*CompletableFuture<String> future = Dao.storeMisuration(misurazione, this);
+        misurazione.setValutazione("Buono \uD83D\uDFE2");
+       CompletableFuture<String> future = Dao.storeMisuration(misurazione, this);
         future.thenAccept(result -> {
             this.runOnUiThread(() -> {
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();

@@ -18,6 +18,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -162,5 +163,34 @@ public class Utility
             CompoundButtonCompat.setButtonTintList(checkBox, ColorStateList.valueOf(context.getColor(R.color.appMainColor)));
         }
     }
+
+
+    /**
+     * Converte un TipiMisurazioneEnum in una stringa che può essere utilizzata per i titoli dei vari widget
+     * @param tipo, tipoMisurazioneEnum da convertire
+     * @param context, contesto attuale
+     * @return string, tipoMisurazioneEnum convertito in stringa
+     */
+    public static String convertTipoMisurazioneEnumToString(TipoMisurazioneEnum tipo, Context context)
+    {
+        switch(tipo)
+        {
+            case TEMPERATURA:
+                return context.getString(R.string.temperatureHealthHistory);
+            case PRESSIONESANGUIGNA:
+                return context.getString(R.string.bloodPressureHealthHistory);
+            case PESO:
+                return context.getString(R.string.weightHealthHistory);
+            case BATTITOCARDIACO:
+                return context.getString(R.string.bpmHealthHistory);
+            case TREMOLIO:
+                return context.getString(R.string.tremblingHealthHistory);
+            case GLUCOSIO:
+                return context.getString(R.string.glucoseHealthHistory);
+        }
+        return null;
+    }
+
+
 }
 

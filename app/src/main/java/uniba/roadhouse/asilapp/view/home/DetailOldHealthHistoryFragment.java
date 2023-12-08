@@ -1,6 +1,5 @@
 package uniba.roadhouse.asilapp.view.home;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,55 +7,106 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
-
-public class DetaiOldHealthHistoryFragment extends Fragment {
+/**
+ * Fragment che consente la visualizzazione in dettaglio di una misurazione precedente.
+ */
+public class DetailOldHealthHistoryFragment extends Fragment {
+    // Da inizializzare con in valori presenti nel database
+    /**
+     * id della misurazione,
+     */
     TextView idRecordHealthHistoryOld;
+    /**
+     * data della misurazione
+     */
     TextView dateRecordHealthHistoryOld;
+    /**
+     * ora della misurazione
+     */
     TextView timeRecordHealthHistoryOld;
+    /**
+     * valore registrato con la misurazione
+     */
     TextView valueLastRecordHealthHistoryOld;
-    TextView unityDetaildHealthHistoryOld;
+    /**
+     * valutazione della misurazione
+     */
     TextView evalutationRecordHealthHistoryOld;
+    /**
+     * note del medico relative alla misurazione
+     */
     TextView doctorNotesRecordHealthHistoryOld;
+    /**
+     * titolo del fragment. Si tratta essenzialmente del tipo di misurazione.
+     */
+    TextView detailHealthHistoryTitleOld;
+
+
+    /**
+     * Icona che consente la condivisione dei dati,
+     */
     ImageView shareDetailHealthHistoryOld;
+    /**
+     * ProgressBar da mostrare durante il caricamento dei dati dal database.
+     */
+
+    ProgressBar homeActivityProgressBar;
+    /**
+     * layout da oscurare durante il caricamento dei dati dal database.
+     */
+    ConstraintLayout layoutOldHealthHistory;
+
+    /**
+     * identificativo della misurazione da mostrare.
+     */
+    private static Integer id;
 
 
-    public DetaiOldHealthHistoryFragment() {
-        // Required empty public constructor
+    public DetailOldHealthHistoryFragment() {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static DetaiOldHealthHistoryFragment newInstance(String param1, String param2) {
-        DetaiOldHealthHistoryFragment fragment = new DetaiOldHealthHistoryFragment();
-        Bundle args = new Bundle();
-       ;
-        fragment.setArguments(args);
+    public static DetailOldHealthHistoryFragment newInstance(String param1, String param2) {
+        DetailOldHealthHistoryFragment fragment = new DetailOldHealthHistoryFragment();
         return fragment;
     }
 
+
+    /**
+     * Prende dal fragmente precedente l'identificativo della misurazione da mostrare.
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            id = getArguments().getInt("id");
 
         }
     }
@@ -64,7 +114,6 @@ public class DetaiOldHealthHistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detai_old_health_history, container, false);
     }
 
@@ -73,13 +122,18 @@ public class DetaiOldHealthHistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //--------RIFERIMENTI----------------
         idRecordHealthHistoryOld = view.findViewById(R.id.idRecordHealthHistoryOld);
+        detailHealthHistoryTitleOld = view.findViewById(R.id.detailHealthHistoryTitleOld);
         dateRecordHealthHistoryOld = view.findViewById(R.id.dateRecordHealthHistoryOld);
         timeRecordHealthHistoryOld = view.findViewById(R.id.timeRecordHealthHistoryOld);
         valueLastRecordHealthHistoryOld = view.findViewById(R.id.valueLastRecordHealthHistoryOld);
         evalutationRecordHealthHistoryOld = view.findViewById(R.id.evalutationRecordHealthHistoryOld);
         doctorNotesRecordHealthHistoryOld = view.findViewById(R.id.doctorNotesRecordHealthHistoryOld);
         Utility.enableScroll(doctorNotesRecordHealthHistoryOld);
+        layoutOldHealthHistory = view.findViewById(R.id.layoutOldHealthHistory);
+        homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
         shareDetailHealthHistoryOld = view.findViewById(R.id.shareDetailHealthHistoryOld);
+
+        getData();
     }
 
     @Override
@@ -90,6 +144,10 @@ public class DetaiOldHealthHistoryFragment extends Fragment {
     }
 
 
+    /**
+     * Apre il dialog dei condivisione dei dati.
+     * Contiene varie checkbox che permettono all'utente di selezionare singolarmente gli elementi da condividere.
+     */
     private void showCheckboxDialogForSharePrivacy() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getLayoutInflater();
@@ -140,6 +198,68 @@ public class DetaiOldHealthHistoryFragment extends Fragment {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+
+    /**
+     * Prende dal database tutti i dati relativi alla misurazione.
+     */
+    private void getData()
+    {
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        layoutOldHealthHistory.setAlpha((float) 0.5);
+        CompletableFuture<Map<String, ?>> future = Dao.getMisuration(id, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                homeActivityProgressBar.setVisibility(View.INVISIBLE);
+                layoutOldHealthHistory.setAlpha((float) 1);
+                if(!result.get("esito").equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                {
+                    getActivity().onBackPressed();
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                }
+                Misurazione misurazione = (Misurazione)result.get("misurazione");
+                detailHealthHistoryTitleOld.setText(Utility.convertTipoMisurazioneEnumToString(misurazione.getTipo(), getActivity()));
+               idRecordHealthHistoryOld.setText(misurazione.getId().toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+                dateRecordHealthHistoryOld.setText(dateFormat.format(misurazione.getData().toDate()));
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                timeRecordHealthHistoryOld.setText(timeFormat.format(misurazione.getData().toDate()));
+                if(!misurazione.getTipo().equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
+                    valueLastRecordHealthHistoryOld.setText(misurazione.getValore().toString().concat(getUnity(misurazione.getTipo())));
+                else
+                {
+                   valueLastRecordHealthHistoryOld.setText(misurazione.getValoreMax().toString().concat("/").concat(misurazione.getValoreMin().toString().concat(" ").concat(getUnity(misurazione.getTipo()))));
+                }
+                evalutationRecordHealthHistoryOld.setText(misurazione.getValutazione());
+                doctorNotesRecordHealthHistoryOld.setText(misurazione.getNotaMedico());
+            });
+        });
+    }
+
+
+
+    /**
+     * Dato un TipoMisurazioneEnunm restituisce l'unità di misura ad esso associato.
+     * @param itemClicked, TipoMisurazioneEnum da cui ricavare l'unità di misura.
+     * @return unità di misura.
+     */
+    private String getUnity(TipoMisurazioneEnum itemClicked)
+    {
+        String unity = new String();
+        if(itemClicked.equals(TipoMisurazioneEnum.TEMPERATURA))
+            unity=getString(R.string.unityTemperature);
+        if(itemClicked.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
+            unity=getString(R.string.unityBloodPressure);
+        if(itemClicked.equals(TipoMisurazioneEnum.PESO))
+            unity=getString(R.string.unityWeight);
+        if(itemClicked.equals(TipoMisurazioneEnum.BATTITOCARDIACO))
+            unity=getString(R.string.unityBPM);
+        if(itemClicked.equals(TipoMisurazioneEnum.TREMOLIO))
+            unity=getString(R.string.unityTrembling);
+        if(itemClicked.equals(TipoMisurazioneEnum.GLUCOSIO))
+            unity=getString(R.string.unityGlucose);
+        return unity;
     }
 
 }
