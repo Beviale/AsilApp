@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.WriterException;
@@ -100,7 +101,7 @@ public class Dao {
         });
     }
 
-    public static CompletableFuture<List<String>> getCittaResidenza(String nomeResidenza, Context context){
+    public static CompletableFuture<String> getCittaResidenza(String nomeResidenza, Context context){
         return CompletableFuture.supplyAsync(()->{
             String nomeCitta="";
             Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("nomeResidenza",nomeResidenza).get();
@@ -110,7 +111,7 @@ public class Dao {
             }
 
             if(!query.isSuccessful()){
-                return context.getString(R.string.getCittaError);
+                return context.getString(R.string.cityError);
             }
 
             //qui la query è completa e ciclo per i risultati ottenuti
@@ -370,7 +371,7 @@ public class Dao {
     public static CompletableFuture<String> storeMisuration(Misurazione mis, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
-            Task<QuerySnapshot> query = db.collection("misurazioni").orderBy("dataEora").limit(1).get();
+            Task<QuerySnapshot> query = db.collection("misurazioni").orderBy("dataEora", Query.Direction.DESCENDING).limit(1).get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -444,7 +445,7 @@ public class Dao {
                     query.getResult().getDouble("valoreMin"),
                     query.getResult().getTimestamp("dataEora"),
                     TipoMisurazioneEnum.valueOf(query.getResult().getString("tipo")),
-                    query.getResult().getString("nota"),
+                    query.getResult().getString("notamedico"),
                     Integer.valueOf(query.getResult().getId())
             );
 
@@ -518,7 +519,7 @@ public class Dao {
             }};
 
             for(String tipo:typesMisuration){
-                Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).whereEqualTo("tipo",tipo).orderBy("dataEora").limit(1).get();
+                Task<QuerySnapshot> query = db.collection("misurazioni").whereEqualTo("username",username).whereEqualTo("tipo",tipo).orderBy("dataEora", Query.Direction.DESCENDING).limit(1).get();
 
                 while (!query.isComplete()) {
                     //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -530,10 +531,12 @@ public class Dao {
                     }};
                 }
 
+
                 //se l'utente non ha mai fatto nessuna misurazione di queso tipo, allora passo al prossimo tipo
                 if(query.getResult().size()==0){
                     continue;
                 }
+
 
                 //prendo la misurazioneeffettuata e la aggiungo alla mappa
                 for(QueryDocumentSnapshot document:query.getResult()){

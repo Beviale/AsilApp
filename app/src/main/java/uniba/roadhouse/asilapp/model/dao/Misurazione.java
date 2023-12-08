@@ -101,4 +101,9 @@ public class Misurazione {
         this.notaMedico = notaMedico;
         this.id = id;
     }
+
+    public Misurazione()
+    {
+
+    }
 }

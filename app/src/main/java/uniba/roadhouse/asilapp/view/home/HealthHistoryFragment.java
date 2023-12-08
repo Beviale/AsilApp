@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -53,6 +54,31 @@ public class HealthHistoryFragment extends Fragment {
     SwipeRefreshLayout swipereFreshLayout;
     Button share;
     View viewClickedContext;
+
+    //Valutazione
+    TextView evalutationHealthHistoryTemperature;
+    TextView evalutationHealthHistoryBloodPressure;
+    TextView evalutationHealthHistoryWeight;
+    TextView evalutationHealthHistoryBPM;
+    TextView evalutationHealthHistoryTrembling;
+    TextView evalutationHealthHistoryGlucose;
+
+    // Valore
+    TextView resultTemperature;
+    TextView resultBloodPressureMax;
+    TextView resultBloodPressureMin;
+    TextView resultWeight;
+    TextView resultBPM;
+    TextView resultTrembling;
+    TextView resultGlucose;
+    // ID
+    private int idTemperature;
+    private int idBloodPressure;
+    private int idWeight;
+    private int idBPM;
+    private int idTrembling;
+    private int idGlucose;
+
 
 
 
@@ -102,6 +128,22 @@ public class HealthHistoryFragment extends Fragment {
         homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
         homeActivityProgressBar.setVisibility(View.VISIBLE);
         swipereFreshLayout.setAlpha((float)0.5);
+        // Valutazioni
+        evalutationHealthHistoryTemperature = view.findViewById(R.id.evalutationHealthHistoryTemperature);
+        evalutationHealthHistoryBloodPressure = view.findViewById(R.id.evalutationHealthHistoryBloodPressure);
+        evalutationHealthHistoryWeight = view.findViewById(R.id.evalutationHealthHistoryWeight);
+        evalutationHealthHistoryBPM = view.findViewById(R.id.evalutationHealthHistoryBPM);
+        evalutationHealthHistoryTrembling = view.findViewById(R.id.evalutationHealthHistoryTrembling);
+        evalutationHealthHistoryGlucose = view.findViewById(R.id.evalutationHealthHistoryGlucose);
+        // Valori
+        resultTemperature = view.findViewById(R.id.resultTemperature);
+        resultBloodPressureMax = view.findViewById(R.id.resultBloodPressureMax);
+        resultBloodPressureMin = view.findViewById(R.id.resultBloodPressureMin);
+        resultWeight = view.findViewById(R.id.resultWeight);
+        resultBPM = view.findViewById(R.id.resultBPM);
+        resultTrembling = view.findViewById(R.id.resultTrembling);
+        resultGlucose = view.findViewById(R.id.resultGlucose);
+
         getData();
         }
 
@@ -109,12 +151,12 @@ public class HealthHistoryFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //-----------LISTENER--------------
-        bodyTemperatureView.setOnClickListener(v->openDetailFragment(getString(R.string.temperatureHealthHistory)));
-        bloodPressureView.setOnClickListener(v->openDetailFragment(getString(R.string.bloodPressureHealthHistory)));
-        weightView.setOnClickListener(v->openDetailFragment(getString(R.string.weightHealthHistory)));
-        bpmView.setOnClickListener(v->openDetailFragment(getString(R.string.bpmHealthHistory)));
-        tremblingView.setOnClickListener(v->openDetailFragment(getString(R.string.tremblingHealthHistory)));
-        glucoseView.setOnClickListener(v->openDetailFragment(getString(R.string.glucoseHealthHistory)));
+        bodyTemperatureView.setOnClickListener(v->openDetailFragment(getString(R.string.temperatureHealthHistory), idTemperature));
+        bloodPressureView.setOnClickListener(v->openDetailFragment(getString(R.string.bloodPressureHealthHistory), idBloodPressure));
+        weightView.setOnClickListener(v->openDetailFragment(getString(R.string.weightHealthHistory), idWeight));
+        bpmView.setOnClickListener(v->openDetailFragment(getString(R.string.bpmHealthHistory), idBPM));
+        tremblingView.setOnClickListener(v->openDetailFragment(getString(R.string.tremblingHealthHistory), idTrembling));
+        glucoseView.setOnClickListener(v->openDetailFragment(getString(R.string.glucoseHealthHistory), idGlucose));
         registerForContextMenu(bodyTemperatureView);
         registerForContextMenu(bloodPressureView);
         registerForContextMenu(weightView);
@@ -131,12 +173,13 @@ public class HealthHistoryFragment extends Fragment {
 
     }
 
-    private void openDetailFragment(String clicked)
+    private void openDetailFragment(String clicked, int id)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString("itemClicked", clicked);
+        bundle.putInt("id", id);
         bundle.putBoolean("share", false);
         fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
         fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
@@ -153,8 +196,51 @@ public class HealthHistoryFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 homeActivityProgressBar.setVisibility(View.GONE);
                 swipereFreshLayout.setAlpha((float)1);
-                ((Misurazione) result.get(TipoMisurazioneEnum.TEMPERATURA.toString())).g
-
+                for(String key: result.keySet())
+                {
+                    if(!key.equals("esito"))
+                    {
+                        switch(TipoMisurazioneEnum.valueOf(key))
+                        {
+                            case TEMPERATURA:
+                                evalutationHealthHistoryTemperature.setText(((Misurazione) result.get(key)).getValutazione());
+                                resultTemperature.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))).concat("°"));
+                                idTemperature = ((Misurazione) result.get(key)).getId();
+                                break;
+                            case PRESSIONE:
+                                evalutationHealthHistoryBloodPressure.setText(((Misurazione) result.get(key)).getValutazione());
+                                resultBloodPressureMax.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMax()))).concat("/"));
+                                resultBloodPressureMin.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMin()))));
+                                idBloodPressure = ((Misurazione) result.get(key)).getId();
+                                break;
+                            case PESO:
+                                evalutationHealthHistoryWeight.setText(((Misurazione) result.get(key)).getValutazione());
+                                resultWeight.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                idWeight = ((Misurazione) result.get(key)).getId();
+                                break;
+                            case BATTITOCARDIACO:
+                                evalutationHealthHistoryBPM.setText(((Misurazione) result.get(key)).getValutazione());
+                                resultBPM.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                idBPM = ((Misurazione) result.get(key)).getId();
+                                break;
+                            case TREMOLIO:
+                                evalutationHealthHistoryTrembling.setText(((Misurazione) result.get(key)).getValutazione());
+                                resultTrembling.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                idTrembling = ((Misurazione) result.get(key)).getId();
+                                break;
+                            case GLUCOSIO:
+                                evalutationHealthHistoryGlucose.setText(((Misurazione) result.get(key)).getValutazione());
+                                resultGlucose.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                idGlucose = ((Misurazione) result.get(key)).getId();
+                                break;
+                        }
+                    }
+                    else if(!result.get(key).equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                    {
+                        getActivity().onBackPressed();
+                        Toast.makeText(getActivity(), result.get(key).toString(), Toast.LENGTH_LONG).show();
+                    }
+                }
 
             });
         });

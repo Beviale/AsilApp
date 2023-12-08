@@ -36,6 +36,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
+import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -60,19 +61,22 @@ public class HomeActivity extends AppCompatActivity {
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
         String lorem = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-        /*CompletableFuture<String> future = Dao.storeMisuration(Access.getUsername(), Timestamp.now(), Double.valueOf(130), lorem, "Cattivo \uD83D\uDD34", tipoMisurazioneEnum.GLUCOSIO.toString() , null, null, this);
+        Misurazione misurazione = new Misurazione();
+        misurazione.setUsername(Access.getUsername());
+        misurazione.setTipo(TipoMisurazioneEnum.GLUCOSIO);
+        misurazione.setData(Timestamp.now());
+        misurazione.setValore((Double) 140.2);
+        misurazione.setValoreMax(null);
+        misurazione.setValoreMin(null);
+        misurazione.setNotaMedico(lorem);
+        misurazione.setValutazione("Cattivo \uD83D\uDD34");
+       /*CompletableFuture<String> future = Dao.storeMisuration(misurazione, this);
         future.thenAccept(result -> {
             this.runOnUiThread(() -> {
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             });
         });*/
 
-        /*CompletableFuture<?> future = Dao.getAllPastMisurationByUsername(Access.getUsername(), tipoMisurazioneEnum.TEMPERATURA.toString(), this);
-        future.thenAccept(result -> {
-            this.runOnUiThread(() -> {
-                Toast.makeText(this, ((Map<String,Object>((List)result).get(0)).get("valore") , Toast.LENGTH_SHORT).show();
-            });
-        });*/
     }
 
 

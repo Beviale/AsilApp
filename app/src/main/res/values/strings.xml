@@ -94,6 +94,7 @@
     <string name="changeResidenceError">Errore nel cambio della residenza</string>
     <string name="changeResidenzaSuccessfully">Cambio di resienza avvenuto con successo</string>
     <string name="logoutSuccessfull">Logout eseguito correttamente</string>
+    <string name="cityError">Errore</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>

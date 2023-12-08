@@ -8,25 +8,37 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +57,11 @@ public class DetailHealthHistoryFragment extends Fragment {
     TextView detailHealthHistoryTitle;
     EditText doctorNotesLastRecordHealthHistory;
 
+    ProgressBar homeActivityProgressBar;
+    ConstraintLayout detailHealthHistoryLayout;
+
     static String itemCliecked;
+    static int id;
 
 
 
@@ -66,6 +82,7 @@ public class DetailHealthHistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
            itemCliecked = getArguments().getString("itemClicked");
+           id= getArguments().getInt("id");
         }
     }
 
@@ -85,12 +102,15 @@ public class DetailHealthHistoryFragment extends Fragment {
         Utility.enableScroll(doctorNotesLastRecordHealthHistory);
         detailHealthHistoryTitle = view.findViewById(R.id.detailHealthHistoryTitle);
         detailHealthHistoryTitle.setText(itemCliecked);
+        detailHealthHistoryLayout = view.findViewById(R.id.detailHealthHistoryLayout);
+        homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
         unityDetaildHealthHistory = view.findViewById(R.id.unityDetaildHealthHistory);
-        unityDetaildHealthHistory.setText(setUnity());
+        valueLastRecordHealthHistory = view.findViewById(R.id.valueLastRecordHealthHistory);
         idLastRecordHealthHistory = view.findViewById(R.id.idLastRecordHealthHistory);
         dateLastRecordHealthHistory = view.findViewById(R.id.dateLastRecordHealthHistory);
         timeLastRecordHealthHistory = view.findViewById(R.id.timeLastRecordHealthHistory);
         evalutationLastRecordHealthHistory = view.findViewById(R.id.evalutationLastRecordHealthHistory);
+        getData();
     }
 
     @Override
@@ -171,6 +191,32 @@ public class DetailHealthHistoryFragment extends Fragment {
         if(itemCliecked.equals(getString(R.string.glucoseHealthHistory)))
             unity=getString(R.string.unityGlucose);
         return unity;
+    }
+
+    private void getData() {
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        detailHealthHistoryLayout.setAlpha((float) 0.5);
+        CompletableFuture<Map<String, ?>> future = Dao.getMisuration(id, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                homeActivityProgressBar.setVisibility(View.INVISIBLE);
+                detailHealthHistoryLayout.setAlpha((float) 1);
+                if(!result.get("esito").equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                {
+                    getActivity().onBackPressed();
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                }
+                Misurazione misurazione = (Misurazione)result.get("misurazione");
+                idLastRecordHealthHistory.setText(misurazione.getId().toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+                dateLastRecordHealthHistory.setText(dateFormat.format(misurazione.getData().toDate()));
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                timeLastRecordHealthHistory.setText(timeFormat.format(misurazione.getData().toDate()));
+                valueLastRecordHealthHistory.setText(misurazione.getValore().toString().concat(setUnity()));
+                evalutationLastRecordHealthHistory.setText(misurazione.getValutazione());
+                doctorNotesLastRecordHealthHistory.setText(misurazione.getNotaMedico());
+            });
+        });
     }
 
 
