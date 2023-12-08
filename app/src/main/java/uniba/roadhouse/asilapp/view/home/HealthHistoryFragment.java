@@ -31,9 +31,11 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.Utility;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -151,6 +153,8 @@ public class HealthHistoryFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 homeActivityProgressBar.setVisibility(View.GONE);
                 swipereFreshLayout.setAlpha((float)1);
+                ((Misurazione) result.get(TipoMisurazioneEnum.TEMPERATURA.toString())).g
+
 
             });
         });

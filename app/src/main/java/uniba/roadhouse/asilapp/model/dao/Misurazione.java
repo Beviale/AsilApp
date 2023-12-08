@@ -14,6 +14,7 @@ public class Misurazione {
     private Timestamp data;
     private TipoMisurazioneEnum tipo;
     private String notaMedico;
+    private String valutazione;
     private Integer id;
 
     public String getUsername() {
@@ -80,8 +81,18 @@ public class Misurazione {
         this.id = id;
     }
 
-    public Misurazione(String username, Double valore, Double valoreMax, Double valoreMin, Timestamp data, TipoMisurazioneEnum tipo, String notaMedico, Integer id) {
+    public String getValutazione() {
+        return valutazione;
+    }
+
+    public void setValutazione(String valutazione) {
+        this.valutazione = valutazione;
+    }
+
+
+    public Misurazione(String username, String valutazione, Double valore, Double valoreMax, Double valoreMin, Timestamp data, TipoMisurazioneEnum tipo, String notaMedico, Integer id) {
         this.username = username;
+        this.valutazione=valutazione;
         this.valore = valore;
         this.valoreMax = valoreMax;
         this.valoreMin = valoreMin;

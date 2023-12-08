@@ -121,17 +121,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bodyTemperatureView">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/bloodPressureView"
-                app:layout_constraintLeft_toLeftOf="@+id/bloodPressureView"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:fontFamily="@font/titillium_web_bold"
-                android:text="@string/bloodPressureHealthHistory"
-                android:textSize="@dimen/textTitleHealthHistory"
-                android:textColor="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/bloodPressureView"
+                    app:layout_constraintLeft_toLeftOf="@+id/bloodPressureView"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/titillium_web_bold"
+                    android:text="@string/bloodPressureHealthHistory"
+                    android:textSize="@dimen/textTitleHealthHistory"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/unityBloodPressure"
