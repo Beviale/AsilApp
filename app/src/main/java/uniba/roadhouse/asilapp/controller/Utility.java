@@ -33,6 +33,7 @@ import com.google.zxing.common.BitMatrix;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
 
@@ -191,6 +192,16 @@ public class Utility
         return null;
     }
 
+
+    /**
+     * Verifica se una password rispetta i criteri di sicurezza.
+     * @param password, password da scansionare
+     * @return true se la password rispetta i criteri di sicurezza, false altrimenti.
+     */
+    public static Boolean checkRegexPassword(String password)
+    {
+        return Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password);
+    }
 
 }
 

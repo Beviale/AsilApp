@@ -44,7 +44,33 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
 
+    <LinearLayout
+        android:id="@+id/layoutPasswordCheckModify"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/marginLeftSettings"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile"
+        android:orientation="horizontal"
+        android:layout_height="20dp">
 
+        <ImageView
+            android:id="@+id/passwordResultImageModify"
+            android:layout_width="20dp"
+            android:visibility="gone"
+            android:layout_height="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"></ImageView>
+
+        <TextView
+            android:id="@+id/passwordResultTextModify"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp">
+        </TextView>
+    </LinearLayout>
 
 
 
@@ -57,13 +83,13 @@
         android:hint="@string/passwordPlaceholder"
         android:textColorHint="@color/textPlaceholderColor"
         android:layout_marginLeft="@dimen/marginLeftSettings"
-        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:layout_marginTop="0dp"
         app:boxStrokeColor="@color/appMainColor"
         app:counterTextColor="@color/appMainColor"
         app:helperTextTextColor="@color/appMainColor"
         app:hintTextColor="@color/appMainColor"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPasswordCheckModify"
         app:placeholderTextColor="@color/appMainColor"
         app:prefixTextColor="@color/appMainColor"
         app:suffixTextColor="@color/appMainColor">

@@ -1,9 +1,11 @@
 package uniba.roadhouse.asilapp.view.signinSignup;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -202,7 +204,7 @@ public class SignupUsernamePasswordFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(passwordResultText.getText().toString().equals(getString(R.string.passwordRegexError)))
-                showInfoPasswordSecurity();
+                    showInfoPasswordSecurity();
             }
         });
 
@@ -210,7 +212,8 @@ public class SignupUsernamePasswordFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                if(passwordResultImage.getDrawable().equals(getResources().getDrawable(R.drawable.error)));
+                Drawable drawableResult = ContextCompat.getDrawable(getActivity(), R.drawable.error);
+                if(passwordResultImage.getDrawable().equals(drawableResult))
                     showInfoPasswordSecurity();
             }
         });
@@ -319,7 +322,7 @@ public class SignupUsernamePasswordFragment extends Fragment {
             passwordResultText.setVisibility(View.VISIBLE);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutPasswordSignup.getLayoutParams();
             params.topMargin = 0;
-            if(checkRegexPassword(passwordInserted)==true)
+            if(Utility.checkRegexPassword(passwordInserted)==true)
             {
                 passwordResultText.setText(getString(R.string.passwordRegexOk));
                 passwordResultImage.setImageResource(R.mipmap.verified);
@@ -343,15 +346,6 @@ public class SignupUsernamePasswordFragment extends Fragment {
         }
     };
 
-    /**
-     * Verifica se una password rispetta i criteri di sicurezza.
-     * @param password, password da scansionare
-     * @return true se la password rispetta i criteri di sicurezza, false altrimenti.
-     */
-    private static Boolean checkRegexPassword(String password)
-    {
-       return Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password);
-    }
 
 
 
