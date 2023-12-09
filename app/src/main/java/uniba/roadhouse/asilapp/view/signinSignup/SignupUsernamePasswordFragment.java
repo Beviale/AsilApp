@@ -212,8 +212,8 @@ public class SignupUsernamePasswordFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                Drawable drawableResult = ContextCompat.getDrawable(getActivity(), R.drawable.error);
-                if(passwordResultImage.getDrawable().equals(drawableResult))
+                Drawable drawableResult = ContextCompat.getDrawable(getActivity(), R.mipmap.error);
+                if(passwordResultImage.getDrawable().getConstantState().equals(drawableResult.getConstantState()))
                     showInfoPasswordSecurity();
             }
         });

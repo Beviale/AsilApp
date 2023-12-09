@@ -150,8 +150,8 @@ public class SettingsFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                Drawable drawableResult = ContextCompat.getDrawable(getActivity(), R.drawable.error);
-                if(passwordResultImageModify.getDrawable().equals(drawableResult))
+                Drawable drawableResult = ContextCompat.getDrawable(getActivity(), R.mipmap.error);
+                if(passwordResultImageModify.getDrawable().getConstantState().equals(drawableResult.getConstantState()))
                     showInfoPasswordSecurity();
             }
         });
