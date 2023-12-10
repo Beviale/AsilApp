@@ -564,7 +564,7 @@ public class Dao {
 
     public static CompletableFuture<String> editResidenzaUtente(String username, String nuovaresidenza, Context context){
         return CompletableFuture.supplyAsync(() -> {
-            Task<QuerySnapshot> query = db.collection("misurazioni").document(username).update((Map)new HashMap<String,String>(){{
+            Task<QuerySnapshot> query = db.collection("users").document(username).update((Map)new HashMap<String,String>(){{
                 put("nomeResidenza",nuovaresidenza);
             }});
 
@@ -577,6 +577,27 @@ public class Dao {
             }
 
             return context.getString(R.string.changeResidenzaSuccessfully);
+        });
+    }
+
+    public static CompletableFuture<String> editPasswordUtente(String username, String nuovaPassword, Context context){
+        return CompletableFuture.supplyAsync(() -> {
+            //faccio l'hash della password
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = bCryptPasswordEncoder.encode(nuovaPassword);
+            Task<QuerySnapshot> query = db.collection("users").document(username).update((Map)new HashMap<String,String>(){{
+                put("password",hashedPassword);
+            }});
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPasswordFailed);
+            }
+
+            return context.getString(R.string.editPasswordSuccessfull);
         });
     }
 
