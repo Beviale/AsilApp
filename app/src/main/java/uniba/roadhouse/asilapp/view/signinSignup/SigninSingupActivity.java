@@ -52,6 +52,7 @@ public class SigninSingupActivity extends AppCompatActivity {
             noConnectionIcon.setVisibility(View.VISIBLE);
             dialogConnection = true;
         }
+
     }
 
 

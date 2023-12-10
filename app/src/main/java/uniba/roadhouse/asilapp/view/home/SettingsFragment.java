@@ -16,11 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,12 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.api.Distribution;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
@@ -44,20 +48,75 @@ import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.view.signinSignup.SigninSingupActivity;
 
-
+/**
+ * Schermata delle impostazioni dell'app.
+ */
 public class SettingsFragment extends Fragment {
+    /**
+     * TextInputEditText relativa alla modifica della password.
+     */
     TextInputEditText changePasswordInput;
+    /**
+     * AutoCompelteTextView relativa alla modifica della città.
+     */
     AutoCompleteTextView cityModify;
+    /**
+     * AutoCompletTextView relativa alla modifica del nome della struttura di accoglienza.,
+     */
     AutoCompleteTextView nameOrganizationModify;
+    /**
+     * Bottone che avvia la modifica dei dati.
+     */
     Button editProfileButton;
+    /**
+     * PorgressBar da mostrare durante la connessione al database.
+     */
     ProgressBar homeActivityProgressBar;
+    /**
+     * Layout dell'intera schermata impostazioni.
+     */
     ConstraintLayout settingsLayout;
+    /**
+     * RatingBar per la valutazione complessiva dell'app da parte dell'utente.
+     */
     RatingBar ratingApp;
+    /**
+     * Testo che rappresenta in formato numerico la valutazione complessiva dell'app da parte dell'utente.
+     */
     TextView valueRatingApp;
+    /**
+     * Bottonc che consente l'uscita dall'account corrente.
+     */
     Button exitAccountButton;
+    /**
+     * Layout che contiene l'immagine e il testo relativi al check della password inserita.
+     */
     LinearLayout layoutPasswordCheckModify;
+    /**
+     * Immagine relativa al check della password inserita.
+     */
     ImageView passwordResultImageModify;
+    /**
+     * Testo relativo al check della password inserita.
+     */
     TextView passwordResultTextModify;
+
+
+    /**
+     * se true indica che la password è valida per essere modificata effettivamente nel database, altrimenti false.
+     */
+    private static Boolean passwordChanged=false;
+
+
+
+    /**
+     * Nome corrente della struttura di accoglienza.
+     */
+    private static String currentNameOrganization;
+    /**
+     * città corrente della struttura di accoglienza.
+     */
+    private static String currentCityOrganization;
 
 
 
@@ -66,7 +125,6 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance(String param1, String param2) {
         SettingsFragment fragment = new SettingsFragment();
         return fragment;
@@ -75,8 +133,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -135,6 +191,10 @@ public class SettingsFragment extends Fragment {
         });
 
         exitAccountButton.setOnClickListener(v->exitAccount());
+        editProfileButton.setOnClickListener(v->applyChanges());
+        cityModify.addTextChangedListener(textWatcherCity);
+        nameOrganizationModify.addTextChangedListener(textWacherName);
+        //cityModify.setOnClickListener(v->loadAllCity());
         changePasswordInput.addTextChangedListener(textWatcherPassword);
         passwordResultTextModify.setOnClickListener(new View.OnClickListener()
         {
@@ -159,21 +219,36 @@ public class SettingsFragment extends Fragment {
 
 
     /**
-     *
+     * Recupero dal database i dati correnti eventualmente da modificare.
      */
     private void getData()
     {
         CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                homeActivityProgressBar.setVisibility(View.GONE);
-                settingsLayout.setAlpha((float)1);
                 if(result!=null) {
-                    //nameOrganizationModify.setText(result.get("nomeResidenza").toString());
+                    currentNameOrganization =  result.get("nomeResidenza").toString();
+                    nameOrganizationModify.setText(currentNameOrganization);
+                    CompletableFuture<String> futureCity = Dao.getCittaResidenza(currentNameOrganization, getActivity());
+                    futureCity.thenAccept(resultCity -> {
+                        getActivity().runOnUiThread(() -> {
+                            homeActivityProgressBar.setVisibility(View.GONE);
+                            settingsLayout.setAlpha((float)1);
+                            currentCityOrganization = resultCity;
+                            cityModify.setText(currentCityOrganization);
+                            loadAllCity();
+                            Editable editable = new SpannableStringBuilder(currentCityOrganization);
+                            textWatcherCity.afterTextChanged(editable);
+
+                        });
+                    });
+
                 }
             });
         });
     }
+
+
 
 
     /**
@@ -213,12 +288,15 @@ public class SettingsFragment extends Fragment {
             {
                 passwordResultTextModify.setText(getString(R.string.passwordRegexOk));
                 passwordResultImageModify.setImageResource(R.mipmap.verified);
+                passwordChanged=true;
+                editProfileButton.setEnabled(true);
             }
             else
             {
                 Utility.textViewUnderlineText(passwordResultTextModify,getString(R.string.passwordRegexError));
                 passwordResultImageModify.setClickable(true);
                 passwordResultImageModify.setImageResource(R.mipmap.error);
+                editProfileButton.setEnabled(false);
             }
         }
     };
@@ -231,4 +309,156 @@ public class SettingsFragment extends Fragment {
         Utility.showAlertDialog(getActivity(), getString(R.string.passwordExplantationTitle), getString(R.string.passwordExplanation));
     }
 
+
+    /**
+     * Applica le modifiche effettuate dall'utente.
+     */
+    private void applyChanges()
+    {
+        if(passwordChanged==true && (!currentNameOrganization.equals(nameOrganizationModify.getText().toString())) && (!changePasswordInput.getText().toString().isEmpty()))
+        {
+            homeActivityProgressBar.setEnabled(true);
+            settingsLayout.setAlpha((float)0.5);
+            CompletableFuture<String> future = Dao.editResidenzaUtente(Access.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                    CompletableFuture<String> futurePassword = Dao.editPasswordUtente(Access.getUsername(), changePasswordInput.getText().toString(), getActivity());
+                    futurePassword.thenAccept(resultPassword -> {
+                        getActivity().runOnUiThread(() -> {
+                            homeActivityProgressBar.setEnabled(false);
+                            settingsLayout.setAlpha((float)1);
+                            if(result.equals(getString(R.string.changeResidenzaSuccessfully)) && resultPassword.equals(getString(R.string.editPasswordSuccessfull)))
+                            {
+                                Toast.makeText(getActivity(), getString(R.string.allApplyCHanged), Toast.LENGTH_LONG).show();
+                                exitAccount();
+                            }
+                            else if(result.equals(getString(R.string.changeResidenzaSuccessfully)))
+                            {
+                                Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), resultPassword, Toast.LENGTH_LONG).show();
+                            }
+                            else if(resultPassword.equals(getString(R.string.editPasswordSuccessfull)))
+                            {
+                                Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), resultPassword, Toast.LENGTH_LONG).show();
+                                exitAccount();
+                            }
+
+                        });
+                    });
+                });
+            });
+        }
+
+        else if(passwordChanged==true)
+        {
+            homeActivityProgressBar.setEnabled(true);
+            settingsLayout.setAlpha((float)0.5);
+            CompletableFuture<String> future = Dao.editPasswordUtente(Access.getUsername(), changePasswordInput.getText().toString(), getActivity());
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                    homeActivityProgressBar.setEnabled(false);
+                    settingsLayout.setAlpha((float)1);
+                    Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                    exitAccount();
+                });
+            });
+
+        }
+        else if(!currentNameOrganization.equals(nameOrganizationModify.getText().toString()))
+        {
+            homeActivityProgressBar.setEnabled(true);
+            settingsLayout.setAlpha((float)0.5);
+            CompletableFuture<String> future = Dao.editResidenzaUtente(Access.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                    homeActivityProgressBar.setEnabled(false);
+                    settingsLayout.setAlpha((float)1);
+                    Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                });
+            });
+
+        }
+
+    }
+
+    TextWatcher textWatcherCity = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            homeActivityProgressBar.setEnabled(true);
+            settingsLayout.setAlpha((float)0.5);
+            CompletableFuture<List<String>> future = Dao.getNomiResidenze(s.toString());
+            List<String> allOrganization = new ArrayList<String>();
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                    homeActivityProgressBar.setEnabled(false);
+                    settingsLayout.setAlpha((float)1);
+                    allOrganization.addAll(result);
+                });
+            });
+            ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
+            nameOrganizationModify.setAdapter(adapterOrganization);
+            //nameOrganizationModify.setText((" "));
+        }
+    };
+
+
+    /**
+     * Prende dal database tutte le città che hanno almeno una struttura di accoglienza.
+     */
+    private void loadAllCity()
+    {
+        homeActivityProgressBar.setEnabled(true);
+        settingsLayout.setAlpha((float)0.5);
+        CompletableFuture<List<String>> future = Dao.getNomiCittaResidenze();
+        List<String> allCity = new ArrayList<String>();
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                homeActivityProgressBar.setEnabled(false);
+                settingsLayout.setAlpha((float)1);
+                allCity.addAll(result);
+            });
+        });
+        ArrayAdapter<String> adapterCity = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allCity);
+        cityModify.setAdapter(adapterCity);
+    }
+
+
+    TextWatcher textWacherName = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(!s.toString().equals(currentNameOrganization) && !s.toString().isEmpty())
+            {
+                if(passwordChanged==true || changePasswordInput.getText().toString().isEmpty())
+                {
+                    editProfileButton.setEnabled(true);
+                }
+            }
+            else
+            {
+                editProfileButton.setEnabled(false);
+            }
+
+        }
+    };
 }

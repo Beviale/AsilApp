@@ -154,6 +154,7 @@
     <string name="editProfileTitle">Modifica profilo</string>
     <string name="evalutationAppTitle">Valuta app</string>
     <string name="exitAccountTitle">Esci dall\'account</string>
+    <string name="allApplyCHanged">Tutte le modifiche sono state effettuate con successo</string>
 
 
     <!--HEALTHBOX-->

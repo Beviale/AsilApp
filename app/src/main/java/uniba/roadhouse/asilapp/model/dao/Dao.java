@@ -29,9 +29,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -79,6 +81,9 @@ public class Dao {
             for (QueryDocumentSnapshot document : query.getResult()) {
                 nomiCitta.add(document.getString("citta"));
             }
+            Set<String> set = new HashSet<>(nomiCitta);
+            nomiCitta.clear();
+            nomiCitta.addAll(set);
             return nomiCitta;
 
         });
@@ -104,7 +109,7 @@ public class Dao {
     public static CompletableFuture<String> getCittaResidenza(String nomeResidenza, Context context){
         return CompletableFuture.supplyAsync(()->{
             String nomeCitta="";
-            Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("nomeResidenza",nomeResidenza).get();
+            Task<QuerySnapshot> query=db.collection("residenze").whereEqualTo("nome",nomeResidenza).get();
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione

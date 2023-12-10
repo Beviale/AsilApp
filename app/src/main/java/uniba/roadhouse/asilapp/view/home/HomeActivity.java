@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
