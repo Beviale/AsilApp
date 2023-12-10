@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
                     if(!(currentFragment instanceof SettingsFragment))
                     {
                         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.addToBackStack(getString(R.string.settingsMenuScreen));
                         fragmentTransaction.replace(R.id.homeContainerView, SettingsFragment.class, null);
                         fragmentTransaction.commit();
                     }

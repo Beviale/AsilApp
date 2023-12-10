@@ -39,6 +39,10 @@
     <dimen name="marginLeftRightDetailHealthHistory">20dp</dimen>
     <dimen name="resultBloodPressureHealthHistory">40dp</dimen>
 
+    <!--HOME-->
+
+    <dimen name="marginTopFragmentHome">40dp</dimen>
+
 
     <!--Settings-->
     <dimen name="marginLeftSettings">20dp</dimen>
