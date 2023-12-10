@@ -20,7 +20,7 @@
             android:minHeight="@dimen/abbBarHeight"
             android:elevation="2dp"
             android:pointerIcon="context_menu"
-            android:theme="?attr/actionBarTheme">
+            android:theme="@style/AppTheme.ActionBarTheme">
 
         <ImageView
             android:id="@+id/toolBarIconHomeActivity"

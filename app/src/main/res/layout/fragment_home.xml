@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.home.HomeFragment">
+
 
     <TextView
         android:id="@+id/welcomeText"
@@ -13,6 +15,21 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/titillium_web_bold"
         android:text="@string/welcome"
-        android:textColor="@color/appMainColor"
-        android:textSize="@dimen/title1FontSize" />
-</FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="@dimen/title2FontSize" />
+
+
+    <ImageView
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/users"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="411dp" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,12 +5,14 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -18,6 +20,7 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -79,7 +82,27 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             });
         });*/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBarHome);
+        toolbar.inflateMenu(R.menu.menu_home_activity);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.settings)
+                {
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.homeContainerView);
+                    if(!(currentFragment instanceof SettingsFragment))
+                    {
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.replace(R.id.homeContainerView, SettingsFragment.class, null);
+                        fragmentTransaction.commit();
+                    }
 
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -198,4 +221,8 @@ public class HomeActivity extends AppCompatActivity {
         ((ImageView) findViewById(screenIcons.get(newScreen))).setImageResource(screenActiveMipmapIcons.get(newScreen));
         homeText.setText(newScreen);
     }
+
+
+
+
 }
