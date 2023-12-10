@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -192,10 +193,7 @@ public class SettingsFragment extends Fragment {
 
         exitAccountButton.setOnClickListener(v->exitAccount());
         editProfileButton.setOnClickListener(v->applyChanges());
-        cityModify.addTextChangedListener(textWatcherCity);
-        nameOrganizationModify.addTextChangedListener(textWacherName);
-        //cityModify.setOnClickListener(v->loadAllCity());
-        changePasswordInput.addTextChangedListener(textWatcherPassword);
+
         passwordResultTextModify.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -215,11 +213,18 @@ public class SettingsFragment extends Fragment {
                     showInfoPasswordSecurity();
             }
         });
+
+        // Aggiungo i TextWatcher
+        cityModify.addTextChangedListener(textWatcherCity);
+        nameOrganizationModify.addTextChangedListener(textWacherName);
+        changePasswordInput.addTextChangedListener(textWatcherPassword);
     }
 
 
+
+
     /**
-     * Recupero dal database i dati correnti eventualmente da modificare.
+     * Recupero dal database i dati correnti.
      */
     private void getData()
     {
@@ -301,6 +306,8 @@ public class SettingsFragment extends Fragment {
         }
     };
 
+
+
     /**
      * Mostra un dialog che spiega all'utente quali sono i criteri di sicurezza per le password.
      */
@@ -336,6 +343,7 @@ public class SettingsFragment extends Fragment {
                             {
                                 Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
                                 Toast.makeText(getActivity(), resultPassword, Toast.LENGTH_LONG).show();
+                                editProfileButton.setEnabled(false);
                             }
                             else if(resultPassword.equals(getString(R.string.editPasswordSuccessfull)))
                             {
@@ -375,12 +383,21 @@ public class SettingsFragment extends Fragment {
                     homeActivityProgressBar.setEnabled(false);
                     settingsLayout.setAlpha((float)1);
                     Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                    if(result.equals(getString(R.string.changeResidenzaSuccessfully)))
+                    {
+                        editProfileButton.setEnabled(false);
+                        currentNameOrganization = nameOrganizationModify.getText().toString();
+                    }
                 });
             });
 
         }
 
     }
+
+
+
+
 
     TextWatcher textWatcherCity = new TextWatcher() {
         @Override
@@ -393,6 +410,10 @@ public class SettingsFragment extends Fragment {
 
         }
 
+        /**
+         * Ogni volta che la città viene modificata, automaticamente viene aggiornata la lista delle strutture di accoglienza.
+         * @param s, città appena selezionata
+         */
         @Override
         public void afterTextChanged(Editable s) {
             homeActivityProgressBar.setEnabled(true);
@@ -404,17 +425,21 @@ public class SettingsFragment extends Fragment {
                     homeActivityProgressBar.setEnabled(false);
                     settingsLayout.setAlpha((float)1);
                     allOrganization.addAll(result);
+                    if(!allOrganization.contains(nameOrganizationModify.getText().toString()))
+                    {
+                        nameOrganizationModify.setText(allOrganization.get(0));
+                    }
+                    ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
+                    nameOrganizationModify.setAdapter(adapterOrganization);
+
                 });
             });
-            ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
-            nameOrganizationModify.setAdapter(adapterOrganization);
-            //nameOrganizationModify.setText((" "));
         }
     };
 
 
     /**
-     * Prende dal database tutte le città che hanno almeno una struttura di accoglienza.
+     * Prende dal database tutte le città che hanno almeno una struttura di accoglienza e le inserisce nella view apposita.
      */
     private void loadAllCity()
     {
@@ -445,9 +470,13 @@ public class SettingsFragment extends Fragment {
 
         }
 
+        /**
+         * Attiva il bottone di modifica se il nome della struttura è diverso dal corrente e la password o è vuota oppure rispetta i criteri.
+         * @param s, nome della struttura di accoglienza selezionata
+         */
         @Override
         public void afterTextChanged(Editable s) {
-            if(!s.toString().equals(currentNameOrganization) && !s.toString().isEmpty())
+            if(!s.toString().equals(currentNameOrganization))
             {
                 if(passwordChanged==true || changePasswordInput.getText().toString().isEmpty())
                 {
