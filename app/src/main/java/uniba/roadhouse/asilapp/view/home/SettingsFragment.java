@@ -300,6 +300,7 @@ public class SettingsFragment extends Fragment {
             {
                 Utility.textViewUnderlineText(passwordResultTextModify,getString(R.string.passwordRegexError));
                 passwordResultImageModify.setClickable(true);
+                passwordChanged=false;
                 passwordResultImageModify.setImageResource(R.mipmap.error);
                 editProfileButton.setEnabled(false);
             }
