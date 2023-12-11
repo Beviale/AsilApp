@@ -29,4 +29,13 @@
     <color name="colodOldHealthHistory">#cfcccc</color>
     <color name="colodOldMyPathologies">#cfcccc</color>
 
+    <!--HOMEFRAGMENT-->
+    <color name="cardHomeColor">#fffdf7</color>
+    <color name="drugsColor">#5e87ff</color>
+    <color name="foodColor">#d66031</color>
+    <color name="otherColor">#88b82a</color>
+
+
+
+
 </resources>

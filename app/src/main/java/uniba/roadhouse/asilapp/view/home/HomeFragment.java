@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.view.home;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -19,6 +20,17 @@ import android.widget.HorizontalScrollView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+
+import java.util.ArrayList;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Access;
@@ -58,7 +70,12 @@ public class HomeFragment extends Fragment {
 
         HorizontalScrollView scrollBarVide = getActivity().findViewById(R.id.scrollBarVideo);
         scrollBarVide.setHorizontalScrollBarEnabled(true);
+    }
 
+    @Override
+    public void onStart() {
+        setPieChartOutgoings();
+        super.onStart();
     }
 
 
@@ -85,7 +102,31 @@ public class HomeFragment extends Fragment {
     }
 
 
+    private void setPieChartOutgoings()
+    {
+        PieChart pieChart = getActivity().findViewById(R.id.pieChart);
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(30f, "Farmaci"));
+        entries.add(new PieEntry(20f, "Cibo"));
+        entries.add(new PieEntry(50f, "Altro"));
+        Description desc = new Description();
+        desc.setText("");
+        pieChart.setDescription(desc);
+        pieChart.setUsePercentValues(true);
+        PieDataSet dataSet = new PieDataSet(entries, "Pie Chart");
+        dataSet.setValueTextSize((float)15);
+        dataSet.setValueTextColor(getResources().getColor(R.color.white));
+        dataSet.setColors(getResources().getColor(R.color.drugsColor), getResources().getColor(R.color.foodColor), getResources().getColor(R.color.otherColor));
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setData(data);
+    }
+
+
 
 
 
 }
+
+
+
