@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.homeMenuScreen), HomeFragment.class);
             put(getResources().getString(R.string.healthMenuScreen), MedicalParametersFragment.class);
             put(getResources().getString(R.string.healthBoxMenuScreen), HealthBoxFragment.class);
-            put(getResources().getString(R.string.positionMenuScreen), SettingsFragment.class);
+            put(getResources().getString(R.string.positionMenuScreen), PositionFragment.class);
         }};
 
         findViewById(R.id.user_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.userMenuScreen)));
