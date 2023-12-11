@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -58,4 +60,32 @@ public class HomeFragment extends Fragment {
         scrollBarVide.setHorizontalScrollBarEnabled(true);
 
     }
+
+
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        toolbar.inflateMenu(R.menu.menu_home_activity);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.settings)
+                {
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.addToBackStack(getString(R.string.settingsMenuScreen));
+                    fragmentTransaction.replace(R.id.homeContainerView, SettingsFragment.class, null);
+                    fragmentTransaction.commit();
+                }
+
+                return true;
+            }
+        });
+        super.onResume();
+    }
+
+
+
+
+
 }

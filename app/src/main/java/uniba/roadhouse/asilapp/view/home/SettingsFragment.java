@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -221,6 +222,13 @@ public class SettingsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        super.onResume();
+    }
+
 
 
     /**
@@ -286,6 +294,17 @@ public class SettingsFragment extends Fragment {
          */
         @Override
         public void afterTextChanged(Editable s) {
+            if(s.toString().isEmpty())
+            {
+                passwordResultImageModify.setVisibility(View.GONE);
+                passwordResultTextModify.setVisibility(View.GONE);
+                passwordChanged=false;
+                if(!nameOrganizationModify.equals(currentNameOrganization))
+                {
+                    editProfileButton.setEnabled(true);
+                }
+                return;
+            }
             layoutPasswordCheckModify.setVisibility(View.VISIBLE);
             passwordResultImageModify.setVisibility(View.VISIBLE);
             passwordResultTextModify.setVisibility(View.VISIBLE);

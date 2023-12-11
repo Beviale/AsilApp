@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -74,7 +75,10 @@ public class HealthBoxFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         verifyBluetoothConnection();
+        Toolbar toolbar = getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
     }
 
     @Override

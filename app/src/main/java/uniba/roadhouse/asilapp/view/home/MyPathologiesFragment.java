@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -87,9 +88,18 @@ public class MyPathologiesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        //--------------LISTENER--------------
         diabetisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.diabete)));
         dermatitisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.dermatitis)));
         bronchitisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.brochitis)));
+    }
+
+
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        super.onResume();
     }
 
     private void openDetailFragment(String itemClicked)

@@ -2,6 +2,7 @@ package uniba.roadhouse.asilapp.view.home;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -62,5 +63,13 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
+    }
+
+
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        super.onResume();
     }
 }

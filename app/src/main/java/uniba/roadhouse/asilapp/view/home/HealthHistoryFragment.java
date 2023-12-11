@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,7 +218,7 @@ public class HealthHistoryFragment extends Fragment {
         resultTrembling = view.findViewById(R.id.resultTrembling);
         resultGlucose = view.findViewById(R.id.resultGlucose);
         getData();
-        }
+    }
 
 
 
@@ -245,9 +248,15 @@ public class HealthHistoryFragment extends Fragment {
                 swipereFreshLayout.setRefreshing(false);
             }
         });
-
     }
 
+
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        super.onResume();
+    }
 
     /**
      * Apre il fragment relativo alla singola misurazione.

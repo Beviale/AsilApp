@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -141,6 +142,13 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         super.onStart();
         //-----------LISTENER------------------
         shareDetailHealthHistoryOld.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
+    }
+
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        super.onResume();
     }
 
 

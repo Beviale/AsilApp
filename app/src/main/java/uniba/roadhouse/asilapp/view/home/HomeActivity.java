@@ -82,27 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             });
         });*/
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBarHome);
-        toolbar.inflateMenu(R.menu.menu_home_activity);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.settings)
-                {
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.homeContainerView);
-                    if(!(currentFragment instanceof SettingsFragment))
-                    {
-                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.addToBackStack(getString(R.string.settingsMenuScreen));
-                        fragmentTransaction.replace(R.id.homeContainerView, SettingsFragment.class, null);
-                        fragmentTransaction.commit();
-                    }
 
-                }
-
-                return true;
-            }
-        });
     }
 
     @Override
