@@ -183,7 +183,7 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/settings_icon_layout"
+                app:layout_constraintEnd_toStartOf="@+id/position_icon_layout"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/home_icon_layout"
                 app:layout_constraintTop_toTopOf="parent"
@@ -217,7 +217,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/settings_icon_layout"
+                android:id="@+id/position_icon_layout"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
@@ -229,7 +229,7 @@
                 app:layout_constraintVertical_bias="0.5">
 
                 <ImageView
-                    android:id="@+id/settings_icon_bg"
+                    android:id="@+id/position_icon_bg"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/square_bg"
@@ -242,10 +242,10 @@
                     app:layout_constraintVertical_bias="0.5" />
 
                 <ImageView
-                    android:id="@+id/settings_icon"
+                    android:id="@+id/position_icon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@mipmap/settings_icon"
+                    android:src="@mipmap/location_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"

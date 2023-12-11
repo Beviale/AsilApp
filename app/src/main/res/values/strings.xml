@@ -104,6 +104,7 @@
     <string name="userMenuScreen">Utente</string>
     <string name="healthBoxMenuScreen">Scatola Salute</string>
     <string name="settingsMenuScreen">Impostazioni</string>
+    <string name="positionMenuScreen">Posizione</string>
     <string name="welcome">Benvenuto</string>
 
 

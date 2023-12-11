@@ -1,48 +1,21 @@
 package uniba.roadhouse.asilapp.view.home;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.text.Editable;
-import android.text.SpannableStringBuilder;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.datepicker.MaterialCalendar;
-import com.google.firebase.Timestamp;
-
-import java.sql.Time;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.model.dao.Access;
-import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
-import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -95,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.homeMenuScreen),R.id.home_icon);
             put(getResources().getString(R.string.healthMenuScreen), R.id.health_icon);
             put(getResources().getString(R.string.healthBoxMenuScreen),R.id.health_box_icon);
-            put(getResources().getString(R.string.settingsMenuScreen),R.id.settings_icon);
+            put(getResources().getString(R.string.positionMenuScreen),R.id.position_icon);
         }};
 
         screenActiveMipmapIcons=new HashMap<String, Integer>() {{
@@ -103,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.homeMenuScreen),R.mipmap.home_icon_active);
             put(getResources().getString(R.string.healthMenuScreen), R.mipmap.hearth_icon_active);
             put(getResources().getString(R.string.healthBoxMenuScreen),R.mipmap.health_box_icon_active);
-            put(getResources().getString(R.string.settingsMenuScreen),R.mipmap.settings_icon_active);
+            put(getResources().getString(R.string.positionMenuScreen),R.mipmap.location_icon_active);
         }};
 
         screenMipmapIcons=new HashMap<String, Integer>() {{
@@ -111,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.homeMenuScreen),R.mipmap.home_icon);
             put(getResources().getString(R.string.healthMenuScreen), R.mipmap.hearth_icon);
             put(getResources().getString(R.string.healthBoxMenuScreen),R.mipmap.health_box_icon);
-            put(getResources().getString(R.string.settingsMenuScreen),R.mipmap.settings_icon);
+            put(getResources().getString(R.string.positionMenuScreen),R.mipmap.location_icon);
         }};
 
         screenIconsBg=new HashMap<String, Integer>() {{
@@ -119,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.homeMenuScreen),R.id.home_icon_bg);
             put(getResources().getString(R.string.healthMenuScreen), R.id.health_icon_bg);
             put(getResources().getString(R.string.healthBoxMenuScreen),R.id.health_box_icon_bg);
-            put(getResources().getString(R.string.settingsMenuScreen),R.id.settings_icon_bg);
+            put(getResources().getString(R.string.positionMenuScreen),R.id.position_icon_bg);
         }};
 
         screenFragments=new HashMap<String, Class>() {{
@@ -127,16 +100,16 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.homeMenuScreen), HomeFragment.class);
             put(getResources().getString(R.string.healthMenuScreen), MedicalParametersFragment.class);
             put(getResources().getString(R.string.healthBoxMenuScreen), HealthBoxFragment.class);
-            put(getResources().getString(R.string.settingsMenuScreen), SettingsFragment.class);
+            put(getResources().getString(R.string.positionMenuScreen), SettingsFragment.class);
         }};
 
         findViewById(R.id.user_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.userMenuScreen)));
         findViewById(R.id.home_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.homeMenuScreen)));
         findViewById(R.id.health_box_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.healthBoxMenuScreen)));
         findViewById(R.id.health_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.healthMenuScreen)));
-        findViewById(R.id.settings_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.settingsMenuScreen)));
+        findViewById(R.id.position_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.positionMenuScreen)));
 
-        findViewById(R.id.toolBarIconHomeActivity).setOnClickListener(v->changeScreen(getResources().getString(R.string.homeMenuScreen)));
+        findViewById(R.id.toolBarIconHomeActivity).setOnClickListener(v->{if(!(getSupportFragmentManager().findFragmentById(R.id.homeContainerView) instanceof HomeFragment)) changeScreen(getResources().getString(R.string.homeMenuScreen));});
 
         //avvio il fragment di home che schermata da aprire all'avvio dell'activity
         FragmentManager fragmentManager = getSupportFragmentManager();
