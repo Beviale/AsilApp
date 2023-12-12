@@ -40,7 +40,7 @@ public class SignupOrganizationFragment extends Fragment {
      */
     AutoCompleteTextView nameOrganizationSelection;
     /**
-     * Bottine che permette di passare al fragmente di compilazione di registrazione successivo.
+     * Bottone che permette di passare al fragmente di compilazione di registrazione successivo.
      */
     Button nextButton;
     /**
@@ -112,6 +112,7 @@ public class SignupOrganizationFragment extends Fragment {
 
         // Aggiunto il TextWatcher
         cityOrganizationSelection.addTextChangedListener(textWatcher);
+        cityOrganizationSelection.addTextChangedListener(textWatcherCity);
         nameOrganizationSelection.addTextChangedListener(textWatcher);
 
 
@@ -185,7 +186,6 @@ public class SignupOrganizationFragment extends Fragment {
          */
         @Override
         public void afterTextChanged(Editable s) {
-           getNameOrganizationFromDB(s.toString());
             if (!atLeastOneFieldIsEmpty()) {
                 nextButton.setEnabled(true);
                 nextButton.setAlpha(1);
@@ -197,6 +197,29 @@ public class SignupOrganizationFragment extends Fragment {
             }
         }
 
+    };
+
+
+    TextWatcher textWatcherCity = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        /**
+         * Aggiorna i nomi delle struttura di accoglienza alla nuova città inserita.
+         * @param s, nuova città inserita.
+         */
+        @Override
+        public void afterTextChanged(Editable s) {
+            getNameOrganizationFromDB(s.toString());
+
+        }
     };
 
     /**
@@ -229,11 +252,10 @@ public class SignupOrganizationFragment extends Fragment {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.popBackStack();
                 }
-
+                nameOrganizationSelection.setText("");
             });
             ArrayAdapter<String> adapterOrganization = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allOrganization);
             nameOrganizationSelection.setAdapter(adapterOrganization);
-
         }
     }
 
