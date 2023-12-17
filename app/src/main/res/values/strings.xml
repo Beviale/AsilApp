@@ -1,4 +1,6 @@
 <resources>
+
+    <!--GENERAL-->
     <string name="app_name">AsilApp</string>
     <string name="serverErrorTitle">Errore server</string>
     <string name="serverError">Si prega di riprovare più tardi</string>
@@ -21,7 +23,6 @@
     <string name="save">Salva</string>
     <string name="send">Invia</string>
     <string name="successfullySaved">Salvataggio effettuato con successo</string>
-"
 
 
     <!--SigninSignupActivity-->
@@ -30,6 +31,11 @@
     Questo fa sì che l app non riesca a poter garantire il supporto a tutte le funzionalità normalmente previste.
     Si prega di connettersi ad una rete mobile o Wifi.</string>
     <string name="patient">Paziente</string>
+
+
+
+
+
     <!--LOGIN FRAGMENT-->
     <string name="loginFragmentTitle">Login</string>
     <string name="usernameEmpty">Inserisci il nome utente</string>
@@ -179,7 +185,7 @@
     <string name="activateBluetooth">Abilita Bluetooth</string>
 
 
-    <!-- Unità di misura-->
+    <!-- Unity of Measure-->
     <string name="unityTemperature">C</string>
     <string name="unityBloodPressure">mmHg</string>
     <string name="unityWeight">KG</string>
