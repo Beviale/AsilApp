@@ -6,4 +6,10 @@
         app:showAsAction="never"
         android:icon="@drawable/users"
         android:title="@string/share"/>
+
+    <item
+        android:id="@+id/evaluateDetailTips"
+        app:showAsAction="never"
+        android:icon="@drawable/users"
+        android:title="@string/evaluate"/>
 </menu>

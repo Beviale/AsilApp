@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString("type", category);
-        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, null);
+        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, bundle);
         fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
         fragmentTransaction.commit();
 

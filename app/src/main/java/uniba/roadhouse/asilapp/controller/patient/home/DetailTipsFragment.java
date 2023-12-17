@@ -62,6 +62,8 @@ public class DetailTipsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+
+
     @Override
     public void onResume() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
@@ -85,6 +87,12 @@ public class DetailTipsFragment extends Fragment {
                     intent.setType("text/plain");
                     intent.putExtra(android.content.Intent.EXTRA_TEXT, share);
                     startActivity(intent);
+                }
+                if(item.getItemId() == R.id.evaluateDetailTips)
+                {
+                    EvaluateFragment dialogFragment = EvaluateFragment.newInstance(type);
+                    dialogFragment.show(getActivity().getSupportFragmentManager(), "EvaluateFragment");
+
                 }
 
                 return true;

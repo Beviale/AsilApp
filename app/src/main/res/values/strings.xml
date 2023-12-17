@@ -17,6 +17,11 @@
     <string name="food">Cibo</string>
     <string name="drugs">Farmaci</string>
     <string name="other">Altro</string>
+    <string name="evaluate">Valuta</string>
+    <string name="save">Salva</string>
+    <string name="send">Invia</string>
+    <string name="successfullySaved">Salvataggio effettuato con successo</string>
+"
 
 
     <!--SigninSignupActivity-->
@@ -97,7 +102,7 @@
     <string name="misurationGetSuccessfully">Misurazione letta con successo</string>
     <string name="misurationGetFailed">Errore nella lettura della misurazione</string>
     <string name="changeResidenceError">Errore nel cambio della residenza</string>
-    <string name="changeResidenzaSuccessfully">Cambio di resienza avvenuto con successo</string>
+    <string name="changeResidenzaSuccessfully">Cambio di residenza avvenuto con successo</string>
     <string name="logoutSuccessfull">Logout eseguito correttamente</string>
     <string name="cityError">Errore nella lettura della citta</string>
     <string name="editPasswordFailed">Errore nella modifica della password</string>
@@ -197,6 +202,9 @@
     <string name="valueOutgoindTooHight">Devi necessariamente inserire un importo non superiore a euro: </string>
     <string name="valueOutgoindTooLowTitle">Importo troppo basso</string>
     <string name="valueOutgoindTooLow">Devi necessariamente inserire un importo non inferiore a euro: </string>
+
+    <!-- DetailTipsFragment-->
+    <string name="evalutationContent">Valuta contenuto</string>
 
 
     <!-- FIRSTACTIVITY-->
