@@ -13,6 +13,11 @@
     <string name="exit">Esci</string>
     <string name="iAmLoading">Sto caricando</string>
     <string name="ok">Ok</string>
+    <string name="add">Aggiungi</string>
+    <string name="food">Cibo</string>
+    <string name="drugs">Farmaci</string>
+    <string name="other">Altro</string>
+
 
 
     <!--SigninSignupActivity-->
@@ -106,6 +111,9 @@
     <string name="settingsMenuScreen">Impostazioni</string>
     <string name="positionMenuScreen">Posizione</string>
     <string name="welcome">Benvenuto</string>
+    <string name="video">Video</string>
+    <string name="tips">Consigli</string>
+    <string name="outgoingsManagement">Gestione spesa</string>
 
 
     <!--MedicalParameters-->
@@ -173,8 +181,16 @@
     <string name="unityBPM">BPM</string>
     <string name="unityTrembling">Hz</string>
     <string name="unityGlucose">mg/dL</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+    <!-- OutgoingsFragment-->
+    <string name="categorySelectionOutgoings">Categoria</string>
+    <string name="addOutgoings">Aggiungi una nuova spesa</string>
+    <string name="valueOutgoings">Importo</string>
+    <string name="last7daysOutgoings">Ultimi 7 giorni</string>
+    <string name="valueFood">Importo speso in cibo</string>
 
 
 </resources>

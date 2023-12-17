@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.signinSignup;
+package uniba.roadhouse.asilapp.controller.patient.signinSignup;
 
 import android.os.Bundle;
 
@@ -131,7 +131,7 @@ public class SignupFragment extends Fragment {
     {
         switch (currentScreen.toString())
         {
-            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupNameSurnameFragment":
+            case "class uniba.roadhouse.asilapp.controller.patient.signinSignup.SignupNameSurnameFragment":
                 TextInputEditText nameInputRegister = getActivity().findViewById(R.id.nameInputSignup);
                 TextInputEditText surnameInputRegister = getActivity().findViewById(R.id.surnameInputSignup);
                 AutoCompleteTextView genderSelection = getActivity().findViewById(R.id.genderSelectionSignup);
@@ -142,7 +142,7 @@ public class SignupFragment extends Fragment {
                 User.setGender(genderSelection.getText().toString());
                 User.setBirthDate(birthDateSelection.getText().toString());
                 break;
-            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupPlaceOriginFragment":
+            case "class uniba.roadhouse.asilapp.controller.patient.signinSignup.SignupPlaceOriginFragment":
                 AutoCompleteTextView typeUserSelection = getActivity().findViewById(R.id.typeUserSelectionSignup);
                 AutoCompleteTextView citizenSelection = getActivity().findViewById(R.id.citizenSelectionSignup);
                 AutoCompleteTextView countrySelection = getActivity().findViewById(R.id.countrySelectionSignup);
@@ -151,14 +151,14 @@ public class SignupFragment extends Fragment {
                 User.setCitizen(citizenSelection.getText().toString());
                 User.setCountry(countrySelection.getText().toString());
                 break;
-            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupOrganizationFragment":
+            case "class uniba.roadhouse.asilapp.controller.patient.signinSignup.SignupOrganizationFragment":
                 AutoCompleteTextView cityOrganizationSelection = getActivity().findViewById(R.id.cityOrganizationSelectionSignup);
                 AutoCompleteTextView nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelectionSignup);
 
                 User.setCityOrganization(cityOrganizationSelection.getText().toString());
                 User.setNameOrganization(nameOrganizationSelection.getText().toString());
                 break;
-            case "class uniba.roadhouse.asilapp.view.signinSignup.SignupUsernamePasswordFragment":
+            case "class uniba.roadhouse.asilapp.controller.patient.signinSignup.SignupUsernamePasswordFragment":
                 TextInputEditText usernameInputRegister = getActivity().findViewById(R.id.usernameInputSignup);
                 TextInputEditText passwordInputRegister = getActivity().findViewById(R.id.passwordInputSignup);
 

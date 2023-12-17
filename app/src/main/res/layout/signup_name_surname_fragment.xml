@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:outlineAmbientShadowColor="#3F1212"
     android:outlineSpotShadowColor="#DC2B2B"
-    tools:context=".view.signinSignup.SignupNameSurnameFragment">
+    tools:context=".controller.patient.signinSignup.SignupNameSurnameFragment">
 
 
     <TextView

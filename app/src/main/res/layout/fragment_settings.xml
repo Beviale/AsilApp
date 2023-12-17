@@ -10,8 +10,7 @@
     android:id="@+id/settingsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.home.SettingsFragment">
-
+    tools:context=".controller.patient.home.SettingsFragment">
 
 
     <TextView

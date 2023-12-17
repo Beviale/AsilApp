@@ -1,8 +1,6 @@
-package uniba.roadhouse.asilapp.view.home;
+package uniba.roadhouse.asilapp.controller.patient.home;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +20,8 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 
-import org.checkerframework.checker.units.qual.C;
-
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 
 
 public class HealthBoxFragment extends Fragment {
@@ -79,6 +75,8 @@ public class HealthBoxFragment extends Fragment {
         verifyBluetoothConnection();
         Toolbar toolbar = getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(null);
+
     }
 
     @Override

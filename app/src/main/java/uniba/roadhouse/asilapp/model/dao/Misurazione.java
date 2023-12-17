@@ -2,9 +2,7 @@ package uniba.roadhouse.asilapp.model.dao;
 
 import com.google.firebase.Timestamp;
 
-import java.sql.Time;
-
-import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
+import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 
 /**
  * Rappresenta una misurazione effettuata dall'utente. Puè riguardare un determinato parametro.

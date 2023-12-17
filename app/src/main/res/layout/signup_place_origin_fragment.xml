@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:outlineAmbientShadowColor="@color/appBarColor"
     android:outlineSpotShadowColor="#8C5454"
-    tools:context=".view.signinSignup.SignupPlaceOriginFragment">
+    tools:context=".controller.patient.signinSignup.SignupPlaceOriginFragment">
 
 
     <TextView

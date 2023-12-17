@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller;
+package uniba.roadhouse.asilapp.controller.other;
 
 public enum TipoMisurazioneEnum {
     TEMPERATURA,

@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.signinSignup;
+package uniba.roadhouse.asilapp.controller.patient.signinSignup;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,10 +24,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**

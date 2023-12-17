@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.home;
+package uniba.roadhouse.asilapp.controller.patient.home;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
@@ -39,8 +39,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
-import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
@@ -191,6 +191,14 @@ public class DetailHealthHistoryFragment extends Fragment {
     public void onResume() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+
+            }
+        });
         super.onResume();
     }
 

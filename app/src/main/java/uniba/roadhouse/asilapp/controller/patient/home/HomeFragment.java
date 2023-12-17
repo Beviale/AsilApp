@@ -1,13 +1,12 @@
-package uniba.roadhouse.asilapp.view.home;
+package uniba.roadhouse.asilapp.controller.patient.home;
 
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -17,18 +16,16 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.HorizontalScrollView;
-import android.widget.MediaController;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 
@@ -37,8 +34,13 @@ import uniba.roadhouse.asilapp.model.dao.Access;
 
 
 public class HomeFragment extends Fragment {
+    ImageView arrowToOutgoingsFragment;
 
     TextView welcomeText;
+    WebView firstWebView;
+    WebView secondWebView;
+    HorizontalScrollView scrollBarVideo;
+    PieChart pieChart;
 
 
     public HomeFragment() {
@@ -54,27 +56,26 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        welcomeText=getView().findViewById(R.id.welcomeText);
-        welcomeText.setText(getString(R.string.welcome)+"\n"+Access.getNome()+"!");
-        WebView firstWebView = getActivity().findViewById(R.id.firstVideoView);
-        String firstVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
-        firstWebView.loadData(firstVideo, "text/html","utf-8");
-        firstWebView.getSettings().setJavaScriptEnabled(true);
-        firstWebView.setWebChromeClient(new WebChromeClient());
+        arrowToOutgoingsFragment = view.findViewById(R.id.arrowToOutgoingsFragment);
+        //----------RIFERIMENTI----------
+        secondWebView = view.findViewById(R.id.secondVideoView);
+        welcomeText = view.findViewById(R.id.welcomeText);
+        firstWebView = view.findViewById(R.id.firstVideoView);
+        scrollBarVideo = view.findViewById(R.id.scrollBarVideo);
+        pieChart = view.findViewById(R.id.pieChartHome);
 
-        WebView secondWebView = getActivity().findViewById(R.id.secondVideoView);
-        String secondVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
-        secondWebView.loadData(secondVideo, "text/html","utf-8");
-        secondWebView.getSettings().setJavaScriptEnabled(true);
-        secondWebView.setWebChromeClient(new WebChromeClient());
 
-        HorizontalScrollView scrollBarVide = getActivity().findViewById(R.id.scrollBarVideo);
-        scrollBarVide.setHorizontalScrollBarEnabled(true);
     }
 
     @Override
     public void onStart() {
-        setPieChartOutgoings();
+        //-------------------------LISTENER----------------
+        arrowToOutgoingsFragment.setOnClickListener(V->openOutgoingsFragment());
+
+
+
+        welcomeText.setText(getString(R.string.welcome)+"\n"+Access.getNome()+"!");
+        scrollBarVideo.setHorizontalScrollBarEnabled(true);
         super.onStart();
     }
 
@@ -83,6 +84,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(null);
         toolbar.inflateMenu(R.menu.menu_home_activity);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -98,13 +100,14 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
+        setVideo();
+        setPieChartOutgoings();
         super.onResume();
     }
 
 
     private void setPieChartOutgoings()
     {
-        PieChart pieChart = getActivity().findViewById(R.id.pieChart);
         ArrayList<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(30f, "Farmaci"));
         entries.add(new PieEntry(20f, "Cibo"));
@@ -120,6 +123,30 @@ public class HomeFragment extends Fragment {
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setData(data);
+    }
+
+
+    private void openOutgoingsFragment()
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.homeContainerView, OutgoingsFragment.class, null);
+        fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
+        fragmentTransaction.commit();
+    }
+
+
+    private void setVideo()
+    {
+        String firstVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
+        firstWebView.loadData(firstVideo, "text/html","utf-8");
+        firstWebView.getSettings().setJavaScriptEnabled(true);
+        firstWebView.setWebChromeClient(new WebChromeClient());
+
+        String secondVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
+        secondWebView.loadData(secondVideo, "text/html","utf-8");
+        secondWebView.getSettings().setJavaScriptEnabled(true);
+        secondWebView.setWebChromeClient(new WebChromeClient());
     }
 
 

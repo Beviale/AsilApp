@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--GENERALE-->
+    <dimen name="arrowDimen">40dp</dimen>
+    <dimen name="arrowPadding">5dp</dimen>
+
+
+
+
     <!--APP BAR-->
     <dimen name="abbBarHeight">80dp</dimen>
     <dimen name="iconAppBarDown">40dp</dimen>
@@ -40,8 +48,13 @@
     <dimen name="resultBloodPressureHealthHistory">40dp</dimen>
 
     <!--HOME-->
+    <dimen name="marginTopBetweenSectionHome">50dp</dimen>
+    <dimen name="marginLeftHome">30dp</dimen>
+    <dimen name="widthVideoHome">300dp</dimen>
 
-    <dimen name="marginTopFragmentHome">40dp</dimen>
+
+    <!--Outgoings-->
+    <dimen name="marginLeftOutgoings">30dp</dimen>
 
 
     <!--Settings-->

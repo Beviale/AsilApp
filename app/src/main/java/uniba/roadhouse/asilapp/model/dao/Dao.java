@@ -37,8 +37,8 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.Utility;
-import uniba.roadhouse.asilapp.controller.TipoMisurazioneEnum;
+import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 
 public class Dao {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();

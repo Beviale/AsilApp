@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller;
+package uniba.roadhouse.asilapp.controller.other;
 
 
 import java.util.List;

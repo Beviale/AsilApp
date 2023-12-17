@@ -1,7 +1,8 @@
-package uniba.roadhouse.asilapp.view.home;
+package uniba.roadhouse.asilapp.controller.patient.home;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -62,5 +63,13 @@ public class PositionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_position, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(null);
+        super.onResume();
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     android:orientation="vertical"
-    tools:context=".view.signinSignup.SignupCompleteScreenFragment">
+    tools:context=".controller.patient.signinSignup.SignupCompleteScreenFragment">
 
     <TextView
         android:id="@+id/textregistrationComplete"

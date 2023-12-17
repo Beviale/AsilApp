@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.signinSignup;
+package uniba.roadhouse.asilapp.controller.patient.signinSignup;
 
 import android.os.Bundle;
 
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**

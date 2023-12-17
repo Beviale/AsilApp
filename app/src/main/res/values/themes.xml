@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.AsilApp" parent="Theme.Material3.DayNight.NoActionBar">
-
     </style>
 
 
@@ -26,7 +25,6 @@
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 
-
     <!-- Per l'AutocompleteTextView -->
     <style name="MyAutoCompleteTextViewStyle" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense">
         <item name="android:popupBackground">@color/white</item> <!-- Sostituisci con il colore desiderato -->
@@ -34,12 +32,6 @@
     <style name="MyAutoCompleteTextViewStyleDate" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="android:popupBackground">@color/white</item> <!-- Sostituisci con il colore desiderato -->
     </style>
-
-
-
-
-
-
 
 
     <style name="Theme.AsilApp" parent="Base.Theme.AsilApp" />

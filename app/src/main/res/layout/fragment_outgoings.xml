@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".controller.patient.home.OutgoingsFragment">
+
+
+        <TextView
+            android:id="@+id/titleOutgoingsFragment"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/title2FontSize"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/outgoingsManagement"
+            android:layout_marginTop="50dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/textAddOutgoings"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/title3FontSize"
+            app:layout_constraintTop_toBottomOf="@+id/titleOutgoingsFragment"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/addOutgoings"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="@dimen/inputTextWidth"
+            android:id="@+id/categorySelectionOutgoingsLayout"
+            android:layout_height="@dimen/inpuTextHeight"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            android:hint="@string/categorySelectionOutgoings"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:textColorHint="@color/textPlaceholderColor"
+            app:boxStrokeColor="@color/appMainColor"
+            app:counterTextColor="@color/appMainColor"
+            app:helperTextTextColor="@color/appMainColor"
+            app:hintTextColor="@color/appMainColor"
+            app:placeholderTextColor="@color/appMainColor"
+            app:prefixTextColor="@color/appMainColor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textAddOutgoings"
+            app:suffixTextColor="@color/appMainColor">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/categorySelectionOutgoings"
+                style="@style/MyAutoCompleteTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:textColorHighlight="@color/appMainColor"
+                android:textColorLink="@color/appMainColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/valueOutgoingsLayout"
+            android:layout_width="@dimen/inputTextWidth"
+            android:layout_height="@dimen/inpuTextHeight"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            android:hint="@string/valueOutgoings"
+            app:boxStrokeColor="@color/appMainColor"
+            app:counterTextColor="@color/appMainColor"
+            app:helperTextTextColor="@color/appMainColor"
+            app:hintTextColor="@color/appMainColor"
+            android:textColorHint="@color/textPlaceholderColor"
+            app:placeholderTextColor="@color/appMainColor"
+            app:layout_constraintTop_toBottomOf="@+id/categorySelectionOutgoingsLayout"
+            app:prefixTextColor="@color/appMainColor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:suffixTextColor="@color/appMainColor">
+
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/valueOutgoings"
+                android:drawableLeft="@drawable/euro"
+                android:drawablePadding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:textColor="@color/textColor"
+                android:textColorHighlight="@color/appMainColor"
+                android:textColorLink="@color/appMainColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/addOutgoingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            android:backgroundTint="@color/buttonsColor"
+            android:text="@string/add"
+            android:textColor="@color/textColorOnButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valueOutgoingsLayout" />
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

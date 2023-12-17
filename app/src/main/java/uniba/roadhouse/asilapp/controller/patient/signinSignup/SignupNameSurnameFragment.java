@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.signinSignup;
+package uniba.roadhouse.asilapp.controller.patient.signinSignup;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;

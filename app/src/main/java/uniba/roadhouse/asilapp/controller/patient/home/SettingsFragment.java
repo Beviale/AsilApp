@@ -1,6 +1,4 @@
-package uniba.roadhouse.asilapp.view.home;
-
-import static android.content.Context.MODE_APPEND;
+package uniba.roadhouse.asilapp.controller.patient.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -34,21 +30,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.api.Distribution;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.view.signinSignup.SigninSingupActivity;
+import uniba.roadhouse.asilapp.controller.patient.signinSignup.SigninSingupActivity;
 
 /**
  * Schermata delle impostazioni dell'app.
@@ -219,6 +211,7 @@ public class SettingsFragment extends Fragment {
         cityModify.addTextChangedListener(textWatcherCity);
         nameOrganizationModify.addTextChangedListener(textWacherName);
         changePasswordInput.addTextChangedListener(textWatcherPassword);
+        Toolbar mActionBar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
     }
 
 
@@ -226,6 +219,14 @@ public class SettingsFragment extends Fragment {
     public void onResume() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+
+            }
+        });
         super.onResume();
     }
 

@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.view.signinSignup;
+package uniba.roadhouse.asilapp.controller.patient.signinSignup;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -24,10 +24,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.Utility;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Access;
-import uniba.roadhouse.asilapp.view.home.HomeActivity;
+import uniba.roadhouse.asilapp.controller.patient.home.HomeActivity;
 
 /**
  * Fragment relativo alle schermata di login.

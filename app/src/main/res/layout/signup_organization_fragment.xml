@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/appBackground"
-    tools:context=".view.signinSignup.SignupPlaceOriginFragment">
+    tools:context=".controller.patient.signinSignup.SignupPlaceOriginFragment">
 
 
     <TextView
