@@ -8,7 +8,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/linearLayoutSinginSignupActivity"
+        android:id="@+id/linearLayoutDoctoActivity"
         android:background="@color/appBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,23 +17,16 @@
         android:paddingRight="0dp">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarSigninSingupActivity"
+            android:id="@+id/toolbarDoctorActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appBarColor"
             android:minHeight="@dimen/abbBarHeight"
             android:pointerIcon="context_menu"
             android:theme="?attr/actionBarTheme">
+
             <ImageView
-                android:id="@+id/noConnectionIconSigninSignupActivity"
-                android:visibility="invisible"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="20dp"
-                android:layout_gravity="right"
-                android:src="@mipmap/no_connection"/>
-            <ImageView
-                android:id="@+id/toolBarIconSigninSisngupActivity"
+                android:id="@+id/toolBarIconDoctorActivity"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
@@ -42,34 +35,34 @@
             </ImageView>
 
             <TextView
-                android:id="@+id/textToolbarSigninSignupActivity"
+                android:id="@+id/textToolbarDoctor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:fontFamily="@font/titillium_web_bold"
-                android:text="@string/patient"
+                android:text="@string/doctor"
                 android:textColor="@color/white"
                 android:textSize="@dimen/title2FontSize" />
         </androidx.appcompat.widget.Toolbar>
 
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/signinFragmentView"
+            android:id="@+id/doctorFragmentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     </LinearLayout>
 
     <ProgressBar
-    android:id="@+id/progressBarSigninSignupActivity"
-    android:layout_width="@dimen/progressBarDim"
-    android:layout_height="@dimen/progressBarDim"
-    android:layout_centerInParent="true"
-    android:layout_gravity="center"
-    android:layout_marginTop="@dimen/marginBetweenInputs"
-    android:outlineAmbientShadowColor="#853737"
-    android:indeterminateTint="@color/appMainColor"
-    android:visibility="gone" />
+        android:id="@+id/progressBarDoctorActivty"
+        android:layout_width="@dimen/progressBarDim"
+        android:layout_height="@dimen/progressBarDim"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:outlineAmbientShadowColor="#853737"
+        android:indeterminateTint="@color/appMainColor"
+        android:visibility="gone" />
 </FrameLayout>
 
 

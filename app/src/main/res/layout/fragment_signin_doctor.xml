@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutFragmentSigninDoctor"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:orientation="vertical"
+    tools:context=".controller.patient.signinSignup.SiginFragment">
+
+    <TextView
+        android:id="@+id/loginLabelDoctor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/loginFragmentTitle"
+        android:textAlignment="center"
+        android:textColor="@color/titleColor"
+        android:textSize="@dimen/title1FontSize" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameLayoutSigninDoctor"
+        android:layout_width="@dimen/inputTextWidth"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:hint="@string/usernamePlaceholder"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        android:textColorHint="@color/textPlaceholderColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        app:suffixTextColor="@color/appMainColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/usernameInputSigninDoctor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:textColor="@color/textColor"
+            android:textColorHighlight="@color/appMainColor"
+            android:textColorLink="@color/appMainColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayoutSigninDoctor"
+        android:layout_width="@dimen/inputTextWidth"
+        app:passwordToggleEnabled="true"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:layout_height="@dimen/inpuTextHeight"
+        android:layout_gravity="center"
+        app:boxStrokeColor="@color/appMainColor"
+        app:counterTextColor="@color/appMainColor"
+        app:helperTextTextColor="@color/appMainColor"
+        app:hintTextColor="@color/appMainColor"
+        app:placeholderTextColor="@color/appMainColor"
+        app:prefixTextColor="@color/appMainColor"
+        android:textColorHint="@color/textPlaceholderColor"
+        app:suffixTextColor="@color/appMainColor"
+        android:hint="@string/passwordPlaceholder">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordInputSigninDoctor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/textColor"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/buttonSigninDoctor"
+        android:layout_width="@dimen/buttonsLoginWidth"
+        android:layout_height="@dimen/buttonsLoginHeight"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/buttonsColor"
+        android:text="@string/loginButtonLabel"
+        android:textColor="@color/textColorOnButton" />
+
+    <TextView
+        android:id="@+id/orTextSigninDoctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/orText"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/buttonProfessorSigninDoctor"
+        android:layout_width="@dimen/buttonsLoginWidth"
+        android:layout_height="@dimen/buttonsLoginHeight"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:layout_marginTop="@dimen/marginBetweenInputs"
+        android:backgroundTint="@color/buttonsColor"
+        android:text="@string/loginFragmentProfLabel"
+        android:textColor="@color/textColorOnButton" />
+
+</LinearLayout>

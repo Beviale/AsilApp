@@ -63,9 +63,7 @@ public class DetailMyPathologiesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            if (getArguments() != null) {
-                itemCliecked = getArguments().getString("itemClicked");
-            }
+            itemCliecked = getArguments().getString("itemClicked");
         }
     }
 

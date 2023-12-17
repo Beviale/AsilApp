@@ -7,6 +7,7 @@
     <!--APP BAR-->
     <color name="appBarColor">#00368f</color>
     <color name="appBarDownColor">#FFFFFF	</color>
+    <color name="appBarColorFirstActivity">#608bf7</color>
 
     <!--APP-->
     <color name="appBackground">#ffffff</color>

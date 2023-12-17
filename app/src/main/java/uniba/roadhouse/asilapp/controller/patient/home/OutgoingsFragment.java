@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 
 public class OutgoingsFragment extends Fragment {
     Button addOutgoingButton;
@@ -30,6 +31,8 @@ public class OutgoingsFragment extends Fragment {
     AutoCompleteTextView categoriSelectionOutgoings;
     TextInputLayout valueOutgoingsLayout;
     TextInputEditText valueOutgoings;
+    private static float MAX_VALUE=5000;
+    private static float MIN_VALUE=(float)0.5;
 
 
 
@@ -79,6 +82,8 @@ public class OutgoingsFragment extends Fragment {
 
     @Override
     public void onStart() {
+        //----------LISTENER--------------------
+        addOutgoingButton.setOnClickListener(v->addOutgoing());
         super.onStart();
     }
 
@@ -164,4 +169,22 @@ public class OutgoingsFragment extends Fragment {
 
         }
     };
+
+
+
+    private void addOutgoing()
+    {
+        String category = categoriSelectionOutgoings.getText().toString();
+        Float value = Float.valueOf(valueOutgoings.getText().toString());
+        if(value>MAX_VALUE)
+        {
+            Utility.showAlertDialog(getActivity(), getString(R.string.valueOutgoindTooHightTitle), getString(R.string.valueOutgoindTooHight).concat(" ").concat(String.valueOf(MAX_VALUE)).concat("."));
+            return;
+        }
+        if(value<MIN_VALUE)
+        {
+            Utility.showAlertDialog(getActivity(), getString(R.string.valueOutgoindTooLowTitle), getString(R.string.valueOutgoindTooLow).concat(" ").concat(String.valueOf(MIN_VALUE)).concat("."));
+            return;
+        }
+    }
 }

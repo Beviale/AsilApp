@@ -27,7 +27,7 @@
             android:id="@+id/textAddOutgoings"
             android:layout_width="wrap_content"
             android:fontFamily="@font/titillium_web_bold"
-            android:textSize="@dimen/title3FontSize"
+            android:textSize="@dimen/textSectionOutgoings"
             app:layout_constraintTop_toBottomOf="@+id/titleOutgoingsFragment"
             android:layout_marginLeft="@dimen/marginLeftOutgoings"
             android:text="@string/addOutgoings"
@@ -111,6 +111,189 @@
             android:textColor="@color/textColorOnButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/valueOutgoingsLayout" />
+
+        <TextView
+            android:id="@+id/titleLast7Days"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/textSectionOutgoings"
+            app:layout_constraintTop_toBottomOf="@+id/addOutgoingButton"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/last7daysOutgoings"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/valueFood7Days"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/titleLast7Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/valueFood"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueFood7DaysMoney"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/titleLast7Days"
+            android:layout_marginLeft="5dp"
+            android:text="@string/iAmLoading"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toRightOf="@+id/valueFood7Days"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueDrugs7Days"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/valueFood7Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/valueDrugs"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueDrugs7DaysMoney"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/valueFood7Days"
+            android:layout_marginLeft="5dp"
+            android:text="@string/iAmLoading"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toRightOf="@+id/valueDrugs7Days"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueOther7Days"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/valueDrugs7Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/valueOther"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueOther7DaysMoney"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/valueDrugs7Days"
+            android:layout_marginLeft="5dp"
+            android:text="@string/iAmLoading"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toRightOf="@+id/valueOther7Days"
+            android:layout_height="wrap_content"/>
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChartLast7Days"
+            android:layout_width="@dimen/pieChart"
+            android:layout_height="@dimen/pieChart"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valueOther7DaysMoney" />
+
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/titleLast30Days"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/textSectionOutgoings"
+            app:layout_constraintTop_toBottomOf="@+id/pieChartLast7Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/last30daysOutgoings"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/valueFood30Days"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/titleLast30Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/valueFood"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueFood30DaysMoney"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/titleLast30Days"
+            android:layout_marginLeft="5dp"
+            android:text="@string/iAmLoading"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:layout_constraintLeft_toRightOf="@+id/valueFood7Days"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueDrugs30Days"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/valueFood30Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/valueDrugs"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueDrugs30DaysMoney"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/valueFood30Days"
+            android:layout_marginLeft="5dp"
+            android:text="@string/iAmLoading"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toRightOf="@+id/valueDrugs30Days"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueOther30Days"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/valueDrugs30Days"
+            android:layout_marginLeft="@dimen/marginLeftOutgoings"
+            android:text="@string/valueOther"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/valueOther30DaysMoney"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/valueDrugs30Days"
+            android:layout_marginLeft="5dp"
+            android:text="@string/iAmLoading"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toRightOf="@+id/valueOther30Days"
+            android:layout_height="wrap_content"/>
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChartLast30Days"
+            android:layout_width="@dimen/pieChart"
+            android:layout_height="@dimen/pieChart"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valueOther30DaysMoney" />
+
+
 
 
 

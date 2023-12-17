@@ -19,12 +19,12 @@
     <string name="other">Altro</string>
 
 
-
     <!--SigninSignupActivity-->
     <string name="noConnectionTitle">Nessuna connessione a Internet</string>
     <string name="noConnection">Il tuo dispositivo non risulta connesso ad una rete Internet.
     Questo fa sì che l app non riesca a poter garantire il supporto a tutte le funzionalità normalmente previste.
     Si prega di connettersi ad una rete mobile o Wifi.</string>
+    <string name="patient">Paziente</string>
     <!--LOGIN FRAGMENT-->
     <string name="loginFragmentTitle">Login</string>
     <string name="usernameEmpty">Inserisci il nome utente</string>
@@ -184,13 +184,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-
     <!-- OutgoingsFragment-->
     <string name="categorySelectionOutgoings">Categoria</string>
     <string name="addOutgoings">Aggiungi una nuova spesa</string>
     <string name="valueOutgoings">Importo</string>
     <string name="last7daysOutgoings">Ultimi 7 giorni</string>
-    <string name="valueFood">Importo speso in cibo</string>
+    <string name="valueFood">Importo speso in cibo:</string>
+    <string name="valueDrugs">Importo speso in farmaci:</string>
+    <string name="valueOther">Importo speso in altro:</string>
+    <string name="last30daysOutgoings">Ultimi 30 giorni</string>
+    <string name="valueOutgoindTooHightTitle">Importo troppo elevato</string>
+    <string name="valueOutgoindTooHight">Devi necessariamente inserire un importo non superiore a euro: </string>
+    <string name="valueOutgoindTooLowTitle">Importo troppo basso</string>
+    <string name="valueOutgoindTooLow">Devi necessariamente inserire un importo non inferiore a euro: </string>
 
+
+    <!-- FIRSTACTIVITY-->
+    <string name="accessPatient">Accedi come paziente</string>
+    <string name="accessDoctor">Accedi come dottore</string>
+
+    <!-- DOCTORACTIVITY-->
+    <string name="doctor">Dottore</string>
 
 </resources>

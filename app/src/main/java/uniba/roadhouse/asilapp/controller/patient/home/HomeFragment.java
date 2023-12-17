@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -41,6 +42,8 @@ public class HomeFragment extends Fragment {
     WebView secondWebView;
     HorizontalScrollView scrollBarVideo;
     PieChart pieChart;
+    ConstraintLayout cardNutritionalTips;
+    ConstraintLayout cardWellnessTips;
 
 
     public HomeFragment() {
@@ -63,6 +66,8 @@ public class HomeFragment extends Fragment {
         firstWebView = view.findViewById(R.id.firstVideoView);
         scrollBarVideo = view.findViewById(R.id.scrollBarVideo);
         pieChart = view.findViewById(R.id.pieChartHome);
+        cardNutritionalTips = view.findViewById(R.id.cardNutritionalTips);
+        cardWellnessTips = view.findViewById(R.id.cardWelnessTips);
 
 
     }
@@ -71,6 +76,8 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         //-------------------------LISTENER----------------
         arrowToOutgoingsFragment.setOnClickListener(V->openOutgoingsFragment());
+        cardNutritionalTips.setOnClickListener(v->openDetailTips("nutritional"));
+        cardWellnessTips.setOnClickListener(v->openDetailTips("wellness"));
 
 
 
@@ -147,6 +154,19 @@ public class HomeFragment extends Fragment {
         secondWebView.loadData(secondVideo, "text/html","utf-8");
         secondWebView.getSettings().setJavaScriptEnabled(true);
         secondWebView.setWebChromeClient(new WebChromeClient());
+    }
+
+
+    private void openDetailTips(String category)
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", category);
+        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, null);
+        fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
+        fragmentTransaction.commit();
+
     }
 
 

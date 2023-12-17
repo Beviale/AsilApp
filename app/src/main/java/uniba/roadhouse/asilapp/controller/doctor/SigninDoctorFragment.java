@@ -1,6 +1,5 @@
-package uniba.roadhouse.asilapp.controller.patient.signinSignup;
+package uniba.roadhouse.asilapp.controller.doctor;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -20,19 +19,13 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.model.dao.Access;
-import uniba.roadhouse.asilapp.controller.patient.home.HomeActivity;
+import uniba.roadhouse.asilapp.controller.patient.signinSignup.SigninSingupActivity;
 
-/**
- * Fragment relativo alle schermata di login.
- */
-public class SiginFragment extends Fragment {
+
+public class SigninDoctorFragment extends Fragment {
+
     /**
      * Bottone per effettuare il login.
      */
@@ -45,13 +38,9 @@ public class SiginFragment extends Fragment {
      * TextInputEditText per l'inserimento della password ai fini del login.
      */
     TextInputEditText passwordInput;
-    /**
-     * TextView che avvia la registrazione dell'utente.
-     */
-    TextView registerLabel;
 
     /**
-     * ProgressBar da mostrare durante la chiamata al database
+     * ProgressBar da mostrare durante la chiamata al database.
      */
     ProgressBar progressBar;
 
@@ -75,71 +64,59 @@ public class SiginFragment extends Fragment {
 
 
 
-
-
-    public SiginFragment() {
+    public SigninDoctorFragment() {
     }
 
-    public static SiginFragment newInstance() {
-        SiginFragment fragment = new SiginFragment();
+    public static SigninDoctorFragment newInstance(String param1, String param2) {
+        SigninDoctorFragment fragment = new SigninDoctorFragment();
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.signin_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_signin_doctor, container, false);
     }
-
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
         //-------------RIFERIMENTI-------------------------
 
         // riferimento al campo username del login
-        userNameInput = view.findViewById(R.id.usernameInputSignin);
+        userNameInput = view.findViewById(R.id.usernameInputSigninDoctor);
         // riferimento al campo password del login
-        passwordInput = view.findViewById(R.id.passwordInputSignin);
+        passwordInput = view.findViewById(R.id.passwordInputSigninDoctor);
         // riferimento al bottone che avvia il login
         buttonLogin = view.findViewById(R.id.buttonSignin);
-        // Riferimento alla TextView che avvia la registrazione dell'utente
-        registerLabel = view.findViewById(R.id.registerLabelSignin);
         // Riferimento alla ProgressBar da mostrare durante la chiamata al database
-        progressBar = getActivity().findViewById(R.id.progressBarSigninSignupActivity);
+        progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         // Riferimento al layout da oscurare duranta la chiamata al database.
-        layoutLogin = view.findViewById(R.id.layoutFragmentSignin);
+        layoutLogin = view.findViewById(R.id.layoutFragmentSigninDoctor);
         // Riferimento al layout del campo relativo all'inserimento dell'username.
-        usernameLayout = view.findViewById(R.id.usernameLayoutSignin);
+        usernameLayout = view.findViewById(R.id.usernameLayoutSigninDoctor);
         // Riferimento al layout del campo relativo all'inserimento della password..
-        passwordLayout = view.findViewById(R.id.passwordLayoutSignin);
-        loginProfessore = view.findViewById(R.id.buttonProfessorSignin);
-
-        // Funzione che sottilinea il testo di registrazione
-        Utility.textViewUnderlineText(registerLabel, getString(R.string.loginRegistrationLabel));
+        passwordLayout = view.findViewById(R.id.passwordLayoutSigninDoctor);
+        loginProfessore = view.findViewById(R.id.buttonProfessorSigninDoctor);
+        buttonLogin = view.findViewById(R.id.buttonSigninDoctor);
+        super.onViewCreated(view, savedInstanceState);
     }
-
-
 
     @Override
     public void onStart() {
-        super.onStart();
-
         //------LISTENER----------------------
-        registerLabel.setOnClickListener(v->callRegisterFragment());
         buttonLogin.setOnClickListener(v->login());
         loginProfessore.setOnClickListener(v->loginDirettoProfessore());
+        super.onStart();
     }
 
-
-    /**
-     * Avvia il login dell'utente. Se va a buon fine apre la HomeActivity, altrimenti mostra un Toast di errore.
-     */
-    private void login(){
+    private void login()
+    {
         usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
         usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.appMainColor)));
         passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
@@ -174,68 +151,11 @@ public class SiginFragment extends Fragment {
 
         }
 
-
-
-        progressBar.setVisibility(View.VISIBLE);
-        layoutLogin.setAlpha((float)0.5);
-        CompletableFuture<Map<String,String>> future = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
-        future.thenAccept(result -> {
-            getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.INVISIBLE);
-                layoutLogin.setAlpha(1);
-                Toast.makeText(getActivity(), result.get("esito"), Toast.LENGTH_SHORT).show();
-
-                if(result.get("esito")==getString(R.string.loginCompleted))
-                {
-                    Access.setUsername(userNameInput.getText().toString());
-                    Access.setNome(result.get("nome"));
-                    Intent openHome = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(openHome);
-                }
-                else if (result.get("esito")==getString(R.string.noUserExists))
-                {
-                    usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
-                    usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
-                    usernameLayout.requestFocus();
-                }
-                else if (result.get("esito")==getString(R.string.wrongPassword))
-                {
-                    passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
-                    passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
-                    passwordLayout.requestFocus();
-                }
-
-            });
-
-        });
     }
 
-
-    /**
-     * Se la connessione è assente, mostra un dialog.
-     * Se la connessione è presente, apre il fragment di registrazione.
-     */
-    private void callRegisterFragment(){
-        if(!Utility.isConnectedToInternet(getActivity())) {
-            SigninSingupActivity.dialogConnection = true;
-            Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-        }
-        else
-        {
-            //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
-            ((SigninSingupActivity) getActivity()).callRegisterFragment();
-        }
-    }
-
-
-    /**
-     * Effettua il login con credenziali preimpostate.
-     */
     private void loginDirettoProfessore()
     {
         userNameInput.setText("asilapp");
         passwordInput.setText("Asilapp@1");
-        login();
-
     }
 }

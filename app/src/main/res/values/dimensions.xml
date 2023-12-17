@@ -17,6 +17,7 @@
     <dimen name="title2FontSize">35dp</dimen>
     <dimen name="title3FontSize">15dp</dimen>
     <dimen name="textInputFontSize">18dp</dimen>
+    <dimen name="textTitleTips">20dp</dimen>
 
     <!--BUTTONS-->
     <dimen name="buttonsLoginWidth">300dp</dimen>
@@ -55,6 +56,8 @@
 
     <!--Outgoings-->
     <dimen name="marginLeftOutgoings">30dp</dimen>
+    <dimen name="textSectionOutgoings">20dp</dimen>
+    <dimen name="pieChart">300dp</dimen>
 
 
     <!--Settings-->

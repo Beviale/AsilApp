@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.FirstActivity;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -271,7 +272,7 @@ public class SettingsFragment extends Fragment {
     private void exitAccount()
     {
         Dao.logOutUser(getActivity());
-        Intent intent = new Intent(getActivity(), SigninSingupActivity.class);
+        Intent intent = new Intent(getActivity(), FirstActivity.class);
         startActivity(intent);
     }
 
