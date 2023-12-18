@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
     PieChart pieChart;
     ConstraintLayout cardNutritionalTips;
     ConstraintLayout cardWellnessTips;
+    SwipeRefreshLayout swipeRefreshLayoutHomeFragment;
 
 
     public HomeFragment() {
@@ -62,6 +64,7 @@ public class HomeFragment extends Fragment {
         arrowToOutgoingsFragment = view.findViewById(R.id.arrowToOutgoingsFragment);
         //----------RIFERIMENTI----------
         secondWebView = view.findViewById(R.id.secondVideoView);
+        swipeRefreshLayoutHomeFragment = view.findViewById(R.id.swipereFreshLayoutHomeFragment);
         welcomeText = view.findViewById(R.id.welcomeText);
         firstWebView = view.findViewById(R.id.firstVideoView);
         scrollBarVideo = view.findViewById(R.id.scrollBarVideo);
@@ -78,6 +81,13 @@ public class HomeFragment extends Fragment {
         arrowToOutgoingsFragment.setOnClickListener(V->openOutgoingsFragment());
         cardNutritionalTips.setOnClickListener(v->openDetailTips("nutritional"));
         cardWellnessTips.setOnClickListener(v->openDetailTips("wellness"));
+        swipeRefreshLayoutHomeFragment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.homeContainerView, HomeFragment.class, null).commit();
+                swipeRefreshLayoutHomeFragment.setRefreshing(false);
+            }
+        });
 
 
 
