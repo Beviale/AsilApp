@@ -168,6 +168,8 @@
     <string name="idLastVisitMyPathologiesShare">ID</string>
     <string name="recordHealthHistoryOld">Dati rilevazione</string>
     <string name="typeHealthHistory">Tipo di registrazione</string>
+    <string name="notRegistered">Parametro non registrato</string>
+
 
     <!--SETTINGS-->
     <string name="settingsUpperCase">IMPOSTAZIONI</string>

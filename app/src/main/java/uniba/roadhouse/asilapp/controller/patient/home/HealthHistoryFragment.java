@@ -296,6 +296,15 @@ public class HealthHistoryFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 homeActivityProgressBar.setVisibility(View.GONE);
                 swipereFreshLayout.setAlpha((float)1);
+                //Disattivo la temperatura
+                bodyTemperatureView.setEnabled(false);
+                bodyTemperatureView.setAlpha((float)0.5);
+                evalutationHealthHistoryTemperature.setText(getString(R.string.notRegistered));
+                // Disattivo la pressione sanguigna
+                bloodPressureView.setEnabled(false);
+                bloodPressureView.setAlpha((float)0.5);
+                evalutationHealthHistoryBloodPressure.setText(getString(R.string.notRegistered));
+                //
                 for(String key: result.keySet())
                 {
                     if(!key.equals("esito"))
@@ -306,6 +315,8 @@ public class HealthHistoryFragment extends Fragment {
                                 evalutationHealthHistoryTemperature.setText(((Misurazione) result.get(key)).getValutazione());
                                 resultTemperature.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))).concat("°"));
                                 idTemperature = ((Misurazione) result.get(key)).getId();
+                                bodyTemperatureView.setEnabled(true);
+                                bodyTemperatureView.setAlpha((float)1.0);
                                 break;
                             case PRESSIONESANGUIGNA:
                                 evalutationHealthHistoryBloodPressure.setText(((Misurazione) result.get(key)).getValutazione());
