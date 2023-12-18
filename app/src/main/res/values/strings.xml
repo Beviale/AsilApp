@@ -185,6 +185,16 @@
     <string name="activateBluetooth">Abilita Bluetooth</string>
 
 
+    <!--USER PROFILE-->
+    <string name="profileTitle">PROFILO UTENTE</string>
+    <string name="profileUserName">Nome</string>
+    <string name="profileUserSurname">Cognome</string>
+    <string name="profileUserGender">Genere</string>
+    <string name="profileUserBirthDate">Data di Nascita</string>
+    <string name="profileUserCitizen">Cittadinanza</string>
+    <string name="profileUserCountry">Paese di Origine</string>
+    <string name="profileEmptyLine">-</string>
+
     <!-- Unity of Measure-->
     <string name="unityTemperature">C</string>
     <string name="unityBloodPressure">mmHg</string>

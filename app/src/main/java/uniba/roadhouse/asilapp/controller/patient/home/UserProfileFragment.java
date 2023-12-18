@@ -2,14 +2,22 @@ package uniba.roadhouse.asilapp.controller.patient.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,17 +26,24 @@ import uniba.roadhouse.asilapp.R;
  */
 public class UserProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    TextView profileText;
+    TextView profileNameTitle;
+    TextView profileName;
+    TextView profileSurnameTitle;
+    TextView profileSurname;
+    TextView profileGenderTitle;
+    TextView profileGender;
+    TextView profileBirthDateTitle;
+    TextView profileBirthDate;
+    TextView profileCitizenTitle;
+    TextView profileCitizen;
+    TextView profileCountryTitle;
+    TextView profileCountry;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Map<String, Object> DatiCorrenti;
+
 
     public UserProfileFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -39,23 +54,15 @@ public class UserProfileFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment UserProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static UserProfileFragment newInstance(String param1, String param2) {
         UserProfileFragment fragment = new UserProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        
     }
 
     @Override
@@ -63,6 +70,45 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        profileText = view.findViewById(R.id.profileText);
+        profileNameTitle = view.findViewById(R.id.profileNameTitle);
+        profileName = view.findViewById(R.id.profileName);
+        profileSurnameTitle = view.findViewById(R.id.profileSurnameTitle);
+        profileSurname = view.findViewById(R.id.profileSurname);
+        profileGenderTitle = view.findViewById(R.id.profileGenderTitle);
+        profileGender = view.findViewById(R.id.profileGender);
+        profileBirthDateTitle = view.findViewById(R.id.profileBirthDateTitle);
+        profileBirthDate = view.findViewById(R.id.profileBirthDate);
+        profileCitizenTitle = view.findViewById(R.id.profileCitizenTitle);
+        profileCitizen = view.findViewById(R.id.profileCitizen);
+        profileCountryTitle = view.findViewById(R.id.profileCountryTitle);
+        profileCountry = view.findViewById(R.id.profileCountry);
+
+        
+    }
+
+
+    @Override
+    public void onStart() {
+        try {
+            DatiCorrenti = Dao.getUserData(Access.getUsername(), getActivity()).get();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        profileName.setText(DatiCorrenti.get("nome").toString());
+        profileSurname.setText(DatiCorrenti.get("cognome").toString());
+        profileGender.setText(DatiCorrenti.get("sesso").toString());
+        //profileBirthDate.setText(DatiCorrenti.get(""));
+        profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
+        profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
+        super.onStart();
     }
 
 
