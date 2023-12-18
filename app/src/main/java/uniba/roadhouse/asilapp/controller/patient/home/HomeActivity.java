@@ -175,4 +175,6 @@ public class HomeActivity extends AppCompatActivity {
         homeText.setText(newScreen);
     }
 
+
+
 }

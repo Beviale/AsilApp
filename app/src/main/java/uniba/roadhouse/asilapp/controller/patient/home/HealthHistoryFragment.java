@@ -304,7 +304,22 @@ public class HealthHistoryFragment extends Fragment {
                 bloodPressureView.setEnabled(false);
                 bloodPressureView.setAlpha((float)0.5);
                 evalutationHealthHistoryBloodPressure.setText(getString(R.string.notRegistered));
-                //
+                // Disattivo il peso
+                weightView.setEnabled(false);
+                weightView.setAlpha((float)0.5);
+                evalutationHealthHistoryWeight.setText(getString(R.string.notRegistered));
+                // Disattivo il battito cardiaco
+                bpmView.setEnabled(false);
+                bpmView.setAlpha((float)0.5);
+                evalutationHealthHistoryBPM.setText(getString(R.string.notRegistered));
+                // Disattivo il tremolio
+                tremblingView.setEnabled(false);
+                tremblingView.setAlpha((float)0.5);
+                evalutationHealthHistoryTrembling.setText(getString(R.string.notRegistered));
+                // Disattivo il glucosio
+                glucoseView.setEnabled(false);
+                glucoseView.setAlpha((float)0.5);
+                evalutationHealthHistoryGlucose.setText(getString(R.string.notRegistered));
                 for(String key: result.keySet())
                 {
                     if(!key.equals("esito"))
@@ -323,26 +338,36 @@ public class HealthHistoryFragment extends Fragment {
                                 resultBloodPressureMax.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMax()))).concat("/"));
                                 resultBloodPressureMin.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMin()))));
                                 idBloodPressure = ((Misurazione) result.get(key)).getId();
+                                bloodPressureView.setEnabled(true);
+                                bloodPressureView.setAlpha((float)1.0);
                                 break;
                             case PESO:
                                 evalutationHealthHistoryWeight.setText(((Misurazione) result.get(key)).getValutazione());
                                 resultWeight.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                 idWeight = ((Misurazione) result.get(key)).getId();
+                                weightView.setEnabled(true);
+                                weightView.setAlpha((float)1.0);
                                 break;
                             case BATTITOCARDIACO:
                                 evalutationHealthHistoryBPM.setText(((Misurazione) result.get(key)).getValutazione());
                                 resultBPM.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                 idBPM = ((Misurazione) result.get(key)).getId();
+                                bpmView.setEnabled(true);
+                                bpmView.setAlpha((float)1.0);
                                 break;
                             case TREMOLIO:
                                 evalutationHealthHistoryTrembling.setText(((Misurazione) result.get(key)).getValutazione());
                                 resultTrembling.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                 idTrembling = ((Misurazione) result.get(key)).getId();
+                                tremblingView.setEnabled(true);
+                                tremblingView.setAlpha((float)1.0);
                                 break;
                             case GLUCOSIO:
                                 evalutationHealthHistoryGlucose.setText(((Misurazione) result.get(key)).getValutazione());
                                 resultGlucose.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                 idGlucose = ((Misurazione) result.get(key)).getId();
+                                glucoseView.setEnabled(true);
+                                glucoseView.setAlpha((float)1.0);
                                 break;
                         }
                     }

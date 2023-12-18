@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -163,8 +164,6 @@ public class SettingsFragment extends Fragment {
 
 
         editProfileButton.setEnabled(false);
-        homeActivityProgressBar.setVisibility(View.VISIBLE);
-        settingsLayout.setAlpha((float)0.5);
         getData();
 
     }
@@ -212,7 +211,6 @@ public class SettingsFragment extends Fragment {
         cityModify.addTextChangedListener(textWatcherCity);
         nameOrganizationModify.addTextChangedListener(textWacherName);
         changePasswordInput.addTextChangedListener(textWatcherPassword);
-        Toolbar mActionBar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
     }
 
 
@@ -238,6 +236,8 @@ public class SettingsFragment extends Fragment {
      */
     private void getData()
     {
+        homeActivityProgressBar.setVisibility(View.VISIBLE);
+        settingsLayout.setAlpha((float)0.5);
         CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
@@ -346,7 +346,7 @@ public class SettingsFragment extends Fragment {
     {
         if(passwordChanged==true && (!currentNameOrganization.equals(nameOrganizationModify.getText().toString())) && (!changePasswordInput.getText().toString().isEmpty()))
         {
-            homeActivityProgressBar.setEnabled(true);
+            homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
             CompletableFuture<String> future = Dao.editResidenzaUtente(Access.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
             future.thenAccept(result -> {
@@ -354,7 +354,7 @@ public class SettingsFragment extends Fragment {
                     CompletableFuture<String> futurePassword = Dao.editPasswordUtente(Access.getUsername(), changePasswordInput.getText().toString(), getActivity());
                     futurePassword.thenAccept(resultPassword -> {
                         getActivity().runOnUiThread(() -> {
-                            homeActivityProgressBar.setEnabled(false);
+                            homeActivityProgressBar.setVisibility(View.GONE);
                             settingsLayout.setAlpha((float)1);
                             if(result.equals(getString(R.string.changeResidenzaSuccessfully)) && resultPassword.equals(getString(R.string.editPasswordSuccessfull)))
                             {
@@ -382,12 +382,12 @@ public class SettingsFragment extends Fragment {
 
         else if(passwordChanged==true)
         {
-            homeActivityProgressBar.setEnabled(true);
+            homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
             CompletableFuture<String> future = Dao.editPasswordUtente(Access.getUsername(), changePasswordInput.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
-                    homeActivityProgressBar.setEnabled(false);
+                    homeActivityProgressBar.setVisibility(View.GONE);
                     settingsLayout.setAlpha((float)1);
                     Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
                     exitAccount();
@@ -397,12 +397,12 @@ public class SettingsFragment extends Fragment {
         }
         else if(!currentNameOrganization.equals(nameOrganizationModify.getText().toString()))
         {
-            homeActivityProgressBar.setEnabled(true);
+            homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
             CompletableFuture<String> future = Dao.editResidenzaUtente(Access.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
-                    homeActivityProgressBar.setEnabled(false);
+                    homeActivityProgressBar.setVisibility(View.GONE);
                     settingsLayout.setAlpha((float)1);
                     Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
                     if(result.equals(getString(R.string.changeResidenzaSuccessfully)))
