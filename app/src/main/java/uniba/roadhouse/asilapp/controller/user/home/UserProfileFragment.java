@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Map;
@@ -39,6 +41,9 @@ public class UserProfileFragment extends Fragment {
     TextView profileCitizen;
     TextView profileCountryTitle;
     TextView profileCountry;
+    TextView profileResidenceTitle;
+    TextView profileResidence;
+    ImageView profileQRCode;
 
     Map<String, Object> DatiCorrenti;
 
@@ -88,6 +93,9 @@ public class UserProfileFragment extends Fragment {
         profileCitizen = view.findViewById(R.id.profileCitizen);
         profileCountryTitle = view.findViewById(R.id.profileCountryTitle);
         profileCountry = view.findViewById(R.id.profileCountry);
+        profileResidenceTitle = view.findViewById(R.id.profileResidenceTitle);
+        profileResidence = view.findViewById(R.id.profileResidence);
+        profileQRCode = view.findViewById(R.id.imageQRCode);
 
         
     }
@@ -108,6 +116,8 @@ public class UserProfileFragment extends Fragment {
         //profileBirthDate.setText(DatiCorrenti.get(""));
         profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
         profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
+        profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
+        profileQRCode.setImageBitmap((Bitmap) DatiCorrenti.get("qrCode"));
         super.onStart();
     }
 

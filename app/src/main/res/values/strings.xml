@@ -195,6 +195,7 @@
     <string name="profileUserBirthDate">Data di Nascita</string>
     <string name="profileUserCitizen">Cittadinanza</string>
     <string name="profileUserCountry">Paese di Origine</string>
+    <string name="profileUserResidence">Residenza</string>
     <string name="profileEmptyLine">-</string>
 
     <!-- Unity of Measure-->
