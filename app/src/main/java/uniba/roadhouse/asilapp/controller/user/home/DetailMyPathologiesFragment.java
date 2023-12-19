@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -242,6 +242,8 @@ public class DetailMyPathologiesFragment extends Fragment {
         });
         super.onResume();
     }
+
+
 
 
 

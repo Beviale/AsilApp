@@ -10,7 +10,7 @@
         android:id="@+id/detailHealthHistoryLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".controller.patient.home.DetailHealthHistoryFragment">
+        tools:context=".controller.user.home.DetailHealthHistoryFragment">
 
 
         <TextView

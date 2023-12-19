@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
-import uniba.roadhouse.asilapp.controller.patient.signinSignup.SigninSingupActivity;
+import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
 
 public class FirstActivity extends AppCompatActivity {
 

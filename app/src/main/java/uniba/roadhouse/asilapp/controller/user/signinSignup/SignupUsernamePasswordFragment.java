@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.signinSignup;
+package uniba.roadhouse.asilapp.controller.user.signinSignup;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

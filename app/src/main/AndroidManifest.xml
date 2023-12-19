@@ -31,10 +31,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.patient.home.HomeActivity"
+            android:name=".controller.user.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.patient.signinSignup.SigninSingupActivity"
+            android:name=".controller.user.signinSignup.SigninSingupActivity"
             android:exported="false"></activity>
 
         <meta-data

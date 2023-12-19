@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,7 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.controller.patient.signinSignup.SigninSingupActivity;
+import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
 
 
 public class SigninDoctorFragment extends Fragment {

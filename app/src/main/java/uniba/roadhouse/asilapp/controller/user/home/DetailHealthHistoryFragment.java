@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
@@ -185,6 +185,12 @@ public class DetailHealthHistoryFragment extends Fragment {
     public void onStart() {
         super.onStart();
         shareDetailHealthHistory.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
+    }
+
+    @Override
+    public void onPause() {
+        homeActivityProgressBar.setVisibility(View.GONE);
+        super.onPause();
     }
 
     @Override

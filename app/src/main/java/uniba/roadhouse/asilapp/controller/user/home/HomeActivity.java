@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;

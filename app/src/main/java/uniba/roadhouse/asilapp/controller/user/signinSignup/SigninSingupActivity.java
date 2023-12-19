@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.signinSignup;
+package uniba.roadhouse.asilapp.controller.user.signinSignup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -18,7 +18,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Access;
-import uniba.roadhouse.asilapp.controller.patient.home.HomeActivity;
+import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 
 
 /**

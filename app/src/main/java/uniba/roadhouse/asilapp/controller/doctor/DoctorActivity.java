@@ -2,27 +2,14 @@ package uniba.roadhouse.asilapp.controller.doctor;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-
-import java.util.Map;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.controller.patient.home.HomeActivity;
-import uniba.roadhouse.asilapp.controller.patient.signinSignup.SiginFragment;
-import uniba.roadhouse.asilapp.controller.patient.signinSignup.SigninSingupActivity;
-import uniba.roadhouse.asilapp.controller.patient.signinSignup.SignupFragment;
-import uniba.roadhouse.asilapp.model.dao.Access;
-import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class DoctorActivity extends AppCompatActivity {
 

@@ -1,7 +1,7 @@
 package uniba.roadhouse.asilapp.model.dao;
 
 /**
- * Classe singleton che memorizza l'username dell'utente che ha effettuato il login.
+ * Classe singleton che memorizza l'username e il nome dell'utente che ha effettuato il login.
  */
 public class Access
 {

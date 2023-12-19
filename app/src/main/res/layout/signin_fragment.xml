@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground"
     android:orientation="vertical"
-    tools:context=".controller.patient.signinSignup.SiginFragment">
+    tools:context=".controller.user.signinSignup.SiginFragment">
 
     <TextView
         android:id="@+id/loginLabel"

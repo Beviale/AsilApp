@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -142,6 +142,12 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         super.onStart();
         //-----------LISTENER------------------
         shareDetailHealthHistoryOld.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
+    }
+
+    @Override
+    public void onPause() {
+        homeActivityProgressBar.setVisibility(View.GONE);
+        super.onPause();
     }
 
     @Override

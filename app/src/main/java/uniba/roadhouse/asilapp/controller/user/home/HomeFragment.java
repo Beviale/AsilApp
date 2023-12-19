@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import android.os.Bundle;
 
@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 

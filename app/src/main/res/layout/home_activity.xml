@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.patient.home.HomeActivity">
+    tools:context=".controller.user.home.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

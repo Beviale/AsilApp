@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -42,7 +41,6 @@ import uniba.roadhouse.asilapp.controller.FirstActivity;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.controller.patient.signinSignup.SigninSingupActivity;
 
 /**
  * Schermata delle impostazioni dell'app.
@@ -213,6 +211,11 @@ public class SettingsFragment extends Fragment {
         changePasswordInput.addTextChangedListener(textWatcherPassword);
     }
 
+    @Override
+    public void onPause() {
+        homeActivityProgressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
 
     @Override
     public void onResume() {

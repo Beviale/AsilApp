@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.patient.home;
+package uniba.roadhouse.asilapp.controller.user.home;
 
 import android.os.Bundle;
 
@@ -245,6 +245,12 @@ public class HealthHistoryFragment extends Fragment {
                 swipereFreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        homeActivityProgressBar.setVisibility(View.GONE);
+        super.onPause();
     }
 
 
