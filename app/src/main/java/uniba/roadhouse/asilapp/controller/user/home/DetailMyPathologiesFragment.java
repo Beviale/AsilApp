@@ -239,16 +239,13 @@ public class DetailMyPathologiesFragment extends Fragment {
     {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
         Calendar currentDate = Calendar.getInstance();
-        int currentYear = currentDate.get(Calendar.YEAR);
-        int currentMonth = currentDate.get(Calendar.MONTH);
-        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Calendar selectedDate = Calendar.getInstance();
                 selectedDate.set(year, month, dayOfMonth);
-                clearTime(selectedDate);
-                clearTime(currentDate);
+                Utility.clearTime(selectedDate);
+                Utility.clearTime(currentDate);
                 if(selectedDate.after(currentDate))
                 {
                     Utility.showAlertDialog(getActivity(), getString(R.string.futureCalendarErrorTitle), getString(R.string.futureCalendarError));
@@ -260,13 +257,7 @@ public class DetailMyPathologiesFragment extends Fragment {
     }
 
 
-    // Method to clear the time portion of a Calendar object
-    private static void clearTime(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-    }
+
 
     private void openEditTime()
     {

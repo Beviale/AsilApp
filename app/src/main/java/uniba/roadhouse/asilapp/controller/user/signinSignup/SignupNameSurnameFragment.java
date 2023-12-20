@@ -167,9 +167,6 @@ public class SignupNameSurnameFragment extends Fragment {
     private void showDatePickerDialog(AutoCompleteTextView birthDate) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
         Calendar currentDate = Calendar.getInstance();
-        int currentYear = currentDate.get(Calendar.YEAR);
-        int currentMonth = currentDate.get(Calendar.MONTH);
-        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

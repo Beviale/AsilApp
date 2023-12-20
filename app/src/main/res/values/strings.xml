@@ -261,5 +261,7 @@
     <string name="priorityNewPathologyLabel">Priorità riscontrata</string>
     <string name="doctorNotesNewPathologyLabel">Nota</string>
     <string name="addNewPathology">Aggiungi la nuova patologia</string>
+    <string name="emptyNameNewPathologyTitle">Non hai inserito il nome della patologia!</string>
+    <string name="emptyNameNewPathology">Per aggiungere una nuova patologia, devi indicarne obbligatoriamente il nome.</string>
 
 </resources>
