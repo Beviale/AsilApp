@@ -261,7 +261,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginBetweenInputs"
-        android:backgroundTint="@color/textAlertColor"
+        android:backgroundTint="@color/red"
         android:text="@string/exit"
         android:layout_marginLeft="@dimen/marginLeftSettings"
         app:layout_constraintLeft_toLeftOf="parent"

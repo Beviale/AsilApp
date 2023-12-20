@@ -93,6 +93,14 @@ public class DetailHealthHistoryFragment extends Fragment {
      * Layout che è possibile oscurare durante il caricamento dei dati dal database relativi all'ultima misurazione
      */
     ConstraintLayout detailHealthHistoryLayout;
+    /**
+     * Consente la modifica della valutazione da parte del dottore.
+     */
+    ImageView editButtonHealthHistoryEvalutation;
+    /**
+     * Consente la modifica delle note da parte del dottore.
+     */
+    ImageView editButtonHealthHistoryDoctorNotes;
 
     /**
      * is dell'ultima misurazione
@@ -132,7 +140,6 @@ public class DetailHealthHistoryFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
     public static DetailHealthHistoryFragment newInstance() {
         DetailHealthHistoryFragment fragment = new DetailHealthHistoryFragment();
         return fragment;
@@ -177,6 +184,8 @@ public class DetailHealthHistoryFragment extends Fragment {
         oldProgressBar = view.findViewById(R.id.oldProgressBar);
         timeLastRecordHealthHistory = view.findViewById(R.id.timeLastRecordHealthHistory);
         evalutationLastRecordHealthHistory = view.findViewById(R.id.evalutationLastRecordHealthHistory);
+        editButtonHealthHistoryEvalutation = view.findViewById(R.id.editButtonHealthHistoryEvalutation);
+        editButtonHealthHistoryDoctorNotes = view.findViewById(R.id.editButtonHealthHistoryDoctorNotes);
         getData();
         getOldData();
     }
@@ -185,6 +194,8 @@ public class DetailHealthHistoryFragment extends Fragment {
     public void onStart() {
         super.onStart();
         shareDetailHealthHistory.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
+        editButtonHealthHistoryEvalutation.setOnClickListener(v->openDialogEditEvalutation());
+        editButtonHealthHistoryDoctorNotes.setOnClickListener(v->openDialogEditDoctorNotes());
     }
 
     @Override
@@ -214,7 +225,7 @@ public class DetailHealthHistoryFragment extends Fragment {
      * Contiene varie checkbox che permettono all'utente di selezionare singolarmente gli elementi da condividere.
      */
     private void showCheckboxDialogForSharePrivacy() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleShare);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.checkbox_dialog_health_history, null);
         CheckBox checkBoxId = view.findViewById(R.id.dialogShareDetailHistoryId);
@@ -538,6 +549,20 @@ public class DetailHealthHistoryFragment extends Fragment {
         fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
         fragmentTransaction.replace(R.id.homeContainerView, DetailOldHealthHistoryFragment.class, bundle);
         fragmentTransaction.commit();
+    }
+
+
+    private void openDialogEditEvalutation()
+    {
+        EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance();
+        editEvalutationDialogFragment.show(getActivity().getSupportFragmentManager(), "EditEvalutationDialogFragment");
+    }
+
+    private void openDialogEditDoctorNotes()
+    {
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstance();
+        editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
+
     }
 
 

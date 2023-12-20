@@ -23,6 +23,9 @@
     <string name="save">Salva</string>
     <string name="send">Invia</string>
     <string name="successfullySaved">Salvataggio effettuato con successo</string>
+    <string name="delete">Elimina</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
 
 
     <!--SigninSignupActivity-->
@@ -31,9 +34,6 @@
     Questo fa sì che l app non riesca a poter garantire il supporto a tutte le funzionalità normalmente previste.
     Si prega di connettersi ad una rete mobile o Wifi.</string>
     <string name="user">Utente</string>
-
-
-
 
 
     <!--LOGIN FRAGMENT-->
@@ -169,6 +169,26 @@
     <string name="recordHealthHistoryOld">Dati rilevazione</string>
     <string name="typeHealthHistory">Tipo di registrazione</string>
     <string name="notRegistered">Parametro non registrato</string>
+    <string name="evalutationHealthHistoryValueGood">Buono 🟢</string>
+    <string name="evalutationHealthHistoryValueFairlyGood">Discreto 🟠</string>
+    <string name="evalutationHealthHistoryValueNotGood">Cattivo 🔴</string>
+    <string name="chooseEvalutationHealthHistory">Scegli la valutazione</string>
+    <string name="editDoctorNotes">Inserisci la nota</string>
+    <string name="emptyEditDoctorNotesTitle">Campo di testo vuoto</string>
+    <string name="emptyEditDoctorNotes">Per salvare la nota devi riempire il campo di testo.</string>
+    <string name="emptyEditEvalutationTitle">Non hai selezionato alcuna valutazione</string>
+    <string name="emptyEditEvalutation">Per salvare la valutazione devi selezionare un elemento.</string>
+    <string name="drugsMyPathologies">Farmaci</string>
+    <string name="futureCalendarErrorTitle">Data inserita non valida</string>
+    <string name="futureCalendarError">La data che hai inserito non è valida in quanto successiva a quella corrente.</string>
+    <string name="choosePriorityMyPathologies">Scegli la priorità</string>
+    <string name="priorityMyPathologiesValueLow">Bassa 🟢</string>
+    <string name="priorityMyPathologiesValueMedium">Media 🟠</string>
+    <string name="priorityMyPathologiesValueHigh">Elevata 🔴</string>
+    <string name="emptyEditPriorityTitle">Non hai selezionato alcuna priorità</string>
+    <string name="emptyEditPriority">Per salvare la priorità devi selezionare un elemento.</string>
+    <string name="deleteMessageTitle">Sei sicuro di voler procedere con l\'eliminazione?</string>
+    <string name="deleteMessage">Ti ricordiamo che l\'operazione è irreversibile.</string>
 
 
     <!--SETTINGS-->
@@ -232,5 +252,14 @@
 
     <!-- DOCTORACTIVITY-->
     <string name="doctor">Dottore</string>
+
+    <!-- New Pathology Fragment-->
+    <string name="newPathologyTitle">Dati patologia</string>
+    <string name="namePathologyPlaceholder">Nome patologia</string>
+    <string name="dateNewPathology">Data ultima visita</string>
+    <string name="timeNewPathology">Ora ultima visita</string>
+    <string name="priorityNewPathologyLabel">Priorità riscontrata</string>
+    <string name="doctorNotesNewPathologyLabel">Nota</string>
+    <string name="addNewPathology">Aggiungi la nuova patologia</string>
 
 </resources>

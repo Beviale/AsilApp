@@ -87,6 +87,15 @@ public class DetailOldHealthHistoryFragment extends Fragment {
      */
     private static Integer id;
 
+    /**
+     * Consente la modifica della valutazione da parte del medico
+     */
+   ImageView editButtonHealthHistoryOldEvalutation;
+    /**
+     * Consente la modifica della nota da parte del medico.
+     */
+   ImageView editButtonHealthHistoryOldDoctorNotes;
+
 
     public DetailOldHealthHistoryFragment() {
     }
@@ -133,6 +142,8 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         layoutOldHealthHistory = view.findViewById(R.id.layoutOldHealthHistory);
         homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
         shareDetailHealthHistoryOld = view.findViewById(R.id.shareDetailHealthHistoryOld);
+        editButtonHealthHistoryOldEvalutation = view.findViewById(R.id.editButtonHealthHistoryOldEvalutation);
+        editButtonHealthHistoryOldDoctorNotes = view.findViewById(R.id.editButtonHealthHistoryOldDoctorNotes);
 
         getData();
     }
@@ -142,6 +153,8 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         super.onStart();
         //-----------LISTENER------------------
         shareDetailHealthHistoryOld.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
+        editButtonHealthHistoryOldEvalutation.setOnClickListener(v->openDialogEditEvalutation());
+        editButtonHealthHistoryOldDoctorNotes.setOnClickListener(v->openDialogEditDoctorNotes());
     }
 
     @Override
@@ -171,7 +184,7 @@ public class DetailOldHealthHistoryFragment extends Fragment {
      * Contiene varie checkbox che permettono all'utente di selezionare singolarmente gli elementi da condividere.
      */
     private void showCheckboxDialogForSharePrivacy() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleShare);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.checkbox_dialog_health_history, null);
         CheckBox checkBoxId = view.findViewById(R.id.dialogShareDetailHistoryId);
@@ -282,6 +295,19 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         if(itemClicked.equals(TipoMisurazioneEnum.GLUCOSIO))
             unity=getString(R.string.unityGlucose);
         return unity;
+    }
+
+    private void openDialogEditEvalutation()
+    {
+        EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance();
+        editEvalutationDialogFragment.show(getActivity().getSupportFragmentManager(), "EditEvalutationDialogFragment");
+    }
+
+    private void openDialogEditDoctorNotes()
+    {
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstance();
+        editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
+
     }
 
 }

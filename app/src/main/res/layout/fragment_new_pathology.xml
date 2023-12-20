@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".controller.user.home.NewPathologyFragment">
+
+
+        <TextView
+            android:id="@+id/newPathologyTitle"
+            android:layout_width="wrap_content"
+            android:text="@string/newPathologyTitle"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/title1FontSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            android:layout_height="wrap_content"/>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            app:layout_constraintTop_toBottomOf="@+id/newPathologyTitle"
+            android:id="@+id/nameNewPathologyLayout"
+            android:layout_width="@dimen/inputTextWidth"
+            android:layout_height="@dimen/inpuTextHeight"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:hint="@string/namePathologyPlaceholder"
+            app:boxStrokeColor="@color/appMainColor"
+            app:counterTextColor="@color/appMainColor"
+            app:helperTextTextColor="@color/appMainColor"
+            app:hintTextColor="@color/appMainColor"
+            android:textColorHint="@color/textPlaceholderColor"
+            app:placeholderTextColor="@color/appMainColor"
+            app:prefixTextColor="@color/appMainColor"
+            app:suffixTextColor="@color/appMainColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameNewPathologyInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textColor="@color/textColor"
+                android:textColorHighlight="@color/appMainColor"
+                android:textColorLink="@color/appMainColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/dateNewPathologyLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            app:layout_constraintTop_toBottomOf="@+id/nameNewPathologyLayout"
+            android:layout_width="@dimen/inputTextWidth"
+            android:layout_height="@dimen/inpuTextHeight"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:boxStrokeColor="@color/appMainColor"
+            app:counterTextColor="@color/appMainColor"
+            app:helperTextTextColor="@color/appMainColor"
+            app:hintTextColor="@color/appMainColor"
+            app:placeholderTextColor="@color/appMainColor"
+            app:prefixTextColor="@color/appMainColor"
+            app:suffixTextColor="@color/appMainColor"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textPlaceholderColor"
+            android:hint="@string/dateNewPathology"
+            android:layout_gravity="center">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                style="@style/MyAutoCompleteTextViewStyleDate"
+                android:id="@+id/dateNewPathologyInput"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:textColorHighlight="@color/appMainColor"
+                android:textColorLink="@color/appMainColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/timeNewPathologyLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            app:layout_constraintTop_toBottomOf="@+id/dateNewPathologyLayout"
+            android:layout_width="@dimen/inputTextWidth"
+            android:layout_height="@dimen/inpuTextHeight"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            app:boxStrokeColor="@color/appMainColor"
+            app:counterTextColor="@color/appMainColor"
+            app:helperTextTextColor="@color/appMainColor"
+            app:hintTextColor="@color/appMainColor"
+            app:placeholderTextColor="@color/appMainColor"
+            app:prefixTextColor="@color/appMainColor"
+            app:suffixTextColor="@color/appMainColor"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textPlaceholderColor"
+            android:hint="@string/timeNewPathology"
+            android:layout_gravity="center">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                style="@style/MyAutoCompleteTextViewStyleDate"
+                android:id="@+id/timeNewPathologyInput"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:textColorHighlight="@color/appMainColor"
+                android:textColorLink="@color/appMainColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/priorityNewPathologyLabel"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/title3FontSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            app:layout_constraintTop_toBottomOf="@+id/timeNewPathologyLayout"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            android:text="@string/priorityNewPathologyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioGroup
+            android:id="@+id/priorityNewMyPathologiesRadioGroup"
+            app:layout_constraintTop_toBottomOf="@+id/priorityNewPathologyLabel"
+            android:layout_width="@dimen/widthEditEvalutation"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:id="@+id/myNewPathologiesLow"
+                android:layout_height="wrap_content"
+                android:text="@string/priorityMyPathologiesValueLow"
+                app:buttonTint="@color/colorAccent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:id="@+id/myNewPathologiesMedium"
+                android:layout_height="wrap_content"
+                android:text="@string/priorityMyPathologiesValueMedium"
+                app:buttonTint="@color/colorAccent" />
+
+            <RadioButton
+                android:id="@+id/myNewPathologiesHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priorityMyPathologiesValueHigh"
+                app:buttonTint="@color/colorAccent" />
+        </RadioGroup>
+
+
+        <TextView
+            android:id="@+id/doctorNotesNewPathologyLabel"
+            android:fontFamily="@font/titillium_web_bold"
+            android:textSize="@dimen/title3FontSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            app:layout_constraintTop_toBottomOf="@+id/priorityNewMyPathologiesRadioGroup"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            android:text="@string/doctorNotesNewPathologyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/doctorNotesNewPathology"
+            android:elevation="10dp"
+            android:background="@drawable/rounded"
+            android:padding="10dp"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:layout_width="match_parent"
+            android:cursorVisible="true"
+            android:layout_height="200dp"
+            android:scrollHorizontally="false"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            android:fadeScrollbars="false"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/marginLeftRightDetailHealthHistory"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/textSizeDoctorNotes"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doctorNotesNewPathologyLabel" />
+
+
+        <Button
+            android:id="@+id/buttonAddNewPathology"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/marginLeftNewPathology"
+            app:layout_constraintTop_toBottomOf="@+id/doctorNotesNewPathology"
+            android:layout_marginTop="@dimen/marginBetweenInputs"
+            android:backgroundTint="@color/appMainColor"
+            android:text="@string/addNewPathology"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

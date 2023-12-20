@@ -1,5 +1,7 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,16 +12,22 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import uniba.roadhouse.asilapp.R;
@@ -40,10 +48,10 @@ public class DetailMyPathologiesFragment extends Fragment {
 
     EditText doctorNotesLastVisitMyPahologies;
     ImageView shareDetailMyPathologies;
-    TextView oldMyPathologiesTitle;
-    TextView oldMyPathologiesId;
-    TextView oldMyPathologiesPriority;
-    TextView oldMyPathologiesDate;
+    ImageView editButtonMyPathologiesDate;
+    ImageView editButtonMyPathologiesTime;
+    ImageView editButtonMyPahologiesPriority;
+    ImageView editButtonMyPathologiesDoctorNotes;
 
 
 
@@ -62,15 +70,12 @@ public class DetailMyPathologiesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            itemCliecked = getArguments().getString("itemClicked");
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.detail_my_pathologies_fragment, container, false);
     }
 
@@ -85,133 +90,20 @@ public class DetailMyPathologiesFragment extends Fragment {
         priorityLastVisitMyPathologies = view.findViewById(R.id.priorityLastVisitMyPathologies);
         Utility.enableScroll(doctorNotesLastVisitMyPahologies);
         shareDetailMyPathologies = view.findViewById(R.id.shareDetailMyPathologies);
-        idLastVisitMyPathologies = view.findViewById(R.id.idLastVisitMyPathologies);
-        oldMyPathologiesTitle = view.findViewById(R.id.oldMyPathologiesTitle);
-        oldMyPathologiesPriority = view.findViewById(R.id.oldMyPathologiesPriority);
-        oldMyPathologiesId = view.findViewById(R.id.oldMyPathologiesId);
-        oldMyPathologiesDate = view.findViewById(R.id.oldMyPathologiesDate);
-
-        setDetailMyPathologiesTitle();
-        setDateLastVisitMyPathologies();
-        setTimeLastVisitMyPathologies();
-        setPrioprityLastVisitMyPathologies();
-        setOldDetailMyPathologiesTitle();
-        setOldDetailMyPathologiesId();
-        setOldDetailMyPathologiesPriority();
-        setOldDetailMyPathologiesDate();
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        editButtonMyPathologiesDate = view.findViewById(R.id.editButtonMyPathologiesDate);
+        editButtonMyPathologiesTime = view.findViewById(R.id.editButtonMyPathologiesTime);
+        editButtonMyPahologiesPriority = view.findViewById(R.id.editButtonMyPahologiesPriority);
+        editButtonMyPathologiesDoctorNotes = view.findViewById(R.id.editButtonMyPathologiesDoctorNotes);
     }
 
 
 
-    private void setDetailMyPathologiesTitle()
-    {
-        detailMyPathologiesTitle.setText(itemCliecked);
-    }
-
-    private void setDateLastVisitMyPathologies()
-    {
-        if(itemCliecked.equals(getString(R.string.diabete)))
-        {
-            dateLastVisitMyPathologies.setText("20/10/2023");
-        }
-        if(itemCliecked.equals(getString(R.string.dermatitis)))
-        {
-            dateLastVisitMyPathologies.setText("10/05/2023");
-        }
-        if(itemCliecked.equals(getString(R.string.brochitis)))
-        {
-            dateLastVisitMyPathologies.setText("20/10/2022");
-        }
-    }
-
-    private void setTimeLastVisitMyPathologies()
-    {
-        if(itemCliecked.equals(getString(R.string.diabete)))
-        {
-            timeLastVisitMyPathologies.setText("10:20");
-        }
-        if(itemCliecked.equals(getString(R.string.dermatitis)))
-        {
-            timeLastVisitMyPathologies.setText("15:00");
-        }
-        if(itemCliecked.equals(getString(R.string.brochitis)))
-        {
-            timeLastVisitMyPathologies.setText("17:30");
-        }
-    }
 
 
-    private void setPrioprityLastVisitMyPathologies()
-    {
-        if(itemCliecked.equals(getString(R.string.diabete)))
-        {
-            priorityLastVisitMyPathologies.setText("alta \uD83D\uDD34");
-        }
-        if(itemCliecked.equals(getString(R.string.dermatitis)))
-        {
-            priorityLastVisitMyPathologies.setText("media \uD83D\uDFE0");
-        }
-        if(itemCliecked.equals(getString(R.string.brochitis)))
-        {
-            priorityLastVisitMyPathologies.setText("bassa \uD83D\uDFE2");
-        }
 
-    }
 
-    private void setOldDetailMyPathologiesTitle()
-    {
-        oldMyPathologiesTitle.setText(itemCliecked);
-    }
 
-    private void setOldDetailMyPathologiesId()
-    {
-        if(itemCliecked.equals(getString(R.string.diabete)))
-        {
-            oldMyPathologiesId.setText("14");
-        }
-        if(itemCliecked.equals(getString(R.string.dermatitis)))
-        {
-            oldMyPathologiesId.setText("9");
-        }
-        if(itemCliecked.equals(getString(R.string.brochitis)))
-        {
-            oldMyPathologiesId.setText("5");
-        }
-    }
 
-    private void setOldDetailMyPathologiesPriority()
-    {
-        if(itemCliecked.equals(getString(R.string.diabete)))
-        {
-            oldMyPathologiesPriority.setText("alta \uD83D\uDD34");
-        }
-        if(itemCliecked.equals(getString(R.string.dermatitis)))
-        {
-            oldMyPathologiesPriority.setText("media \uD83D\uDFE0");
-        }
-        if(itemCliecked.equals(getString(R.string.brochitis)))
-        {
-            oldMyPathologiesPriority.setText("alta \uD83D\uDD34");
-        }
-    }
-
-    private void setOldDetailMyPathologiesDate()
-    {
-        if(itemCliecked.equals(getString(R.string.diabete)))
-        {
-            oldMyPathologiesId.setText("20/06/2023");
-        }
-        if(itemCliecked.equals(getString(R.string.dermatitis)))
-        {
-            oldMyPathologiesId.setText("25/01/2023");
-        }
-        if(itemCliecked.equals(getString(R.string.brochitis)))
-        {
-            oldMyPathologiesId.setText("30/11/2021");
-        }
-    }
 
 
     @Override
@@ -225,6 +117,12 @@ public class DetailMyPathologiesFragment extends Fragment {
                 showCheckboxDialogForSharePrivacy();
             }
         });
+
+
+        editButtonMyPathologiesDoctorNotes.setOnClickListener(v->openEditDoctorNotes());
+        editButtonMyPathologiesDate.setOnClickListener(v->openEditDate());
+        editButtonMyPathologiesTime.setOnClickListener(v->openEditTime());
+        editButtonMyPahologiesPriority.setOnClickListener(v->editPriority());
     }
 
 
@@ -240,17 +138,44 @@ public class DetailMyPathologiesFragment extends Fragment {
 
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.deleteMyPathologies)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
+
+                    // Set the dialog title and message
+                    builder.setTitle(getString(R.string.deleteMessageTitle))
+                            .setMessage(getString(R.string.deleteMessage))
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            })
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+
+
+                    // Create and show the AlertDialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                }
+
+                return true;
+            }
+        });
+        toolbar.inflateMenu(R.menu.menu_my_pathologies);
         super.onResume();
     }
 
 
-
-
-
-
-
     private void showCheckboxDialogForSharePrivacy() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleShare);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.checkbox_dialog_pathologies, null);
 
@@ -302,6 +227,76 @@ public class DetailMyPathologiesFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
+    private void openEditDoctorNotes()
+    {
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstance();
+        editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
+    }
+
+    private void openEditDate()
+    {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
+        Calendar currentDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentMonth = currentDate.get(Calendar.MONTH);
+        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+                clearTime(selectedDate);
+                clearTime(currentDate);
+                if(selectedDate.after(currentDate))
+                {
+                    Utility.showAlertDialog(getActivity(), getString(R.string.futureCalendarErrorTitle), getString(R.string.futureCalendarError));
+                }
+
+            }
+        });
+        datePickerDialog.show();
+    }
+
+
+    // Method to clear the time portion of a Calendar object
+    private static void clearTime(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    private void openEditTime()
+    {
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), R.style.DialogTheme,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // Handle the selected time (hourOfDay and minute)
+                        String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
+                    }
+                },
+                hour,
+                minute,
+                android.text.format.DateFormat.is24HourFormat(getActivity()) // 24-hour format
+        );
+        timePickerDialog.show();
+
+    }
+
+
+    private void editPriority()
+    {
+        EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance();
+        editPriorityDialogFragment.show(getActivity().getSupportFragmentManager(), "EditPriorityDialogFragment");
+    }
+
+
 
 
 

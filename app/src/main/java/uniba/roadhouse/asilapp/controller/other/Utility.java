@@ -42,7 +42,7 @@ public class Utility
      * @param message messaggio dell'AlertDialog
      */
     public static void showAlertDialog(Context context, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyle);
 
         // Set the dialog title and message
         builder.setTitle(title)
@@ -149,7 +149,7 @@ public class Utility
 
 
     /**
-     * Colora le checkbox con il colore appMainColor
+     * Colora le checkbox con il colorAccent
      * @param checkBoxes, lista di checkbox da colorare
      * @param context, contesto
      */
@@ -157,7 +157,7 @@ public class Utility
     {
         for(CheckBox checkBox: checkBoxes)
         {
-            CompoundButtonCompat.setButtonTintList(checkBox, ColorStateList.valueOf(context.getColor(R.color.appMainColor)));
+            CompoundButtonCompat.setButtonTintList(checkBox, ColorStateList.valueOf(context.getColor(R.color.colorAccent)));
         }
     }
 

@@ -3,6 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="greyLine">#dbdbdb</color>
+    <color name="red">#e05a51</color>
+    <color name="colorAccent">@color/black</color>
+    <color name="colorDialogButton">#D6D7D7</color>
 
     <!--APP BAR-->
     <color name="appBarColor">#00368f</color>

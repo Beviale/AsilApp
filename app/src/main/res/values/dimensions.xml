@@ -4,6 +4,8 @@
     <!--GENERALE-->
     <dimen name="arrowDimen">40dp</dimen>
     <dimen name="arrowPadding">5dp</dimen>
+    <dimen name="marginFloatinActionButton">20dp</dimen>
+    <dimen name="dimenFloatingActionButton">60dp</dimen>
 
 
 
@@ -65,6 +67,18 @@
     <dimen name="marginRightSettings">20dp</dimen>
     <dimen name="textSettingsTitle">35dp</dimen>
     <dimen name="textSettingsOption">20dp</dimen>
+
+
+    <!--EditHealthHistory-->
+    <dimen name="widthEditEvalutation">230dp</dimen>
+    <dimen name="widthEditDoctorNotes">300dp</dimen>
+
+
+    <!--New Pathology Fragment-->
+    <dimen name="marginLeftNewPathology">30dp</dimen>
+
+
+
 
 
 

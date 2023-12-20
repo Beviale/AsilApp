@@ -89,7 +89,7 @@ public class DetailTipsFragment extends Fragment {
                 }
                 if(item.getItemId() == R.id.evaluateDetailTips)
                 {
-                    EvaluateFragment dialogFragment = EvaluateFragment.newInstance(type);
+                    EvaluateTipsDialogFragment dialogFragment = EvaluateTipsDialogFragment.newInstance(type);
                     dialogFragment.show(getActivity().getSupportFragmentManager(), "EvaluateFragment");
 
                 }

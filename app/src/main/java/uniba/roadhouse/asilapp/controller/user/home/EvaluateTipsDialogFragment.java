@@ -16,16 +16,16 @@ import android.widget.Toast;
 
 import uniba.roadhouse.asilapp.R;
 
-public class EvaluateFragment extends DialogFragment {
+public class EvaluateTipsDialogFragment extends DialogFragment {
 
     RatingBar ratingEvaluate;
     TextView valueRatingEvaluate;
     private static String type;
     Button save;
 
-    public static EvaluateFragment newInstance(String typeNewInstance) {
+    public static EvaluateTipsDialogFragment newInstance(String typeNewInstance) {
         type = typeNewInstance;
-        return new EvaluateFragment();
+        return new EvaluateTipsDialogFragment();
     }
 
     @Nullable

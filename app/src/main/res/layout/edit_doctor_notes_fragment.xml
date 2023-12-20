@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="@dimen/widthEditDoctorNotes"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="@string/editDoctorNotes" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editDoctorNotesEditText"
+            android:layout_width="@dimen/widthEditDoctorNotes"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHeight_max="200dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:fadeScrollbars="false"
+            android:padding="10dp"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/textSizeDoctorNotes" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="@dimen/widthEditDoctorNotes"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/doctorNotesHealthHistoryButtonCancel"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/colorDialogButton"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/doctorNotesHealthHistoryButtonSend"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/colorDialogButton"
+            android:text="@string/send" />
+
+    </LinearLayout>
+</LinearLayout>
