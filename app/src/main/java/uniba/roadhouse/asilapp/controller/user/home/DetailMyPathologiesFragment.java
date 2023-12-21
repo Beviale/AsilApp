@@ -20,7 +20,9 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.TypedValue;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +78,8 @@ public class DetailMyPathologiesFragment extends Fragment {
      * Indica se il fragment è stato avviato con la condivisione.
      */
     Boolean share=false;
+
+    private static View drugsClicked;
 
 
 
@@ -353,6 +357,7 @@ public class DetailMyPathologiesFragment extends Fragment {
 
         // Creo il constraintLayout
         ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+        registerForContextMenu(constraintLayout);
         Utility.activeAnimationOnClick(getActivity(), constraintLayout);
         constraintLayout.setId(View.generateViewId());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -406,8 +411,45 @@ public class DetailMyPathologiesFragment extends Fragment {
         constraintSetNote.connect(textViewNote.getId(), ConstraintSet.TOP, textViewTitle.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
         constraintSetNote.applyTo(constraintLayout);
 
-
-
     }
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getActivity().getMenuInflater();
+        drugsClicked = v;
+        inflater.inflate(R.menu.share_and_delete_menu, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.action_share_menu)
+        {
+            //openShareDrugs();
+        }
+        if(item.getItemId()==R.id.action_delete_menu)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
+
+            // Set the dialog title and message
+            builder.setTitle(getString(R.string.deleteMessageTitle))
+                    .setMessage(getString(R.string.deleteMessage))
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        return super.onContextItemSelected(item);
+    }
 }

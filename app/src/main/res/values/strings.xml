@@ -190,6 +190,7 @@
     <string name="deleteMessageTitle">Sei sicuro di voler procedere con l\'eliminazione?</string>
     <string name="deleteMessage">Ti ricordiamo che l\'operazione è irreversibile.</string>
     <string name="priorityLabel">Priorità</string>
+    <string name="emptyDoctorNotes">Nessuna nota è stata ancora inserita. Si prega di contattare il medico per ulteriori informazioni.</string>
 
 
     <!--SETTINGS-->

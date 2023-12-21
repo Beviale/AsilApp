@@ -248,6 +248,7 @@
             android:cursorVisible="true"
             android:editable="false"
             android:elevation="10dp"
+            android:gravity="top|left"
             android:fadeScrollbars="false"
             android:padding="10dp"
             android:scrollbarAlwaysDrawHorizontalTrack="false"

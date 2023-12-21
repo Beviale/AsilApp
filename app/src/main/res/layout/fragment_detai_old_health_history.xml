@@ -249,6 +249,7 @@
             android:elevation="10dp"
             android:fadeScrollbars="false"
             android:padding="10dp"
+            android:gravity="top|left"
             android:scrollbarAlwaysDrawHorizontalTrack="false"
             android:scrollbarAlwaysDrawVerticalTrack="false"
             android:scrollbars="vertical"

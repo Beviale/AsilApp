@@ -238,6 +238,11 @@ public class MyPathologiesFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        if(fragmentManager.findFragmentById(R.id.homeContainerView) instanceof DetailMyPathologiesFragment)
+        {
+            return false;
+        }
         openDetailFragment(true);
         return super.onContextItemSelected(item);
     }
