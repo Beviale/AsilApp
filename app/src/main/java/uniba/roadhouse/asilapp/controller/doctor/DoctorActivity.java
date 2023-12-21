@@ -2,16 +2,20 @@ package uniba.roadhouse.asilapp.controller.doctor;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 
 public class DoctorActivity extends AppCompatActivity {
+    ImageView toolBarIconDoctorActivity;
 
 
     @Override
@@ -28,12 +32,14 @@ public class DoctorActivity extends AppCompatActivity {
         if (!Utility.isConnectedToInternet(this)) {
             Utility.showAlertDialog(this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
+        toolBarIconDoctorActivity = findViewById(R.id.toolBarIconDoctorActivity);
         openSigningFragment();
     }
 
 
     @Override
     protected void onStart() {
+        toolBarIconDoctorActivity.setOnClickListener(v->openHomeFragment());
         super.onStart();
     }
 
@@ -43,6 +49,17 @@ public class DoctorActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.doctorFragmentView, SigninDoctorFragment.class, null);
         fragmentTransaction.commit();
+    }
+
+    private void openHomeFragment()
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if(!(fragmentManager.findFragmentById(R.id.doctorFragmentView) instanceof SigninDoctorFragment))
+        {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.doctorFragmentView, HomeDoctorFragment.class, null);
+            fragmentTransaction.commit();
+        }
 
     }
 

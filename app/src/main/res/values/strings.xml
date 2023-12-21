@@ -241,6 +241,11 @@
     <string name="valueOutgoindTooHight">Devi necessariamente inserire un importo non superiore a euro: </string>
     <string name="valueOutgoindTooLowTitle">Importo troppo basso</string>
     <string name="valueOutgoindTooLow">Devi necessariamente inserire un importo non inferiore a euro: </string>
+    <string name="addDrugTitle">Aggiungi un nuovo farmaco</string>
+    <string name="nameAddDrugPlaceholder">Nome farmaco</string>
+    <string name="noteAddDrugPlaceholder">Nota</string>
+    <string name="emptyNameAddDrugTitle">Nome del farmaco non inserito</string>
+    <string name="emptyNameAddDrug">Per inserire un nuovo farmaco devi inserire obbligatoriamente il nome.</string>
 
     <!-- DetailTipsFragment-->
     <string name="evalutationContent">Valuta contenuto</string>
@@ -263,5 +268,8 @@
     <string name="addNewPathology">Aggiungi la nuova patologia</string>
     <string name="emptyNameNewPathologyTitle">Non hai inserito il nome della patologia!</string>
     <string name="emptyNameNewPathology">Per aggiungere una nuova patologia, devi indicarne obbligatoriamente il nome.</string>
+
+
+
 
 </resources>

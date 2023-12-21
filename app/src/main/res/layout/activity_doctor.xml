@@ -23,7 +23,7 @@
             android:background="@color/appBarColor"
             android:minHeight="@dimen/abbBarHeight"
             android:pointerIcon="context_menu"
-            android:theme="?attr/actionBarTheme">
+            android:theme="@style/AppTheme.ActionBarTheme">
 
             <ImageView
                 android:id="@+id/toolBarIconDoctorActivity"

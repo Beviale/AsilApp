@@ -1,5 +1,7 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -18,10 +20,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,11 +59,22 @@ public class DetailMyPathologiesFragment extends Fragment {
     ImageView editButtonMyPathologiesTime;
     ImageView editButtonMyPahologiesPriority;
     ImageView editButtonMyPathologiesDoctorNotes;
+    Button addDrugsMyPathologies;
+    LinearLayout linearLayoutDrugs;
+
+
+    /**
+     * Indica se il fragment è stato avviato dopo l'eliminazione di un farmaco.
+     */
+    Boolean deleteDrugs=false;
+    /**
+     * Indica se il fragment è stato avviato con un account dottore oppure no.
+     */
+    Boolean openDoctor=false;
 
 
 
     public DetailMyPathologiesFragment() {
-        // Required empty public constructor
     }
 
 
@@ -69,14 +87,17 @@ public class DetailMyPathologiesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            deleteDrugs = getArguments().getBoolean("delete");
+            openDoctor = getArguments().getBoolean("doctor");
+        }
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.detail_my_pathologies_fragment, container, false);
+       return inflater.inflate(R.layout.detail_my_pathologies_fragment, container, false);
     }
 
     @Override
@@ -94,6 +115,21 @@ public class DetailMyPathologiesFragment extends Fragment {
         editButtonMyPathologiesTime = view.findViewById(R.id.editButtonMyPathologiesTime);
         editButtonMyPahologiesPriority = view.findViewById(R.id.editButtonMyPahologiesPriority);
         editButtonMyPathologiesDoctorNotes = view.findViewById(R.id.editButtonMyPathologiesDoctorNotes);
+        addDrugsMyPathologies = view.findViewById(R.id.addDrugsMyPathologies);
+        ScrollView scrollView = view.findViewById(R.id.scrollDetailMyPathologies);
+        linearLayoutDrugs = view.findViewById(com.google.android.material.R.id.linear);
+
+
+
+        // Se è stato eliminato un farmaco, faccio in modo che il fragment, una volta riaperto, vada nella sezione relativa ai farmaci.
+        if(deleteDrugs==true)
+        {
+            scrollView.post(new Runnable() {
+                public void run() {
+                    scrollView.scrollToDescendant(addDrugsMyPathologies);
+                }
+            });
+        }
     }
 
 
@@ -123,6 +159,7 @@ public class DetailMyPathologiesFragment extends Fragment {
         editButtonMyPathologiesDate.setOnClickListener(v->openEditDate());
         editButtonMyPathologiesTime.setOnClickListener(v->openEditTime());
         editButtonMyPahologiesPriority.setOnClickListener(v->editPriority());
+        addDrugsMyPathologies.setOnClickListener(v->addDrugs());
     }
 
 
@@ -285,6 +322,13 @@ public class DetailMyPathologiesFragment extends Fragment {
     {
         EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance();
         editPriorityDialogFragment.show(getActivity().getSupportFragmentManager(), "EditPriorityDialogFragment");
+    }
+
+
+    private void addDrugs()
+    {
+       AddDrugsDialogFragment addDrugsDialogFragment = AddDrugsDialogFragment.newInstance();
+       addDrugsDialogFragment.show(getActivity().getSupportFragmentManager(), "AddDrugsDialogFragment");
     }
 
 
