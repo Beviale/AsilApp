@@ -61,6 +61,7 @@ public class HomeDoctorFragment extends Fragment {
 
     @Override
     public void onResume() {
+        toolbarDoctorActivity.getMenu().clear();
         toolbarDoctorActivity.setNavigationIcon(null);
         toolbarDoctorActivity.inflateMenu(R.menu.menu_home_activity);
         toolbarDoctorActivity.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -70,10 +71,9 @@ public class HomeDoctorFragment extends Fragment {
                 {
                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.addToBackStack(getString(R.string.settingsMenuScreen));
-                    fragmentTransaction.replace(R.id.doctorFragmentView, SettingsFragment.class, null);
+                    fragmentTransaction.replace(R.id.doctorFragmentView, SettingsDoctorFragment.class, null);
                     fragmentTransaction.commit();
                 }
-
                 return true;
             }
         });
