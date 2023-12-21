@@ -1,35 +1,41 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import static com.google.android.material.internal.ViewUtils.dpToPx;
+
+import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.TypedValue;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyPathologiesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MyPathologiesFragment extends Fragment {
 
-    ConstraintLayout diabetisLayout;
-    ConstraintLayout dermatitisLayout;
-    ConstraintLayout bronchitisLayout;
     FloatingActionButton openNewPathology;
+    LinearLayout linearLayoutMyPathologies;
 
 
 
@@ -58,9 +64,9 @@ public class MyPathologiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //---------RIFERIMENTI------------
-        diabetisLayout = view.findViewById(R.id.diabetisLayout);
-        dermatitisLayout = view.findViewById(R.id.dermatitisLayout);
-        bronchitisLayout = view.findViewById(R.id.bronchitisLayout);
+        linearLayoutMyPathologies = view.findViewById(R.id.linearLayoutMyPathologies);
+
+        getData();
         openNewPathology = view.findViewById(R.id.buttonOpenNewPathology);
     }
 
@@ -68,9 +74,6 @@ public class MyPathologiesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //--------------LISTENER--------------
-        diabetisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.diabete)));
-        dermatitisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.dermatitis)));
-        bronchitisLayout.setOnClickListener(v->openDetailFragment(getString(R.string.brochitis)));
         openNewPathology.setOnClickListener(v->openNewPathologyFragment());
     }
 
@@ -83,13 +86,13 @@ public class MyPathologiesFragment extends Fragment {
         super.onResume();
     }
 
-    private void openDetailFragment(String itemClicked)
+    private void openDetailFragment(Boolean share)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putString("itemClicked", itemClicked);
         fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("share", share);
         fragmentTransaction.replace(R.id.homeContainerView, DetailMyPathologiesFragment.class, bundle);
         fragmentTransaction.commit();
     }
@@ -102,5 +105,140 @@ public class MyPathologiesFragment extends Fragment {
         fragmentTransaction.replace(R.id.homeContainerView, NewPathologyFragment.class, null);
         fragmentTransaction.commit();
 
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    private void getData()
+    {
+
+        // Creo il constraintLayout
+        ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+        constraintLayout.setOnClickListener(v->openDetailFragment(false));
+        registerForContextMenu(constraintLayout);
+        constraintLayout.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
+        );
+        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginTopHealthHistory);
+        layoutParams.leftMargin=getResources().getDimensionPixelSize(R.dimen.marginLeftMyPathologies);
+        layoutParams.rightMargin=getResources().getDimensionPixelSize(R.dimen.marginRightMyPathologies);
+        constraintLayout.setLayoutParams(layoutParams);
+        constraintLayout.setBackgroundColor(getResources().getColor(R.color.colorHealthHistory));
+        linearLayoutMyPathologies.addView(constraintLayout);
+        // Animazione al click
+        Utility.activeAnimationOnClick(getActivity(), constraintLayout);
+        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
+
+        // Creo la TextView relativa al nome della patologia
+        TextView namePatology = new TextView(getActivity());
+        namePatology.setText("Diabete");
+        namePatology.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams paramsNamePathology = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        namePatology.setTypeface(typeface);
+        namePatology.setTextColor(getResources().getColor(R.color.white));
+        namePatology.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
+        namePatology.setLayoutParams(paramsNamePathology);
+        constraintLayout.addView(namePatology);
+        ConstraintSet constraintSetNamePathology = new ConstraintSet();
+        constraintSetNamePathology.clone(constraintLayout);
+        constraintSetNamePathology.connect(namePatology.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 20));
+        constraintSetNamePathology.connect(namePatology.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 10));
+        constraintSetNamePathology.applyTo(constraintLayout);
+
+
+        // Creo la TextView relativa al label della data dell'ultima visita
+        TextView lastVisitLabel = new TextView(getActivity());
+        lastVisitLabel.setText(getString(R.string.lastVisitLabel));
+        lastVisitLabel.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams paramsLastVisitLabel = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        lastVisitLabel.setTextColor(getResources().getColor(R.color.white));
+        lastVisitLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+        lastVisitLabel.setLayoutParams(paramsLastVisitLabel);
+        constraintLayout.addView(lastVisitLabel);
+        ConstraintSet constraintSetLastVisitLabel = new ConstraintSet();
+        constraintSetLastVisitLabel.clone(constraintLayout);
+        constraintSetLastVisitLabel.connect(lastVisitLabel.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 20));
+        constraintSetLastVisitLabel.connect(lastVisitLabel.getId(), ConstraintSet.TOP, namePatology.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 2));
+        constraintSetLastVisitLabel.applyTo(constraintLayout);
+
+
+
+        // Creo la TextView relativa alla data dell'ultima visita
+        TextView lastVisitData = new TextView(getActivity());
+        lastVisitData.setText("20/10/2023");
+        lastVisitData.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams paramsLastVisitData = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        lastVisitData.setTextColor(getResources().getColor(R.color.white));
+        lastVisitData.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+        lastVisitData.setLayoutParams(paramsLastVisitData);
+        constraintLayout.addView(lastVisitData);
+        ConstraintSet constraintSetLastVisitData = new ConstraintSet();
+        constraintSetLastVisitData.clone(constraintLayout);
+        constraintSetLastVisitData.connect(lastVisitData.getId(), ConstraintSet.LEFT, lastVisitLabel.getId(), ConstraintSet.RIGHT, (int) dpToPx(getContext(), 3));
+        constraintSetLastVisitData.connect(lastVisitData.getId(), ConstraintSet.TOP, namePatology.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 2));
+        constraintSetLastVisitData.applyTo(constraintLayout);
+
+
+        // Creo la TextView relativa al label della priorità.
+        TextView priorityLabel = new TextView(getActivity());
+        priorityLabel.setText(getString(R.string.priorityLabel));
+        priorityLabel.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams paramsPriorityLabel = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        priorityLabel.setTextColor(getResources().getColor(R.color.white));
+        priorityLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+        priorityLabel.setLayoutParams(paramsPriorityLabel);
+        constraintLayout.addView(priorityLabel);
+        ConstraintSet constraintSetPriorityLabel = new ConstraintSet();
+        constraintSetPriorityLabel.clone(constraintLayout);
+        constraintSetPriorityLabel.connect(priorityLabel.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 20));
+        constraintSetPriorityLabel.connect(priorityLabel.getId(), ConstraintSet.TOP, lastVisitLabel.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 2));
+        constraintSetPriorityLabel.applyTo(constraintLayout);
+
+
+        // Creo la TextView relativa alla priorità.
+        TextView priorityResult = new TextView(getActivity());
+        priorityResult.setText("Alta");
+        priorityResult.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams paramsPriorityResult= new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        priorityResult.setTextColor(getResources().getColor(R.color.white));
+        priorityResult.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+        priorityResult.setLayoutParams(paramsPriorityResult);
+        constraintLayout.addView(priorityResult);
+        ConstraintSet constraintSetPriorityResult = new ConstraintSet();
+        constraintSetPriorityResult.clone(constraintLayout);
+        constraintSetPriorityResult.connect(priorityResult.getId(), ConstraintSet.LEFT, priorityLabel.getId(), ConstraintSet.RIGHT, (int) dpToPx(getContext(), 3));
+        constraintSetPriorityResult.connect(priorityResult.getId(), ConstraintSet.TOP, lastVisitLabel.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 2));
+        constraintSetPriorityResult.applyTo(constraintLayout);
+    }
+
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.share_menu, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        openDetailFragment(true);
+        return super.onContextItemSelected(item);
     }
 }

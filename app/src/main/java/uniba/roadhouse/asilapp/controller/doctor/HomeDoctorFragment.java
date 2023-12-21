@@ -24,11 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import org.checkerframework.checker.guieffect.qual.UIType;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.controller.user.home.SettingsFragment;
 
 
 public class HomeDoctorFragment extends Fragment {
@@ -79,7 +78,7 @@ public class HomeDoctorFragment extends Fragment {
     public void onResume() {
         toolbarDoctorActivity.getMenu().clear();
         toolbarDoctorActivity.setNavigationIcon(null);
-        toolbarDoctorActivity.inflateMenu(R.menu.menu_home_activity);
+        toolbarDoctorActivity.inflateMenu(R.menu.settings_menu);
         toolbarDoctorActivity.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -100,7 +99,10 @@ public class HomeDoctorFragment extends Fragment {
     @SuppressLint("RestrictedApi")
     private void getData()
     {
+
+        // Creo il constraintLayout
         ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+        Utility.activeAnimationOnClick(getActivity(), constraintLayout);
         constraintLayout.setId(View.generateViewId());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -113,6 +115,7 @@ public class HomeDoctorFragment extends Fragment {
 
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
 
+        // Creo la textView relativa al nome e al cognome del paziente
         TextView textViewTitle = new TextView(getActivity());
         textViewTitle.setText("Alessandro Bevilacqua");
         textViewTitle.setId(View.generateViewId());
@@ -120,7 +123,6 @@ public class HomeDoctorFragment extends Fragment {
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
         );
-        textViewTitle.setTypeface(typeface);
         textViewTitle.setTypeface(typeface);
         textViewTitle.setTextColor(getResources().getColor(R.color.white));
         textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
@@ -133,7 +135,7 @@ public class HomeDoctorFragment extends Fragment {
         constraintSet.applyTo(constraintLayout);
 
 
-
+        // Creo la TextView relativa al label della data di nascita del paziente.
         TextView textBirthDateUserLabel = new TextView(getActivity());
         textBirthDateUserLabel.setId(View.generateViewId());
         ConstraintLayout.LayoutParams paramsBirthDateLabel = new ConstraintLayout.LayoutParams(
@@ -151,7 +153,7 @@ public class HomeDoctorFragment extends Fragment {
         constraintSetBirthDateLabel.connect(textBirthDateUserLabel.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 20));
         constraintSetBirthDateLabel.applyTo(constraintLayout);
 
-
+        // Creo la TextView relativa alla data di nascita del paziente.
         TextView textBirthDateUserValue = new TextView(getActivity());
         textBirthDateUserValue.setId(View.generateViewId());
         ConstraintLayout.LayoutParams paramsBirthDateValue = new ConstraintLayout.LayoutParams(
@@ -168,6 +170,5 @@ public class HomeDoctorFragment extends Fragment {
         constraintSetBirthDateValue.connect(textBirthDateUserValue.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 10));
         constraintSetBirthDateValue.connect(textBirthDateUserValue.getId(), ConstraintSet.LEFT, textBirthDateUserLabel.getId(), ConstraintSet.RIGHT, (int) dpToPx(getContext(), 3));
         constraintSetBirthDateValue.applyTo(constraintLayout);
-
     }
 }

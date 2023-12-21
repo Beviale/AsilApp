@@ -49,6 +49,9 @@
     <dimen name ="textSizeDoctorNotes">14dp</dimen>
     <dimen name="marginLeftRightDetailHealthHistory">20dp</dimen>
     <dimen name="resultBloodPressureHealthHistory">40dp</dimen>
+    <dimen name="marginLeftMyPathologies">24dp</dimen>
+    <dimen name="marginRightMyPathologies">24dp</dimen>
+
 
     <!--HOME-->
     <dimen name="marginTopBetweenSectionHome">50dp</dimen>

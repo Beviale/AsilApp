@@ -159,7 +159,7 @@
     <string name="doctorNotesLastVisitMyPahologiesLabel">Note del  medico</string>
     <string name="lastVisitsMyPathologiesLabel">Visite precedenti</string>
     <string name="dateLastVisitMyPathologiesShare">Data</string>
-    <string name="timeLastVisitMyPathologiesShare">Tempo</string>
+    <string name="timeLastVisitMyPathologiesShare">Ora</string>
     <string name="priorityLastVisitMyPathologiesShare">Priorità</string>
     <string name="doctorNotesLastVisitMyPathologiesShare">Note del medico</string>
     <string name="idLastVisitMyPathologiesLabel">ID:</string>
@@ -189,6 +189,7 @@
     <string name="emptyEditPriority">Per salvare la priorità devi selezionare un elemento.</string>
     <string name="deleteMessageTitle">Sei sicuro di voler procedere con l\'eliminazione?</string>
     <string name="deleteMessage">Ti ricordiamo che l\'operazione è irreversibile.</string>
+    <string name="priorityLabel">Priorità</string>
 
 
     <!--SETTINGS-->
@@ -271,8 +272,8 @@
 
 
     <!-- Home Doctor Fragment-->
-
     <string name="birthDateDoctorHome">Data di nascita: </string>
+    <string name="allUserDoctorTitle">Pazienti in cura</string>
 
 
 </resources>

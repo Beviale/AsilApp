@@ -420,8 +420,8 @@ public class DetailHealthHistoryFragment extends Fragment {
                              openOldHealthHistory(misurazione.getId());
                          }
                      });
-
-
+                     // Attivo l'animazione al click
+                     Utility.activeAnimationOnClick(getActivity(), constraintLayout);
 
                      TextView textViewTitle = new TextView(getActivity());
                      textViewTitle.setText(Utility.convertTipoMisurazioneEnumToString(misurazione.getTipo(), getActivity()));

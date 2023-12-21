@@ -1,7 +1,5 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -13,15 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -31,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +64,10 @@ public class DetailMyPathologiesFragment extends Fragment {
      * Indica se il fragment è stato avviato con un account dottore oppure no.
      */
     Boolean openDoctor=false;
+    /**
+     * Indica se il fragment è stato avviato con la condivisione.
+     */
+    Boolean share=false;
 
 
 
@@ -90,6 +87,7 @@ public class DetailMyPathologiesFragment extends Fragment {
         if (getArguments() != null) {
             deleteDrugs = getArguments().getBoolean("delete");
             openDoctor = getArguments().getBoolean("doctor");
+            share = getArguments().getBoolean("share");
         }
         super.onCreate(savedInstanceState);
     }
@@ -119,6 +117,11 @@ public class DetailMyPathologiesFragment extends Fragment {
         ScrollView scrollView = view.findViewById(R.id.scrollDetailMyPathologies);
         linearLayoutDrugs = view.findViewById(com.google.android.material.R.id.linear);
 
+        // Attivo la condivisione se il fragment è stato aperto con il menu contestuale relativo alla condivisione.
+        if(share==true)
+        {
+            showCheckboxDialogForSharePrivacy();
+        }
 
 
         // Se è stato eliminato un farmaco, faccio in modo che il fragment, una volta riaperto, vada nella sezione relativa ai farmaci.
@@ -206,7 +209,7 @@ public class DetailMyPathologiesFragment extends Fragment {
                 return true;
             }
         });
-        toolbar.inflateMenu(R.menu.menu_my_pathologies);
+        toolbar.inflateMenu(R.menu.delete_menu);
         super.onResume();
     }
 
@@ -216,13 +219,11 @@ public class DetailMyPathologiesFragment extends Fragment {
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.checkbox_dialog_pathologies, null);
 
-        CheckBox checkBoxId = view.findViewById(R.id.dialogShareDetailPathologiesId);
         CheckBox checkBoxDate = view.findViewById(R.id.dialogShareDetailPathologiesDate);
         CheckBox checkBoxTime = view.findViewById(R.id.dialogShareDetailPathologiesTime);
         CheckBox checkBoxPriority = view.findViewById(R.id.dialogShareDetailPathologiesPriority);
         CheckBox checkBoxDoctorNotes = view.findViewById(R.id.dialogShareDetailPathologiesDoctorNotes);
         List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
-        checkBoxes.add(checkBoxId);
         checkBoxes.add(checkBoxDate);
         checkBoxes.add(checkBoxTime);
         checkBoxes.add(checkBoxPriority);
@@ -236,8 +237,6 @@ public class DetailMyPathologiesFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String share = new String();
-                        if(checkBoxId.isChecked())
-                            share = share.concat(getString(R.string.idLastVisitMyPathologiesLabel)).concat(idLastVisitMyPathologies.getText().toString().concat("\n"));
                         Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                         if(checkBoxDate.isChecked())
                             share = share.concat(getString(R.string.dateLastVisitMyPathologiesLabel).concat(dateLastVisitMyPathologies.getText().toString()).concat("\n"));

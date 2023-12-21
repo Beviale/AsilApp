@@ -395,7 +395,7 @@ public class HealthHistoryFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         viewClickedContext = v;
         MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.health_history_menu, menu);
+        inflater.inflate(R.menu.share_menu, menu);
     }
 
     @Override

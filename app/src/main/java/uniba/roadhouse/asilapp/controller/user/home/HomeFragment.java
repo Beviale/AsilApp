@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
-        toolbar.inflateMenu(R.menu.menu_home_activity);
+        toolbar.inflateMenu(R.menu.settings_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.text.SpannableString;
@@ -207,6 +209,22 @@ public class Utility
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+
+    /**
+     * Abilita l'animazione al click di una View.
+     * @param context, contesto
+     * @param view, view su cui abilitare l'animazione
+     */
+    public static void activeAnimationOnClick(Context context, View view)
+    {
+        int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+        Drawable drawableFromTheme = ta.getDrawable(0 /* index */);
+        ta.recycle();
+        view.setClickable(true);
+        view.setForeground(drawableFromTheme);
     }
 
 }

@@ -75,7 +75,7 @@ public class DetailTipsFragment extends Fragment {
 
             }
         });
-        toolbar.inflateMenu(R.menu.detail_tips);
+        toolbar.inflateMenu(R.menu.share_and_evaluate_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
