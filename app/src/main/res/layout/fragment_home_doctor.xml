@@ -33,6 +33,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="411dp" />
 
+        <LinearLayout
+            android:id="@+id/layoutCardUserDoctor"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeTextDoctor"
+            android:layout_marginTop="50dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

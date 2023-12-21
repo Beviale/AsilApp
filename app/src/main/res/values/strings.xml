@@ -270,4 +270,9 @@
     <string name="emptyNameNewPathology">Per aggiungere una nuova patologia, devi indicarne obbligatoriamente il nome.</string>
 
 
+    <!-- Home Doctor Fragment-->
+
+    <string name="birthDateDoctorHome">Data di nascita: </string>
+
+
 </resources>

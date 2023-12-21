@@ -40,6 +40,11 @@
     <color name="otherColor">#88b82a</color>
 
 
+    <!--HOMEDOCTORFRAGMENT-->
+    <color name="colorCardUserDoctor">#72c963</color>
+
+
+
 
 
 </resources>
