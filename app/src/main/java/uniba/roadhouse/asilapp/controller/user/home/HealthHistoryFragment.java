@@ -400,6 +400,11 @@ public class HealthHistoryFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        if(fragmentManager.findFragmentById(R.id.homeContainerView) instanceof DetailHealthHistoryFragment)
+        {
+            return false;
+        }
         if((viewClickedContext.equals(getActivity().findViewById(R.id.bodyTemperatureView))))
         {
             openDetailFragment(idTemperature, true);

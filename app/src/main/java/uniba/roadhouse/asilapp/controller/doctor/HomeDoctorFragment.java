@@ -108,7 +108,7 @@ public class HomeDoctorFragment extends Fragment {
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
                 getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
         );
-        layoutParams.topMargin=0;
+        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
         constraintLayout.setLayoutParams(layoutParams);
         constraintLayout.setBackgroundColor(getResources().getColor(R.color.colorCardUserDoctor));
         layoutCardUserDoctor.addView(constraintLayout);

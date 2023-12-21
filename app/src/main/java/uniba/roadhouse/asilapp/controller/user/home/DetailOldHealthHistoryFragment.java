@@ -96,6 +96,11 @@ public class DetailOldHealthHistoryFragment extends Fragment {
      */
    ImageView editButtonHealthHistoryOldDoctorNotes;
 
+    /**
+     * Indica se il fragment è stato aperto in modalità condivisione.
+     */
+   private static Boolean share;
+
 
     public DetailOldHealthHistoryFragment() {
     }
@@ -117,7 +122,7 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             id = getArguments().getInt("id");
-
+            share = getArguments().getBoolean("share");
         }
     }
 
@@ -144,7 +149,10 @@ public class DetailOldHealthHistoryFragment extends Fragment {
         shareDetailHealthHistoryOld = view.findViewById(R.id.shareDetailHealthHistoryOld);
         editButtonHealthHistoryOldEvalutation = view.findViewById(R.id.editButtonHealthHistoryOldEvalutation);
         editButtonHealthHistoryOldDoctorNotes = view.findViewById(R.id.editButtonHealthHistoryOldDoctorNotes);
-
+        if(share==true)
+        {
+            showCheckboxDialogForSharePrivacy();
+        }
         getData();
     }
 

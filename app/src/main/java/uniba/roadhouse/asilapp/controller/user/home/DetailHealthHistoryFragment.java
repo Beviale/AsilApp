@@ -20,7 +20,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.TypedValue;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -33,6 +36,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -115,6 +119,7 @@ public class DetailHealthHistoryFragment extends Fragment {
 
 
 
+
     //Vecchie misurazioni
     /**
      * ProgressBar da mostrare per il caricamento dei dati dal database relativi alle misurazioni precedenti.
@@ -132,6 +137,14 @@ public class DetailHealthHistoryFragment extends Fragment {
      * Tipo di misurazione da mostrare espresso sottoforma di stringa.
      */
     private static String itemClickedString;
+    /**
+     * Rappresenta la view cliccata dall'utente con il menu contestuale.
+     */
+    private static View itemOldClicked;
+    /**
+     * Associa a ogni constraintLayout delle vecchie misurazione il rispettivo id.
+     */
+    private static HashMap<View, Integer> mappaViewIdMisurazioneOld;
 
 
 
@@ -351,6 +364,7 @@ public class DetailHealthHistoryFragment extends Fragment {
     private void getOldData()
     {
         oldProgressBar.setVisibility(View.VISIBLE);
+        mappaViewIdMisurazioneOld = new HashMap<View, Integer>();
         CompletableFuture<Map<String, Object>> future = Dao.getAllPastMisurationByUsername(Access.getUsername(), itemClickedString, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
@@ -404,6 +418,8 @@ public class DetailHealthHistoryFragment extends Fragment {
 
 
                      ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+                     registerForContextMenu(constraintLayout);
+                     mappaViewIdMisurazioneOld.put(constraintLayout, misurazione.getId());
                      constraintLayout.setId(View.generateViewId());
                      ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
                              ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -417,7 +433,7 @@ public class DetailHealthHistoryFragment extends Fragment {
                      {
                          @Override
                          public void onClick(View v) {
-                             openOldHealthHistory(misurazione.getId());
+                             openOldHealthHistory(misurazione.getId(), false);
                          }
                      });
                      // Attivo l'animazione al click
@@ -540,12 +556,13 @@ public class DetailHealthHistoryFragment extends Fragment {
      * Apre il fragment che consente la visualizzazione in dettaglio di una misurazione precedente.
      * @param id, identificativo della misurazione precedente da aprire.
      */
-    private void openOldHealthHistory(Integer id)
+    private void openOldHealthHistory(Integer id, Boolean share)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
+        bundle.putBoolean("share", share);
         fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
         fragmentTransaction.replace(R.id.homeContainerView, DetailOldHealthHistoryFragment.class, bundle);
         fragmentTransaction.commit();
@@ -566,6 +583,18 @@ public class DetailHealthHistoryFragment extends Fragment {
     }
 
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getActivity().getMenuInflater();
+        itemOldClicked = v;
+        inflater.inflate(R.menu.share_menu, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        openOldHealthHistory(mappaViewIdMisurazioneOld.get(itemOldClicked), true);
+        return super.onContextItemSelected(item);
+    }
 }
 

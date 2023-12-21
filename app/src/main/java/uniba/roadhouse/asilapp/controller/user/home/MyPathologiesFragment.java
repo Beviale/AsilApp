@@ -121,7 +121,7 @@ public class MyPathologiesFragment extends Fragment {
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
                 getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
         );
-        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginTopHealthHistory);
+        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
         layoutParams.leftMargin=getResources().getDimensionPixelSize(R.dimen.marginLeftMyPathologies);
         layoutParams.rightMargin=getResources().getDimensionPixelSize(R.dimen.marginRightMyPathologies);
         constraintLayout.setLayoutParams(layoutParams);
