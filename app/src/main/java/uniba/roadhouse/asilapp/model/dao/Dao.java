@@ -423,6 +423,54 @@ public class Dao {
     }
 
     /**
+     * Metodo per la modifica della valutazione di una misurazione dato il suo id
+     * @param id
+     * @param valutazione
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> editMisurationValutazione(Integer id, String valutazione, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo l'ultima misurazione effettuata
+            Task query = db.collection("patologie").document(id.toString()).update("valutazione",valutazione);
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.misurationEditFailed);
+            }
+
+            return context.getString(R.string.misurationEditSuccessfull);
+        });
+    }
+
+    /**
+     * Metodo per la modifica della nota del medico di una misurazione dato il suo id
+     * @param id
+     * @param nota
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> editMisurationNota(Integer id, String nota, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo l'ultima misurazione effettuata
+            Task query = db.collection("patologie").document(id.toString()).update("notamedico",nota);
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.misurationEditFailed);
+            }
+
+            return context.getString(R.string.misurationEditSuccessfull);
+        });
+    }
+
+    /**
      * Metodoper prendere una misurazione dato un id
      *
      * @param id
@@ -618,7 +666,7 @@ public class Dao {
 
     /**
      * Metodo che premette di loggare un dottore nell'applicazione dato username e password. Ritorna una mappa con chiave "esito" che indica
-     * l'esito della computazione e con chiave "nomeCognome" contente nome e cognome del dottore
+     * l'esito della computazione
      * @param username
      * @param password
      * @param context
@@ -643,11 +691,9 @@ public class Dao {
 
             //se l'utente esiste, ne prendo la password
             String passwHash = "";
-            String nomeCognome="";
 
             for (QueryDocumentSnapshot document : query.getResult()) {
                 passwHash = document.getString("password");
-                nomeCognome=document.getString("nome")+document.getString("cognme");
             }
 
             //verifico che l'ash della password immessa dall'utente è uguale a quella del db
@@ -667,7 +713,6 @@ public class Dao {
                 String token = JWT.create()
                         .withSubject(username)
                         .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
-                        .withClaim("nome",nomeCognome)
                         .withClaim("tipo","DOTTORE")
                         .sign(algorithm);
                 Log.d("DB", token);
@@ -683,10 +728,8 @@ public class Dao {
                 throw new RuntimeException(e);
             }
 
-            String finalNome = nomeCognome;
             return new HashMap<String,String>() {{
                 put("esito", context.getString(R.string.loginCompleted));
-                put("nomeCognome", finalNome);
             }};
         });
     }
