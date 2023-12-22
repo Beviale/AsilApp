@@ -6,15 +6,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import uniba.roadhouse.asilapp.R;
@@ -39,6 +42,8 @@ public class UserProfileFragment extends Fragment {
     TextView profileResidenceTitle;
     TextView profileResidence;
     ImageView profileQRCode;
+    ProgressBar progressBar;
+    ConstraintLayout layoutUserProfile;
 
     /**
      * Indica se il fragment è stato aperto da un account dottore o meno.
@@ -91,27 +96,39 @@ public class UserProfileFragment extends Fragment {
         profileResidenceTitle = view.findViewById(R.id.profileResidenceTitle);
         profileResidence = view.findViewById(R.id.profileResidence);
         profileQRCode = view.findViewById(R.id.imageQRCode);
+        layoutUserProfile = view.findViewById(R.id.layoutUserProfile);
+        if(openDoctor==false)
+        {
+            progressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        }
+        if(openDoctor==true)
+        {
+            progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
+        }
 
-        
     }
 
 
     @Override
     public void onStart() {
-        try {
-            DatiCorrenti = Dao.getUserData(Access.getUsername(), getActivity()).get();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        profileName.setText(DatiCorrenti.get("nome").toString());
-        profileSurname.setText(DatiCorrenti.get("cognome").toString());
-        profileGender.setText(DatiCorrenti.get("sesso").toString());
-        profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
-        profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
-        profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
-        profileQRCode.setImageBitmap((Bitmap) DatiCorrenti.get("qrCode"));
+        progressBar.setVisibility(View.VISIBLE);
+        layoutUserProfile.setAlpha((float)0.5);
+        CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                layoutUserProfile.setAlpha((float)1.0);
+                progressBar.setVisibility(View.GONE);
+                DatiCorrenti = result;
+                profileName.setText(DatiCorrenti.get("nome").toString());
+                profileSurname.setText(DatiCorrenti.get("cognome").toString());
+                profileGender.setText(DatiCorrenti.get("sesso").toString());
+                profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
+                profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
+                profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
+                profileQRCode.setImageBitmap((Bitmap) DatiCorrenti.get("qrCode"));
+
+            });
+        });
         super.onStart();
     }
 

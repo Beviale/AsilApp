@@ -216,7 +216,7 @@
 
 
     <!--USER PROFILE-->
-    <string name="profileTitle">PROFILO UTENTE</string>
+    <string name="profileTitle">Profilo Utente</string>
     <string name="profileUserName">Nome</string>
     <string name="profileUserSurname">Cognome</string>
     <string name="profileUserGender">Genere</string>
@@ -297,6 +297,10 @@
     <!-- Home Doctor Fragment-->
     <string name="birthDateDoctorHome">Data di nascita: </string>
     <string name="allUserDoctorTitle">Pazienti in cura</string>
+
+    <!-- Detail User Doctor Fragment-->
+    <string name="pathologies">Patologie</string>
+
 
 
 </resources>
