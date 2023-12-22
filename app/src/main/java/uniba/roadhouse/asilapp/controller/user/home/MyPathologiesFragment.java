@@ -3,11 +3,13 @@ package uniba.roadhouse.asilapp.controller.user.home;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.NewPathologyFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 
 
@@ -36,6 +39,11 @@ public class MyPathologiesFragment extends Fragment {
 
     FloatingActionButton openNewPathology;
     LinearLayout linearLayoutMyPathologies;
+
+    /**
+     * Indica se il fragment è stato aperto con un account dottore.
+     */
+    private static Boolean openDoctor=false;
 
 
 
@@ -50,6 +58,10 @@ public class MyPathologiesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if(getArguments()!=null)
+        {
+            openDoctor = getArguments().getBoolean("doctor");
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -65,9 +77,15 @@ public class MyPathologiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //---------RIFERIMENTI------------
         linearLayoutMyPathologies = view.findViewById(R.id.linearLayoutMyPathologies);
+        openNewPathology = view.findViewById(R.id.buttonOpenNewPathology);
+
 
         getData();
-        openNewPathology = view.findViewById(R.id.buttonOpenNewPathology);
+        // Attivo gli elementi per l'account dottore
+        if(openDoctor==true)
+        {
+            openNewPathology.setVisibility((View.VISIBLE));
+        }
     }
 
     @Override
@@ -80,9 +98,26 @@ public class MyPathologiesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-        toolbar.getMenu().clear();
-        toolbar.setNavigationIcon(null);
+        if(openDoctor==false)
+        {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(null);
+        }
+        if(openDoctor==true)
+        {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
+            toolbar.getMenu().clear();
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
+
+                }
+            });
+        }
         super.onResume();
     }
 
@@ -102,7 +137,7 @@ public class MyPathologiesFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
-        fragmentTransaction.replace(R.id.homeContainerView, NewPathologyFragment.class, null);
+        fragmentTransaction.replace(R.id.doctorFragmentView, NewPathologyFragment.class, null);
         fragmentTransaction.commit();
 
     }
@@ -231,8 +266,14 @@ public class MyPathologiesFragment extends Fragment {
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.share_menu, menu);
+        if(openDoctor==false){
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.share_menu, menu);
+        }
+        if(openDoctor==true){
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.share_and_delete_menu, menu);
+        }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
@@ -243,7 +284,30 @@ public class MyPathologiesFragment extends Fragment {
         {
             return false;
         }
-        openDetailFragment(true);
+        if(item.getItemId()==R.id.action_share || item.getItemId()==R.id.action_share_menu)
+            openDetailFragment(true);
+        if(item.getItemId()==R.id.action_delete_menu)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
+
+            // Set the dialog title and message
+            builder.setTitle(getString(R.string.deleteMessageTitle))
+                    .setMessage(getString(R.string.deleteMessage))
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
         return super.onContextItemSelected(item);
     }
 }

@@ -21,14 +21,9 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Access;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class UserProfileFragment extends Fragment {
 
-    TextView profileText;
     TextView profileNameTitle;
     TextView profileName;
     TextView profileSurnameTitle;
@@ -45,20 +40,17 @@ public class UserProfileFragment extends Fragment {
     TextView profileResidence;
     ImageView profileQRCode;
 
+    /**
+     * Indica se il fragment è stato aperto da un account dottore o meno.
+     */
+    private static Boolean openDoctor=false;
+
     Map<String, Object> DatiCorrenti;
 
 
     public UserProfileFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserProfileFragment.
-     */
     public static UserProfileFragment newInstance(String param1, String param2) {
         UserProfileFragment fragment = new UserProfileFragment();
         return fragment;
@@ -66,6 +58,10 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if(getArguments()!=null)
+        {
+            openDoctor = getArguments().getBoolean("doctor");
+        }
         super.onCreate(savedInstanceState);
         
     }
@@ -80,7 +76,6 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        profileText = view.findViewById(R.id.profileText);
         profileNameTitle = view.findViewById(R.id.profileNameTitle);
         profileName = view.findViewById(R.id.profileName);
         profileSurnameTitle = view.findViewById(R.id.profileSurnameTitle);
@@ -113,7 +108,6 @@ public class UserProfileFragment extends Fragment {
         profileName.setText(DatiCorrenti.get("nome").toString());
         profileSurname.setText(DatiCorrenti.get("cognome").toString());
         profileGender.setText(DatiCorrenti.get("sesso").toString());
-        //profileBirthDate.setText(DatiCorrenti.get(""));
         profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
         profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
         profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
@@ -124,9 +118,26 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-        toolbar.getMenu().clear();
-        toolbar.setNavigationIcon(null);
+        if(openDoctor==false)
+        {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(null);
+        }
+        else
+        {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
+            toolbar.getMenu().clear();
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
+
+                }
+            });
+        }
         super.onResume();
     }
 }

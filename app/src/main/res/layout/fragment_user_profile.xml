@@ -149,18 +149,6 @@
             app:layout_constraintTop_toBottomOf="@id/profileName" />
 
         <TextView
-            android:id="@+id/profileText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="28dp"
-            android:fontFamily="@font/titillium_web_bold"
-            android:text="@string/profileTitle"
-            android:textSize="@dimen/title2FontSize"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/profileNameTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -185,13 +173,13 @@
 
         <ImageView
             android:id="@+id/imageQRCode"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="362dp"
+            android:layout_height="396dp"
+            android:col
             android:src="@drawable/border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileText" />
+            tools:layout_editor_absoluteY="41dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

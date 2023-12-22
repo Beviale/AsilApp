@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.user.home;
+package uniba.roadhouse.asilapp.controller.doctor;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;

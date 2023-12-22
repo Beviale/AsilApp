@@ -131,6 +131,10 @@ public class HealthHistoryFragment extends Fragment {
      * Valore registrato per il glucosio.
      */
     TextView resultGlucose;
+    /**
+     * Indica se il fragment è stato aperto da un account dottore o meno.
+     */
+    private static Boolean openDoctor=false;
 
 
 
@@ -176,6 +180,10 @@ public class HealthHistoryFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if(getArguments()!=null)
+        {
+            openDoctor = getArguments().getBoolean("doctor");
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -196,7 +204,10 @@ public class HealthHistoryFragment extends Fragment {
         tremblingView = view.findViewById(R.id.tremblingView);
         glucoseView = view.findViewById(R.id.glucoseView);
         swipereFreshLayout = view.findViewById(R.id.swipereFreshLayout);
-        homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        if(openDoctor==false)
+            homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        if(openDoctor==true)
+            homeActivityProgressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         homeActivityProgressBar.setVisibility(View.VISIBLE);
         swipereFreshLayout.setAlpha((float)0.5);
         // Valutazioni
@@ -256,9 +267,26 @@ public class HealthHistoryFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-        toolbar.getMenu().clear();
-        toolbar.setNavigationIcon(null);
+        if(openDoctor==false)
+        {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(null);
+        }
+        else
+        {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
+            toolbar.getMenu().clear();
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
+
+                }
+            });
+        }
         super.onResume();
     }
 

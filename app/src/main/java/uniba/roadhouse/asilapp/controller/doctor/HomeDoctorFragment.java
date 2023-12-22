@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.TypedValue;
@@ -103,6 +104,7 @@ public class HomeDoctorFragment extends Fragment {
         // Creo il constraintLayout
         ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
         Utility.activeAnimationOnClick(getActivity(), constraintLayout);
+        constraintLayout.setOnClickListener(v->openDetailUserDoctor());
         constraintLayout.setId(View.generateViewId());
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -171,4 +173,16 @@ public class HomeDoctorFragment extends Fragment {
         constraintSetBirthDateValue.connect(textBirthDateUserValue.getId(), ConstraintSet.LEFT, textBirthDateUserLabel.getId(), ConstraintSet.RIGHT, (int) dpToPx(getContext(), 3));
         constraintSetBirthDateValue.applyTo(constraintLayout);
     }
+
+    private void openDetailUserDoctor()
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+
+
 }
