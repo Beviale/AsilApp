@@ -420,7 +420,7 @@ public class HealthBoxFragment extends Fragment {
         }
         //chiudo la connessione e la ricerca
         btAdapter.cancelDiscovery();
-        btConnThread.cancel();
+        if(btConnThread!=null)btConnThread.cancel();
         boxFound=false;
         btConnThread=null;
         requireActivity().unregisterReceiver(receiver);

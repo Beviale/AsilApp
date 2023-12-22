@@ -117,6 +117,8 @@
     <string name="patologiesGetSuccessfull">Lettura delle patologie avvenuta con successo</string>
     <string name="insertPatologyFailed">Inserimento della patologia fallito</string>
     <string name="insertPatologySuccessfull">Inserimento della patologia avvenuto con succecsso</string>
+    <string name="misurationEditSuccessfull">Modifica della misurazione avvenuta correttamente</string>
+    <string name="misurationEditFailed">Modifica della misurazione fallita</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
