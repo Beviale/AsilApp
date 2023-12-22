@@ -236,6 +236,7 @@ public class Dao {
                         .withSubject(username)
                         .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
                         .withClaim("nome",nome)
+                        .withClaim("tipo","UTENTE")
                         .sign(algorithm);
                 Log.d("DB", token);
 
@@ -332,6 +333,7 @@ public class Dao {
                 userData.put("sesso",document.getString("sesso"));
                 userData.put("tipoUtente",document.getString("tipoUtente"));
                 userData.put("nomeResidenza",document.getString("nomeResidenza"));
+                userData.put("dottore",document.getString("dottore"));
                 String qr=document.getString("qrCode");
                 //memorizzo il bitmap del qrcode nella mappa da ritornare
                 userData.put("qrCode",Utility.StringToBitMap(qr));
@@ -613,4 +615,244 @@ public class Dao {
             return context.getString(R.string.logoutSuccessfull);
         });
     }
+
+    /**
+     * Metodo che premette di loggare un dottore nell'applicazione dato username e password. Ritorna una mappa con chiave "esito" che indica
+     * l'esito della computazione e con chiave "nomeCognome" contente nome e cognome del dottore
+     * @param username
+     * @param password
+     * @param context
+     * @return
+     */
+
+    public static CompletableFuture<Map<String,String>> loginDoctor(String username, String password, Context context){
+        return CompletableFuture.supplyAsync(()-> {
+            //verifico se esiste un utente con lo username dell'utente che si vuole loggare
+            Task<QuerySnapshot> query = db.collection("dottori").whereEqualTo("username", username).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            //quando la query è completata vedo se non esiste un utente con il nome scelto
+            if (query.getResult().size() == 0) {
+                return new HashMap<String,String>() {{
+                    put("esito", context.getString(R.string.noDoctorExists));
+                }};
+            }
+
+            //se l'utente esiste, ne prendo la password
+            String passwHash = "";
+            String nomeCognome="";
+
+            for (QueryDocumentSnapshot document : query.getResult()) {
+                passwHash = document.getString("password");
+                nomeCognome=document.getString("nome")+document.getString("cognme");
+            }
+
+            //verifico che l'ash della password immessa dall'utente è uguale a quella del db
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            boolean passwordIsValid = bCryptPasswordEncoder.matches(password, passwHash);
+
+            //se l'hash della password immessa dall'utente èdiverso da quella nel db, allora il login non va a buon fine
+            if (!passwordIsValid) {
+                return new HashMap<String,String>() {{
+                    put("esito", context.getString(R.string.wrongPassword));
+                }};
+            }
+
+            //se passw e usename sono corretti, genero il token JWT da memorizzare localmente per l'autenticazione
+            try {
+                Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+                String token = JWT.create()
+                        .withSubject(username)
+                        .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
+                        .withClaim("nome",nomeCognome)
+                        .withClaim("tipo","DOTTORE")
+                        .sign(algorithm);
+                Log.d("DB", token);
+
+                //memrizzo iltoken localmente
+                SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("token", token);  // value is the string you want to save
+                editor.commit();
+            } catch (JWTCreationException exception) {
+                // Invalid Signing configuration / Couldn't convert Claims.
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            String finalNome = nomeCognome;
+            return new HashMap<String,String>() {{
+                put("esito", context.getString(R.string.loginCompleted));
+                put("nomeCognome", finalNome);
+            }};
+        });
+    }
+
+    /**
+     * Metodo che dato l'username di un dottore, ritorna un a lista contenente l'username di tutti i suoi pazienti
+     * @param docUsername
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<List<String>> getAllDoctorsPatients(String docUsername, Context context){
+        return CompletableFuture.supplyAsync(()-> {
+            //verifico se esiste un utente con lo username dell'utente che si vuole loggare
+            Task<QuerySnapshot> query = db.collection("users").whereEqualTo("dottore", docUsername).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            //quando la query è completata vedo se non esiste nessun paziente del dottore ritorno una lista vuota
+            if (query.getResult().size() == 0) {
+                return new ArrayList<>();
+            }else{
+                List<String> patients=new ArrayList<>();
+                for (QueryDocumentSnapshot document:query.getResult()){
+                    patients.add(document.getString("username"));
+                }
+                return patients;
+            }
+        });
+    }
+
+    /**
+     * Metodo per prendere tutte le patologie di un utente dato username. Ritorna una mappa conchiave "esito" che rappresenta l'esito della computazione
+     * e chiave "patologie" che è la lista delle patologie prese
+     * @param username
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,Object>> getAllPatologies(String username, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",username).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return new HashMap<String,Object>(){{
+                    put("esito",context.getString(R.string.patologiesGetFailed));
+                }};
+            }
+
+            Map<String,Object> result=new HashMap<String,Object>();
+            List<Patologia> patologie=new ArrayList<>();
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                patologie.add(new Patologia(
+                        document.getString("username"),
+                        document.getString("patologia"),
+                        document.getString("priorita"),
+                        document.getTimestamp("dataOraUltimaVisita"),
+                        document.getString("notaMedico")
+                ));
+            }
+
+            result.put("esito",context.getString(R.string.patologiesGetSuccessfull));
+            result.put("patologie",patologie);
+
+            return result;
+        });
+    }
+
+    /**
+     * Metodo per prenedere una patologia dell'utente dato username e tipo di patologia. Ritorna una mappa con chiave "patologia" con un oggetto
+     * Patologia che rappresenta la patologia presa e con chiave "esito" che rappresenta l'esito della computazione
+     * @param patologia
+     * @param username
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getPatology(String patologia, String username, Context context){
+        return CompletableFuture.supplyAsync(()->{
+
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("patologia",patologia).whereEqualTo("username",username).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return new HashMap<String,String>() {{
+                    put("esito", context.getString(R.string.patologiesGetFailed));
+                }};
+            }
+
+            Patologia patology = null;
+            for (QueryDocumentSnapshot document:query.getResult()){
+                patology=new Patologia(
+                        document.getString("username"),
+                        document.getString("patologia"),
+                        document.getString("priorita"),
+                        document.getTimestamp("dataOraUltimaVisita"),
+                        document.getString("notaMedico"));
+                break;
+            }
+
+            Patologia finalPatology = patology;
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.misurationGetSuccessfully));
+                put("patologia", finalPatology);
+            }};
+        });
+    }
+
+    /**
+     * Metodo per la modifica e aggiunta di una patologia di un utente. Ha in input un oggetto patologia che conterrà i dati della patologia
+     * da inserire compreso l'username dell'utente di riferimento.
+     * @param patologia
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> storePatology(Patologia patologia, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo l'ultima misurazione effettuata
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",patologia.getUsername()).whereEqualTo("patologia",patologia.getPatologia()).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.insertMisurationFailed);
+            }
+
+            //creo la patologia
+            Map<String, Object> patology = new HashMap<>();
+            patology.put("username",patologia.getUsername());
+            patology.put("dataOraUltimaVisita",patologia.getDataEora());
+            patology.put("priorita",patologia.getPriorita());
+            patology.put("notamedico",patologia.getNota());
+            patology.put("patologia",patologia.getPatologia());
+
+            //verifico se esiste la patologia gia nel db
+            if(query.getResult().size()==0){
+                //memorizzo la patologia nel db
+                Task addToDb = db.collection("patologie").add(patology);
+                while (!addToDb.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+                if (!addToDb.isSuccessful()) {
+                    return context.getString(R.string.insertPatologyFailed);
+                }
+            }else{
+                //modifico la patologia presente nel db
+                Task addToDb = db.collection("patologie").document(query.getResult().getDocuments().get(0).getId()).set(patology);
+                while (!addToDb.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+                if (!addToDb.isSuccessful()) {
+                    return context.getString(R.string.insertPatologyFailed);
+                }
+            }
+
+            return context.getString(R.string.insertPatologySuccessfull);
+        });
+    }
+
 }

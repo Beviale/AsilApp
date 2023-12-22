@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.os.ParcelUuid;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.UnderlineSpan;
@@ -32,6 +33,7 @@ import com.google.zxing.common.BitMatrix;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
@@ -225,6 +227,11 @@ public class Utility
         ta.recycle();
         view.setClickable(true);
         view.setForeground(drawableFromTheme);
+    }
+
+    public static UUID getAppUUID(Context context){
+        ParcelUuid pd=new ParcelUuid(UUID.nameUUIDFromBytes(context.getResources().getString(R.string.bluetoothBoxName).getBytes()));
+        return pd.getUuid();
     }
 
 }

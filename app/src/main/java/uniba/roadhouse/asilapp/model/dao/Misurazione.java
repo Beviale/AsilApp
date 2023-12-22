@@ -103,6 +103,17 @@ public class Misurazione {
         this.id = id;
     }
 
+    public Misurazione(String username, String valutazione, Double valore, Double valoreMax, Double valoreMin, Timestamp data, TipoMisurazioneEnum tipo, String notaMedico) {
+        this.username = username;
+        this.valutazione=valutazione;
+        this.valore = valore;
+        this.valoreMax = valoreMax;
+        this.valoreMin = valoreMin;
+        this.data = data;
+        this.tipo = tipo;
+        this.notaMedico = notaMedico;
+    }
+
     public Misurazione()
     {
 

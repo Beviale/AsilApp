@@ -113,6 +113,10 @@
     <string name="cityError">Errore nella lettura della citta</string>
     <string name="editPasswordFailed">Errore nella modifica della password</string>
     <string name="editPasswordSuccessfull">Password modificata con successo</string>
+    <string name="patologiesGetFailed">Lettura delle patologie fallita</string>
+    <string name="patologiesGetSuccessfull">Lettura delle patologie avvenuta con successo</string>
+    <string name="insertPatologyFailed">Inserimento della patologia fallito</string>
+    <string name="insertPatologySuccessfull">Inserimento della patologia avvenuto con succecsso</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
@@ -207,6 +211,8 @@
     <string name="bluetoothNotEnabledTitle">Bluetooth non abilitato</string>
     <string name="bluetoothNotEnabled">Per utilizzare questa funzionalità devi attivare la connessione Belutooth del tuo dispositivo!</string>
     <string name="activateBluetooth">Abilita Bluetooth</string>
+    <string name="searching">Ricerca...</string>
+    <string name="medicalDataWaiting">In Attesa Della Misurazione Sulla Box</string>
 
 
     <!--USER PROFILE-->
@@ -228,6 +234,21 @@
     <string name="unityTrembling">Hz</string>
     <string name="unityGlucose">mg/dL</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--BLUETOOTH-->
+    <string name="bluetoothPermissionTitle">Perchè chiediamo il Bluetooth?</string>
+    <string name="bluetoothInformativa">Salve a tuttti!!</string>
+    <string name="bluetoothGivePermissionMessage">Consentire il permesso ed attivare il Bluetooth per continuare</string>
+    <string name="bluetoothSearchFinished">Ricerca Della Box Terminata</string>
+    <string name="bluetoothSearchStarted">Ricerca Della Box Avviata</string>
+    <string name="bluetoothConnectionFailed">Connessione Alla Box Fallita</string>
+    <string name="bluetoothConnectionEnded">Connessione Alla Box Terminata</string>
+    <string name="bluetoothDataWaiting">In Attesa Delle Misurazioni...</string>
+    <string name="bluetoothConnectionStarted">Connessione...</string>
+    <string name="bluetoothBoxName">AsilApp Box</string>
+    <string name="misurationSuccessfull">Misurazione Avvenuta Con Successo</string>
+    <string name="misurationFailed">Misurazione Fallita</string>
 
 
     <!-- OutgoingsFragment-->
@@ -259,6 +280,7 @@
 
     <!-- DOCTORACTIVITY-->
     <string name="doctor">Dottore</string>
+    <string name="noDoctorExists">Nessun Dottore Esiste Con Questo Username</string>
 
     <!-- New Pathology Fragment-->
     <string name="newPathologyTitle">Dati patologia</string>

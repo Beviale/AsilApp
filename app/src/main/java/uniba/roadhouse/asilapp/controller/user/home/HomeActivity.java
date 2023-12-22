@@ -150,7 +150,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private void changeScreen(String screen){
+    public void changeScreen(String screen){
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         //apro il fragment che inidca la sezione cliccata da aprire
