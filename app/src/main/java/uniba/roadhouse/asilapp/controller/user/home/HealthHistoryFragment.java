@@ -308,10 +308,21 @@ public class HealthHistoryFragment extends Fragment {
                 bundle.putString("itemClicked", ((Misurazione) result.get("misurazione")).getTipo().toString());
                 bundle.putInt("id", id);
                 bundle.putBoolean("share", share);
-                fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
-                fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
-                fragmentTransaction.commit();
+                if(openDoctor==false)
+                {
+                    bundle.putBoolean("doctor",false);
+                    fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
+                    fragmentTransaction.replace(R.id.homeContainerView, DetailHealthHistoryFragment.class, bundle);
+                    fragmentTransaction.commit();
+                }
+                if(openDoctor==true)
+                {
+                    bundle.putBoolean("doctor", true);
+                    fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
+                    fragmentTransaction.replace(R.id.doctorFragmentView, DetailHealthHistoryFragment.class, bundle);
+                    fragmentTransaction.commit();
 
+                }
             });
         });
 

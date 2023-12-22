@@ -105,6 +105,8 @@ public class UserProfileFragment extends Fragment {
         {
             progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         }
+        layoutUserProfile.setAlpha((float)0.5);
+
 
     }
 
@@ -112,7 +114,6 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onStart() {
         progressBar.setVisibility(View.VISIBLE);
-        layoutUserProfile.setAlpha((float)0.5);
         CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {

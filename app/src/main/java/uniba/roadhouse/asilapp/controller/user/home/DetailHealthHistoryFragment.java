@@ -115,6 +115,11 @@ public class DetailHealthHistoryFragment extends Fragment {
      */
     private static Boolean share;
 
+    /**
+     * Indica se il fragment è stato aperto con l'account dottore.
+     */
+    private static Boolean openDoctor=false;
+
 
 
 
@@ -169,8 +174,9 @@ public class DetailHealthHistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             itemClickedString = getArguments().getString("itemClicked");
-           id = getArguments().getInt("id");
-           share = getArguments().getBoolean("share");
+            id = getArguments().getInt("id");
+            share = getArguments().getBoolean("share");
+            openDoctor = getArguments().getBoolean("doctor");
         }
     }
 
@@ -190,7 +196,14 @@ public class DetailHealthHistoryFragment extends Fragment {
         detailHealthHistoryTitle = view.findViewById(R.id.detailHealthHistoryTitle);
         layoutOldHealthHistory = view.findViewById(R.id.layoutOldHealthHistory);
         detailHealthHistoryLayout = view.findViewById(R.id.detailHealthHistoryLayout);
-        homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        if(openDoctor==false)
+        {
+            homeActivityProgressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        }
+        if(openDoctor==true)
+        {
+            homeActivityProgressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
+        }
         valueLastRecordHealthHistory = view.findViewById(R.id.valueLastRecordHealthHistory);
         idLastRecordHealthHistory = view.findViewById(R.id.idLastRecordHealthHistory);
         dateLastRecordHealthHistory = view.findViewById(R.id.dateLastRecordHealthHistory);
@@ -199,6 +212,11 @@ public class DetailHealthHistoryFragment extends Fragment {
         evalutationLastRecordHealthHistory = view.findViewById(R.id.evalutationLastRecordHealthHistory);
         editButtonHealthHistoryEvalutation = view.findViewById(R.id.editButtonHealthHistoryEvalutation);
         editButtonHealthHistoryDoctorNotes = view.findViewById(R.id.editButtonHealthHistoryDoctorNotes);
+        if(openDoctor==true)
+        {
+            editButtonHealthHistoryEvalutation.setVisibility((View.VISIBLE));
+            editButtonHealthHistoryDoctorNotes.setVisibility((View.VISIBLE));
+        }
         getData();
         getOldData();
     }
@@ -209,6 +227,8 @@ public class DetailHealthHistoryFragment extends Fragment {
         shareDetailHealthHistory.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
         editButtonHealthHistoryEvalutation.setOnClickListener(v->openDialogEditEvalutation());
         editButtonHealthHistoryDoctorNotes.setOnClickListener(v->openDialogEditDoctorNotes());
+
+
     }
 
     @Override
@@ -219,16 +239,34 @@ public class DetailHealthHistoryFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-        toolbar.getMenu().clear();
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
+        if(openDoctor==false)
+        {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
 
-            }
-        });
+                }
+            });
+        }
+
+        if(openDoctor==true)
+        {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
+            toolbar.getMenu().clear();
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
+                }
+            });
+        }
+
         super.onResume();
     }
 
@@ -571,9 +609,20 @@ public class DetailHealthHistoryFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
         bundle.putBoolean("share", share);
-        fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
-        fragmentTransaction.replace(R.id.homeContainerView, DetailOldHealthHistoryFragment.class, bundle);
-        fragmentTransaction.commit();
+        if(openDoctor==false)
+        {
+            bundle.putBoolean("doctor", false);
+            fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
+            fragmentTransaction.replace(R.id.homeContainerView, DetailOldHealthHistoryFragment.class, bundle);
+            fragmentTransaction.commit();
+        }
+        if(openDoctor==true)
+        {
+            bundle.putBoolean("doctor", true);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.replace(R.id.doctorFragmentView, DetailOldHealthHistoryFragment.class, bundle);
+            fragmentTransaction.commit();
+        }
     }
 
 
@@ -604,5 +653,6 @@ public class DetailHealthHistoryFragment extends Fragment {
         openOldHealthHistory(mappaViewIdMisurazioneOld.get(itemOldClicked), true);
         return super.onContextItemSelected(item);
     }
+
 }
 
