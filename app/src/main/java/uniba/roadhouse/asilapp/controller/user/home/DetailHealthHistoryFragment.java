@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -43,9 +44,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
@@ -177,6 +179,10 @@ public class DetailHealthHistoryFragment extends Fragment {
             id = getArguments().getInt("id");
             share = getArguments().getBoolean("share");
             openDoctor = getArguments().getBoolean("doctor");
+        }
+        if(openDoctor==true)
+        {
+            getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallbackDoctor);
         }
     }
 
@@ -402,6 +408,7 @@ public class DetailHealthHistoryFragment extends Fragment {
     }
 
 
+
     /**
      * Prende dal database tutti i dati reltivi alle misurazioni precedenti che sono dello stesso tipo rispetto a quella mostrata in dettaglio nel fragment.
      * Per ogni misurazioni precedente trovata, crea dinamicamente delle view.
@@ -411,7 +418,7 @@ public class DetailHealthHistoryFragment extends Fragment {
     {
         oldProgressBar.setVisibility(View.VISIBLE);
         mappaViewIdMisurazioneOld = new HashMap<View, Integer>();
-        CompletableFuture<Map<String, Object>> future = Dao.getAllPastMisurationByUsername(Access.getUsername(), itemClickedString, getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getAllPastMisurationByUsername(AccessUser.getUsername(), itemClickedString, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 oldProgressBar.setVisibility(View.GONE);
@@ -614,15 +621,14 @@ public class DetailHealthHistoryFragment extends Fragment {
             bundle.putBoolean("doctor", false);
             fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
             fragmentTransaction.replace(R.id.homeContainerView, DetailOldHealthHistoryFragment.class, bundle);
-            fragmentTransaction.commit();
         }
         if(openDoctor==true)
         {
             bundle.putBoolean("doctor", true);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.replace(R.id.doctorFragmentView, DetailOldHealthHistoryFragment.class, bundle);
-            fragmentTransaction.commit();
         }
+        fragmentTransaction.commit();
     }
 
 
@@ -653,6 +659,22 @@ public class DetailHealthHistoryFragment extends Fragment {
         openOldHealthHistory(mappaViewIdMisurazioneOld.get(itemOldClicked), true);
         return super.onContextItemSelected(item);
     }
+
+
+    /**
+     * Comportamento del tasto back quando il fragment è stato aperto con l'account dottore.
+     */
+    private OnBackPressedCallback onBackPressedCallbackDoctor = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("backHealthHistory", true);
+            fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, bundle);
+            fragmentTransaction.commit();
+        }
+    };
 
 }
 

@@ -672,7 +672,6 @@ public class Dao {
      * @param context
      * @return
      */
-
     public static CompletableFuture<Map<String,String>> loginDoctor(String username, String password, Context context){
         return CompletableFuture.supplyAsync(()-> {
             //verifico se esiste un utente con lo username dell'utente che si vuole loggare
@@ -791,7 +790,8 @@ public class Dao {
                         document.getString("username"),
                         document.getString("patologia"),
                         document.getString("priorita"),
-                        document.getTimestamp("dataOraUltimaVisita"),
+                        document.getString("data"),
+                        document.getString("ora"),
                         document.getString("notaMedico")
                 ));
             }
@@ -811,7 +811,7 @@ public class Dao {
      * @param context
      * @return
      */
-    public static CompletableFuture<Map<String,?>> getPatology(String patologia, String username, Context context){
+    public static CompletableFuture<Map<String,?>> getPathology(String patologia, String username, Context context){
         return CompletableFuture.supplyAsync(()->{
 
             Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("patologia",patologia).whereEqualTo("username",username).get();
@@ -832,7 +832,8 @@ public class Dao {
                         document.getString("username"),
                         document.getString("patologia"),
                         document.getString("priorita"),
-                        document.getTimestamp("dataOraUltimaVisita"),
+                        document.getString("data"),
+                        document.getString("ora"),
                         document.getString("notaMedico"));
                 break;
             }
@@ -868,9 +869,10 @@ public class Dao {
             //creo la patologia
             Map<String, Object> patology = new HashMap<>();
             patology.put("username",patologia.getUsername());
-            patology.put("dataOraUltimaVisita",patologia.getDataEora());
+            patology.put("data",patologia.getData());
+            patology.put("ora",patologia.getOra());
             patology.put("priorita",patologia.getPriorita());
-            patology.put("notamedico",patologia.getNota());
+            patology.put("notaMedico",patologia.getNota());
             patology.put("patologia",patologia.getPatologia());
 
             //verifico se esiste la patologia gia nel db

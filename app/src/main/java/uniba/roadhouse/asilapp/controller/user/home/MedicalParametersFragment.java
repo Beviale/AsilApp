@@ -27,6 +27,11 @@ public class MedicalParametersFragment extends Fragment {
 
     TabLayout tabLayoutMedical;
 
+    /**
+     * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment MyPathologies.
+     */
+    private static Boolean openBackMyPathologies = false;
+
 
 
 
@@ -43,6 +48,10 @@ public class MedicalParametersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments()!=null)
+        {
+            openBackMyPathologies = getArguments().getBoolean("backHealthHistory");
+        }
     }
 
     @Override
@@ -106,6 +115,20 @@ public class MedicalParametersFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
+
+        if(openBackMyPathologies==true)
+        {
+            openBackMyPathologies=false;
+            openHealthHistory(getActivity().getSupportFragmentManager());
+            TabLayout.Tab tab = tabLayoutMedical.getTabAt(1);
+            tab.select();
+        }
+        else
+        {
+            openHealthHistory(getActivity().getSupportFragmentManager());
+            TabLayout.Tab tab = tabLayoutMedical.getTabAt(0);
+            tab.select();
+        }
         super.onResume();
     }
 
@@ -123,4 +146,7 @@ public class MedicalParametersFragment extends Fragment {
         fragmentTransaction.replace(R.id.medicalTabFragmentContainer, MyPathologiesFragment.class, null);
         fragmentTransaction.commit();
     }
+
+
+
 }

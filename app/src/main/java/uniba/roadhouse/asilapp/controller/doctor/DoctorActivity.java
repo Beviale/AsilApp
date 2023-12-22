@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.doctor;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.controller.user.home.HealthHistoryFragment;
 
 public class DoctorActivity extends AppCompatActivity {
     ImageView toolBarIconDoctorActivity;
@@ -60,8 +62,10 @@ public class DoctorActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.doctorFragmentView, HomeDoctorFragment.class, null);
             fragmentTransaction.commit();
         }
-
     }
+
+
+
 
 
 }

@@ -197,6 +197,10 @@
     <string name="deleteMessage">Ti ricordiamo che l\'operazione è irreversibile.</string>
     <string name="priorityLabel">Priorità</string>
     <string name="emptyDoctorNotes">Nessuna nota è stata ancora inserita. Si prega di contattare il medico per ulteriori informazioni.</string>
+    <string name="emptyPriority">PRIORITÀ NON INSERITA</string>
+    <string name="emptyDate">DATA NON INSERITA</string>
+    <string name="emptyTime">ORA NON INSERITA</string>
+
 
 
     <!--SETTINGS-->
@@ -297,8 +301,8 @@
 
 
     <!-- Home Doctor Fragment-->
-    <string name="birthDateDoctorHome">Data di nascita: </string>
     <string name="allUserDoctorTitle">Pazienti in cura</string>
+    <string name="cardUserDoctorOrganizationLabel">Struttura: </string>
 
     <!-- Detail User Doctor Fragment-->
     <string name="pathologies">Patologie</string>

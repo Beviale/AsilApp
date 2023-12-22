@@ -172,6 +172,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileNameTitle" />
 
+        <TextView
+            android:id="@+id/profileDoctorTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="@string/doctor"
+            android:textSize="@dimen/textSettingsOption"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileResidence" />
+
+        <TextView
+            android:id="@+id/profileDoctor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/profileEmptyLine"
+            android:textSize="@dimen/textSettingsOption"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileDoctorTitle" />
+
         <ImageView
             android:id="@+id/imageQRCode"
             android:layout_width="362dp"

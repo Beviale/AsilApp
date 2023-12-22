@@ -311,7 +311,15 @@ public class DetailOldHealthHistoryFragment extends Fragment {
                    valueLastRecordHealthHistoryOld.setText(misurazione.getValoreMax().toString().concat("/").concat(misurazione.getValoreMin().toString().concat(" ").concat(getUnity(misurazione.getTipo()))));
                 }
                 evalutationRecordHealthHistoryOld.setText(misurazione.getValutazione());
-                doctorNotesRecordHealthHistoryOld.setText(misurazione.getNotaMedico());
+                if(misurazione.getNotaMedico().toString().isEmpty())
+                {
+                    doctorNotesRecordHealthHistoryOld.setText(getString(R.string.emptyDoctorNotes));
+
+                }
+                else
+                {
+                    doctorNotesRecordHealthHistoryOld.setText(misurazione.getNotaMedico());
+                }
             });
         });
     }

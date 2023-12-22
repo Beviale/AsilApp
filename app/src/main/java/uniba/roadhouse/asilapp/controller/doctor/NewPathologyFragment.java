@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,17 +16,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Patologia;
 
 
 public class NewPathologyFragment extends Fragment {
@@ -41,6 +50,8 @@ public class NewPathologyFragment extends Fragment {
     RadioButton myNewPathologiesHigh;
     EditText doctorNotesNewPathology;
     Button buttonAddNewPathology;
+    ProgressBar progressBar;
+    ConstraintLayout layoutNewPathology;
 
 
 
@@ -70,6 +81,8 @@ public class NewPathologyFragment extends Fragment {
         //--------------RIFERIMENTI--------------------
         nameNewPathologyLayout = view.findViewById(R.id.nameNewPathologyLayout);
         nameNewPathologyInput = view.findViewById(R.id.nameNewPathologyInput);
+        layoutNewPathology = view.findViewById(R.id.layoutNewPathology);
+        progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         dateNewPathologyLayout = view.findViewById(R.id.dateNewPathologyLayout);
         dateNewPathologyInput = view.findViewById(R.id.dateNewPathologyInput);
         timeNewPathologyLayout = view.findViewById(R.id.timeNewPathologyLayout);
@@ -121,6 +134,12 @@ public class NewPathologyFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    @Override
+    public void onResume() {
+        progressBar.setVisibility(View.GONE);
+        super.onResume();
+    }
+
     private void selectTime()
     {
         Calendar c = Calendar.getInstance();
@@ -149,6 +168,67 @@ public class NewPathologyFragment extends Fragment {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyNameNewPathologyTitle), getString(R.string.emptyNameNewPathology));
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
+        layoutNewPathology.setAlpha((float)0.5);
+        String namePathologyAdd = nameNewPathologyInput.getText().toString();
+        String priorityAdd="-";
+        if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId()==-1)
+        {
+            priorityAdd = getString(R.string.emptyPriority);
+        }
+        else if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId() == R.id.myNewPathologiesLow)
+        {
+            priorityAdd = getString(R.string.priorityMyPathologiesValueLow);
+        }
+        else if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId() == R.id.myNewPathologiesMedium)
+        {
+            priorityAdd = getString(R.string.priorityMyPathologiesValueMedium);
+        }
+        else if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId() == R.id.myNewPathologiesHigh)
+        {
+            priorityAdd = getString(R.string.priorityMyPathologiesValueHigh);
+        }
+        String dateAdd = "-";
+        if(dateNewPathologyInput.getText().toString().isEmpty())
+        {
+            dateAdd = getString(R.string.emptyDate);
+        }
+        else
+        {
+            dateAdd = dateNewPathologyInput.getText().toString();
+        }
+        String timeAdd = "-";
+        if(timeNewPathologyInput.getText().toString().isEmpty())
+        {
+            timeAdd = getString(R.string.emptyTime);
+        }
+        else
+        {
+            timeAdd = timeNewPathologyInput.getText().toString();
+        }
+        String noteAdd = "-";
+        if(doctorNotesNewPathology.getText().toString().isEmpty())
+        {
+            noteAdd = getString(R.string.emptyDoctorNotes);
+        }
+        else
+        {
+            noteAdd = doctorNotesNewPathology.getText().toString();
+        }
+        Patologia patologia = new Patologia(AccessUser.getUsername(), namePathologyAdd, priorityAdd, dateAdd, timeAdd, noteAdd);
+        CompletableFuture<String> future = Dao.storePatology(patologia,getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.GONE);
+                layoutNewPathology.setAlpha((float)1.0);
+                Toast.makeText(getActivity(),result, Toast.LENGTH_SHORT).show();
+                if(result.equals(getString(R.string.insertPatologySuccessfull)))
+                {
+                    getActivity().onBackPressed();
+                }
+
+            });
+        });
 
     }
 

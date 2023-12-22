@@ -8,12 +8,14 @@ public class Patologia {
     String patologia;
     String priorita;
     String nota;
-    Timestamp dataEora;
+    String data;
+    String ora;
 
-    public Patologia(String username, String patologia, String priorita, Timestamp dataEora, String nota){
+    public Patologia(String username, String patologia, String priorita, String data, String ora, String nota){
         this.username=username;
         this.patologia=patologia;
-        this.dataEora=dataEora;
+        this.data=data;
+        this.ora=ora;
         this.nota=nota;
         this.priorita=priorita;
     }
@@ -50,11 +52,17 @@ public class Patologia {
         this.nota = nota;
     }
 
-    public Timestamp getDataEora() {
-        return dataEora;
+    public String getData() {
+        return data;
+    }
+    public String getOra() {
+        return ora;
     }
 
-    public void setDataEora(Timestamp dataEora) {
-        this.dataEora = dataEora;
+    public void setData(String data) {
+        this.data=data;
+    }
+    public void setOra(String ora) {
+        this.ora=ora;
     }
 }

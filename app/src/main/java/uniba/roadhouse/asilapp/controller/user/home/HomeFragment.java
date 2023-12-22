@@ -31,7 +31,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import java.util.ArrayList;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 
 
 public class HomeFragment extends Fragment {
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
 
 
 
-        welcomeText.setText(getString(R.string.welcome)+"\n"+Access.getNome()+"!");
+        welcomeText.setText(getString(R.string.welcome)+"\n"+ AccessUser.getNome()+"!");
         scrollBarVideo.setHorizontalScrollBarEnabled(true);
         super.onStart();
     }

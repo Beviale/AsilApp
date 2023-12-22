@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 
 /**
@@ -187,8 +187,8 @@ public class SiginFragment extends Fragment {
 
                 if(result.get("esito")==getString(R.string.loginCompleted))
                 {
-                    Access.setUsername(userNameInput.getText().toString());
-                    Access.setNome(result.get("nome"));
+                    AccessUser.setUsername(userNameInput.getText().toString());
+                    AccessUser.setNome(result.get("nome"));
                     Intent openHome = new Intent(getActivity(), HomeActivity.class);
                     startActivity(openHome);
                 }

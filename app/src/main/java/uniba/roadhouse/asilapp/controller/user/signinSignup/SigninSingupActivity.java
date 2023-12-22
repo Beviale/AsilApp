@@ -17,7 +17,7 @@ import java.util.Map;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 
 
@@ -63,8 +63,8 @@ public class SigninSingupActivity extends AppCompatActivity {
         // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
         if(verifyLogged.get("username")!="")
         {
-            Access.setUsername(verifyLogged.get("username"));
-            Access.setNome(verifyLogged.get("nome"));
+            AccessUser.setUsername(verifyLogged.get("username"));
+            AccessUser.setNome(verifyLogged.get("nome"));
             Intent openHome = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(openHome);
         }

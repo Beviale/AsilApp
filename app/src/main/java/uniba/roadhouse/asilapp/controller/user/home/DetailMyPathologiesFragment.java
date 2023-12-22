@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +19,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -32,16 +35,26 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Patologia;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +62,6 @@ import uniba.roadhouse.asilapp.controller.other.Utility;
  * create an instance of this fragment.
  */
 public class DetailMyPathologiesFragment extends Fragment {
-    TextView idLastVisitMyPathologies;
-    static String itemCliecked;
     TextView detailMyPathologiesTitle;
     TextView dateLastVisitMyPathologies;
     TextView timeLastVisitMyPathologies;
@@ -64,6 +75,14 @@ public class DetailMyPathologiesFragment extends Fragment {
     ImageView editButtonMyPathologiesDoctorNotes;
     Button addDrugsMyPathologies;
     LinearLayout linearLayoutDrugs;
+
+    ProgressBar progressBar;
+    ConstraintLayout layoutMyPathologies;
+
+    /**
+     * Nome della patologia passata in input al fragment.
+     */
+    private static String namePathology;
 
 
     /**
@@ -100,6 +119,11 @@ public class DetailMyPathologiesFragment extends Fragment {
             deleteDrugs = getArguments().getBoolean("delete");
             openDoctor = getArguments().getBoolean("doctor");
             share = getArguments().getBoolean("share");
+            namePathology = getArguments().getString("namePathology");
+        }
+        if(openDoctor==true)
+        {
+            getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallbackDoctor);
         }
         super.onCreate(savedInstanceState);
     }
@@ -116,6 +140,7 @@ public class DetailMyPathologiesFragment extends Fragment {
         //---------------RIFERIMENTI-------------
         doctorNotesLastVisitMyPahologies = view.findViewById(R.id.doctorNotesLastVisitMyPahologies);
         timeLastVisitMyPathologies = view.findViewById(R.id.timeLastVisitMyPathologies);
+        layoutMyPathologies = view.findViewById(R.id.layoutMyPathologies);
         dateLastVisitMyPathologies = view.findViewById(R.id.dateLastVisitMyPathologies);
         detailMyPathologiesTitle = view.findViewById(R.id.detailMyPathologiesTitle);
         priorityLastVisitMyPathologies = view.findViewById(R.id.priorityLastVisitMyPathologies);
@@ -128,6 +153,19 @@ public class DetailMyPathologiesFragment extends Fragment {
         addDrugsMyPathologies = view.findViewById(R.id.addDrugsMyPathologies);
         ScrollView scrollView = view.findViewById(R.id.scrollDetailMyPathologies);
         linearLayoutDrugs = view.findViewById(R.id.linearLayoutDrugs);
+        if(openDoctor==false)
+        {
+            progressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+        }
+        if(openDoctor==true)
+        {
+            editButtonMyPathologiesDate.setVisibility(View.VISIBLE);
+            editButtonMyPathologiesTime.setVisibility(View.VISIBLE);
+            editButtonMyPahologiesPriority.setVisibility(View.VISIBLE);
+            editButtonMyPathologiesDoctorNotes.setVisibility(View.VISIBLE);
+            addDrugsMyPathologies.setVisibility(View.VISIBLE);
+            progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
+        }
 
         // Attivo la condivisione se il fragment è stato aperto con il menu contestuale relativo alla condivisione.
         if(share==true)
@@ -183,48 +221,61 @@ public class DetailMyPathologiesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-        toolbar.getMenu().clear();
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-
-            }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.deleteMyPathologies)
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
-
-                    // Set the dialog title and message
-                    builder.setTitle(getString(R.string.deleteMessageTitle))
-                            .setMessage(getString(R.string.deleteMessage))
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-
-                                }
-                            })
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-
-                                }
-                            });
-
-
-                    // Create and show the AlertDialog
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+        if(openDoctor==false)
+        {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
 
                 }
+            });
+        }
+        if(openDoctor==true)
+        {
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
+            toolbar.getMenu().clear();
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().onBackPressed();
 
-                return true;
-            }
-        });
-        toolbar.inflateMenu(R.menu.delete_menu);
+                }
+            });
+
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if(item.getItemId() == R.id.deleteMyPathologies)
+                    {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
+
+                        // Set the dialog title and message
+                        builder.setTitle(getString(R.string.deleteMessageTitle))
+                                .setMessage(getString(R.string.deleteMessage))
+                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                })
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+                        // Create and show the AlertDialog
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                    return true;
+                }
+            });
+            toolbar.inflateMenu(R.menu.delete_menu);
+        }
         super.onResume();
     }
 
@@ -279,6 +330,11 @@ public class DetailMyPathologiesFragment extends Fragment {
         alertDialog.show();
     }
 
+    @Override
+    public void onPause() {
+        progressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
 
     private void openEditDoctorNotes()
     {
@@ -348,6 +404,28 @@ public class DetailMyPathologiesFragment extends Fragment {
 
     private void getData()
     {
+        progressBar.setVisibility(View.VISIBLE);
+        layoutMyPathologies.setAlpha((float)0.5);
+        CompletableFuture<Map<String, ?>> future = Dao.getPathology(namePathology, AccessUser.getUsername(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.GONE);
+                layoutMyPathologies.setAlpha((float)1.0);
+                if(!(result.get("esito").toString().equals(getString(R.string.misurationGetSuccessfully))))
+                {
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Patologia patologia = (Patologia) result.get("patologia");
+                    detailMyPathologiesTitle.setText(namePathology);
+                    dateLastVisitMyPathologies.setText(patologia.getData());
+                    timeLastVisitMyPathologies.setText(patologia.getOra());
+                    priorityLastVisitMyPathologies.setText(patologia.getPriorita());
+                    doctorNotesLastVisitMyPahologies.setText(patologia.getNota());
+                }
+            });
+        });
 
     }
 
@@ -452,4 +530,21 @@ public class DetailMyPathologiesFragment extends Fragment {
         }
         return super.onContextItemSelected(item);
     }
+
+
+
+    /**
+     * Comportamento del tasto back quando il fragment è stato aperto con l'account dottore.
+     */
+    private OnBackPressedCallback onBackPressedCallbackDoctor = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("backMyPathologies", true);
+            fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, bundle);
+            fragmentTransaction.commit();
+        }
+    };
 }

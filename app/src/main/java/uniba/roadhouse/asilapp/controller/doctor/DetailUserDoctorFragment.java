@@ -2,6 +2,7 @@ package uniba.roadhouse.asilapp.controller.doctor;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -17,17 +18,24 @@ import android.widget.ProgressBar;
 import com.google.android.material.tabs.TabLayout;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.user.home.HealthBoxFragment;
 import uniba.roadhouse.asilapp.controller.user.home.HealthHistoryFragment;
 import uniba.roadhouse.asilapp.controller.user.home.MyPathologiesFragment;
 import uniba.roadhouse.asilapp.controller.user.home.UserProfileFragment;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 
 
 public class DetailUserDoctorFragment extends Fragment {
     Toolbar toolbar;
     TabLayout tabLayoutUserDoctor;
     ProgressBar progressBarDoctorActivty;
+    /**
+     * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment HealthHistory.
+     */
+    private static Boolean openBackHealthHistory = false;
+    /**
+     * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment MyPathologies.
+     */
+    private static Boolean openBackMyPathologies = false;
 
 
 
@@ -44,6 +52,13 @@ public class DetailUserDoctorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments()!=null)
+        {
+            openBackHealthHistory = getArguments().getBoolean("backHealthHistory");
+            openBackMyPathologies = getArguments().getBoolean("backMyPathologies");
+        }
+        getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+
 
     }
 
@@ -60,7 +75,6 @@ public class DetailUserDoctorFragment extends Fragment {
         toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
         tabLayoutUserDoctor = view.findViewById(R.id.tabLayoutUserDoctor);
         progressBarDoctorActivty = getActivity().findViewById(R.id.progressBarDoctorActivty);
-
 
         openUserProfile(getActivity().getSupportFragmentManager());
         super.onViewCreated(view, savedInstanceState);
@@ -85,7 +99,7 @@ public class DetailUserDoctorFragment extends Fragment {
                 }
                 else if(position==2)
                 {
-                    openHealthPathologies(fragmentManager);
+                    openMyPathologies(fragmentManager);
                 }
 
             }
@@ -100,12 +114,12 @@ public class DetailUserDoctorFragment extends Fragment {
 
             }
         });
+
             super.onStart();
     }
 
     @Override
     public void onResume() {
-        toolbar.getMenu().clear();
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -115,6 +129,28 @@ public class DetailUserDoctorFragment extends Fragment {
 
             }
         });
+
+        if(openBackHealthHistory==true)
+        {
+            openBackHealthHistory=false;
+            openHealthHistory(getActivity().getSupportFragmentManager());
+            TabLayout.Tab tab = tabLayoutUserDoctor.getTabAt(1);
+            tab.select();
+        }
+        else if(openBackMyPathologies==true)
+        {
+            openBackMyPathologies=false;
+            openMyPathologies(getActivity().getSupportFragmentManager());
+            TabLayout.Tab tab = tabLayoutUserDoctor.getTabAt(2);
+            tab.select();
+
+        }
+        else
+        {
+            openUserProfile(getActivity().getSupportFragmentManager());
+            TabLayout.Tab tab = tabLayoutUserDoctor.getTabAt(0);
+            tab.select();
+        }
         super.onResume();
     }
 
@@ -126,7 +162,6 @@ public class DetailUserDoctorFragment extends Fragment {
 
     private void openUserProfile(FragmentManager fragmentManager)
     {
-        Access.setUsername("asilapp");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putBoolean("doctor", true);
@@ -136,7 +171,6 @@ public class DetailUserDoctorFragment extends Fragment {
 
     private void openHealthHistory(FragmentManager fragmentManager)
     {
-        Access.setUsername("asilapp");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putBoolean("doctor", true);
@@ -144,9 +178,8 @@ public class DetailUserDoctorFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void openHealthPathologies(FragmentManager fragmentManager)
+    private void openMyPathologies(FragmentManager fragmentManager)
     {
-        Access.setUsername("asilapp");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putBoolean("doctor", true);
@@ -154,6 +187,17 @@ public class DetailUserDoctorFragment extends Fragment {
         fragmentTransaction.commit();
 
     }
+
+
+    private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.doctorFragmentView, HomeDoctorFragment.class, null);
+            fragmentTransaction.commit();
+        }
+    };
 
 
 }

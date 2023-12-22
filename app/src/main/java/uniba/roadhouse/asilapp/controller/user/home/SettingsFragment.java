@@ -39,7 +39,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.FirstActivity;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
@@ -241,7 +241,7 @@ public class SettingsFragment extends Fragment {
     {
         homeActivityProgressBar.setVisibility(View.VISIBLE);
         settingsLayout.setAlpha((float)0.5);
-        CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getUserData(AccessUser.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 if(result!=null) {
@@ -351,10 +351,10 @@ public class SettingsFragment extends Fragment {
         {
             homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
-            CompletableFuture<String> future = Dao.editResidenzaUtente(Access.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
+            CompletableFuture<String> future = Dao.editResidenzaUtente(AccessUser.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
-                    CompletableFuture<String> futurePassword = Dao.editPasswordUtente(Access.getUsername(), changePasswordInput.getText().toString(), getActivity());
+                    CompletableFuture<String> futurePassword = Dao.editPasswordUtente(AccessUser.getUsername(), changePasswordInput.getText().toString(), getActivity());
                     futurePassword.thenAccept(resultPassword -> {
                         getActivity().runOnUiThread(() -> {
                             homeActivityProgressBar.setVisibility(View.GONE);
@@ -387,7 +387,7 @@ public class SettingsFragment extends Fragment {
         {
             homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
-            CompletableFuture<String> future = Dao.editPasswordUtente(Access.getUsername(), changePasswordInput.getText().toString(), getActivity());
+            CompletableFuture<String> future = Dao.editPasswordUtente(AccessUser.getUsername(), changePasswordInput.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
                     homeActivityProgressBar.setVisibility(View.GONE);
@@ -402,7 +402,7 @@ public class SettingsFragment extends Fragment {
         {
             homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
-            CompletableFuture<String> future = Dao.editResidenzaUtente(Access.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
+            CompletableFuture<String> future = Dao.editResidenzaUtente(AccessUser.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
                     homeActivityProgressBar.setVisibility(View.GONE);

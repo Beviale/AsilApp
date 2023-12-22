@@ -20,9 +20,15 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
+import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 public class SigninDoctorFragment extends Fragment {
@@ -151,18 +157,44 @@ public class SigninDoctorFragment extends Fragment {
             }
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+        layoutLogin.setAlpha((float)0.5);
+        CompletableFuture<Map<String,String>> future = Dao.loginDoctor(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                layoutLogin.setAlpha(1);
+                Toast.makeText(getActivity(), result.get("esito"), Toast.LENGTH_SHORT).show();
+                if(result.get("esito")==getString(R.string.loginCompleted))
+                {
+                    AccessDoctor.setUsername(userNameInput.getText().toString());
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransactin = fragmentManager.beginTransaction();
+                    fragmentTransactin.replace(R.id.doctorFragmentView, HomeDoctorFragment.class, null);
+                    fragmentTransactin.commit();
+                }
+                else if (result.get("esito")==getString(R.string.noDoctorExists))
+                {
+                    usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
+                    usernameLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
+                    usernameLayout.requestFocus();
+                }
+                else if (result.get("esito")==getString(R.string.wrongPassword))
+                {
+                    passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.textAlertColor));
+                    passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.textAlertColor)));
+                    passwordLayout.requestFocus();
+                }
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransactin = fragmentManager.beginTransaction();
-        fragmentTransactin.replace(R.id.doctorFragmentView, HomeDoctorFragment.class, null);
-        fragmentTransactin.commit();
-
-
+            });
+        });
     }
+
 
     private void loginDirettoProfessore()
     {
-        userNameInput.setText("asilapp");
+        userNameInput.setText("doctor");
         passwordInput.setText("Asilapp@1");
+        login();
     }
 }

@@ -11,27 +11,19 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.common.io.ByteStreams;
 import com.google.firebase.Timestamp;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
@@ -139,7 +131,7 @@ public class BluetoothConnectionThread extends Thread {
      * @param parametro
      */
     private void storeMisuration(Double misurazione, String parametro){
-        Misurazione mis=new Misurazione(Access.getUsername(),"NON VALUTATO",misurazione,null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
+        Misurazione mis=new Misurazione(AccessUser.getUsername(),"NON VALUTATO",misurazione,null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
         CompletableFuture<String> future = Dao.storeMisuration(mis,context);
         future.thenAccept(result -> {
             currentFragment.getActivity().runOnUiThread(() -> {

@@ -18,10 +18,9 @@ import android.widget.TextView;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.model.dao.Access;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
@@ -44,6 +43,8 @@ public class UserProfileFragment extends Fragment {
     ImageView profileQRCode;
     ProgressBar progressBar;
     ConstraintLayout layoutUserProfile;
+    TextView profileDoctorTitle;
+    TextView profileDoctor;
 
     /**
      * Indica se il fragment è stato aperto da un account dottore o meno.
@@ -97,6 +98,8 @@ public class UserProfileFragment extends Fragment {
         profileResidence = view.findViewById(R.id.profileResidence);
         profileQRCode = view.findViewById(R.id.imageQRCode);
         layoutUserProfile = view.findViewById(R.id.layoutUserProfile);
+        profileDoctor = view.findViewById(R.id.profileDoctor);
+        profileDoctorTitle = view.findViewById(R.id.profileDoctorTitle);
         if(openDoctor==false)
         {
             progressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
@@ -114,7 +117,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onStart() {
         progressBar.setVisibility(View.VISIBLE);
-        CompletableFuture<Map<String, Object>> future = Dao.getUserData(Access.getUsername(), getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getUserData(AccessUser.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 layoutUserProfile.setAlpha((float)1.0);
@@ -127,6 +130,7 @@ public class UserProfileFragment extends Fragment {
                 profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
                 profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
                 profileQRCode.setImageBitmap((Bitmap) DatiCorrenti.get("qrCode"));
+                profileDoctor.setText(DatiCorrenti.get("dottore").toString());
 
             });
         });
@@ -157,5 +161,11 @@ public class UserProfileFragment extends Fragment {
             });
         }
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        progressBar.setVisibility(View.GONE);
+        super.onPause();
     }
 }
