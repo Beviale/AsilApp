@@ -902,4 +902,27 @@ public class Dao {
         });
     }
 
+    public static CompletableFuture<String> addFarmaco(Farmaco farmaco, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Map<String,Object> far=new HashMap<String,Object>(){{
+               put("username",farmaco.getUsername());
+               put("patologia",farmaco.getPatologia());
+               put("nota",farmaco.getNota());
+               put("nomePatologia",farmaco.getNome());
+            }};
+
+            //aggiungo l'utente al db
+            Task addToDb = db.collection("farmaci").add(far);
+            while (!addToDb.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!addToDb.isSuccessful()) {
+                return context.getString(R.string.insertFarmacoFailed);
+            }
+
+            //se l'inserimento è avvenuto con successo ritono il messaggio
+            return context.getString(R.string.insertFarmacoSuccessfull);
+        });
+    }
+
 }
