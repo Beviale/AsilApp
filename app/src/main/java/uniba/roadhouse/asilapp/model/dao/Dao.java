@@ -902,6 +902,12 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che aggiunge un farmaco dato un oggetto Farmaco. Ritorna una stringa che indica l'esito della computazione
+     * @param farmaco
+     * @param context
+     * @return
+     */
     public static CompletableFuture<String> addFarmaco(Farmaco farmaco, Context context){
         return CompletableFuture.supplyAsync(()->{
             Map<String,Object> far=new HashMap<String,Object>(){{
@@ -922,6 +928,40 @@ public class Dao {
 
             //se l'inserimento è avvenuto con successo ritono il messaggio
             return context.getString(R.string.insertFarmacoSuccessfull);
+        });
+    }
+
+    /**
+     * Metodo che prende tutti i farmaci di una patologia di uno specifico utente. Ritorna una mappa con chiave "esito" indicante l'esito della
+     * computaione e chiave "farmaci" che indica la lista di farmaci sottoforma di List<Farmaco>
+     * @param username
+     * @param nomePatologia
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getAllFarmaci(String username, String nomePatologia, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //aggiungo l'utente al db
+            Task<QuerySnapshot> query = db.collection("farmaci").whereEqualTo("username",username).whereEqualTo("nomePatologia",nomePatologia).get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return new HashMap<String ,Object>(){{
+                    put("esio",context.getString(R.string.getFarmacoFailed));
+                }};
+            }
+
+            List<Farmaco> farmaci=new ArrayList<>();
+
+            for (QueryDocumentSnapshot document:query.getResult()){
+                farmaci.add(new Farmaco(document.getString("nomeFarmaco"),document.getString("nota"),username,nomePatologia));
+            }
+
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.getFarmacoSuccessfull));
+                put("farmaci",farmaci);
+            }};
         });
     }
 
