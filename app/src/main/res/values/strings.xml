@@ -120,6 +120,8 @@
     <string name="insertPatologySuccessfull">Inserimento della patologia avvenuto con succecsso</string>
     <string name="misurationEditSuccessfull">Modifica della misurazione avvenuta correttamente</string>
     <string name="misurationEditFailed">Modifica della misurazione fallita</string>
+    <string name="insertFarmacoSuccessfull">Farmaco inserito correttamente</string>
+    <string name="insertFarmacoFailed">Errore nell\'inserimento del farmaco</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
@@ -275,11 +277,15 @@
     <string name="valueOutgoindTooHight">Devi necessariamente inserire un importo non superiore a euro: </string>
     <string name="valueOutgoindTooLowTitle">Importo troppo basso</string>
     <string name="valueOutgoindTooLow">Devi necessariamente inserire un importo non inferiore a euro: </string>
+
+
+    <!-- AddDrugsDialogFragment-->
     <string name="addDrugTitle">Aggiungi un nuovo farmaco</string>
     <string name="nameAddDrugPlaceholder">Nome farmaco</string>
     <string name="noteAddDrugPlaceholder">Nota</string>
     <string name="emptyNameAddDrugTitle">Nome del farmaco non inserito</string>
     <string name="emptyNameAddDrug">Per inserire un nuovo farmaco devi inserire obbligatoriamente il nome.</string>
+    <string name="emptyNoteDrug">NESSUNA NOTA INSERITA</string>
 
     <!-- DetailTipsFragment-->
     <string name="evalutationContent">Valuta contenuto</string>

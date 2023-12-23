@@ -42,15 +42,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.AddDrugsDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
@@ -419,7 +418,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     private void addDrugs()
     {
-       AddDrugsDialogFragment addDrugsDialogFragment = AddDrugsDialogFragment.newInstance();
+       AddDrugsDialogFragment addDrugsDialogFragment = AddDrugsDialogFragment.newInstance(namePathology);
        addDrugsDialogFragment.show(getActivity().getSupportFragmentManager(), "AddDrugsDialogFragment");
     }
 
