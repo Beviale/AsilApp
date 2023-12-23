@@ -129,7 +129,7 @@ public class Dao {
         });
     }
 
-    public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, Context context){
+    public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, String dataNascita, Context context){
         return CompletableFuture.supplyAsync(()->{
             //so gia che username è disponibile e che lapassword rispeta i criteri
 
@@ -162,6 +162,7 @@ public class Dao {
             }
             user.put("nomeResidenza", residenza);
             user.put("tipoUtente", tipoUtente);
+            user.put("dataNascita",dataNascita);
             user.put("qrCode",qrCode);
 
             //aggiungo l'utente al db
@@ -334,6 +335,7 @@ public class Dao {
                 userData.put("tipoUtente",document.getString("tipoUtente"));
                 userData.put("nomeResidenza",document.getString("nomeResidenza"));
                 userData.put("dottore",document.getString("dottore"));
+                userData.put("dataNascita",document.getString("dataNascita"));
                 String qr=document.getString("qrCode");
                 //memorizzo il bitmap del qrcode nella mappa da ritornare
                 userData.put("qrCode",Utility.StringToBitMap(qr));
