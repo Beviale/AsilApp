@@ -1083,6 +1083,50 @@ public class Dao {
     }
 
     /**
+     * Metodo per l'eliminazione della data di una patologia dato lo suername dell'utente relativo e il nome della patologia.
+     * ritorna una stringa che indica l'esito della computazione
+     * @param username
+     * @param patologia
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> deletePatology(String username, String patologia, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo la patologia dell'utente
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",username).whereEqualTo("patologia",patologia).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+            String id=null;
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                id=document.getId();
+                break;
+            }
+
+            //modifico la priorità
+            Task update = db.collection("patologie").document(id).delete();
+
+            while (!update.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!update.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+
+            return context.getString(R.string.editPatologySuccessfull);
+        });
+    }
+
+    /**
      * Metodo che aggiunge un farmaco dato un oggetto Farmaco. Ritorna una stringa che indica l'esito della computazione
      * @param farmaco
      * @param context
