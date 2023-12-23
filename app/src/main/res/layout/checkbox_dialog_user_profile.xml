@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserName"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileSurname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserSurname"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserGender"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareUserBirthDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserBirthDate"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileCitizen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserCitizen"/>
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserCountry"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileOrganization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileUserResidence"/>
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileDoctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/doctor"/>
+
+    <CheckBox
+        android:id="@+id/dialogShareUserProfileSelectAll"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:text="@string/selectAll"/>
+</LinearLayout>

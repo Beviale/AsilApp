@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -289,12 +290,33 @@ public class DetailMyPathologiesFragment extends Fragment {
         CheckBox checkBoxTime = view.findViewById(R.id.dialogShareDetailPathologiesTime);
         CheckBox checkBoxPriority = view.findViewById(R.id.dialogShareDetailPathologiesPriority);
         CheckBox checkBoxDoctorNotes = view.findViewById(R.id.dialogShareDetailPathologiesDoctorNotes);
+        CheckBox checkBoxSelectAll = view.findViewById(R.id.dialogShareDetailPathologiesSelectAll);
         List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
         checkBoxes.add(checkBoxDate);
         checkBoxes.add(checkBoxTime);
         checkBoxes.add(checkBoxPriority);
         checkBoxes.add(checkBoxDoctorNotes);
+        checkBoxes.add(checkBoxSelectAll);
         Utility.colorAllCheckbox(checkBoxes, getActivity());
+
+
+checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+         @Override
+         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+             if (checkBoxSelectAll.isChecked()) {
+                 checkBoxDate.setChecked(true);
+                 checkBoxTime.setChecked(true);
+                 checkBoxPriority.setChecked(true);
+                 checkBoxDoctorNotes.setChecked(true);
+             }
+             if (!checkBoxSelectAll.isChecked()) {
+                 checkBoxDate.setChecked(false);
+                 checkBoxTime.setChecked(false);
+                 checkBoxPriority.setChecked(false);
+                 checkBoxDoctorNotes.setChecked(false);
+             }
+         }
+     });
 
 
         builder.setView(view)

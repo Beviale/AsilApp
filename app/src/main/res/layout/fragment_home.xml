@@ -210,6 +210,131 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/outgoingsHomeSection" />
 
+            <TextView
+                android:id="@+id/phoneNumberHomeSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_marginLeft="@dimen/marginLeftHome"
+                android:layout_marginTop="@dimen/marginTopBetweenSectionHome"
+                android:fontFamily="@font/titillium_web_bold"
+                android:text="@string/usefulPhoneNumbers"
+                android:textSize="@dimen/title3FontSize"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pieChartHome" />
+
+            <ImageView
+                android:id="@+id/policeNumberImage"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="40dp"
+                android:src="@drawable/phone_call"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="@dimen/marginLeftHome"
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumberHomeSection"
+                android:layout_marginTop="30dp"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:id="@+id/policeNumberText"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/title3FontSize"
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumberHomeSection"
+                android:layout_marginTop="20dp"
+                android:text="@string/emergencyNumber"
+                app:layout_constraintLeft_toRightOf="@+id/policeNumberImage"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/policeNumberValue"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/title3FontSize"
+                android:textColor="@color/red"
+                app:layout_constraintTop_toBottomOf="@+id/policeNumberText"
+                android:layout_marginTop="5dp"
+                android:text="112"
+                app:layout_constraintLeft_toRightOf="@+id/policeNumberImage"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+
+            <ImageView
+                android:id="@+id/unhcrNumberImage"
+                android:layout_width="40dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:src="@drawable/phone_call"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="@dimen/marginLeftHome"
+                app:layout_constraintTop_toBottomOf="@+id/policeNumberImage"
+                android:layout_marginTop="30dp"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:id="@+id/unhcrNumberText"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/title3FontSize"
+                app:layout_constraintTop_toBottomOf="@+id/policeNumberImage"
+                android:layout_marginTop="20dp"
+                android:text="@string/emergencyNumberUnhcr"
+                app:layout_constraintLeft_toRightOf="@+id/unhcrNumberImage"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/unchrNumberValue"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/title3FontSize"
+                android:textColor="@color/appMainColor"
+                app:layout_constraintTop_toBottomOf="@+id/unhcrNumberText"
+                android:layout_marginTop="5dp"
+                android:text="800905570"
+                app:layout_constraintLeft_toRightOf="@+id/unhcrNumberImage"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+
+
+
+            <ImageView
+                android:id="@+id/commissionNumberImage"
+                android:layout_width="40dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:src="@drawable/phone_call"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="@dimen/marginLeftHome"
+                app:layout_constraintTop_toBottomOf="@+id/unhcrNumberImage"
+                android:layout_marginTop="30dp"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:id="@+id/commissionNumberText"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/title3FontSize"
+                app:layout_constraintTop_toBottomOf="@+id/unhcrNumberImage"
+                android:layout_marginTop="20dp"
+                android:text="@string/emergencyNumberCommission"
+                app:layout_constraintLeft_toRightOf="@+id/commissionNumberImage"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/commissionNumberValue"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/title3FontSize"
+                android:textColor="@color/appMainColor"
+                app:layout_constraintTop_toBottomOf="@+id/commissionNumberText"
+                android:layout_marginTop="5dp"
+                android:text="06 69000100"
+                app:layout_constraintLeft_toRightOf="@+id/commissionNumberImage"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

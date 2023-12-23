@@ -1,25 +1,34 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
@@ -126,6 +135,7 @@ public class UserProfileFragment extends Fragment {
                 profileName.setText(DatiCorrenti.get("nome").toString());
                 profileSurname.setText(DatiCorrenti.get("cognome").toString());
                 profileGender.setText(DatiCorrenti.get("sesso").toString());
+                profileBirthDate.setText((DatiCorrenti.get("dataNascita").toString()));
                 profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
                 profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
                 profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
@@ -140,16 +150,16 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Toolbar toolbar;
         if(openDoctor==false)
         {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+            toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
             toolbar.getMenu().clear();
             toolbar.setNavigationIcon(null);
         }
         else
         {
-            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
-            toolbar.getMenu().clear();
+            toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
             toolbar.getMenu().clear();
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -160,6 +170,14 @@ public class UserProfileFragment extends Fragment {
                 }
             });
         }
+        toolbar.inflateMenu(R.menu.share_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                openDialogShareUserProfile();
+                return true;
+            }
+        });
         super.onResume();
     }
 
@@ -167,5 +185,102 @@ public class UserProfileFragment extends Fragment {
     public void onPause() {
         progressBar.setVisibility(View.GONE);
         super.onPause();
+    }
+
+
+    private void openDialogShareUserProfile()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleShare);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.checkbox_dialog_user_profile, null);
+        CheckBox checkBoxName = view.findViewById(R.id.dialogShareUserProfileName);
+        CheckBox checkBoxSurname = view.findViewById(R.id.dialogShareUserProfileSurname);
+        CheckBox checkBoxGender = view.findViewById(R.id.dialogShareUserProfileGender);
+        CheckBox checkBoxBirthDate = view.findViewById(R.id.dialogShareUserBirthDate);
+        CheckBox checkBoxCititzen = view.findViewById(R.id.dialogShareUserProfileCitizen);
+        CheckBox checkBoxCountry = view.findViewById(R.id.dialogShareUserProfileCountry);
+        CheckBox checkBoxOrganization = view.findViewById(R.id.dialogShareUserProfileOrganization);
+        CheckBox checkBoxDoctor = view.findViewById(R.id.dialogShareUserProfileDoctor);
+        CheckBox checkBoxSelectAll = view.findViewById(R.id.dialogShareUserProfileSelectAll);
+        List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+        checkBoxes.add(checkBoxName);
+        checkBoxes.add(checkBoxSurname);
+        checkBoxes.add(checkBoxGender);
+        checkBoxes.add(checkBoxBirthDate);
+        checkBoxes.add(checkBoxCititzen);
+        checkBoxes.add(checkBoxCountry);
+        checkBoxes.add(checkBoxOrganization);
+        checkBoxes.add(checkBoxDoctor);
+        checkBoxes.add(checkBoxSelectAll);
+        Utility.colorAllCheckbox(checkBoxes, getActivity());
+
+        checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+               @Override
+               public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                   if(checkBoxSelectAll.isChecked())
+                   {
+                       checkBoxName.setChecked(true);
+                       checkBoxSurname.setChecked(true);
+                       checkBoxGender.setChecked(true);
+                       checkBoxBirthDate.setChecked(true);
+                       checkBoxCititzen.setChecked(true);
+                       checkBoxCountry.setChecked(true);
+                       checkBoxOrganization.setChecked(true);
+                       checkBoxDoctor.setChecked(true);
+                   }
+                   if(!checkBoxSelectAll.isChecked())
+                   {
+                       checkBoxName.setChecked(false);
+                       checkBoxSurname.setChecked(false);
+                       checkBoxGender.setChecked(false);
+                       checkBoxBirthDate.setChecked(false);
+                       checkBoxCititzen.setChecked(false);
+                       checkBoxCountry.setChecked(false);
+                       checkBoxOrganization.setChecked(false);
+                       checkBoxDoctor.setChecked(false);
+                   }
+               }
+           }
+        );
+
+        builder.setView(view)
+                .setTitle(getString(R.string.titleShareDialogPrivacy))
+                .setPositiveButton(getString(R.string.share), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String share = new String();
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        if(checkBoxName.isChecked())
+                            share = share.concat(getString(R.string.profileUserName).concat(": ").concat(profileName.getText().toString().concat("\n")));
+                        if(checkBoxSurname.isChecked())
+                            share = share.concat(getString(R.string.profileUserSurname).concat(": ").concat(profileSurname.getText().toString()).concat("\n"));
+                        if(checkBoxGender.isChecked())
+                            share = share.concat(getString(R.string.profileUserGender).concat(": ").concat(profileGender.getText().toString()).concat("\n"));
+                        if(checkBoxBirthDate.isChecked())
+                            share = share.concat(getString(R.string.profileUserBirthDate).concat(": ").concat(profileBirthDate.getText().toString()).concat("\n"));
+                        if(checkBoxCititzen.isChecked())
+                            share = share.concat(getString(R.string.profileUserCitizen).concat(": ").concat(profileCitizen.getText().toString()).concat("\n"));
+                        if(checkBoxCountry.isChecked())
+                            share = share.concat(getString(R.string.profileUserCountry).concat(": ").concat(profileCountry.getText().toString()).concat("\n"));
+                        if(checkBoxOrganization.isChecked())
+                            share = share.concat(getString(R.string.profileUserResidence).concat(": ").concat(profileResidence.getText().toString()).concat("\n"));
+                        if(checkBoxDoctor.isChecked())
+                            share = share.concat(getString(R.string.doctor).concat(": ").concat(profileDoctor.getText().toString()));
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT, share);
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Handle negative button click
+                        dialogInterface.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

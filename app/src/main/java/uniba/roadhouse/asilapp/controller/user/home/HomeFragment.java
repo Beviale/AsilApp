@@ -1,5 +1,7 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,12 @@ public class HomeFragment extends Fragment {
     ConstraintLayout cardNutritionalTips;
     ConstraintLayout cardWellnessTips;
     SwipeRefreshLayout swipeRefreshLayoutHomeFragment;
+    ImageView policeNumberImage;
+    TextView policeNumberValue;
+    ImageView unhcrNumberImage;
+    TextView unhcrNumbervalue;
+    ImageView commissionNumberImage;
+    TextView commissionNumberValue;
 
 
     public HomeFragment() {
@@ -63,6 +71,12 @@ public class HomeFragment extends Fragment {
         arrowToOutgoingsFragment = view.findViewById(R.id.arrowToOutgoingsFragment);
         //----------RIFERIMENTI----------
         secondWebView = view.findViewById(R.id.secondVideoView);
+        policeNumberImage = view.findViewById(R.id.policeNumberImage);
+        policeNumberValue = view.findViewById(R.id.policeNumberValue);
+        unhcrNumberImage = view.findViewById(R.id.unhcrNumberImage);
+        unhcrNumbervalue = view.findViewById(R.id.unchrNumberValue);
+        commissionNumberImage = view.findViewById(R.id.commissionNumberImage);
+        commissionNumberValue = view.findViewById(R.id.commissionNumberValue);
         swipeRefreshLayoutHomeFragment = view.findViewById(R.id.swipereFreshLayoutHomeFragment);
         welcomeText = view.findViewById(R.id.welcomeText);
         firstWebView = view.findViewById(R.id.firstVideoView);
@@ -80,6 +94,9 @@ public class HomeFragment extends Fragment {
         arrowToOutgoingsFragment.setOnClickListener(V->openOutgoingsFragment());
         cardNutritionalTips.setOnClickListener(v->openDetailTips("nutritional"));
         cardWellnessTips.setOnClickListener(v->openDetailTips("wellness"));
+        policeNumberImage.setOnClickListener(v->call(policeNumberValue.getText().toString()));
+        unhcrNumberImage.setOnClickListener(v->call(unhcrNumbervalue.getText().toString()));
+        commissionNumberImage.setOnClickListener(v->call(commissionNumberValue.getText().toString()));
         swipeRefreshLayoutHomeFragment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -176,6 +193,17 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
         fragmentTransaction.commit();
 
+    }
+
+
+    /**
+     * Apre un intent di tipo ACTION_DIAL.
+     * @param number, numero di telefono da allegare alla richiesa di intent.
+     */
+    private void call(String number)
+    {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null));
+        getActivity().startActivity(intent);
     }
 
 

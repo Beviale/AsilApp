@@ -33,11 +33,11 @@
 
         <ImageView
             android:id="@+id/iconPathologiesDetailTitle"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginTop="32dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/body_scan"
+            android:src="@drawable/pathology"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 

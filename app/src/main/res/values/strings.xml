@@ -26,6 +26,7 @@
     <string name="delete">Elimina</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
+    <string name="selectAll">Seleziona tutto</string>
 
 
     <!--SigninSignupActivity-->
@@ -131,6 +132,10 @@
     <string name="video">Video</string>
     <string name="tips">Consigli</string>
     <string name="outgoingsManagement">Gestione spesa</string>
+    <string name="usefulPhoneNumbers">Numeri utili</string>
+    <string name="emergencyNumber">Numero di emergenza nazionale</string>
+    <string name="emergencyNumberUnhcr">UNHCR (The Un Refugee Agency)</string>
+    <string name="emergencyNumberCommission">Commissione per il diritto di asilo</string>
 
 
     <!--MedicalParameters-->
@@ -278,6 +283,9 @@
 
     <!-- DetailTipsFragment-->
     <string name="evalutationContent">Valuta contenuto</string>
+
+    <!-- EvaluateTipsDialogFragment-->
+    <string name="successfullySendEvalutation">Vautazione inviata con successo</string>
 
 
     <!-- FIRSTACTIVITY-->

@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -291,6 +292,7 @@ public class DetailHealthHistoryFragment extends Fragment {
         CheckBox checkBoxValue = view.findViewById(R.id.dialogShareDetailHistoryValue);
         CheckBox checkBoxEvalutation = view.findViewById(R.id.dialogShareDetailHistoryEvalutation);
         CheckBox checkBoxDoctorNotes = view.findViewById(R.id.dialogShareDetailHistoryDoctorNotes);
+        CheckBox checkBoxSelectAll = view.findViewById(R.id.dialogShareDetailHistorySelectAll);
         List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
         checkBoxes.add(checkBoxId);
         checkBoxes.add(checkBoxDate);
@@ -298,7 +300,37 @@ public class DetailHealthHistoryFragment extends Fragment {
         checkBoxes.add(checkBoxValue);
         checkBoxes.add(checkBoxEvalutation);
         checkBoxes.add(checkBoxDoctorNotes);
+        checkBoxes.add(checkBoxSelectAll);
         Utility.colorAllCheckbox(checkBoxes, getActivity());
+
+        checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+             @Override
+             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                 if(checkBoxSelectAll.isChecked())
+                 {
+                     checkBoxId.setChecked(true);
+                     checkBoxDate.setChecked(true);
+                     checkBoxTime.setChecked(true);
+                     checkBoxValue.setChecked(true);
+                     checkBoxEvalutation.setChecked(true);
+                     checkBoxDoctorNotes.setChecked(true);
+                 }
+                 if(!checkBoxSelectAll.isChecked())
+                 {
+                     checkBoxId.setChecked(false);
+                     checkBoxDate.setChecked(false);
+                     checkBoxTime.setChecked(false);
+                     checkBoxValue.setChecked(false);
+                     checkBoxEvalutation.setChecked(false);
+                     checkBoxDoctorNotes.setChecked(false);
+                 }
+             }
+         }
+        );
+
+
+
+
         builder.setView(view)
                 .setTitle(getString(R.string.titleShareDialogPrivacy))
                 .setPositiveButton(getString(R.string.share), new DialogInterface.OnClickListener() {

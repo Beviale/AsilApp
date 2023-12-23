@@ -74,7 +74,7 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putFloat("rating".concat(type), ratingEvaluate.getRating());
         myEdit.commit();
-        Toast.makeText(getActivity(), getString(R.string.successfullySaved), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.successfullySendEvalutation), Toast.LENGTH_SHORT).show();
         dismiss();
     }
 }
