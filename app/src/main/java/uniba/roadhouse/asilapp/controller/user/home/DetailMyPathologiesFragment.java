@@ -54,6 +54,7 @@ import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Farmaco;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
 
 /**
@@ -453,62 +454,84 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     @SuppressLint("RestrictedApi")
     private void getDrugsData()
     {
+        progressBar.setVisibility(View.VISIBLE);
+        linearLayoutDrugs.setAlpha((float)0.5);
+        CompletableFuture<Map<String, ?>> future = Dao.getAllFarmaci(AccessUser.getUsername(), namePathology, getActivity());
+        future.thenAccept(result -> {
+            progressBar.setVisibility(View.INVISIBLE);
+            linearLayoutDrugs.setAlpha((float)1.0);
+            getActivity().runOnUiThread(() -> {
+                if(!(result.get("esito").toString().equals(getString(R.string.getFarmaciSuccessfull))))
+                {
+                    Toast.makeText(getActivity(),result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    List<Farmaco> farmaci = (List<Farmaco>)result.get("farmaci");
+                    for(Farmaco farmaco: farmaci)
+                    {
+                        // Creo il constraintLayout
+                        ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+                        registerForContextMenu(constraintLayout);
+                        Utility.activeAnimationOnClick(getActivity(), constraintLayout);
+                        constraintLayout.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
+                        );
+                        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);;
+                        constraintLayout.setLayoutParams(layoutParams);
+                        constraintLayout.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
+                        linearLayoutDrugs.addView(constraintLayout);
 
-        // Creo il constraintLayout
-        ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
-        registerForContextMenu(constraintLayout);
-        Utility.activeAnimationOnClick(getActivity(), constraintLayout);
-        constraintLayout.setId(View.generateViewId());
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
-        );
-        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);;
-        constraintLayout.setLayoutParams(layoutParams);
-        constraintLayout.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
-        linearLayoutDrugs.addView(constraintLayout);
-
-        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
-
-
-        // Creo la textView relativa al nome del farmaco
-        TextView textViewTitle = new TextView(getActivity());
-        textViewTitle.setText("Oki");
-        textViewTitle.setId(View.generateViewId());
-        ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
-        textViewTitle.setTypeface(typeface);
-        textViewTitle.setTextColor(getResources().getColor(R.color.white));
-        textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
-        textViewTitle.setLayoutParams(paramsTitle);
-        constraintLayout.addView(textViewTitle);
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayout);
-        constraintSet.connect(textViewTitle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
-        constraintSet.connect(textViewTitle.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 20));
-        constraintSet.applyTo(constraintLayout);
+                        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
 
 
-        // Creo la textView relativa alle note sul farmaco
-        TextView textViewNote = new TextView(getActivity());
-        textViewNote.setText("2 la mattina e 2 la sera");
-        textViewNote.setId(View.generateViewId());
-        ConstraintLayout.LayoutParams paramsNote = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
-        textViewNote.setPadding(0, 0,(int) dpToPx(getContext(), 40), 0);
-        textViewNote.setTextColor(getResources().getColor(R.color.white));
-        textViewNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
-        textViewNote.setLayoutParams(paramsNote);
-        constraintLayout.addView(textViewNote);
-        ConstraintSet constraintSetNote = new ConstraintSet();
-        constraintSetNote.clone(constraintLayout);
-        constraintSetNote.connect(textViewNote.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
-        constraintSetNote.connect(textViewNote.getId(), ConstraintSet.TOP, textViewTitle.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
-        constraintSetNote.applyTo(constraintLayout);
+                        // Creo la textView relativa al nome del farmaco
+                        TextView textViewTitle = new TextView(getActivity());
+                        textViewTitle.setText(farmaco.getNome());
+                        textViewTitle.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        textViewTitle.setTypeface(typeface);
+                        textViewTitle.setTextColor(getResources().getColor(R.color.white));
+                        textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
+                        textViewTitle.setLayoutParams(paramsTitle);
+                        constraintLayout.addView(textViewTitle);
+                        ConstraintSet constraintSet = new ConstraintSet();
+                        constraintSet.clone(constraintLayout);
+                        constraintSet.connect(textViewTitle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
+                        constraintSet.connect(textViewTitle.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 20));
+                        constraintSet.applyTo(constraintLayout);
+
+
+                        // Creo la textView relativa alle note sul farmaco
+                        TextView textViewNote = new TextView(getActivity());
+                        textViewNote.setText(farmaco.getNota());
+                        textViewNote.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsNote = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        textViewNote.setPadding(0, 0,(int) dpToPx(getContext(), 40), 0);
+                        textViewNote.setTextColor(getResources().getColor(R.color.white));
+                        textViewNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+                        textViewNote.setLayoutParams(paramsNote);
+                        constraintLayout.addView(textViewNote);
+                        ConstraintSet constraintSetNote = new ConstraintSet();
+                        constraintSetNote.clone(constraintLayout);
+                        constraintSetNote.connect(textViewNote.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
+                        constraintSetNote.connect(textViewNote.getId(), ConstraintSet.TOP, textViewTitle.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
+                        constraintSetNote.applyTo(constraintLayout);
+                    }
+                }
+
+            });
+        });
+
+
 
     }
 

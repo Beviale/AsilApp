@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -98,21 +99,18 @@ public class AddDrugsDialogFragment extends DialogFragment {
         {
             note = noteAddDrugLayoutInput.getText().toString();
         }
-        Farmaco addFarmaco = new Farmaco(name, note);
-        closeDialog();
+        Farmaco addFarmaco = new Farmaco(name, note, AccessUser.getUsername(), namePathology);
         progressBar.setVisibility(View.VISIBLE);
         linearLayoutDoctoActivity.setAlpha((float)0.5);
-        CompletableFuture<Map<String, Object>> future = Dao.addFarmaco();
+        CompletableFuture<String> future = Dao.addFarmaco(addFarmaco, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
                 linearLayoutDoctoActivity.setAlpha((float)1.0);
-
+                Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                closeDialog();
             });
         });
-
-
-
     }
 
     private void closeDialog()
