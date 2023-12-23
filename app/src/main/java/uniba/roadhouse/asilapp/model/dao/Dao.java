@@ -952,7 +952,7 @@ public class Dao {
      * ritorna una stringa che indica l'esito della computazione
      * @param username
      * @param patologia
-     * @param priorita
+     * @param nota
      * @param context
      * @return
      */
@@ -978,6 +978,96 @@ public class Dao {
 
             //modifico la priorità
             Task update = db.collection("patologie").document(id).update("notaMedico",nota);
+
+            while (!update.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!update.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+
+            return context.getString(R.string.editPatologySuccessfull);
+        });
+    }
+
+    /**
+     * Metodo per la modifica dell'ora di una patologia dato lo suername dell'utente relativo e il nome della patologia.
+     * ritorna una stringa che indica l'esito della computazione
+     * @param username
+     * @param patologia
+     * @param ora
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> editPatologyHour(String username, String patologia, String ora, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo la patologia dell'utente
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",username).whereEqualTo("patologia",patologia).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+            String id=null;
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                id=document.getId();
+                break;
+            }
+
+            //modifico la priorità
+            Task update = db.collection("patologie").document(id).update("ora",ora);
+
+            while (!update.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!update.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+
+            return context.getString(R.string.editPatologySuccessfull);
+        });
+    }
+
+    /**
+     * Metodo per la modifica della data di una patologia dato lo suername dell'utente relativo e il nome della patologia.
+     * ritorna una stringa che indica l'esito della computazione
+     * @param username
+     * @param patologia
+     * @param date
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> editPatologyDate(String username, String patologia, String date, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo la patologia dell'utente
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",username).whereEqualTo("patologia",patologia).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+            String id=null;
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                id=document.getId();
+                break;
+            }
+
+            //modifico la priorità
+            Task update = db.collection("patologie").document(id).update("data",date);
 
             while (!update.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
