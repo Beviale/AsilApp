@@ -434,7 +434,7 @@ public class Dao {
     public static CompletableFuture<String> editMisurationValutazione(Integer id, String valutazione, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
-            Task query = db.collection("patologie").document(id.toString()).update("valutazione",valutazione);
+            Task query = db.collection("misurazioni").document(id.toString()).update("valutazione",valutazione);
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -458,7 +458,7 @@ public class Dao {
     public static CompletableFuture<String> editMisurationNota(Integer id, String nota, Context context){
         return CompletableFuture.supplyAsync(()->{
             //prendo l'ultima misurazione effettuata
-            Task query = db.collection("patologie").document(id.toString()).update("notamedico",nota);
+            Task query = db.collection("misurazioni").document(id.toString()).update("notamedico",nota);
 
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -899,6 +899,94 @@ public class Dao {
             }
 
             return context.getString(R.string.insertPatologySuccessfull);
+        });
+    }
+
+    /**
+     * Metodo per la modifica della priorità di una patologia dato lo suername dell'utente relativo e il nome della patologia.
+     * ritorna una stringa che indica l'esito della computazione
+     * @param username
+     * @param patologia
+     * @param priorita
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> editPatologiaPriority(String username, String patologia, String priorita, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo la patologia dell'utente
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",username).whereEqualTo("patologia",patologia).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+            String id=null;
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                id=document.getId();
+            }
+
+            //modifico la priorità
+            Task update = db.collection("patologie").document(id).update("priorita",priorita);
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+
+            return context.getString(R.string.editPatologySuccessfull);
+        });
+    }
+
+    /**
+     * Metodo per la modifica della nota medico di una patologia dato lo suername dell'utente relativo e il nome della patologia.
+     * ritorna una stringa che indica l'esito della computazione
+     * @param username
+     * @param patologia
+     * @param priorita
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> editPatologiaNotaMedico(String username, String patologia, String nota, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //prendo la patologia dell'utente
+            Task<QuerySnapshot> query = db.collection("patologie").whereEqualTo("username",username).whereEqualTo("patologia",patologia).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+            String id=null;
+
+            for(QueryDocumentSnapshot document:query.getResult()){
+                id=document.getId();
+            }
+
+            //modifico la priorità
+            Task update = db.collection("patologie").document(id).update("notaMedico",nota);
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+
+            return context.getString(R.string.editPatologySuccessfull);
         });
     }
 
