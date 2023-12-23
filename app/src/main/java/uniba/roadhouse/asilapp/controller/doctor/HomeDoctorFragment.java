@@ -25,8 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.checkerframework.checker.guieffect.qual.UIType;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +33,6 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
-import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 public class HomeDoctorFragment extends Fragment {
