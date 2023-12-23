@@ -396,6 +396,25 @@ public class MyPathologiesFragment extends Fragment {
                     })
                     .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            progressBar.setVisibility(View.VISIBLE);
+                            linearLayoutMyPathologies.setAlpha((float)0.5);
+                            CompletableFuture<String> future = Dao.deletePatology(AccessUser.getUsername(), mappaViewNomePatologia.get(pathologyClicked), getActivity());
+                            future.thenAccept(result -> {
+                                getActivity().runOnUiThread(() -> {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    linearLayoutMyPathologies.setAlpha((float)1.0);
+                                    Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                                    if(result.equals(getString(R.string.editPatologySuccessfull)))
+                                    {
+                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putBoolean("doctor", true);
+                                        fragmentTransaction.replace(R.id.userDoctorTabFragmentContainer, MyPathologiesFragment.class, bundle);
+                                        fragmentTransaction.commit();
+                                    }
+                                });
+                            });
 
                         }
                     });

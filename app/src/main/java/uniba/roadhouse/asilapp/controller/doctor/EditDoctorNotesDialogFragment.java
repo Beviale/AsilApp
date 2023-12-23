@@ -10,23 +10,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class EditDoctorNotesDialogFragment extends DialogFragment {
 
     EditText editDoctorNotesEditText;
     Button doctorNotesHealthHistoryButtonSend;
     Button doctorNotesHealthHistoryButtonCancel;
+    LinearLayout layoutEditDoctorNotes;
     private closeEditDoctorNotes callbackClose;
+    ProgressBar progressBar;
+    private static String typeEdit;
+    private static String username;
+    private static String namePathology;
 
     public interface closeEditDoctorNotes {
         public void closeEditDoctorNotes();
     }
 
 
-    public static EditDoctorNotesDialogFragment newInstance() {
+    public static EditDoctorNotesDialogFragment newInstancePathology(String usernameAdd, String namePathologyAdd) {
+        username =usernameAdd;
+        namePathology = namePathologyAdd;
+        typeEdit="pathology";
+        return new EditDoctorNotesDialogFragment();
+    }
+
+    public static EditDoctorNotesDialogFragment newInstanceHealthHistory() {
+        typeEdit="healthHistory";
         return new EditDoctorNotesDialogFragment();
     }
 
@@ -46,6 +65,8 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //-----------RIFERIMENTI--------------------
         editDoctorNotesEditText = view.findViewById(R.id.editDoctorNotesEditText);
+        progressBar = view.findViewById(R.id.progressBarEditDoctorNotes);
+        layoutEditDoctorNotes = view.findViewById(R.id.layoutEditDoctorNotes);
         doctorNotesHealthHistoryButtonSend = view.findViewById(R.id.doctorNotesHealthHistoryButtonSend);
         doctorNotesHealthHistoryButtonCancel = view.findViewById(R.id.doctorNotesHealthHistoryButtonCancel);
         super.onViewCreated(view, savedInstanceState);
@@ -75,8 +96,27 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditDoctorNotesTitle), getString(R.string.emptyEditDoctorNotes));
         }
-        closeDialog();
-        callbackClose.closeEditDoctorNotes();
+        String newDoctorNotes = editDoctorNotesEditText.getText().toString();
+        progressBar.setVisibility(View.VISIBLE);
+        layoutEditDoctorNotes.setAlpha((float)0.5);
+        if(typeEdit=="pathology")
+        {
+            CompletableFuture<String> future = Dao.editPatologiaNotaMedico(username, namePathology, newDoctorNotes, getActivity());
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    layoutEditDoctorNotes.setAlpha((float)1.0);
+                    closeDialog();
+                    callbackClose.closeEditDoctorNotes();
+                });
+            });
+
+        }
+        if(typeEdit=="healthHistory")
+        {
+
+        }
 
     }
 

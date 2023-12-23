@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -42,8 +44,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -66,6 +70,7 @@ import uniba.roadhouse.asilapp.model.dao.Patologia;
  */
 public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDialogFragment.closeListenerAddDrugs, EditPriorityDialogFragment.closeListenerEditPriority, EditDoctorNotesDialogFragment.closeEditDoctorNotes {
     TextView detailMyPathologiesTitle;
+    ScrollView scrollView;
     TextView dateLastVisitMyPathologies;
     TextView timeLastVisitMyPathologies;
     TextView priorityLastVisitMyPathologies;
@@ -81,6 +86,9 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
 
     ProgressBar progressBar;
     ConstraintLayout layoutMyPathologies;
+    HashMap<View, String> mappaViewNomeFarmaco;
+    HashMap<View, String> mappaViewNotaFarmaco;
+
 
     /**
      * Nome della patologia passata in input al fragment.
@@ -158,7 +166,7 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
         editButtonMyPahologiesPriority = view.findViewById(R.id.editButtonMyPahologiesPriority);
         editButtonMyPathologiesDoctorNotes = view.findViewById(R.id.editButtonMyPathologiesDoctorNotes);
         addDrugsMyPathologies = view.findViewById(R.id.addDrugsMyPathologies);
-        ScrollView scrollView = view.findViewById(R.id.scrollDetailMyPathologies);
+        scrollView = view.findViewById(R.id.scrollDetailMyPathologies);
         linearLayoutDrugs = view.findViewById(R.id.linearLayoutDrugs);
         if(openDoctor==false)
         {
@@ -174,25 +182,15 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
             progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         }
 
+
         // Attivo la condivisione se il fragment è stato aperto con il menu contestuale relativo alla condivisione.
         if(share==true)
         {
             showCheckboxDialogForSharePrivacy();
         }
 
-
-        // Se è stato eliminato un farmaco, faccio in modo che il fragment, una volta riaperto, vada nella sezione relativa ai farmaci.
-        if(deleteDrugs==true)
-        {
-            scrollView.post(new Runnable() {
-                public void run() {
-                    scrollView.scrollToDescendant(addDrugsMyPathologies);
-                }
-            });
-        }
-
         getData();
-        getDrugsData();
+        getDrugsData(false);
     }
 
 
@@ -272,6 +270,20 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
                                 })
                                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        layoutMyPathologies.setAlpha((float)0.5);
+                                        CompletableFuture<String> future = Dao.deletePatology(AccessUser.getUsername(), namePathology, getActivity());
+                                        future.thenAccept(result -> {
+                                            getActivity().runOnUiThread(() -> {
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                layoutMyPathologies.setAlpha((float)1.0);
+                                                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                                                if(result.equals(getString(R.string.editPatologySuccessfull)))
+                                                {
+                                                    getActivity().onBackPressed();
+                                                }
+                                            });
+                                        });
 
                                     }
                                 });
@@ -366,14 +378,13 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     private void openEditDoctorNotes()
     {
-        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstance();
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstancePathology(AccessUser.getUsername(), namePathology);
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
         editDoctorNotesDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_DOCTOR_NOTES);
 
     }
 
-    private void openEditDate()
-    {
+    private void openEditDate() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
         Calendar currentDate = Calendar.getInstance();
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
@@ -383,11 +394,21 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 selectedDate.set(year, month, dayOfMonth);
                 Utility.clearTime(selectedDate);
                 Utility.clearTime(currentDate);
-                if(selectedDate.after(currentDate))
-                {
+                if (selectedDate.after(currentDate)) {
                     Utility.showAlertDialog(getActivity(), getString(R.string.futureCalendarErrorTitle), getString(R.string.futureCalendarError));
                 }
+                progressBar.setVisibility(View.VISIBLE);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String newDate = dateFormat.format(selectedDate.getTime());
 
+                CompletableFuture<String> future = Dao.editPatologyDate(AccessUser.getUsername(), namePathology, newDate, getActivity());
+                future.thenAccept(result -> {
+                    getActivity().runOnUiThread(() -> {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        getData();
+
+                    });
+                });
             }
         });
         datePickerDialog.show();
@@ -405,8 +426,15 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        // Handle the selected time (hourOfDay and minute)
                         String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
+                        progressBar.setVisibility(View.GONE);
+                        CompletableFuture<String> future = Dao.editPatologyHour(AccessUser.getUsername(), namePathology, selectedTime, getActivity());
+                        future.thenAccept(result -> {
+                            getActivity().runOnUiThread(() -> {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                getData();
+                            });
+                        });
                     }
                 },
                 hour,
@@ -420,7 +448,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     private void editPriority()
     {
-        EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance();
+        EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance(AccessUser.getUsername(), namePathology);
         editPriorityDialogFragment.show(getActivity().getSupportFragmentManager(), "EditPriorityDialogFragment");
         editPriorityDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_PRIORITY);
 
@@ -445,6 +473,16 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
                 layoutMyPathologies.setAlpha((float)1.0);
+                // Se è stato eliminato un farmaco, faccio in modo che il fragment, una volta riaperto, vada nella sezione relativa ai farmaci.
+                if(deleteDrugs==true)
+                {
+                    scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.smoothScrollTo(0, 999999);
+                        }
+                    });
+                }
                 if(!(result.get("esito").toString().equals(getString(R.string.misurationGetSuccessfully))))
                 {
                     Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
@@ -464,7 +502,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     }
 
     @SuppressLint("RestrictedApi")
-    private void getDrugsData()
+    private void getDrugsData(Boolean scroll)
     {
         progressBar.setVisibility(View.VISIBLE);
         linearLayoutDrugs.setAlpha((float)0.5);
@@ -480,11 +518,15 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 else
                 {
                     ArrayList<Farmaco> farmaci = (ArrayList<Farmaco>)result.get("farmaci");
+                    mappaViewNomeFarmaco = new HashMap<View, String>();
+                    mappaViewNotaFarmaco = new HashMap<View, String>();
                     for(Farmaco farmaco: farmaci)
                     {
                         // Creo il constraintLayout
                         ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
                         registerForContextMenu(constraintLayout);
+                        mappaViewNomeFarmaco.put(constraintLayout, farmaco.getNome());
+                        mappaViewNotaFarmaco.put(constraintLayout, farmaco.getNota());
                         Utility.activeAnimationOnClick(getActivity(), constraintLayout);
                         constraintLayout.setId(View.generateViewId());
                         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -539,11 +581,18 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                         constraintSetNote.applyTo(constraintLayout);
                     }
                 }
+                if(scroll==true)
+                {
+                    scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.smoothScrollTo(0, 999999);
+                        }
+                    });
+                }
 
             });
         });
-
-
 
     }
 
@@ -578,6 +627,22 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                     })
                     .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            progressBar.setVisibility(View.VISIBLE);
+                            CompletableFuture<String> future = Dao.deleteFarmaco(AccessUser.getUsername(), namePathology, mappaViewNomeFarmaco.get(drugsClicked).toString(), getActivity());
+                            future.thenAccept(result -> {
+                                getActivity().runOnUiThread(() -> {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putBoolean("doctor", true);
+                                    bundle.putString("namePathology", namePathology);
+                                    bundle.putBoolean("delete", true);
+                                    fragmentTransaction.replace(R.id.doctorFragmentView, DetailMyPathologiesFragment.class, bundle);
+                                    fragmentTransaction.commit();
+                                });
+                            });
 
                         }
                     });
@@ -610,19 +675,25 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     @Override
     public void closeAddDrugs() {
-        getDrugsData();
+        linearLayoutDrugs.removeAllViews();
+        getDrugsData(true);
     }
 
 
     private  void openShareDrugs()
     {
-
+        String share="";
+        share = getString(R.string.nameAddDrugPlaceholder).concat(": ").concat(mappaViewNomeFarmaco.get(drugsClicked).toString().concat("\n"));
+        share = share.concat(getString(R.string.noteAddDrugPlaceholder)).concat(": ").concat(mappaViewNotaFarmaco.get(drugsClicked).toString());
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, share);
+        startActivity(intent);
     }
 
     @Override
     public void closeEditPriority() {
         getData();
-
     }
 
     @Override

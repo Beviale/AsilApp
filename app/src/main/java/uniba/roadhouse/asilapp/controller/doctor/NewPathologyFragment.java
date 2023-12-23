@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -222,7 +224,12 @@ public class NewPathologyFragment extends Fragment {
                 Toast.makeText(getActivity(),result, Toast.LENGTH_SHORT).show();
                 if(result.equals(getString(R.string.insertPatologySuccessfull)))
                 {
-                    getActivity().onBackPressed();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("backMyPathologies", true);
+                    fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, bundle);
+                    fragmentTransaction.commit();
                 }
 
             });

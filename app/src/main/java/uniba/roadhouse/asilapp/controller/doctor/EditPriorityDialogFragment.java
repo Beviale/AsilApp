@@ -9,11 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class EditPriorityDialogFragment extends DialogFragment {
     RadioGroup priorityMyPathologiesRadioGroup;
@@ -22,7 +29,11 @@ public class EditPriorityDialogFragment extends DialogFragment {
     RadioButton myPathologiesLow;
     RadioButton myPathologiesMedium;
     RadioButton myPathologiesHigh;
+    LinearLayout layoutEditPriority;
     private closeListenerEditPriority callbackClose;
+    private static String username;
+    private static String namePathology;
+    ProgressBar progressBar;
 
     public interface closeListenerEditPriority {
         public void closeEditPriority();
@@ -30,7 +41,9 @@ public class EditPriorityDialogFragment extends DialogFragment {
 
 
 
-    public static EditPriorityDialogFragment newInstance() {
+    public static EditPriorityDialogFragment newInstance(String usernameAdd, String namePathologyAdd) {
+        username = usernameAdd;
+        namePathology = namePathologyAdd;
         return new EditPriorityDialogFragment();
     }
 
@@ -53,6 +66,8 @@ public class EditPriorityDialogFragment extends DialogFragment {
         priorityMyPathologiesButtonSend = view.findViewById(R.id.priorityMyPathologiesButtonSend);
         priorityMyPathologiesButtonCancel = view.findViewById(R.id.priorityMyPathologiesButtonCancel);
         myPathologiesLow = view.findViewById(R.id.myPathologiesLow);
+        layoutEditPriority = view.findViewById(R.id.layoutEditPriority);
+        progressBar = view.findViewById(R.id.progressBarEditPriority);
         myPathologiesMedium = view.findViewById(R.id.myPathologiesMedium);
         myPathologiesHigh = view.findViewById(R.id.myPathologiesHigh);
         super.onViewCreated(view, savedInstanceState);
@@ -88,8 +103,31 @@ public class EditPriorityDialogFragment extends DialogFragment {
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditPriorityTitle), getString(R.string.emptyEditPriority));
         }
-        closeDialog();
-        callbackClose.closeEditPriority();
+        String newPriority = "-";
+        if(myPathologiesLow.isChecked())
+        {
+            newPriority = getString(R.string.priorityMyPathologiesValueLow);
+        }
+        else if (myPathologiesMedium.isChecked())
+        {
+            newPriority = getString(R.string.priorityMyPathologiesValueMedium);
+        }
+        else if (myPathologiesHigh.isChecked())
+        {
+            newPriority = getString(R.string.priorityMyPathologiesValueHigh);
+        }
+        progressBar.setVisibility(View.VISIBLE);
+        layoutEditPriority.setAlpha((float)0.5);
+        CompletableFuture<String> future = Dao.editPatologiaPriority(username, namePathology, newPriority, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                layoutEditPriority.setAlpha((float)1.0);
+                closeDialog();
+                callbackClose.closeEditPriority();
+            });
+        });
     }
 
 

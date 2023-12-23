@@ -353,13 +353,13 @@ public class DetailOldHealthHistoryFragment extends Fragment {
 
     private void openDialogEditEvalutation()
     {
-        EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance();
+        EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance(Integer.valueOf(idRecordHealthHistoryOld.getText().toString()));
         editEvalutationDialogFragment.show(getActivity().getSupportFragmentManager(), "EditEvalutationDialogFragment");
     }
 
     private void openDialogEditDoctorNotes()
     {
-        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstance();
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstanceHealthHistory();
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
 
     }

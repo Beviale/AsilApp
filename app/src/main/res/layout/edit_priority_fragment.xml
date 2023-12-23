@@ -1,77 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:id="@+id/layoutEditPriority"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
 
-    <TextView
-        android:layout_width="@dimen/widthEditEvalutation"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:fontFamily="@font/titillium_web_bold"
-        android:text="@string/choosePriorityMyPathologies" />
-
-
-    <RadioGroup
-        android:id="@+id/priorityMyPathologiesRadioGroup"
-        android:layout_width="@dimen/widthEditEvalutation"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:id="@+id/myPathologiesLow"
+        <TextView
+            android:layout_width="@dimen/widthEditEvalutation"
             android:layout_height="wrap_content"
-            android:text="@string/priorityMyPathologiesValueLow"
-            app:buttonTint="@color/colorAccent" />
+            android:layout_margin="10dp"
+            android:fontFamily="@font/titillium_web_bold"
+            android:text="@string/choosePriorityMyPathologies" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:id="@+id/myPathologiesMedium"
+
+        <RadioGroup
+            android:id="@+id/priorityMyPathologiesRadioGroup"
+            android:layout_width="@dimen/widthEditEvalutation"
             android:layout_height="wrap_content"
-            android:text="@string/priorityMyPathologiesValueMedium"
-            app:buttonTint="@color/colorAccent" />
+            android:layout_marginLeft="10dp">
 
-        <RadioButton
-            android:id="@+id/myPathologiesHigh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/priorityMyPathologiesValueHigh"
-            app:buttonTint="@color/colorAccent" />
-    </RadioGroup>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:id="@+id/myPathologiesLow"
+                android:layout_height="wrap_content"
+                android:text="@string/priorityMyPathologiesValueLow"
+                app:buttonTint="@color/colorAccent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:id="@+id/myPathologiesMedium"
+                android:layout_height="wrap_content"
+                android:text="@string/priorityMyPathologiesValueMedium"
+                app:buttonTint="@color/colorAccent" />
+
+            <RadioButton
+                android:id="@+id/myPathologiesHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priorityMyPathologiesValueHigh"
+                app:buttonTint="@color/colorAccent" />
+        </RadioGroup>
 
 
-    <LinearLayout
-        android:layout_width="@dimen/widthEditEvalutation"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="@dimen/widthEditEvalutation"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
 
 
-        <Button
-            android:id="@+id/priorityMyPathologiesButtonCancel"
-            android:layout_width="88dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:backgroundTint="@color/colorDialogButton"
-            android:text="@string/cancel" />
+            <Button
+                android:id="@+id/priorityMyPathologiesButtonCancel"
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/colorDialogButton"
+                android:text="@string/cancel" />
 
-        <Button
-            android:id="@+id/priorityMyPathologiesButtonSend"
-            android:layout_width="88dp"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/colorDialogButton"
-            android:text="@string/send" />
+            <Button
+                android:id="@+id/priorityMyPathologiesButtonSend"
+                android:layout_width="88dp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorDialogButton"
+                android:text="@string/send" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-</LinearLayout>
+    <ProgressBar
+    android:id="@+id/progressBarEditPriority"
+    android:layout_width="50dp"
+    android:visibility="gone"
+    android:layout_marginLeft="100dp"
+    android:indeterminateTint="@color/appMainColor"
+    android:layout_marginTop="100dp"
+    android:layout_gravity="left"
+    android:layout_height="50dp"/>
+
+</FrameLayout>

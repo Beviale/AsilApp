@@ -48,6 +48,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditEvalutationDialogFragment;
+import uniba.roadhouse.asilapp.controller.doctor.EditPriorityDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
@@ -57,7 +58,7 @@ import uniba.roadhouse.asilapp.model.dao.Misurazione;
 /**
  * Fragment che permette la visualizzazione in dettaglio dell'ultima misurazione di un determinato parametro,
  */
-public class DetailHealthHistoryFragment extends Fragment {
+public class DetailHealthHistoryFragment extends Fragment implements EditEvalutationDialogFragment.closeListenerEditEvalutation {
     // Da inizializzare con in valori presenti nel database
     /**
      * id dell'ultima misurazione
@@ -124,6 +125,7 @@ public class DetailHealthHistoryFragment extends Fragment {
      * Indica se il fragment è stato aperto con l'account dottore.
      */
     private static Boolean openDoctor=false;
+    private static final Integer REQUEST_CODE_EDIT_EVALUTATION=1;
 
 
 
@@ -668,13 +670,15 @@ public class DetailHealthHistoryFragment extends Fragment {
 
     private void openDialogEditEvalutation()
     {
-        EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance();
+        EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance(Integer.valueOf(idLastRecordHealthHistory.getText().toString()));
         editEvalutationDialogFragment.show(getActivity().getSupportFragmentManager(), "EditEvalutationDialogFragment");
+        editEvalutationDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_EVALUTATION);
+
     }
 
     private void openDialogEditDoctorNotes()
     {
-        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstance();
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstanceHealthHistory();
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
 
     }
@@ -710,5 +714,11 @@ public class DetailHealthHistoryFragment extends Fragment {
         }
     };
 
+
+
+    @Override
+    public void closeEditEvalutation() {
+        getData();
+    }
 }
 

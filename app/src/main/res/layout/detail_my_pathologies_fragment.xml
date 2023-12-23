@@ -243,19 +243,19 @@
 
 
         <TextView
+            android:id="@+id/drugsSectionTextLabel"
             android:layout_width="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/blackLine"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/marginLeftRightDetailHealthHistory"
-            android:textColor="@color/white"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:background="@color/appMainColorDark"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp"
             android:text="@string/drugsMyPathologies"
-            android:layout_height="wrap_content">
-        </TextView>
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/blackLine"
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
 
         <View
             android:id="@+id/blackLine"
@@ -275,7 +275,7 @@
 
 
         <LinearLayout
-            android:id="@+id/linearLayoutDrugs"
+            android:id="@+id/linearLayoutDrugsGeneric"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
@@ -292,6 +292,13 @@
                 android:backgroundTint="@color/appMainColorDark"
                 android:text="@string/add"
                 android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDrugs"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+        </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
