@@ -928,16 +928,17 @@ public class Dao {
 
             for(QueryDocumentSnapshot document:query.getResult()){
                 id=document.getId();
+                break;
             }
 
             //modifico la priorità
             Task update = db.collection("patologie").document(id).update("priorita",priorita);
 
-            while (!query.isComplete()) {
+            while (!update.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
 
-            if(!query.isSuccessful()){
+            if(!update.isSuccessful()){
                 return context.getString(R.string.editPatologyFailed);
             }
 
@@ -972,16 +973,17 @@ public class Dao {
 
             for(QueryDocumentSnapshot document:query.getResult()){
                 id=document.getId();
+                break;
             }
 
             //modifico la priorità
             Task update = db.collection("patologie").document(id).update("notaMedico",nota);
 
-            while (!query.isComplete()) {
+            while (!update.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
 
-            if(!query.isSuccessful()){
+            if(!update.isSuccessful()){
                 return context.getString(R.string.editPatologyFailed);
             }
 
