@@ -942,7 +942,7 @@ public class Dao {
     public static CompletableFuture<Map<String,?>> getAllFarmaci(String username, String nomePatologia, Context context){
         return CompletableFuture.supplyAsync(()->{
             //aggiungo l'utente al db
-            Task<QuerySnapshot> query = db.collection("farmaci").whereEqualTo("username",username).whereEqualTo("nomePatologia",nomePatologia).get();
+            Task<QuerySnapshot> query = db.collection("farmaci").whereEqualTo("username",username).whereEqualTo("patologia",nomePatologia).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
