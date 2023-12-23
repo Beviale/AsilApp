@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.controller.user.home.DetailMyPathologiesFragment;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Farmaco;
@@ -36,6 +37,11 @@ public class AddDrugsDialogFragment extends DialogFragment {
     ProgressBar progressBar;
     LinearLayout linearLayoutDoctoActivity;
     private static String namePathology;
+    private closeListenerAddDrugs callbackClose;
+
+    public interface closeListenerAddDrugs {
+        public void closeAddDrugs();
+    }
 
 
 
@@ -48,6 +54,11 @@ public class AddDrugsDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_drugs_fragment, container, false);
+        try {
+            callbackClose = (closeListenerAddDrugs) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
+        }
         return view;
     }
 
@@ -108,9 +119,12 @@ public class AddDrugsDialogFragment extends DialogFragment {
                 linearLayoutDoctoActivity.setAlpha((float)1.0);
                 Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
                 closeDialog();
+                callbackClose.closeAddDrugs();
             });
         });
     }
+
+
 
     private void closeDialog()
     {

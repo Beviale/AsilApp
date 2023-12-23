@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.user.home;
+package uniba.roadhouse.asilapp.controller.doctor;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -19,6 +19,11 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
     EditText editDoctorNotesEditText;
     Button doctorNotesHealthHistoryButtonSend;
     Button doctorNotesHealthHistoryButtonCancel;
+    private closeEditDoctorNotes callbackClose;
+
+    public interface closeEditDoctorNotes {
+        public void closeEditDoctorNotes();
+    }
 
 
     public static EditDoctorNotesDialogFragment newInstance() {
@@ -29,6 +34,11 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_doctor_notes_fragment, container, false);
+        try {
+            callbackClose = (closeEditDoctorNotes) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
+        }
         return view;
     }
 
@@ -65,6 +75,8 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditDoctorNotesTitle), getString(R.string.emptyEditDoctorNotes));
         }
+        closeDialog();
+        callbackClose.closeEditDoctorNotes();
 
     }
 

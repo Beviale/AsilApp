@@ -318,7 +318,7 @@ public class HealthHistoryFragment extends Fragment {
                 if(openDoctor==true)
                 {
                     bundle.putBoolean("doctor", true);
-                    fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
+                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.replace(R.id.doctorFragmentView, DetailHealthHistoryFragment.class, bundle);
                     fragmentTransaction.commit();
 
@@ -441,6 +441,10 @@ public class HealthHistoryFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if(fragmentManager.findFragmentById(R.id.homeContainerView) instanceof DetailHealthHistoryFragment)
+        {
+            return false;
+        }
+        if(fragmentManager.findFragmentById(R.id.doctorFragmentView) instanceof DetailHealthHistoryFragment)
         {
             return false;
         }

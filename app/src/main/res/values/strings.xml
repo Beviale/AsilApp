@@ -125,7 +125,7 @@
     <string name="getFarmaciSuccessfull">Farmaci caricati con successo</string>
     <string name="getFarmaciFailed">Errore nel caricaemtno dei farmaci</string>
     <string name="deleteFarmacoSuccessfull">Farmaco eliminato correttamente</string>
-    <string name="editFarmacoFailed">Errore nell\'eliminazione del farmaco</string>
+    <string name="deleteFarmacoFailed">Errore nell\'eliminazione del farmaco</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>

@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.user.home;
+package uniba.roadhouse.asilapp.controller.doctor;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

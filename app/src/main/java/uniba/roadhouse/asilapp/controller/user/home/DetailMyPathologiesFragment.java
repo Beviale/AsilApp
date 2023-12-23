@@ -51,6 +51,8 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.AddDrugsDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
+import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
+import uniba.roadhouse.asilapp.controller.doctor.EditPriorityDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -62,7 +64,7 @@ import uniba.roadhouse.asilapp.model.dao.Patologia;
  * Use the {@link DetailMyPathologiesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailMyPathologiesFragment extends Fragment {
+public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDialogFragment.closeListenerAddDrugs, EditPriorityDialogFragment.closeListenerEditPriority, EditDoctorNotesDialogFragment.closeEditDoctorNotes {
     TextView detailMyPathologiesTitle;
     TextView dateLastVisitMyPathologies;
     TextView timeLastVisitMyPathologies;
@@ -84,6 +86,10 @@ public class DetailMyPathologiesFragment extends Fragment {
      * Nome della patologia passata in input al fragment.
      */
     private static String namePathology;
+    private final static Integer REQUEST_CODE_ADD_DRUGS=1;
+    private final static Integer REQUEST_CODE_EDIT_PRIORITY=2;
+    private final static Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=3;
+
 
 
     /**
@@ -239,6 +245,7 @@ public class DetailMyPathologiesFragment extends Fragment {
         {
             Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
             toolbar.getMenu().clear();
+            toolbar.inflateMenu(R.menu.delete_menu);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,7 +282,6 @@ public class DetailMyPathologiesFragment extends Fragment {
                     return true;
                 }
             });
-            toolbar.inflateMenu(R.menu.delete_menu);
         }
         super.onResume();
     }
@@ -362,6 +368,8 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     {
         EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstance();
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
+        editDoctorNotesDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_DOCTOR_NOTES);
+
     }
 
     private void openEditDate()
@@ -414,6 +422,8 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     {
         EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance();
         editPriorityDialogFragment.show(getActivity().getSupportFragmentManager(), "EditPriorityDialogFragment");
+        editPriorityDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_PRIORITY);
+
     }
 
 
@@ -421,6 +431,8 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     {
        AddDrugsDialogFragment addDrugsDialogFragment = AddDrugsDialogFragment.newInstance(namePathology);
        addDrugsDialogFragment.show(getActivity().getSupportFragmentManager(), "AddDrugsDialogFragment");
+       addDrugsDialogFragment.setTargetFragment(this, REQUEST_CODE_ADD_DRUGS);
+
     }
 
 
@@ -458,16 +470,16 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
         linearLayoutDrugs.setAlpha((float)0.5);
         CompletableFuture<Map<String, ?>> future = Dao.getAllFarmaci(AccessUser.getUsername(), namePathology, getActivity());
         future.thenAccept(result -> {
-            progressBar.setVisibility(View.INVISIBLE);
-            linearLayoutDrugs.setAlpha((float)1.0);
             getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                linearLayoutDrugs.setAlpha((float)1.0);
                 if(!(result.get("esito").toString().equals(getString(R.string.getFarmaciSuccessfull))))
                 {
                     Toast.makeText(getActivity(),result.get("esito").toString(), Toast.LENGTH_LONG).show();
                 }
                 else
                 {
-                    List<Farmaco> farmaci = (List<Farmaco>)result.get("farmaci");
+                    ArrayList<Farmaco> farmaci = (ArrayList<Farmaco>)result.get("farmaci");
                     for(Farmaco farmaco: farmaci)
                     {
                         // Creo il constraintLayout
@@ -539,15 +551,18 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();
         drugsClicked = v;
-        inflater.inflate(R.menu.share_and_delete_menu, menu);
+        if(openDoctor==false)
+            inflater.inflate(R.menu.share_menu, menu);
+        if(openDoctor==true)
+            inflater.inflate(R.menu.share_and_delete_menu, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.action_share_menu)
+        if(item.getItemId()==R.id.action_share_menu || item.getItemId()==R.id.action_share)
         {
-            //openShareDrugs();
+            openShareDrugs();
         }
         if(item.getItemId()==R.id.action_delete_menu)
         {
@@ -591,4 +606,27 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
             fragmentTransaction.commit();
         }
     };
+
+
+    @Override
+    public void closeAddDrugs() {
+        getDrugsData();
+    }
+
+
+    private  void openShareDrugs()
+    {
+
+    }
+
+    @Override
+    public void closeEditPriority() {
+        getData();
+
+    }
+
+    @Override
+    public void closeEditDoctorNotes() {
+        getData();
+    }
 }

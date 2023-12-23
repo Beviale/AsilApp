@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
+import uniba.roadhouse.asilapp.controller.doctor.EditEvalutationDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;

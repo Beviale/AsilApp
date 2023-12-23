@@ -183,6 +183,7 @@ public class MyPathologiesFragment extends Fragment {
             bundle.putBoolean("share", share);
             bundle.putString("namePathology", nomePatologia);
             bundle.putBoolean("doctor", openDoctor);
+            fragmentTransaction.addToBackStack(getResources().getString(R.string.healthMenuScreen));
             fragmentTransaction.replace(R.id.homeContainerView, DetailMyPathologiesFragment.class, bundle);
         }
         if(openDoctor==true)
@@ -191,6 +192,7 @@ public class MyPathologiesFragment extends Fragment {
             bundle.putBoolean("share", share);
             bundle.putString("namePathology", nomePatologia);
             bundle.putBoolean("doctor", openDoctor);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.replace(R.id.doctorFragmentView, DetailMyPathologiesFragment.class, bundle);
         }
         fragmentTransaction.commit();
@@ -370,6 +372,10 @@ public class MyPathologiesFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        if(fragmentManager.findFragmentById(R.id.doctorFragmentView) instanceof DetailMyPathologiesFragment)
+        {
+            return false;
+        }
         if(fragmentManager.findFragmentById(R.id.homeContainerView) instanceof DetailMyPathologiesFragment)
         {
             return false;

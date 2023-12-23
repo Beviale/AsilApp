@@ -1,4 +1,4 @@
-package uniba.roadhouse.asilapp.controller.user.home;
+package uniba.roadhouse.asilapp.controller.doctor;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -23,6 +22,11 @@ public class EditPriorityDialogFragment extends DialogFragment {
     RadioButton myPathologiesLow;
     RadioButton myPathologiesMedium;
     RadioButton myPathologiesHigh;
+    private closeListenerEditPriority callbackClose;
+
+    public interface closeListenerEditPriority {
+        public void closeEditPriority();
+    }
 
 
 
@@ -34,6 +38,11 @@ public class EditPriorityDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_priority_fragment, container, false);
+        try {
+            callbackClose = (closeListenerEditPriority) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
+        }
         return view;
     }
 
@@ -79,6 +88,8 @@ public class EditPriorityDialogFragment extends DialogFragment {
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditPriorityTitle), getString(R.string.emptyEditPriority));
         }
+        closeDialog();
+        callbackClose.closeEditPriority();
     }
 
 
