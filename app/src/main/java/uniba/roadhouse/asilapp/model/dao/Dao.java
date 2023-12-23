@@ -914,11 +914,11 @@ public class Dao {
                put("username",farmaco.getUsername());
                put("patologia",farmaco.getPatologia());
                put("nota",farmaco.getNota());
-               put("nomePatologia",farmaco.getNome());
+               put("nomeFarmaco",farmaco.getNome());
             }};
 
             //aggiungo l'utente al db
-            Task addToDb = db.collection("farmaci").add(far);
+            Task addToDb = db.collection("farmaci").document(farmaco.getUsername()+farmaco.getPatologia()+farmaco.getNome()).set(far);
             while (!addToDb.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
@@ -965,4 +965,27 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo per l'eliminazione di un farmaco dato username,nome patologia e nome farmaco. Ritorna una stringa esito della computazione
+     * @param username
+     * @param nomePatologia
+     * @param nomefarmaco
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> deleteFarmaco(String username, String nomePatologia, String nomefarmaco, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            //aggiungo l'utente al db
+            Task addToDb = db.collection("farmaci").document(username+nomePatologia+nomefarmaco).delete();
+            while (!addToDb.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!addToDb.isSuccessful()) {
+                return context.getString(R.string.deleteFarmacoFailed);
+            }
+
+            //se l'inserimento è avvenuto con successo ritono il messaggio
+            return context.getString(R.string.deleteFarmacoSuccessfull);
+        });
+    }
 }
