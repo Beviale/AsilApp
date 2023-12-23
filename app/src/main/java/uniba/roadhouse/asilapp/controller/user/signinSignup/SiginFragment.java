@@ -27,6 +27,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
  * Fragment relativo alle schermata di login.

@@ -948,7 +948,7 @@ public class Dao {
             }
             if (!query.isSuccessful()) {
                 return new HashMap<String ,Object>(){{
-                    put("esio",context.getString(R.string.getFarmaciFailed));
+                    put("esito",context.getString(R.string.getFarmaciFailed));
                 }};
             }
 

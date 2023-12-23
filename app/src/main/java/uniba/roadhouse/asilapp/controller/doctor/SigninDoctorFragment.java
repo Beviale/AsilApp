@@ -27,6 +27,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
 import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 public class SigninDoctorFragment extends Fragment {

@@ -18,6 +18,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 /**
@@ -58,7 +59,7 @@ public class SigninSingupActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Map<String,String> verifyLogged=Dao.checkIsLogged(this);
+        Map<String,String> verifyLogged= Dao.checkIsLogged(this);
         // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
         if(verifyLogged.get("username")!="")
         {
