@@ -914,7 +914,7 @@ public class Dao {
                put("username",farmaco.getUsername());
                put("patologia",farmaco.getPatologia());
                put("nota",farmaco.getNota());
-               put("nomePatologia",farmaco.getNome());
+               put("nomeFarmaco",farmaco.getNome());
             }};
 
             //aggiungo l'utente al db
@@ -965,4 +965,5 @@ public class Dao {
         });
     }
 
+   
 }
