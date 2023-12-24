@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.home.HealthHistoryFragment;
+import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 
 public class DoctorActivity extends AppCompatActivity {
     ImageView toolBarIconDoctorActivity;
@@ -26,7 +27,6 @@ public class DoctorActivity extends AppCompatActivity {
         // Disattivo il tema scuro
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_doctor);
-
         // Renndo di colore blu la StatusBar.
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
@@ -36,6 +36,9 @@ public class DoctorActivity extends AppCompatActivity {
         }
         toolBarIconDoctorActivity = findViewById(R.id.toolBarIconDoctorActivity);
         openSigningFragment();
+        if (!Utility.isConnectedToInternet(this)) {
+            Utility.showAlertDialog(DoctorActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+        }
     }
 
 

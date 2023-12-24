@@ -206,7 +206,6 @@ public class SignupPlaceOriginFragment extends Fragment {
                     if(!Utility.isConnectedToInternet(getActivity()))
                     {
                         Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-                        SigninSingupActivity.dialogConnection=true;
 
                     }
                     else
@@ -228,7 +227,6 @@ public class SignupPlaceOriginFragment extends Fragment {
                 layoutFragmentSignup.setAlpha((float) 1.0);
                 if(!Utility.isConnectedToInternet(getActivity()))
                 {
-                    SigninSingupActivity.dialogConnection=true;
                     Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
                 }
                 else

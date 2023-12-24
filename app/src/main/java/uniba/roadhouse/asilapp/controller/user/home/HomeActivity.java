@@ -1,11 +1,15 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -26,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     Map<String,Integer> screenMipmapIcons;
 
     TextView homeText;
+    ImageView noConnectionIconHome;
 
 
     @Override
@@ -36,27 +43,17 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.home_activity);
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
+        noConnectionIconHome = findViewById(R.id.noConnectionIconHome);
         homeText=findViewById(R.id.homeScreenTextView);
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
-         /*String lorem = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-       Misurazione misurazione = new Misurazione();
-        misurazione.setUsername(Access.getUsername());
-        misurazione.setTipo(TipoMisurazioneEnum.PRESSIONESANGUIGNA);
-        misurazione.setData(Timestamp.now());
-        misurazione.setValore(null);
-        misurazione.setValoreMax((double)102.0);
-        misurazione.setValoreMin((double)85.0);
-        misurazione.setNotaMedico(lorem);
-        misurazione.setValutazione("Buono \uD83D\uDFE2");
-       CompletableFuture<String> future = Dao.storeMisuration(misurazione, this);
-        future.thenAccept(result -> {
-            this.runOnUiThread(() -> {
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-            });
-        });*/
-
+        // Registra il metodo di callback relativo alla connessione.
+        registerNetworkCallback();
+        if (!Utility.isConnectedToInternet(this)) {
+            Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+        }
     }
+
 
     @Override
     protected void onStart() {
@@ -120,9 +117,22 @@ public class HomeActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(getResources().getString(R.string.homeMenuScreen));
             fragmentTransaction.commit();
         }
+
+        //------LISTENER-----------
+        noConnectionIconHome.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+            Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+        }
+        });
     }
 
-
+    @Override
+    protected void onDestroy() {
+        unregisterNetworkCallback();
+        super.onDestroy();
+    }
 
     //callback chiamata quando si preme il tasto back fisico
     private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
@@ -176,7 +186,54 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Verifica la presenza di connessione in maniera costante.
+     * Se la connessione è assente, mostra la relativa icona e il dialog solo se non è stato già mostrato in precedenza.
+     * Se la connessione è presente, elimina l'icona.
+     */
+    private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
+        @Override
+        public void onAvailable(@NonNull Network network) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    noConnectionIconHome.setVisibility(View.GONE);
+                }
+            });
+            super.onAvailable(network);
+        }
 
+        @Override
+        public void onLost(@NonNull Network network) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    noConnectionIconHome.setVisibility(View.VISIBLE);
+                }
+            });
 
+            super.onLost(network);
+        }
+    };
+
+    /**
+     * Registra il metodo di callback relativo alla verifica della connessione.
+     */
+    private void registerNetworkCallback() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            connectivityManager.registerDefaultNetworkCallback(networkCallback);
+        }
+    }
+
+    /**
+     * Deregistra il metodo di callback relativo alla verifica della connessione.
+     */
+    private void unregisterNetworkCallback() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
+    }
 
 }

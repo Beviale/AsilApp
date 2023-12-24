@@ -1,13 +1,16 @@
 package uniba.roadhouse.asilapp.controller.user.signinSignup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -30,9 +33,10 @@ public class SigninSingupActivity extends AppCompatActivity {
      */
     ImageView noConnectionIcon;
     /**
-     * Se true significa che il dialog di connessione assente è stato già mostrato almeno 1 volta.
+     * Icona dell'app presente sulla toolbar;
      */
-    public static Boolean dialogConnection=false;
+    ImageView toolBarIconSigninSisngupActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +44,19 @@ public class SigninSingupActivity extends AppCompatActivity {
         // Disattivo il tema scuro
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.signin_singnup_activity);
-
         // Renndo di colore blu la StatusBar.
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
         // Riferimento all'icona di connessione assente.
         noConnectionIcon = findViewById(R.id.noConnectionIconSigninSignupActivity);
+        // Riferimento all'icona dell'app nella toolbar;
+        toolBarIconSigninSisngupActivity = findViewById(R.id.toolBarIconSigninSisngupActivity);
+        // Registra il metodo di callback relativo alla verifica della connessione.
+        registerNetworkCallback();
         // Se non c'è connessione, rendo visibile l'icona di connessione assente e mostro il dialog all'utente.
         if (!Utility.isConnectedToInternet(this)) {
             Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
             noConnectionIcon.setVisibility(View.VISIBLE);
-            dialogConnection = true;
         }
 
     }
@@ -68,7 +74,7 @@ public class SigninSingupActivity extends AppCompatActivity {
             Intent openHome = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(openHome);
         }
-        verifyConnectionEachMilliseconds(4000);
+        //-----------------LISTENER--------------
         noConnectionIcon.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -76,13 +82,26 @@ public class SigninSingupActivity extends AppCompatActivity {
                 Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
             }
         });
+        toolBarIconSigninSisngupActivity.setOnClickListener(v->openSigninFragment());
+
+
 
         // Se l'utente non risulta loggato, apro il fragment di login.
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.signinFragmentView, SiginFragment.class, null);
+        fragmentTransaction.add(R.id.signinFragmentView, SigninFragment.class, null);
         fragmentTransaction.commit();
     }
+
+    /**
+     * Deregistra il metodo di callback relativo alla verifica della connessione.
+     */
+    @Override
+    protected void onDestroy() {
+        unregisterNetworkCallback();
+        super.onDestroy();
+    }
+
     /**
      * Sostituisce il fragment di login con quello di registrazione.
      */
@@ -96,38 +115,66 @@ public class SigninSingupActivity extends AppCompatActivity {
 
 
 
+
     /**
-     * Verifica la presenza di connessione ogni delay millisecondi.
+     * Verifica la presenza di connessione in maniera costante.
      * Se la connessione è assente, mostra la relativa icona e il dialog solo se non è stato già mostrato in precedenza.
      * Se la connessione è presente, elimina l'icona.
-     * @param delay ogni quanto la connessione deve essere verificata. Espresso in millisecondi.
      */
+    private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
+        @Override
+        public void onAvailable(@NonNull Network network) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    noConnectionIcon.setVisibility(View.GONE);
+                }
+            });
+            super.onAvailable(network);
+        }
 
-
-    
-    private void verifyConnectionEachMilliseconds(int delay)
-    {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                if (!Utility.isConnectedToInternet(SigninSingupActivity.this))
-                {
-                    if(dialogConnection==false)
-                    {
-                        Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-                    }
+        @Override
+        public void onLost(@NonNull Network network) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     noConnectionIcon.setVisibility(View.VISIBLE);
-                    handler.postDelayed(this, delay);
-                    dialogConnection=true;
                 }
-                else
-                {
-                    noConnectionIcon.setVisibility(View.INVISIBLE);
-                    handler.postDelayed(this, delay);
+            });
+            super.onLost(network);
+        }
+    };
 
-                }
-            }
-        }, delay);
+
+    /**
+     * Registra il metodo di callback relativo alla verifica della connessione.
+     */
+    private void registerNetworkCallback() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+                connectivityManager.registerDefaultNetworkCallback(networkCallback);
+        }
+    }
+
+    /**
+     * Deregistra il metodo di callback relativo alla verifica della connessione.
+     */
+    private void unregisterNetworkCallback() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
+    }
+
+
+    /**
+     * Apre il fragment di login.
+     */
+    private void openSigninFragment()
+    {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.signinFragmentView, SigninFragment.class, null);
+        fragmentTransaction.commit();
 
     }
 }

@@ -106,6 +106,11 @@ public class HomeDoctorFragment extends Fragment {
         super.onResume();
     }
 
+    @Override
+    public void onPause() {
+        progressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
 
     @SuppressLint("RestrictedApi")
     private void getData()

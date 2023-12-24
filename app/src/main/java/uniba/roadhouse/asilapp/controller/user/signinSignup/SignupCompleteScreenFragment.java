@@ -81,7 +81,7 @@ public class SignupCompleteScreenFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.empty);
                 fragmentTransaction.disallowAddToBackStack();
-                fragmentTransaction.replace(R.id.signinFragmentView, SiginFragment.class, null);
+                fragmentTransaction.replace(R.id.signinFragmentView, SigninFragment.class, null);
                 fragmentTransaction.commit();
             }
         });

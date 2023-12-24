@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment {
                 if(item.getItemId() == R.id.settings)
                 {
                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.addToBackStack(getString(R.string.settingsMenuScreen));
+                    fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
                     fragmentTransaction.replace(R.id.homeContainerView, SettingsFragment.class, null);
                     fragmentTransaction.commit();
                 }

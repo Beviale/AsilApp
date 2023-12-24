@@ -32,7 +32,7 @@ import uniba.roadhouse.asilapp.model.dao.Dao;
 /**
  * Fragment relativo alle schermata di login.
  */
-public class SiginFragment extends Fragment {
+public class SigninFragment extends Fragment {
     /**
      * Bottone per effettuare il login.
      */
@@ -77,11 +77,11 @@ public class SiginFragment extends Fragment {
 
 
 
-    public SiginFragment() {
+    public SigninFragment() {
     }
 
-    public static SiginFragment newInstance() {
-        SiginFragment fragment = new SiginFragment();
+    public static SigninFragment newInstance() {
+        SigninFragment fragment = new SigninFragment();
         return fragment;
     }
 
@@ -145,7 +145,6 @@ public class SiginFragment extends Fragment {
         passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
         passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.appMainColor)));
         if (!Utility.isConnectedToInternet(getActivity())) {
-            SigninSingupActivity.dialogConnection = true;
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
             return;
         }
@@ -217,7 +216,6 @@ public class SiginFragment extends Fragment {
      */
     private void callRegisterFragment(){
         if(!Utility.isConnectedToInternet(getActivity())) {
-            SigninSingupActivity.dialogConnection = true;
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
         else

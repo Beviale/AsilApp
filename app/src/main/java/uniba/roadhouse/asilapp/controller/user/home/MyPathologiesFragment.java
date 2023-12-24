@@ -131,6 +131,7 @@ public class MyPathologiesFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getData();
+                linearLayoutMyPathologies.removeAllViews();
                 swipereFreshMyPathologies.setRefreshing(false);
             }
         });

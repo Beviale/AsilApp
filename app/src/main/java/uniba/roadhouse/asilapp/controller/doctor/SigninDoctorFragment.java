@@ -128,7 +128,6 @@ public class SigninDoctorFragment extends Fragment {
         passwordLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
         passwordLayout.setHintTextColor(ColorStateList.valueOf(getContext().getColor(R.color.appMainColor)));
         if (!Utility.isConnectedToInternet(getActivity())) {
-            SigninSingupActivity.dialogConnection = true;
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitleLogin), getString(R.string.noConnectionLogin));
             return;
         }
