@@ -96,6 +96,7 @@ public class EditEvalutationDialogFragment extends DialogFragment {
         if(evalutationHealthHistoryRadioGroup.getCheckedRadioButtonId()==-1)
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditEvalutationTitle), getString(R.string.emptyEditEvalutation));
+            return;
         }
         progressBar.setVisibility(View.VISIBLE);
         layoutEditEvalutation.setAlpha((float)0.5);

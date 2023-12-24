@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.TypedValue;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -228,7 +229,20 @@ public class MyPathologiesFragment extends Fragment {
                 }
                 else
                 {
+                    Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
                     List<Patologia> patologie = (List<Patologia>)result.get("patologie");
+                    if(patologie.size()==0)
+                    {
+                        TextView emptyMyPathologies = new TextView(getActivity());
+                        emptyMyPathologies.setText(getString(R.string.emptyMyPathologies));
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(0,50,0,0);
+                        params.gravity = Gravity.CENTER_HORIZONTAL;
+                        emptyMyPathologies.setLayoutParams(params);
+                        emptyMyPathologies.setTypeface(typeface);
+                        linearLayoutMyPathologies.addView(emptyMyPathologies);
+                        return;
+                    }
                     for(Patologia patologia: patologie)
                     {
                         // Creo il constraintLayout
@@ -249,7 +263,6 @@ public class MyPathologiesFragment extends Fragment {
                         linearLayoutMyPathologies.addView(constraintLayout);
                         // Animazione al click
                         Utility.activeAnimationOnClick(getActivity(), constraintLayout);
-                        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
 
                         // Creo la TextView relativa al nome della patologia
                         TextView namePatology = new TextView(getActivity());

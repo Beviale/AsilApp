@@ -38,7 +38,6 @@ import uniba.roadhouse.asilapp.model.dao.AccessUser;
 
 public class HomeFragment extends Fragment {
     ImageView arrowToOutgoingsFragment;
-
     TextView welcomeText;
     WebView firstWebView;
     WebView secondWebView;
@@ -68,8 +67,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        arrowToOutgoingsFragment = view.findViewById(R.id.arrowToOutgoingsFragment);
         //----------RIFERIMENTI----------
+        arrowToOutgoingsFragment = view.findViewById(R.id.arrowToOutgoingsFragment);
         secondWebView = view.findViewById(R.id.secondVideoView);
         policeNumberImage = view.findViewById(R.id.policeNumberImage);
         policeNumberValue = view.findViewById(R.id.policeNumberValue);
@@ -105,8 +104,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-
         welcomeText.setText(getString(R.string.welcome)+"\n"+ AccessUser.getNome()+"!");
         scrollBarVideo.setHorizontalScrollBarEnabled(true);
         super.onStart();
@@ -133,9 +130,14 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-        setVideo();
+        loadVideo();
         setPieChartOutgoings();
         super.onResume();
+    }
+
+    private void loadVideo()
+    {
+        openVideo("a", "a");
     }
 
 
@@ -169,7 +171,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void setVideo()
+    private void openVideo(String firstLink, String secondLink)
     {
         String firstVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
         firstWebView.loadData(firstVideo, "text/html","utf-8");

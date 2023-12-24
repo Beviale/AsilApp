@@ -18,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class EditDoctorNotesDialogFragment extends DialogFragment {
@@ -31,6 +32,7 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
     private static String typeEdit;
     private static String username;
     private static String namePathology;
+    private static Integer idMisuration;
 
     public interface closeEditDoctorNotes {
         public void closeEditDoctorNotes();
@@ -44,7 +46,8 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         return new EditDoctorNotesDialogFragment();
     }
 
-    public static EditDoctorNotesDialogFragment newInstanceHealthHistory() {
+    public static EditDoctorNotesDialogFragment newInstanceHealthHistory(Integer idMisurationAdd) {
+        idMisuration = idMisurationAdd;
         typeEdit="healthHistory";
         return new EditDoctorNotesDialogFragment();
     }
@@ -95,6 +98,7 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         if(editDoctorNotesEditText.getText().toString().isEmpty())
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditDoctorNotesTitle), getString(R.string.emptyEditDoctorNotes));
+            return;
         }
         String newDoctorNotes = editDoctorNotesEditText.getText().toString();
         progressBar.setVisibility(View.VISIBLE);
@@ -115,6 +119,16 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         }
         if(typeEdit=="healthHistory")
         {
+            CompletableFuture<String> future = Dao.editMisurationNota(idMisuration, newDoctorNotes, getActivity());
+            future.thenAccept(result -> {
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    layoutEditDoctorNotes.setAlpha((float)1.0);
+                    closeDialog();
+                    callbackClose.closeEditDoctorNotes();
+                });
+            });
 
         }
 

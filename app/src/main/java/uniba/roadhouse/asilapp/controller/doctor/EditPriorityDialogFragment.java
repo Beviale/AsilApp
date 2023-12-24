@@ -102,6 +102,7 @@ public class EditPriorityDialogFragment extends DialogFragment {
         if(priorityMyPathologiesRadioGroup.getCheckedRadioButtonId()==-1)
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.emptyEditPriorityTitle), getString(R.string.emptyEditPriority));
+            return;
         }
         String newPriority = "-";
         if(myPathologiesLow.isChecked())

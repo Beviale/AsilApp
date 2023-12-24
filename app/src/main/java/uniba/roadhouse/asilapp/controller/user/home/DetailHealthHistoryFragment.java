@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.util.TypedValue;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,7 +59,7 @@ import uniba.roadhouse.asilapp.model.dao.Misurazione;
 /**
  * Fragment che permette la visualizzazione in dettaglio dell'ultima misurazione di un determinato parametro,
  */
-public class DetailHealthHistoryFragment extends Fragment implements EditEvalutationDialogFragment.closeListenerEditEvalutation {
+public class DetailHealthHistoryFragment extends Fragment implements EditEvalutationDialogFragment.closeListenerEditEvalutation, EditDoctorNotesDialogFragment.closeEditDoctorNotes {
     // Da inizializzare con in valori presenti nel database
     /**
      * id dell'ultima misurazione
@@ -126,6 +127,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
      */
     private static Boolean openDoctor=false;
     private static final Integer REQUEST_CODE_EDIT_EVALUTATION=1;
+    private static final Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=2;
 
 
 
@@ -464,10 +466,23 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                     Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
                 }
                  List<Misurazione> misurazioni = (List<Misurazione>)result.get("misurazioni");
-                 Boolean flagFirst=true;
+                 Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
+                 if(misurazioni.size()==1)
+                 {
+                    TextView emptyOldHealthHistory = new TextView(getActivity());
+                    emptyOldHealthHistory.setText(getString(R.string.emptyHealthHistory));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(0,50,0,0);
+                    params.gravity = Gravity.CENTER_HORIZONTAL;
+                    emptyOldHealthHistory.setLayoutParams(params);
+                    emptyOldHealthHistory.setTypeface(typeface);
+                    layoutOldHealthHistory.addView(emptyOldHealthHistory);
+                    return;
+                }
+                Boolean flagFirst=true;
                  for(Misurazione misurazione: misurazioni)
                  {
-                     // Se è l'ultima misurazione, la salto.
+                     // Se è la prima misurazione, la salto.
                     if(flagFirst==true)
                      {
                          flagFirst=false;
@@ -483,7 +498,6 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                              LinearLayout.LayoutParams.WRAP_CONTENT,
                              LinearLayout.LayoutParams.WRAP_CONTENT
                      );
-                     Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
                      textViewDate.setTypeface(typeface);
                      textViewDate.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
                      paramsDate.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
@@ -678,8 +692,9 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
     private void openDialogEditDoctorNotes()
     {
-        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstanceHealthHistory();
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstanceHealthHistory(Integer.valueOf(idLastRecordHealthHistory.getText().toString()));
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
+        editDoctorNotesDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_DOCTOR_NOTES);
 
     }
 
@@ -718,6 +733,11 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
     @Override
     public void closeEditEvalutation() {
+        getData();
+    }
+
+    @Override
+    public void closeEditDoctorNotes() {
         getData();
     }
 }

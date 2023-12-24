@@ -213,6 +213,8 @@
     <string name="emptyPriority">PRIORITÀ NON INSERITA</string>
     <string name="emptyDate">DATA NON INSERITA</string>
     <string name="emptyTime">ORA NON INSERITA</string>
+    <string name="emptyMyPathologies">Non ci sono patologie attualmente registrate</string>
+    <string name="emptyHealthHistory">Non ci sono rilevazioni precedenti</string>
 
 
 

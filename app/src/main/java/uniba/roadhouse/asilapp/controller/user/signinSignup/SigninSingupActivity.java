@@ -102,6 +102,9 @@ public class SigninSingupActivity extends AppCompatActivity {
      * Se la connessione è presente, elimina l'icona.
      * @param delay ogni quanto la connessione deve essere verificata. Espresso in millisecondi.
      */
+
+
+    
     private void verifyConnectionEachMilliseconds(int delay)
     {
         final Handler handler = new Handler();

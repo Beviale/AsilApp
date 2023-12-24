@@ -38,7 +38,7 @@ import uniba.roadhouse.asilapp.model.dao.Misurazione;
 /**
  * Fragment che consente la visualizzazione in dettaglio di una misurazione precedente.
  */
-public class DetailOldHealthHistoryFragment extends Fragment {
+public class DetailOldHealthHistoryFragment extends Fragment implements EditEvalutationDialogFragment.closeListenerEditEvalutation, EditDoctorNotesDialogFragment.closeEditDoctorNotes {
     // Da inizializzare con in valori presenti nel database
     /**
      * id della misurazione,
@@ -107,6 +107,11 @@ public class DetailOldHealthHistoryFragment extends Fragment {
      * Indica se il fragment è stato aperto con un account dottore.
      */
    private static Boolean openDoctor=false;
+
+   private static final Integer REQUEST_CODE_EDIT_EVALUTATION=1;
+    private static final Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=2;
+
+
 
 
     public DetailOldHealthHistoryFragment() {
@@ -355,13 +360,26 @@ public class DetailOldHealthHistoryFragment extends Fragment {
     {
         EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance(Integer.valueOf(idRecordHealthHistoryOld.getText().toString()));
         editEvalutationDialogFragment.show(getActivity().getSupportFragmentManager(), "EditEvalutationDialogFragment");
+        editEvalutationDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_EVALUTATION);
+
     }
 
     private void openDialogEditDoctorNotes()
     {
-        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstanceHealthHistory();
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstanceHealthHistory(Integer.valueOf(idRecordHealthHistoryOld.getText().toString()));
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
+        editDoctorNotesDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_DOCTOR_NOTES);
+
 
     }
 
+    @Override
+    public void closeEditDoctorNotes() {
+        getData();
+    }
+
+    @Override
+    public void closeEditEvalutation() {
+        getData();
+    }
 }
