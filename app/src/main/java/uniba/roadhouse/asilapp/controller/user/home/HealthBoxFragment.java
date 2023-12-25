@@ -27,13 +27,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,10 +48,15 @@ import java.sql.Array;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.home.BluetoothConnectionThread;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 public class HealthBoxFragment extends Fragment {
@@ -57,6 +65,7 @@ public class HealthBoxFragment extends Fragment {
     private BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private BluetoothSocket btSocket = null;
     private boolean boxFound=false;
+    private boolean pendingMisuration=false;
     private BluetoothConnectionThread btConnThread;
     //launchr per il litsernere della richiesta di permesso per il bluetooth
     private ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(
@@ -143,7 +152,6 @@ public class HealthBoxFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
     public static HealthBoxFragment newInstance(String param1, String param2) {
         HealthBoxFragment fragment = new HealthBoxFragment();
         Bundle args = new Bundle();
@@ -154,8 +162,6 @@ public class HealthBoxFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -168,9 +174,12 @@ public class HealthBoxFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //-------------RIFERIMENTI---------------
         buttonOpenBox = view.findViewById(R.id.buttonOpenBox);
         imageAnimationButton = view.findViewById(R.id.imgAnimationButton);
     }
+
+
 
     @Override
     public void onResume() {
@@ -190,6 +199,42 @@ public class HealthBoxFragment extends Fragment {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 
         requireActivity().registerReceiver(receiver, filter);
+
+        if (!Utility.isConnectedToInternet(getActivity())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
+
+            // Set the dialog title and message
+            builder.setTitle(getString(R.string.pendingMisurationRequestTitle))
+                    .setMessage(getString(R.string.pendingMisurationRequest))
+                    .setNegativeButton(getString(R.string.negativeButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                startActivity(intent);
+                            }
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            pendingMisuration = true;
+                        }
+                    });
+
+
+
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.setOnCancelListener(
+                    new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            getActivity().onBackPressed();
+                        }
+                    }
+            );
+
+        }
     }
 
     @Override
@@ -281,7 +326,7 @@ public class HealthBoxFragment extends Fragment {
      * @param permission
      */
     private void showExplanation(int title, int message, final String[] permission) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogTheme);
         builder.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, (dialog, id) -> requestPermissionLauncher.launch(permission))
@@ -395,7 +440,6 @@ public class HealthBoxFragment extends Fragment {
         buttonOpenBox.setText(getString(R.string.open));
         //mostro il toast di fine della ricerca
         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), getResources().getString(R.string.bluetoothSearchFinished), Toast.LENGTH_SHORT).show());
-
         statusAnimation = !statusAnimation;
     }
 

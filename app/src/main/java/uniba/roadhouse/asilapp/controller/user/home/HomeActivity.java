@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     Map<String,Class> screenFragments;
     Map<String,Integer> screenActiveMipmapIcons;
     Map<String,Integer> screenMipmapIcons;
+    TextView textBannerOnePendingMisuration;
 
     TextView homeText;
     ImageView noConnectionIconHome;
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         window.setStatusBarColor(getColor(R.color.appBarColor));
         noConnectionIconHome = findViewById(R.id.noConnectionIconHome);
         homeText=findViewById(R.id.homeScreenTextView);
+        textBannerOnePendingMisuration = findViewById(R.id.textBannerOnePendingMisuration);
         //callback chiamata quando premo il tasto back
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
         // Registra il metodo di callback relativo alla connessione.
@@ -126,6 +128,7 @@ public class HomeActivity extends AppCompatActivity {
             Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
         });
+        textBannerOnePendingMisuration.setOnClickListener(v->openDialogOnePendingRequest());
     }
 
     @Override
@@ -234,6 +237,12 @@ public class HomeActivity extends AppCompatActivity {
         if (connectivityManager != null) {
             connectivityManager.unregisterNetworkCallback(networkCallback);
         }
+    }
+
+
+    private void openDialogOnePendingRequest()
+    {
+        Utility.showAlertDialog(this, getString(R.string.onePendingRequestInfoTitle), getString(R.string.onePendingRequestInfo));
     }
 
 }

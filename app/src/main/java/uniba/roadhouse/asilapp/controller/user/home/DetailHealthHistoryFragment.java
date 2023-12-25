@@ -19,6 +19,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -128,6 +129,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     private static Boolean openDoctor=false;
     private static final Integer REQUEST_CODE_EDIT_EVALUTATION=1;
     private static final Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=2;
+    SwipeRefreshLayout swipereFreshLayoutDetailHealthHistory;
 
 
 
@@ -221,6 +223,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
         idLastRecordHealthHistory = view.findViewById(R.id.idLastRecordHealthHistory);
         dateLastRecordHealthHistory = view.findViewById(R.id.dateLastRecordHealthHistory);
         oldProgressBar = view.findViewById(R.id.oldProgressBar);
+        swipereFreshLayoutDetailHealthHistory = view.findViewById(R.id.swipereFreshLayoutDetailHealthHistory);
         timeLastRecordHealthHistory = view.findViewById(R.id.timeLastRecordHealthHistory);
         evalutationLastRecordHealthHistory = view.findViewById(R.id.evalutationLastRecordHealthHistory);
         editButtonHealthHistoryEvalutation = view.findViewById(R.id.editButtonHealthHistoryEvalutation);
@@ -237,9 +240,19 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     @Override
     public void onStart() {
         super.onStart();
+        //----------LISTENER------------
         shareDetailHealthHistory.setOnClickListener(v->showCheckboxDialogForSharePrivacy());
         editButtonHealthHistoryEvalutation.setOnClickListener(v->openDialogEditEvalutation());
         editButtonHealthHistoryDoctorNotes.setOnClickListener(v->openDialogEditDoctorNotes());
+        swipereFreshLayoutDetailHealthHistory.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                getOldData();
+                layoutOldHealthHistory.removeAllViews();
+                swipereFreshLayoutDetailHealthHistory.setRefreshing(false);
+            }
+        });
 
 
     }

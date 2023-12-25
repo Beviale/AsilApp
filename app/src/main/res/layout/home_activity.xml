@@ -49,6 +49,15 @@
                 android:visibility="visible" />
         </androidx.appcompat.widget.Toolbar>
 
+        <TextView
+            android:id="@+id/textBannerOnePendingMisuration"
+            android:layout_width="match_parent"
+            android:text="@string/bannerOnePendingMisuration"
+            android:background="@color/red"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:layout_height="30dp"/>
+
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/homeContainerView"

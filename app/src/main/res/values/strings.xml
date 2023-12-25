@@ -234,6 +234,12 @@
     <string name="activateBluetooth">Abilita Bluetooth</string>
     <string name="searching">Ricerca...</string>
     <string name="medicalDataWaiting">In Attesa Della Misurazione Sulla Box</string>
+    <string name="pendingMisurationRequestTitle">Non sei connesso a internet!</string>
+    <string name="pendingMisurationRequest">Attualmente non risulti connesso ad una rete Internet. Se puoi collegarti ad una rete WIFI o mobile, fallo, altrimenti, puoi comunque effettuare una (e una sola) misurazione che verrà memorizzata momentaneamente sul dispositivo; non appena avrai la connessione attiva, questa verrà inviata al server.</string>
+    <string name="negativeButtonPendingMisurationRequest">Connetti ad una rete</string>
+    <string name="positiveButtonPendingMisurationRequest">Misurazione offline</string>
+
+
 
 
     <!--USER PROFILE-->
@@ -259,7 +265,7 @@
 
     <!--BLUETOOTH-->
     <string name="bluetoothPermissionTitle">Perchè chiediamo il Bluetooth?</string>
-    <string name="bluetoothInformativa">Salve a tuttti!!</string>
+    <string name="bluetoothInformativa">I permessi Bluetooth sono richiesti dall\'app per avviare la connessione con la box e ricevere i dati sulle misurazioni. </string>
     <string name="bluetoothGivePermissionMessage">Consentire il permesso ed attivare il Bluetooth per continuare</string>
     <string name="bluetoothSearchFinished">Ricerca Della Box Terminata</string>
     <string name="bluetoothSearchStarted">Ricerca Della Box Avviata</string>
@@ -328,6 +334,11 @@
 
     <!-- Detail User Doctor Fragment-->
     <string name="pathologies">Patologie</string>
+
+    <!-- HOMEACTIVITY-->
+    <string name="bannerOnePendingMisuration">Hai una misurazione pendente, connettiti ad Internet!</string>
+    <string name="onePendingRequestInfoTitle">Hai una misurazione pendente!</string>
+    <string name="onePendingRequestInfo">Hai effettuato una misurazione offline e ora risulta pendente, per inviarla al server si prega di connettersi al più presto ad una rete Internet.</string>
 
 
 

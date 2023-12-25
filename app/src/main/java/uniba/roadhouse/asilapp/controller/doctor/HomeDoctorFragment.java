@@ -15,6 +15,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class HomeDoctorFragment extends Fragment {
     ProgressBar progressBar;
     LinearLayout layoutCardUserDoctor;
     ConstraintLayout homeLayout;
+    SwipeRefreshLayout swipereFreshLayoutHomeDoctor;
 
 
 
@@ -76,13 +78,25 @@ public class HomeDoctorFragment extends Fragment {
         textToolbarDoctor.setText(getString(R.string.homeMenuScreen));
         progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         layoutCardUserDoctor = view.findViewById(R.id.layoutCardUserDoctor);
+        swipereFreshLayoutHomeDoctor = view.findViewById(R.id.swipereFreshLayoutHomeDoctor);
         homeLayout = view.findViewById(R.id.homeLayout);
-
-
-
         getData();
 
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        //--------------LISTENER-------------
+        swipereFreshLayoutHomeDoctor.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                layoutCardUserDoctor.removeAllViews();
+                swipereFreshLayoutHomeDoctor.setRefreshing(false);
+            }
+        });
+        super.onStart();
     }
 
     @Override
