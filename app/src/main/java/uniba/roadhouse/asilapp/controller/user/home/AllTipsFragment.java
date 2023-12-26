@@ -3,6 +3,7 @@ package uniba.roadhouse.asilapp.controller.user.home;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
@@ -82,32 +85,22 @@ public class AllTipsFragment extends Fragment {
     @SuppressLint("RestrictedApi")
     private void getData()
     {
-        // Creo una nuova linea, ossia una riga che contiene massimo due articoli.
-        LinearLayout line = new LinearLayout(requireContext());
-        line.setId(View.generateViewId());
-        LinearLayout.LayoutParams layoutParamsLine = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        line.setLayoutParams(layoutParamsLine);
-        line.setOrientation(LinearLayout.VERTICAL);
-        layoutAllTips.addView(line);
 
-        // Creo la prima card
-        ConstraintLayout firstCard = new ConstraintLayout(requireContext());
-        Utility.activeAnimationOnClick(getActivity(), firstCard);
-        firstCard.setOnClickListener(v->openDetailTips(1));
-        firstCard.setId(View.generateViewId());
-        LinearLayout.LayoutParams layoutParamsFirstCard = new LinearLayout.LayoutParams(
+        // Creo la card
+        ConstraintLayout card = new ConstraintLayout(requireContext());
+        Utility.activeAnimationOnClick(getActivity(), card);
+        card.setOnClickListener(v->openDetailTips(1));
+        card.setId(View.generateViewId());
+        LinearLayout.LayoutParams layoutParamsCard = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 (int) dpToPx(getContext(), 200)
         );
-        firstCard.setLayoutParams(layoutParamsFirstCard);
-        firstCard.setBackground(getResources().getDrawable(R.drawable.rounded_all_tips));
-        firstCard.setElevation(100);
-        line.addView(firstCard);
+        card.setLayoutParams(layoutParamsCard);
+        card.setBackground(getResources().getDrawable(R.drawable.rounded_all_tips));
+        card.setElevation(100);
+        layoutAllTips.addView(card);
 
-
+        // Immagine dell'articolo
         ImageView imageFirstCard = new ImageView(requireContext());
         imageFirstCard.setId(View.generateViewId());
         imageFirstCard.setImageDrawable(getResources().getDrawable(R.drawable.doctor));
@@ -117,34 +110,32 @@ public class AllTipsFragment extends Fragment {
         );
         imageFirstCard.setLayoutParams(paramsImage);
         ConstraintSet constraintImage = new ConstraintSet();
-        constraintImage.clone(firstCard);
-        constraintImage.connect(imageFirstCard.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 0));
+        constraintImage.clone(card);
+        constraintImage.connect(imageFirstCard.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 0));
         constraintImage.connect(imageFirstCard.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 0));
-        constraintImage.applyTo(firstCard);
-        firstCard.addView(imageFirstCard);
+        constraintImage.applyTo(card);
+        card.addView(imageFirstCard);
 
-        // Creo la prima card
-        ConstraintLayout secondCard = new ConstraintLayout(requireContext());
-        Utility.activeAnimationOnClick(getActivity(), secondCard);
-        secondCard.setOnClickListener(v->openDetailTips(1));
-        secondCard.setId(View.generateViewId());
-        LinearLayout.LayoutParams layoutParamsSecondCard = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) dpToPx(getContext(), 200)
+        // Creo la TextView relativa al label della data di nascita del paziente.
+        TextView titleArticle = new TextView(requireContext());
+        titleArticle.setId(View.generateViewId());
+        ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                (int) dpToPx(getContext(), 70)
         );
-        layoutParamsSecondCard.topMargin=(int) dpToPx(getContext(), 40);
-        secondCard.setLayoutParams(layoutParamsSecondCard);
-        secondCard.setBackground(getResources().getDrawable(R.drawable.rounded_all_tips));
-        secondCard.setElevation(100);
-        line.addView(secondCard);
-
-
-
-
-
-
-
-
+        Integer padding =   (int) dpToPx(getContext(), 10);
+        titleArticle.setPadding(padding, padding, padding, padding);
+        card.addView(titleArticle);
+        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
+        titleArticle.setTypeface(typeface);
+        titleArticle.setText("SAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        titleArticle.setTextColor(getResources().getColor(R.color.black));
+        titleArticle.setLayoutParams(paramsTitle);
+        ConstraintSet constraintTitle = new ConstraintSet();
+        constraintTitle.clone(card);
+        constraintTitle.connect(titleArticle.getId(), ConstraintSet.TOP, imageFirstCard.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 0));
+        constraintTitle.connect(titleArticle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 0));
+        constraintTitle.applyTo(card);
     }
 
     private void openDetailTips(Integer id)

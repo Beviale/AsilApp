@@ -145,22 +145,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/tipsHomeSection">
 
                 <ImageView
-                    android:id="@+id/imageNutritionalTips"
+                    android:id="@+id/imageFirstArticle"
                     android:layout_width="match_parent"
-                    android:src="@drawable/nutrition"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_height="130dp"/>
 
                 <TextView
+                    android:id="@+id/titleFirstArticle"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:fontFamily="@font/titillium_web_bold"
-                    android:text="Come mangiare sano senza morire di fame"
-                    android:layout_marginBottom="0dp"
                     android:background="@drawable/rounded_cards"
                     android:elevation="30dp"
+                    android:fontFamily="@font/titillium_web_bold"
+                    android:padding="10dp"
+                    android:text="@string/iAmLoading"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,22 +181,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/firstCardTips">
 
                 <ImageView
-                    android:id="@+id/imageWelnessTips"
+                    android:id="@+id/imageSecondArticle"
                     android:layout_width="match_parent"
-                    android:src="@drawable/welness"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_height="130dp"/>
 
                 <TextView
+                    android:id="@+id/titleSecondArticle"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:fontFamily="@font/titillium_web_bold"
-                    android:text="100 consigli per migliorare il tuo benessere"
-                    android:layout_marginBottom="0dp"
                     android:background="@drawable/rounded_cards"
                     android:elevation="30dp"
+                    android:fontFamily="@font/titillium_web_bold"
+                    android:padding="10dp"
+                    android:text="@string/iAmLoading"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 

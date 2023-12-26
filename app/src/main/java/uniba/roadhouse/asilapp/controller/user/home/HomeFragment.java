@@ -24,6 +24,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -33,14 +34,22 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Articolo;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 public class HomeFragment extends Fragment {
     ImageView arrowToOutgoingsFragment;
     TextView welcomeText;
+    TextView titleFirstArticle;
+    TextView titleSecondArticle;
     WebView firstWebView;
     WebView secondWebView;
     HorizontalScrollView scrollBarVideo;
@@ -84,6 +93,8 @@ public class HomeFragment extends Fragment {
         unhcrNumbervalue = view.findViewById(R.id.unchrNumberValue);
         arrowToAllTipsFragment = view.findViewById(R.id.arrowToAllTipsFragment);
         commissionNumberImage = view.findViewById(R.id.commissionNumberImage);
+        titleFirstArticle = view.findViewById(R.id.titleFirstArticle);
+        titleSecondArticle = view.findViewById(R.id.titleSecondArticle);
         commissionNumberValue = view.findViewById(R.id.commissionNumberValue);
         swipeRefreshLayoutHomeFragment = view.findViewById(R.id.swipereFreshLayoutHomeFragment);
         welcomeText = view.findViewById(R.id.welcomeText);
@@ -151,7 +162,25 @@ public class HomeFragment extends Fragment {
 
     private void loadVideo()
     {
-        openVideo("a", "a");
+
+        progressBarVideoHome.setVisibility(View.VISIBLE);
+        frameLayoutVideoHome.setAlpha((float)0.5);
+        CompletableFuture<Map<String,?>>  future = Dao.getAllVideoByTipo(AccessUser.getTipoAsiloProtezione(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBarVideoHome.setVisibility(View.GONE);
+                frameLayoutVideoHome.setAlpha((float)1.0);
+                if(result.get("esito").toString().equals(getString(R.string.getVideoSuccessfull)))
+                {
+                   ArrayList<String> links = (ArrayList<String>) result.get("links");
+                   openVideo(links.get(0), links.get(1));
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
 
@@ -187,12 +216,12 @@ public class HomeFragment extends Fragment {
 
     private void openVideo(String firstLink, String secondLink)
     {
-        String firstVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
+        String firstVideo = "<iframe width=\100%\" height=\100%\" src=\" https://www.youtube.com/embed/" + firstLink +"\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
         firstWebView.loadData(firstVideo, "text/html","utf-8");
         firstWebView.getSettings().setJavaScriptEnabled(true);
         firstWebView.setWebChromeClient(new WebChromeClient());
 
-        String secondVideo = "<iframe width=\100%\" height=\100%\" src=\"https://www.youtube.com/embed/qnWoT8dD1-w\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
+        String secondVideo = "<iframe width=\100%\" height=\100%\" src=\" https://www.youtube.com/embed/" + secondLink +"\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
         secondWebView.loadData(secondVideo, "text/html","utf-8");
         secondWebView.getSettings().setJavaScriptEnabled(true);
         secondWebView.setWebChromeClient(new WebChromeClient());
@@ -225,11 +254,37 @@ public class HomeFragment extends Fragment {
 
     private void loadTips()
     {
-
+       CompletableFuture<Map<String,?>>  future = Dao.getFirst2Articles(getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
+                {
+                    ArrayList<Articolo> articles = (ArrayList<Articolo>) result.get("articles");
+                    Articolo firstArticle = articles.get(0);
+                    titleFirstArticle.setText(firstArticle.getTitolo());
+                    Articolo secondArticle = articles.get(1);
+                    titleSecondArticle.setText(secondArticle.getTitolo());
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     private void loadOutgoings()
     {
+        progressBarChartHome.setVisibility(View.VISIBLE);
+        frameLayoutChartHome.setAlpha((float)0.5);
+        CompletableFuture<Map<String,?>> future = Dao.getFirst2Articles(getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBarChartHome.setVisibility(View.GONE);
+                frameLayoutChartHome.setAlpha((float)1.0);
+
+            });
+        });
 
     }
 

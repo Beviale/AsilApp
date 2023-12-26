@@ -2,6 +2,7 @@
 package uniba.roadhouse.asilapp.controller.doctor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -25,6 +26,8 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.FirstActivity;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
  * Schermata impostazione dell'account Dottore.
@@ -130,7 +133,9 @@ public class SettingsDoctorFragment extends Fragment {
      */
     private void exitAcctount()
     {
-
+        Dao.logOutUser(getActivity());
+        Intent intent = new Intent(getActivity(), FirstActivity.class);
+        startActivity(intent);
     }
 
 

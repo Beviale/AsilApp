@@ -1356,7 +1356,7 @@ public class Dao {
 
     /**
      * Metodo per prendere 2 articoli disponibili. Ritorna una Map con chiave "esito" che indica l'esito della computazione
-     * e "articoles" che è un List<Articolo> che inidca la lista di articoli
+     * e "articles" che è un List<Articolo> che inidca la lista di articoli
      * @param context
      * @return
      */

@@ -199,42 +199,6 @@ public class HealthBoxFragment extends Fragment {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 
         requireActivity().registerReceiver(receiver, filter);
-
-        if (!Utility.isConnectedToInternet(getActivity())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
-
-            // Set the dialog title and message
-            builder.setTitle(getString(R.string.pendingMisurationRequestTitle))
-                    .setMessage(getString(R.string.pendingMisurationRequest))
-                    .setNegativeButton(getString(R.string.negativeButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                                startActivity(intent);
-                            }
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            pendingMisuration = true;
-                        }
-                    });
-
-
-
-            // Create and show the AlertDialog
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setOnCancelListener(
-                    new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            getActivity().onBackPressed();
-                        }
-                    }
-            );
-
-        }
     }
 
     @Override

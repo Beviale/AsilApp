@@ -10,7 +10,7 @@
     </item>
 
     <!-- Card Background -->
-    <item android:top="2dp">
+    <item android:top="2dp" android:bottom="2dp" android:left="1dp" android:right="1dp">
         <shape android:shape="rectangle">
             <solid android:color="#FFFFFF" /> <!-- Background color for the card -->
             <corners android:radius="16dp" /> <!-- Adjust corner radius as needed -->
