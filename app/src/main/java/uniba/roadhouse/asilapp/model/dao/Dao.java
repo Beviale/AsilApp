@@ -3,6 +3,7 @@ package uniba.roadhouse.asilapp.model.dao;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.auth0.jwt.JWT;
@@ -14,6 +15,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +30,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +42,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.CategoriaSpesaEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 
@@ -265,7 +271,7 @@ public class Dao {
      *
      * @param context contesto attuale (this)
      * @return ritorna una Map con valore "" per la key "username" se l'utente non è loggato (token non valido o non trovato) o come valore lo username dell'utente se esso è loggato.
-     * inoltre vi è la chiave "nome" per il nome dell'utente
+     * inoltre vi è la chiave "nome" per il nome dell'utente e una chiave "tipo" che indica se l'utente è un "UTENTE" o un "DOTTORE"
      */
     public static Map<String,String> checkIsLogged(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
@@ -282,6 +288,7 @@ public class Dao {
         DecodedJWT decodedJWT;
         String username;
         String nome="";
+        String tipo="";
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
@@ -291,6 +298,7 @@ public class Dao {
             //se la verifica è andata a buon fine, cioè se non sono andato nel catch, prendo lo username dal token jwt
             username=decodedJWT.getSubject();
             nome=decodedJWT.getClaim("nome").asString();
+            tipo=decodedJWT.getClaim("tipo").asString();
         } catch (JWTVerificationException exception){
             // Invalid signature/claims
             username="";
@@ -298,9 +306,11 @@ public class Dao {
 
         String finalUsername = username;
         String finalNome = nome;
+        String finalTipo = tipo;
         return new HashMap<String,String>() {{
             put("username", finalUsername);
             put("nome", finalNome);
+            put("tipo", finalTipo);
         }};
     }
 
@@ -1165,7 +1175,7 @@ public class Dao {
      */
     public static CompletableFuture<Map<String,?>> getAllFarmaci(String username, String nomePatologia, Context context){
         return CompletableFuture.supplyAsync(()->{
-            //aggiungo l'utente al db
+
             Task<QuerySnapshot> query = db.collection("farmaci").whereEqualTo("username",username).whereEqualTo("patologia",nomePatologia).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -1199,7 +1209,7 @@ public class Dao {
      */
     public static CompletableFuture<String> deleteFarmaco(String username, String nomePatologia, String nomefarmaco, Context context){
         return CompletableFuture.supplyAsync(()->{
-            //aggiungo l'utente al db
+
             Task addToDb = db.collection("farmaci").document(username+nomePatologia+nomefarmaco).delete();
             while (!addToDb.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -1210,6 +1220,150 @@ public class Dao {
 
             //se l'inserimento è avvenuto con successo ritono il messaggio
             return context.getString(R.string.deleteFarmacoSuccessfull);
+        });
+    }
+
+    /**
+     * Metodo per prendere i 2 video relativi ad un certo tipo di utente dato in input il tipo
+     * I tipi dell'utente accettabili sono "asilo" e "protezione"
+     * Ritorna una Map con chiave "esito" per l'esito della computazione e "links" che è una List<String> con i link dei video
+     * @param tipo
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getAllVideoByTipo(String tipo, Context context){
+        return CompletableFuture.supplyAsync(()->{
+
+            Task<QuerySnapshot> query = db.collection("video").whereEqualTo("tipo",tipo).get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return new HashMap<String ,Object>(){{
+                    put("esito",context.getString(R.string.getVideoFailed));
+                }};
+            }
+
+            List<String> links=new ArrayList<>();
+
+            for (QueryDocumentSnapshot document:query.getResult()){
+                links.add(document.getString("link"));
+            }
+
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.getVideoSuccessfull));
+                put("links",links);
+            }};
+        });
+    }
+
+    /**
+     * Metodo per prendere tutti gli articoli disponibili. Ritorna una Map con chiave "esito" che indica l'esito della computazione
+     * e "articoles" che è un List<Articolo> che inidca la lista di articoli
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getAllArticles(Context context){
+        return CompletableFuture.supplyAsync(()->{
+
+            Task<QuerySnapshot> query = db.collection("articoli").get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return new HashMap<String ,Object>(){{
+                    put("esito",context.getString(R.string.getArticlesFailed));
+                }};
+            }
+
+            List<Articolo> articles=new ArrayList<>();
+
+            for (QueryDocumentSnapshot document:query.getResult()){
+                Bitmap immagine=Utility.StringToBitMap(document.getString("immagine"));
+                articles.add(new Articolo(
+                        document.getString("titolo"),
+                        document.getString("testo"),
+                        document.getString("tipo"),
+                        immagine
+                ));
+            }
+
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.getArticlesSuccessfull));
+                put("articles",articles);
+            }};
+        });
+    }
+
+    /**
+     * Metodo che premette di prendere tutte le spese di un utente di una specifica categoria negli ultimi <days> giorni con <days> il numero di giorni messo
+     * in input al metodo. Ritorna una Map con chiave "esito" crappresentante
+     * l'esito della computazione e "spese" che è una List<Spesa> indicante la liste delle spese effettuate
+     * @param categoria
+     * @param username
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getAllSpeseByCategory(CategoriaSpesaEnum categoria, String username, int days, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Calendar cal=Calendar.getInstance();
+            cal.add(Calendar.DATE,-days);
+
+            //prendole spese dell'utente specifico e di una categoria specifica negli ultimi <days> giorni
+            Task<QuerySnapshot> query = db.collection("spese").whereEqualTo("categoria",categoria.toString()).whereEqualTo("username",username).whereGreaterThan("data", new Timestamp(cal.getTime())).get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return new HashMap<String ,Object>(){{
+                    put("esito",context.getString(R.string.getSpeseFailed));
+                }};
+            }
+
+            List<Spesa> spese=new ArrayList<>();
+
+            for (QueryDocumentSnapshot document:query.getResult()){
+                spese.add(new Spesa(
+                        CategoriaSpesaEnum.valueOf(document.getString("categoria")),
+                        document.getDouble("costo"),
+                        document.getTimestamp("data"),
+                        document.getString("username")
+                ));
+            }
+
+
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.getSpeseSuccessfull));
+                put("spese",spese);
+            }};
+        });
+    }
+
+    /**
+     * Metodo per l memorizzazionedi una spesa. Ritorna una Stringa che rappresenta l'esito della computazione
+     * @param spesa
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<String> storeSpesa(Spesa spesa, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Map<String,Object> sp=new HashMap<String,Object>(){{
+                put("categoria",spesa.getCategoria().toString());
+                put("username",spesa.getUsername());
+                put("costo",spesa.getCosto());
+                put("data",spesa.getData());
+            }};
+
+            Task query = db.collection("spese").document(spesa.getData()+spesa.getUsername()).set(sp);
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return context.getString(R.string.storeSpesaFailed);
+            }
+
+            return context.getString(R.string.storeSpesaSuccessfull);
         });
     }
 }

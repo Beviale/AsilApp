@@ -128,6 +128,15 @@
     <string name="deleteFarmacoFailed">Errore nell\'eliminazione del farmaco</string>
     <string name="editPatologyFailed">Modifica della patologia fallita</string>
     <string name="editPatologySuccessfull">Modifica della patologia avvenuta con successo</string>
+    <string name="getVideoSuccessfull">Video letto con successo</string>
+    <string name="getVideoFailed">Fallimento nella lettura del video</string>
+    <string name="getArticlesSuccessfull">Articoli letti con successo</string>
+    <string name="getArticlesFailed">Fallimento nella lettura dell\'articolo</string>
+    <string name="getSpeseFailed">Fallimento nella lettura elle spese</string>
+    <string name="getSpeseSuccessfull">Spese lette con successo</string>
+    <string name="storeSpesaFailed">Fallimento nella memorizzazione della spesa</string>
+    <string name="storeSpesaSuccessfull">Spesa memorizzata con successo</string>
+
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
