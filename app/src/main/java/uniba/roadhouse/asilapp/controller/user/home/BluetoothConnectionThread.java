@@ -150,10 +150,7 @@ public class BluetoothConnectionThread extends Thread {
                     .setMessage(context.getString(R.string.pendingMisurationRequest))
                     .setNegativeButton(context.getString(R.string.negativeButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                            if (intent.resolveActivity(context.getPackageManager()) != null) {
-                                context.startActivity(intent);
-                            }
+                            //se ha premuto il pulsante scarta non accade nulla e la misurazione viene scartata e non memorizzata
                         }
                     })
                     .setPositiveButton(context.getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
