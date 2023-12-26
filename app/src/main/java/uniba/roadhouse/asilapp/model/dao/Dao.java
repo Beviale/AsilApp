@@ -1357,6 +1357,40 @@ public class Dao {
     }
 
     /**
+     * Metodo per prendere un articolo disponibile deto il suo id. Ritorna una Map con chiave "esito" che indica l'esito della computazione
+     * e "articolo" che è un Articolo
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getArticle(Integer id,Context context){
+        return CompletableFuture.supplyAsync(()->{
+
+            Task<DocumentSnapshot> query = db.collection("articoli").document(String.valueOf(id)).get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return new HashMap<String ,Object>(){{
+                    put("esito",context.getString(R.string.getArticlesFailed));
+                }};
+            }
+
+            Bitmap immagine=Utility.StringToBitMap(query.getResult().getString("immagine"));
+            Articolo art=new Articolo(
+                    Integer.parseInt(query.getResult().getId()),
+                    query.getResult().getString("titolo"),
+                    query.getResult().getString("testo"),
+                    query.getResult().getString("tipo"),
+                    immagine);
+
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.getArticlesSuccessfull));
+                put("article",art);
+            }};
+        });
+    }
+
+    /**
      * Metodo per prendere 2 articoli disponibili. Ritorna una Map con chiave "esito" che indica l'esito della computazione
      * e "articles" che è un List<Articolo> che inidca la lista di articoli
      * @param context
