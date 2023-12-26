@@ -138,7 +138,7 @@ public class AllTipsFragment extends Fragment {
                         imageFirstCard.setId(View.generateViewId());
                         imageFirstCard.setImageBitmap(articolo.getImmagine());
                         ConstraintLayout.LayoutParams paramsImage = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.MATCH_PARENT,
                                 (int) dpToPx(getContext(), 130)
                         );
                         imageFirstCard.setLayoutParams(paramsImage);
@@ -153,10 +153,12 @@ public class AllTipsFragment extends Fragment {
                         TextView titleArticle = new TextView(requireContext());
                         titleArticle.setId(View.generateViewId());
                         ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.MATCH_PARENT,
                                 (int) dpToPx(getContext(), 70)
                         );
                         Integer padding =   (int) dpToPx(getContext(), 10);
+                        titleArticle.setBackground(getResources().getDrawable(R.drawable.rounded_all_tips));
+
                         titleArticle.setPadding(padding, padding, padding, padding);
                         card.addView(titleArticle);
                         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
