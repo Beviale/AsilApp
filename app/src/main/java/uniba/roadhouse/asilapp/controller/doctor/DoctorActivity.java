@@ -46,6 +46,11 @@ public class DoctorActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        //verifico se il dottore è loggato
+        if(getIntent().getBooleanExtra("logged",false)){
+            //se il dottore è loggato lo porto alla home
+            openHomeFragment();
+        }
         toolBarIconDoctorActivity.setOnClickListener(v->openHomeFragment());
         super.onStart();
     }

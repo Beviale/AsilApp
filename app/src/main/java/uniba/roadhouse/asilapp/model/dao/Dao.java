@@ -74,6 +74,11 @@ public class Dao {
                 });
     }
 
+    /**
+     * Metodo che permette di pendere i nomi delle città di tutte le residenze presenti sul db. Ritorna una lista di stringhe simboleggianti
+     * proprio questi nomi
+     * @return
+     */
     public static CompletableFuture<List<String>> getNomiCittaResidenze(){
         return CompletableFuture.supplyAsync(()->{
             List<String> nomiCitta=new ArrayList<>();
@@ -95,6 +100,11 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che prende i nomi di tutte le residenze nel db. Ritorna una lista di stringhe simpoleggiante proprio questi nomi
+     * @param citta
+     * @return
+     */
     public static CompletableFuture<List<String>> getNomiResidenze(String citta){
         return CompletableFuture.supplyAsync(()-> {
             List<String> nomiResidenze = new ArrayList<>();
@@ -112,6 +122,13 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che permette di prendere tutte la città di una residenza presente sul db. Riorna una stringa che rappresenta la città in considerazione o
+     * l'esito della computazione in caso negativo (in questo caso la stringa ritornata sarà R.strings.cityError)
+     * @param nomeResidenza
+     * @param context
+     * @return
+     */
     public static CompletableFuture<String> getCittaResidenza(String nomeResidenza, Context context){
         return CompletableFuture.supplyAsync(()->{
             String nomeCitta="";
@@ -135,6 +152,21 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che permette di registrare un utente sul db (non dottore) dati tutti i suoi dati. Ritorna una stringa che indica l'esito della computazione
+     * @param username
+     * @param password
+     * @param nome
+     * @param cognome
+     * @param cittadinanza
+     * @param sesso
+     * @param paese
+     * @param residenza
+     * @param tipoUtente
+     * @param dataNascita
+     * @param context
+     * @return
+     */
     public static CompletableFuture<String> registerUser(String username, String password, String nome, String cognome, String cittadinanza, String sesso, String paese, String residenza, String tipoUtente, String dataNascita, Context context){
         return CompletableFuture.supplyAsync(()->{
             //so gia che username è disponibile e che lapassword rispeta i criteri
@@ -219,10 +251,12 @@ public class Dao {
             //se l'utente esiste, ne prendo la password
             String passwHash = "";
             String nome="";
+            String tipoAsiloProtezione="";
 
             for (QueryDocumentSnapshot document : query.getResult()) {
                 passwHash = document.getString("password");
                 nome=document.getString("nome");
+                tipoAsiloProtezione=document.getString("tipoUtente");
             }
 
             //verifico che l'ash della password immessa dall'utente è uguale a quella del db
@@ -244,6 +278,7 @@ public class Dao {
                         .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
                         .withClaim("nome",nome)
                         .withClaim("tipo","UTENTE")
+                        .withClaim("tipoAsiloProtezione",(tipoAsiloProtezione=="Richiedente asilo")?"asilo":"protezione")
                         .sign(algorithm);
                 Log.d("DB", token);
 
@@ -289,6 +324,7 @@ public class Dao {
         String username;
         String nome="";
         String tipo="";
+        String tipoAsiloProtezione="";
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             JWTVerifier verifier = JWT.require(algorithm).build();
@@ -299,6 +335,7 @@ public class Dao {
             username=decodedJWT.getSubject();
             nome=decodedJWT.getClaim("nome").asString();
             tipo=decodedJWT.getClaim("tipo").asString();
+            tipoAsiloProtezione=decodedJWT.getClaim("tipoAsiloProtezione").asString();
         } catch (JWTVerificationException exception){
             // Invalid signature/claims
             username="";
@@ -307,10 +344,12 @@ public class Dao {
         String finalUsername = username;
         String finalNome = nome;
         String finalTipo = tipo;
+        String finalTipoAsiloProtezione = tipoAsiloProtezione;
         return new HashMap<String,String>() {{
             put("username", finalUsername);
             put("nome", finalNome);
             put("tipo", finalTipo);
+            if(finalTipoAsiloProtezione !="") put("tipoAsiloProtezione", finalTipoAsiloProtezione);
         }};
     }
 
@@ -629,6 +668,13 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che pemette la modifica della residenza di un utente dato lo username e il nome della nuova residenza
+     * @param username
+     * @param nuovaresidenza
+     * @param context
+     * @return
+     */
     public static CompletableFuture<String> editResidenzaUtente(String username, String nuovaresidenza, Context context){
         return CompletableFuture.supplyAsync(() -> {
             Task<QuerySnapshot> query = db.collection("users").document(username).update((Map)new HashMap<String,String>(){{
@@ -647,6 +693,13 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che permette la modifica della password dell'utente dato username e nuova password
+     * @param username
+     * @param nuovaPassword
+     * @param context
+     * @return
+     */
     public static CompletableFuture<String> editPasswordUtente(String username, String nuovaPassword, Context context){
         return CompletableFuture.supplyAsync(() -> {
             //faccio l'hash della password
@@ -668,6 +721,12 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo che cancella lo shared preferences memorizzato nel dispositivo contenete il jwt al fine di effettuare il logout
+     * di un utente, sia che esso sia dottore o meno
+     * @param context
+     * @return
+     */
     public static CompletableFuture<String> logOutUser(Context context){
         return CompletableFuture.supplyAsync(() -> {
             SharedPreferences preferences = context.getSharedPreferences("loginTokenJWT", context.MODE_PRIVATE);
@@ -1296,21 +1355,63 @@ public class Dao {
     }
 
     /**
-     * Metodo che premette di prendere tutte le spese di un utente di una specifica categoria negli ultimi <days> giorni con <days> il numero di giorni messo
+     * Metodo per prendere 2 articoli disponibili. Ritorna una Map con chiave "esito" che indica l'esito della computazione
+     * e "articoles" che è un List<Articolo> che inidca la lista di articoli
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getFirst2Articles(Context context){
+        return CompletableFuture.supplyAsync(()->{
+
+            Task<QuerySnapshot> query = db.collection("articoli").get();
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!query.isSuccessful()) {
+                return new HashMap<String ,Object>(){{
+                    put("esito",context.getString(R.string.getArticlesFailed));
+                }};
+            }
+
+            List<Articolo> articles=new ArrayList<>();
+
+            int count=0;
+            for (QueryDocumentSnapshot document:query.getResult()){
+                Bitmap immagine=Utility.StringToBitMap(document.getString("immagine"));
+                articles.add(new Articolo(
+                        document.getString("titolo"),
+                        document.getString("testo"),
+                        document.getString("tipo"),
+                        immagine
+                ));
+                count++;
+                if (count==2){break;}
+            }
+
+            return new HashMap<String,Object>(){{
+                put("esito",context.getString(R.string.getArticlesSuccessfull));
+                put("articles",articles);
+            }};
+        });
+    }
+
+    /**
+     * Metodo che premette di prendere tutte le spese di un utente negli ultimi <days> giorni con <days> il numero di giorni messo
      * in input al metodo. Ritorna una Map con chiave "esito" crappresentante
-     * l'esito della computazione e "spese" che è una List<Spesa> indicante la liste delle spese effettuate
-     * @param categoria
+     * l'esito della computazione e "CIBO" che è una List<Spesa> indicante la liste delle spese sul cibo effettuate
+     * l'esito della computazione e "FARMACI" che è una List<Spesa> indicante la liste delle spese sui farmaci effettuate
+     * l'esito della computazione e "ALTRO" che è una List<Spesa> indicante la liste delle spese altro effettuate
      * @param username
      * @param context
      * @return
      */
-    public static CompletableFuture<Map<String,?>> getAllSpeseByCategory(CategoriaSpesaEnum categoria, String username, int days, Context context){
+    public static CompletableFuture<Map<String,?>> getAllSpese(String username, int days, Context context){
         return CompletableFuture.supplyAsync(()->{
             Calendar cal=Calendar.getInstance();
             cal.add(Calendar.DATE,-days);
 
             //prendole spese dell'utente specifico e di una categoria specifica negli ultimi <days> giorni
-            Task<QuerySnapshot> query = db.collection("spese").whereEqualTo("categoria",categoria.toString()).whereEqualTo("username",username).whereGreaterThan("data", new Timestamp(cal.getTime())).get();
+            Task<QuerySnapshot> query = db.collection("spese").whereEqualTo("username",username).whereGreaterThan("data", new Timestamp(cal.getTime())).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
@@ -1320,21 +1421,36 @@ public class Dao {
                 }};
             }
 
-            List<Spesa> spese=new ArrayList<>();
+            List<Spesa> speseCibo=new ArrayList<>();
+            List<Spesa> speseFarmaci=new ArrayList<>();
+            List<Spesa> speseAltro=new ArrayList<>();
 
             for (QueryDocumentSnapshot document:query.getResult()){
-                spese.add(new Spesa(
+                Spesa sp=new Spesa(
                         CategoriaSpesaEnum.valueOf(document.getString("categoria")),
                         document.getDouble("costo"),
                         document.getTimestamp("data"),
                         document.getString("username")
-                ));
+                );
+                switch (CategoriaSpesaEnum.valueOf(document.getString("categoria"))){
+                    case CIBO:
+                        speseCibo.add(sp);
+                        break;
+                    case ALTRO:
+                        speseAltro.add(sp);
+                        break;
+                    case FARMACI:
+                        speseFarmaci.add(sp);
+                }
+
             }
 
 
             return new HashMap<String,Object>(){{
                 put("esito",context.getString(R.string.getSpeseSuccessfull));
-                put("spese",spese);
+                put("CIBO",speseCibo);
+                put("FARMACI",speseFarmaci);
+                put("ALTRO",speseAltro);
             }};
         });
     }

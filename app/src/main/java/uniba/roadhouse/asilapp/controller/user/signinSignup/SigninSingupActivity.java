@@ -65,15 +65,6 @@ public class SigninSingupActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Map<String,String> verifyLogged= Dao.checkIsLogged(this);
-        // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
-        if(verifyLogged.get("username")!="")
-        {
-            AccessUser.setUsername(verifyLogged.get("username"));
-            AccessUser.setNome(verifyLogged.get("nome"));
-            Intent openHome = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(openHome);
-        }
         //-----------------LISTENER--------------
         noConnectionIcon.setOnClickListener(new View.OnClickListener()
         {
