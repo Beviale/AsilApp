@@ -162,7 +162,6 @@ public class HomeFragment extends Fragment {
             }
         });
         loadVideo();
-        setPieChartOutgoings();
         super.onResume();
     }
 
@@ -190,23 +189,34 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void setPieChartOutgoings()
+    private void setPieChartOutgoings(PieChart pieChart, Float foodPercent, Float drugsPercent, Float otherPercent)
     {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(30f, "Farmaci"));
-        entries.add(new PieEntry(20f, "Cibo"));
-        entries.add(new PieEntry(50f, "Altro"));
+        if(drugsPercent>0)
+        {
+            entries.add(new PieEntry(drugsPercent, getString(R.string.drugs)));
+        }
+        if(foodPercent>0)
+        {
+            entries.add(new PieEntry(foodPercent, getString(R.string.food)));
+        }
+        if(otherPercent>0)
+        {
+            entries.add(new PieEntry(otherPercent, getString(R.string.other)));
+        }
         Description desc = new Description();
         desc.setText("");
         pieChart.setDescription(desc);
         pieChart.setUsePercentValues(true);
-        PieDataSet dataSet = new PieDataSet(entries, "Pie Chart");
+        PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setValueTextSize((float)15);
         dataSet.setValueTextColor(getResources().getColor(R.color.white));
         dataSet.setColors(getResources().getColor(R.color.drugsColor), getResources().getColor(R.color.foodColor), getResources().getColor(R.color.otherColor));
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setRotationEnabled(false);
         pieChart.setData(data);
+        pieChart.invalidate();
     }
 
 
@@ -292,10 +302,30 @@ public class HomeFragment extends Fragment {
                 frameLayoutChartHome.setAlpha((float)1.0);
                 if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
                 {
-                    List<Spesa> spesaCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
-                    List<Spesa> spesaFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
-                    List<Spesa> spesaAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
-                    
+                    List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                    List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                    List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                    Double totalFood=0.0;
+                    Double totalDrugs=0.0;
+                    Double totalOther=0.0;
+                    Double total=0.0;
+                    for(Spesa spesa: speseCibo)
+                    {
+                        totalFood = totalFood + spesa.getCosto();
+                    }
+                    for(Spesa spesa: speseFarmaci)
+                    {
+                        totalDrugs = totalFood + spesa.getCosto();
+                    }
+                    for(Spesa spesa: speseAltro)
+                    {
+                        totalOther = totalFood + spesa.getCosto();
+                    }
+                    total = totalFood + totalDrugs + totalOther;
+                    Double foodPercent = (totalFood/total) * 100;
+                    Double drugsPercent = (totalDrugs/total) * 100;
+                    Double otherPercent = (totalOther/total) * 100;
+                    setPieChartOutgoings(foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue());
                 }
                 else
                 {
