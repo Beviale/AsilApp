@@ -1412,6 +1412,13 @@ public class Dao {
         });
     }
 
+    /**
+     * Metodo per prenedere la valutazione di un articolo dato il suo id e lo username. Ritorna una mappa con chiave "esito" e "valutazione"
+     * @param idArticolo
+     * @param username
+     * @param context
+     * @return
+     */
     public static CompletableFuture<Map<String,?>> getArticleValutazione(Integer idArticolo, String username, Context context){
         return CompletableFuture.supplyAsync(()->{
             Task<DocumentSnapshot> query = db.collection("valutazioniArticoli").document(String.valueOf(idArticolo)+username).get();
@@ -1426,9 +1433,54 @@ public class Dao {
                 }};
             }
 
+            if(query.getResult()!=null){
+                return new HashMap<String,Object>(){{
+                    put("esito",context.getString(R.string.getArticleValuationSuccessfull));
+                    put("valutazione",query.getResult().getString("valutazione"));
+                }};
+            }else{
+                return new HashMap<String,Object>(){{
+                    put("esito",context.getString(R.string.getArticlesValuationNoValuation));
+                }};
+            }
+        });
+    }
+
+    /**
+     * Metodo per prendere latitudine e longitudine di una residenza dato il suo nome. Ritorna una mappa con chiave "esito" per l'esito della computazione
+     * e "longitudine" e "latitudine" per i singoli valori della posizione (sono dei double)
+     * @param residenza
+     * @param context
+     * @return
+     */
+    public static CompletableFuture<Map<String,?>> getLatLongResidenza(String residenza, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Task<QuerySnapshot> query = db.collection("residenze").whereEqualTo("nome",residenza).get();
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return new HashMap<String,Object>(){{
+                    put("esito",context.getString(R.string.getLatLongFailed));
+                }};
+            }
+
+            double latitutide= 0;
+            double longitudine=0;
+
+            for (QueryDocumentSnapshot document:query.getResult()){
+                latitutide=document.getDouble("latitudine");
+                longitudine=document.getDouble("longitudine");
+            }
+
+            double finalLatitutide = latitutide;
+            double finalLongitudine = longitudine;
             return new HashMap<String,Object>(){{
-                put("esito",context.getString(R.string.getArticleValuationSuccessfull));
-                put("valutazione",query.getResult().getString("valutazione"));
+                put("esito",context.getString(R.string.getLatLongSuccessfull));
+                put("latitudine", finalLatitutide);
+                put("longitudine", finalLongitudine);
             }};
         });
     }
