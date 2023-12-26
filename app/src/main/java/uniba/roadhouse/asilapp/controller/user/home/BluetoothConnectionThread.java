@@ -1,11 +1,17 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -17,6 +23,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 
@@ -131,13 +139,69 @@ public class BluetoothConnectionThread extends Thread {
      * @param parametro
      */
     private void storeMisuration(Double misurazione, String parametro){
-        Misurazione mis=new Misurazione(AccessUser.getUsername(),"NON VALUTATO",misurazione,null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
-        CompletableFuture<String> future = Dao.storeMisuration(mis,context);
-        future.thenAccept(result -> {
-            currentFragment.getActivity().runOnUiThread(() -> {
-                //quando ho memorizzato la misurazione mando l'esito della computazione al client
-                returnToClient(result);
-            });});
+        Misurazione mis=new Misurazione(AccessUser.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
+
+        //se non ce la connessione memorizzo la misurazione nello shared preferences
+        if (!Utility.isConnectedToInternet((Activity) context)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyleCritical);
+
+            // Set the dialog title and message
+            builder.setTitle(context.getString(R.string.pendingMisurationRequestTitle))
+                    .setMessage(context.getString(R.string.pendingMisurationRequest))
+                    .setNegativeButton(context.getString(R.string.negativeButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                                context.startActivity(intent);
+                            }
+                        }
+                    })
+                    .setPositiveButton(context.getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //memorizzo lmisurazione localmente
+                            SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("valutazione","NON VALUTATO");
+                            editor.putFloat("valore",round(misurazione,2).floatValue());
+                            editor.putString("valoreMax",null);
+                            editor.putString("valoreMin",null);
+                            editor.putLong("data",Timestamp.now().getSeconds());
+                            editor.putString("tipo",parametro);
+                            editor.putString("notaMedico","");
+                            editor.commit();
+                            returnToClient(context.getString(R.string.misurationStoredSuccessfully));
+                        }
+                    });
+
+
+
+            // Create and show the AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.setOnCancelListener(
+                    new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            ((Activity) context).onBackPressed();
+                        }
+                    }
+            );
+        }else{  //se la connessione sta memorizzo la misuazione nel db
+            CompletableFuture<String> future = Dao.storeMisuration(mis,context);
+            future.thenAccept(result -> {
+                currentFragment.getActivity().runOnUiThread(() -> {
+                    //quando ho memorizzato la misurazione mando l'esito della computazione al client
+                    returnToClient(result);
+                });});
+        }
+    }
+
+    public static Double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     // Closes the client socket and causes the thread to finish.

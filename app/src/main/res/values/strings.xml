@@ -136,7 +136,7 @@
     <string name="getSpeseSuccessfull">Spese lette con successo</string>
     <string name="storeSpesaFailed">Fallimento nella memorizzazione della spesa</string>
     <string name="storeSpesaSuccessfull">Spesa memorizzata con successo</string>
-
+    <string name="misurationStoredDB">Misurazione memorizzata sul database correttamente</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
