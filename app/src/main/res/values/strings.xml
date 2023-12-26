@@ -136,7 +136,7 @@
     <string name="getSpeseSuccessfull">Spese lette con successo</string>
     <string name="storeSpesaFailed">Fallimento nella memorizzazione della spesa</string>
     <string name="storeSpesaSuccessfull">Spesa memorizzata con successo</string>
-
+    <string name="misurationStoredDB">Misurazione memorizzata sul database correttamente</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Salute</string>
@@ -244,7 +244,7 @@
     <string name="medicalDataWaiting">In Attesa Della Misurazione Sulla Box</string>
     <string name="pendingMisurationRequestTitle">Non sei connesso a internet!</string>
     <string name="pendingMisurationRequest">Attualmente non risulti connesso ad una rete Internet. Se puoi collegarti ad una rete WIFI o mobile, fallo, altrimenti, puoi comunque effettuare una (e una sola) misurazione che verrà memorizzata momentaneamente sul dispositivo; non appena avrai la connessione attiva, questa verrà inviata al server.</string>
-    <string name="negativeButtonPendingMisurationRequest">Connetti ad una rete</string>
+    <string name="negativeButtonPendingMisurationRequest">Scarta</string>
     <string name="positiveButtonPendingMisurationRequest">Misurazione offline</string>
 
 

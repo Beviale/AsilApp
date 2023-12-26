@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
@@ -15,13 +17,23 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -199,8 +211,29 @@ public class HomeActivity extends AppCompatActivity {
         public void onAvailable(@NonNull Network network) {
             runOnUiThread(new Runnable() {
                 @Override
-                public void run() {
+                public void run() {  //se sta connessione
                     noConnectionIconHome.setVisibility(View.GONE);
+                    //verifico se nelle shared preferences ho una misurazione pendente da memorizzare
+                    SharedPreferences sharedPref = getSharedPreferences("misurazione", MODE_PRIVATE);
+                    String valutazione = sharedPref.getString("valutazione","NO");
+                    String valore = sharedPref.getString("valore","NO");
+                    String valoreMax = sharedPref.getString("valoreMax","NO");
+                    String valoreMin = sharedPref.getString("valoreMin","NO");
+                    String data = sharedPref.getString("data","NO");
+                    String tipo = sharedPref.getString("tipo","NO");
+                    String notaMedico = sharedPref.getString("notaMedico","NO");
+
+                    if(!valutazione.equals("NO") && !valoreMin.equals("NO") && !valoreMin.equals("NO") && !valoreMax.equals("NO")
+                    && !valore.equals("NO") && !data.equals("NO") && !tipo.equals("NO") && !notaMedico.equals("NO")){
+                        //se ho preso correttamente tutti i dati dalla shared preferences della misurazione
+                        //memorizzo la misurazione sul db
+                        CompletableFuture<String> future = Dao.storeMisuration(new Misurazione(AccessUser.getUsername(),valutazione,Double.parseDouble(valore),Double.parseDouble(valoreMax),Double.parseDouble(valoreMin),new Timestamp(new Date(Long.parseLong(data)*1000)), TipoMisurazioneEnum.valueOf(tipo),notaMedico),getApplicationContext());
+                        future.thenAccept(result -> {
+                            runOnUiThread(() -> {
+                                //quando ho memorizzato la misurazione mostro l'esito della computazione
+                                Toast.makeText(getApplicationContext(),getString(R.string.misurationStoredDB), Toast.LENGTH_LONG).show();
+                            });});
+                    }
                 }
             });
             super.onAvailable(network);
