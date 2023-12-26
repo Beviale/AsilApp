@@ -96,7 +96,6 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
      * EditText contenente le note del medico
      */
     EditText doctorNotesLastRecordHealthHistory;
-
     /**
      * ProgressBar da mostrare per il caricamento dei dati dal database relativi all'ultima misurazione.
      */
@@ -127,8 +126,17 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
      * Indica se il fragment è stato aperto con l'account dottore.
      */
     private static Boolean openDoctor=false;
+    /**
+     * Request code per la modifica delle valutazione [Account dottore]
+     */
     private static final Integer REQUEST_CODE_EDIT_EVALUTATION=1;
+    /**
+     * Request code per la modifica delle note [Account dottore]
+     */
     private static final Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=2;
+    /**
+     * Consente lo "swipe-to-refresh" dei dati.
+     */
     SwipeRefreshLayout swipereFreshLayoutDetailHealthHistory;
 
 
@@ -298,7 +306,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
 
     /**
-     * Apre il dialog dei condivisione dei dati.
+     * Apre il dialog di condivisione dei dati.
      * Contiene varie checkbox che permettono all'utente di selezionare singolarmente gli elementi da condividere.
      */
     private void showCheckboxDialogForSharePrivacy() {
@@ -411,7 +419,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     }
 
     /**
-     * Prende dal database tutti i dati relativi all'ultima misurazione e inizializza di conseguenza i widget appositi.
+     * Prende dal database tutti i dati relativi all'ultima misurazione e inizializza di conseguenza le view apposite.
      */
     private void getData() {
         homeActivityProgressBar.setVisibility(View.VISIBLE);
@@ -461,8 +469,8 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
 
     /**
-     * Prende dal database tutti i dati reltivi alle misurazioni precedenti che sono dello stesso tipo rispetto a quella mostrata in dettaglio nel fragment.
-     * Per ogni misurazioni precedente trovata, crea dinamicamente delle view.
+     * Prende dal database tutti i dati relativi alle misurazioni precedenti che sono della stessa categoria rispetto a quella mostrata in dettaglio nel fragment.
+     * Per ogni misurazione precedente trovata, crea dinamicamente delle view.
      */
     @SuppressLint("RestrictedApi")
     private void getOldData()

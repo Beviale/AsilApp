@@ -16,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -58,7 +59,7 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
 
     @Override
     public void onStart() {
-
+        getEvalutation();
         //-------------LISTENER----------------
         ratingEvaluate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -66,7 +67,7 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
                 valueRatingEvaluate.setText(String.valueOf(rating));
             }
         });
-       save.setOnClickListener(v->saveOnDatabase());
+        save.setOnClickListener(v->saveOnDatabase());
         super.onStart();
     }
 
@@ -85,6 +86,23 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
                 getDialog().dismiss();
             });
         });
+    }
 
+
+    private void getEvalutation()
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        layoutEvalutateFragment.setAlpha((float)0.5);
+        CompletableFuture<Map<String, ?>> future = Dao.getArticleValutazione(id, AccessUser.getUsername(), getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.GONE);
+                layoutEvalutateFragment.setAlpha((float)1.0);
+                if(result.get("esito").toString().equals(getString(R.string.getArticleValuationSuccessfull)))
+                {
+                    ratingEvaluate.setRating(Float.valueOf(result.get("valutazione").toString()));
+                }
+            });
+        });
     }
 }

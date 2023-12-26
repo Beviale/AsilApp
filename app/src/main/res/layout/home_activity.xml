@@ -52,11 +52,12 @@
         <TextView
             android:id="@+id/textBannerOnePendingMisuration"
             android:layout_width="match_parent"
-            android:text="@string/bannerOnePendingMisuration"
+            android:layout_height="30dp"
             android:background="@color/red"
             android:padding="5dp"
+            android:text="@string/bannerOnePendingMisuration"
             android:textColor="@color/white"
-            android:layout_height="30dp"/>
+            android:visibility="gone" />
 
 
         <androidx.fragment.app.FragmentContainerView

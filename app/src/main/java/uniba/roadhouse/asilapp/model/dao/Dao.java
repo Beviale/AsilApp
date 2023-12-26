@@ -1478,17 +1478,25 @@ public class Dao {
      * l'esito della computazione e "CIBO" che è una List<Spesa> indicante la liste delle spese sul cibo effettuate
      * l'esito della computazione e "FARMACI" che è una List<Spesa> indicante la liste delle spese sui farmaci effettuate
      * l'esito della computazione e "ALTRO" che è una List<Spesa> indicante la liste delle spese altro effettuate
-     * @param username
-     * @param context
+     * @param username, username dell'utente
+     * @param days, giorni da inserire nella query al database. Se uguale a -1, implica la restituzione di tutte le spese effettuate fino ad ora.
+     * @param context, contesto.
      * @return
      */
     public static CompletableFuture<Map<String,?>> getAllSpese(String username, int days, Context context){
         return CompletableFuture.supplyAsync(()->{
             Calendar cal=Calendar.getInstance();
             cal.add(Calendar.DATE,-days);
+            Task<QuerySnapshot> query = null;
+            if(days==-1)
+            {
+                query = db.collection("spese").whereEqualTo("username",username).get();
+            }
+            else
+            {
+                query = db.collection("spese").whereEqualTo("username",username).whereGreaterThan("data", new Timestamp(cal.getTime())).get();
+            }
 
-            //prendole spese dell'utente specifico e di una categoria specifica negli ultimi <days> giorni
-            Task<QuerySnapshot> query = db.collection("spese").whereEqualTo("username",username).whereGreaterThan("data", new Timestamp(cal.getTime())).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }

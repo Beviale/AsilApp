@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -45,7 +47,6 @@ public class BluetoothConnectionThread extends Thread {
     private String computation="";
     private Fragment currentFragment;
     private boolean continueReading=true;
-
     public BluetoothConnectionThread(BluetoothDevice device, Context activityContext, Fragment currentFragmentHealth) throws IOException {
         // Use a temporary object that is later assigned to mmSocket
         // because mmSocket is final.
@@ -134,7 +135,7 @@ public class BluetoothConnectionThread extends Thread {
     }
 
     /**
-     * Metodo che memorizza a misurazione effettuata nel db
+     * Metodo che memorizza la misurazione effettuata nel db, oppure nelle Shared Preferences se non c'è connessione (Misurazione pendente)
      * @param misurazione
      * @param parametro
      */
@@ -155,6 +156,8 @@ public class BluetoothConnectionThread extends Thread {
                     })
                     .setPositiveButton(context.getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            TextView bannerPendingMisuration = currentFragment.getActivity().findViewById(R.id.textBannerOnePendingMisuration);
+                            bannerPendingMisuration.setVisibility(View.VISIBLE);
                             //memorizzo lmisurazione localmente
                             SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();

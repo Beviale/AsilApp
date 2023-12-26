@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         if (!Utility.isConnectedToInternet(this)) {
             Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
+        verifyPendingMisuration();
     }
 
 
@@ -230,6 +231,10 @@ public class HomeActivity extends AppCompatActivity {
                         CompletableFuture<String> future = Dao.storeMisuration(new Misurazione(AccessUser.getUsername(),valutazione,Double.parseDouble(valore),Double.parseDouble(valoreMax),Double.parseDouble(valoreMin),new Timestamp(new Date(Long.parseLong(data)*1000)), TipoMisurazioneEnum.valueOf(tipo),notaMedico),getApplicationContext());
                         future.thenAccept(result -> {
                             runOnUiThread(() -> {
+                                textBannerOnePendingMisuration.setVisibility(View.GONE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.remove("valutazione");
+                                editor.apply();
                                 //quando ho memorizzato la misurazione mostro l'esito della computazione
                                 Toast.makeText(getApplicationContext(),getString(R.string.misurationStoredDB), Toast.LENGTH_LONG).show();
                             });});
@@ -276,6 +281,20 @@ public class HomeActivity extends AppCompatActivity {
     private void openDialogOnePendingRequest()
     {
         Utility.showAlertDialog(this, getString(R.string.onePendingRequestInfoTitle), getString(R.string.onePendingRequestInfo));
+    }
+
+    /**
+     * Se vi è una misurazione pendente, attiva il relativo banner.
+     */
+    private void verifyPendingMisuration()
+    {
+        SharedPreferences sharedPref = getSharedPreferences("misurazione", MODE_PRIVATE);
+        String valutazione = sharedPref.getString("valutazione","NO");
+        if(!(valutazione.equals("NO")))
+        {
+            textBannerOnePendingMisuration.setVisibility(View.VISIBLE);
+        }
+
     }
 
 }

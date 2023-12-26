@@ -35,14 +35,22 @@ import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Articolo;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
-
+/**
+ * Schermata che contiene tutti gli articoli presenti nel database.
+ */
 public class AllTipsFragment extends Fragment {
 
     /**
      * Layout contenente i vari articoli.
      */
     LinearLayout layoutAllTips;
+    /**
+     * Layout relativo all'intero fragment.
+     */
     ConstraintLayout layoutAllTipsFragment;
+    /**
+     * ProgressBar da mostrare durante il caricamento degli articoli dal database.
+     */
     ProgressBar progressBar;
 
 
@@ -133,7 +141,7 @@ public class AllTipsFragment extends Fragment {
                         card.setElevation(100);
                         layoutAllTips.addView(card);
 
-                        // Immagine dell'articolo
+                        // Creo l'immagine dell'articolo
                         ImageView imageFirstCard = new ImageView(requireContext());
                         imageFirstCard.setId(View.generateViewId());
                         imageFirstCard.setImageBitmap(articolo.getImmagine());
@@ -180,9 +188,13 @@ public class AllTipsFragment extends Fragment {
 
             });
         });
-
     }
 
+
+    /**
+     * Apre il fragment "DetailTipsFragment".
+     * @param id, id dell'articolo da aprire.
+     */
     private void openDetailTips(Integer id)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

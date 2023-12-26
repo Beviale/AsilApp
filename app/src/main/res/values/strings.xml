@@ -226,6 +226,8 @@
     <string name="emptyHealthHistory">Non ci sono rilevazioni precedenti</string>
     <string name="insertArticleEvalutationFailed">Errore nell\'invio della valutazione dell\'articolo</string>
     <string name="insertArticleEvalutationSuccessfull">Valutazione inviata correttamente</string>
+    <string name="getArticlesValuationFailed">Errore nel caricamento della valutazione</string>
+    <string name="getArticleValuationSuccessfull">Valutazione caricata correttamente</string>
 
 
 

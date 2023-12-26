@@ -267,7 +267,7 @@ public class HomeFragment extends Fragment {
     {
         progressBarChartHome.setVisibility(View.VISIBLE);
         frameLayoutChartHome.setAlpha((float)0.5);
-        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), 7, getActivity());
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), -1, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBarChartHome.setVisibility(View.GONE);
