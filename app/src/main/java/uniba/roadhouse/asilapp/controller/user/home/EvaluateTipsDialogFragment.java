@@ -14,15 +14,22 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.Dao;
 
 public class EvaluateTipsDialogFragment extends DialogFragment {
 
     RatingBar ratingEvaluate;
     TextView valueRatingEvaluate;
     Button save;
+    private static Integer id;
 
-    public static EvaluateTipsDialogFragment newInstance() {
+    public static EvaluateTipsDialogFragment newInstance(Integer idAdd) {
+        id=idAdd;
         return new EvaluateTipsDialogFragment();
     }
 
@@ -58,18 +65,21 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
                 valueRatingEvaluate.setText(String.valueOf(rating));
             }
         });
-       save.setOnClickListener(v->savePreferences());
+       save.setOnClickListener(v->saveOnDatabase());
 
 
         super.onStart();
     }
 
-    private void savePreferences()
+    private void saveOnDatabase()
     {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.commit();
-        Toast.makeText(getActivity(), getString(R.string.successfullySendEvalutation), Toast.LENGTH_SHORT).show();
-        dismiss();
+        CompletableFuture<String> future = Dao.storeArticoleValutazione(id, AccessUser.getUsername(), Float.valueOf(valueRatingEvaluate.getText().toString()), getActivity()) ;
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                getDialog().dismiss();
+            });
+        });
+
     }
 }

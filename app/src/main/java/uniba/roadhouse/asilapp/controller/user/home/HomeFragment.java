@@ -119,8 +119,6 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         //-------------------------LISTENER----------------
         arrowToOutgoingsFragment.setOnClickListener(V->openOutgoingsFragment());
-        firstTips.setOnClickListener(v->openDetailTips("nutritional"));
-        secondTips.setOnClickListener(v->openDetailTips("wellness"));
         policeNumberImage.setOnClickListener(v->call(policeNumberValue.getText().toString()));
         unhcrNumberImage.setOnClickListener(v->call(unhcrNumbervalue.getText().toString()));
         commissionNumberImage.setOnClickListener(v->call(commissionNumberValue.getText().toString()));
@@ -215,11 +213,13 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void openDetailTips(String category)
+    private void openDetailTips(Integer id)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, null);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
+        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, bundle);
         fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
         fragmentTransaction.commit();
 
@@ -248,9 +248,12 @@ public class HomeFragment extends Fragment {
                     Articolo firstArticle = articles.get(0);
                     titleFirstArticle.setText(firstArticle.getTitolo());
                     imageFirstArticle.setImageBitmap(firstArticle.getImmagine());
+                    firstTips.setOnClickListener(v->openDetailTips(firstArticle.getId()));
                     Articolo secondArticle = articles.get(1);
                     titleSecondArticle.setText(secondArticle.getTitolo());
                     imageSecondArticle.setImageBitmap(secondArticle.getImmagine());
+                    secondTips.setOnClickListener(v->openDetailTips(secondArticle.getId()));
+
                 }
                 else
                 {

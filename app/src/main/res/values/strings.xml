@@ -224,6 +224,9 @@
     <string name="emptyTime">ORA NON INSERITA</string>
     <string name="emptyMyPathologies">Non ci sono patologie attualmente registrate</string>
     <string name="emptyHealthHistory">Non ci sono rilevazioni precedenti</string>
+    <string name="insertArticleEvalutationFailed">Errore nell\'invio della valutazione dell\'articolo</string>
+    <string name="insertArticleEvalutationSuccessfull">Valutazione inviata correttamente</string>
+
 
 
     <!--SETTINGS-->

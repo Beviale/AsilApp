@@ -121,7 +121,7 @@ public class AllTipsFragment extends Fragment {
                         // Creo la card
                         ConstraintLayout card = new ConstraintLayout(requireContext());
                         Utility.activeAnimationOnClick(getActivity(), card);
-                        card.setOnClickListener(v->openDetailTips(articolo.getId());
+                        card.setOnClickListener(v->openDetailTips(articolo.getId()));
                         card.setId(View.generateViewId());
                         LinearLayout.LayoutParams layoutParamsCard = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,

@@ -10,6 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/layoutDetailTipsFragment"
         android:layout_height="wrap_content">
 
         <TextView
@@ -22,18 +23,17 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:fontFamily="@font/titillium_web_bold"
             android:textSize="25dp"
-            android:text="Come mangiare senza morire di fame"
+            android:text="@string/iAmLoading"
             android:layout_height="100dp"/>
 
         <ImageView
             android:id="@+id/imageDetailTips"
-            android:padding="10dp"
             android:layout_width="match_parent"
-            android:src="@drawable/nutrition"
+            android:layout_height="150dp"
             android:layout_marginTop="100dp"
+            android:padding="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="150dp"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textDetailTips"
@@ -43,7 +43,7 @@
             android:background="@drawable/rounded_cards"
             android:elevation="30dp"
             android:padding="10dp"
-            android:text="Lorem Ipsum è un te0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layou0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layou0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layou0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layou0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layou0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layou0dp (weight): Quando si utilizza il sistema di pesi (weight) in un layout, è possibile impostare l'altezza di una vista su 0dp, e il peso assegnato determinerà la dimensione relativa della vista rispetto alle altre viste nello stesso layousto segnaposto utilizzato nel settore della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione. È sopravvissuto non solo a più di cinque secoli, ma anche al passaggio alla videoimpaginazione, pervenendoci sostanzialmente inalterato. Fu reso popolare, negli anni ’60, con la diffusione dei fogli di caratteri trasferibili “Letraset”, che contenevano passaggi del Lorem Ipsum, e più recentemente da software di impaginazione come Aldus PageMaker, che includeva versioni del Lorem Ipsum."
+            android:text="@string/iAmLoading"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-16dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>

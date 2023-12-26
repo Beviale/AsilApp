@@ -1390,7 +1390,7 @@ public class Dao {
         });
     }
 
-    public static CompletableFuture<String> storeArticoleValutazione(Integer idArticolo, String username, Integer valutazione, Context context){
+    public static CompletableFuture<String> storeArticoleValutazione(Integer idArticolo, String username, Float valutazione, Context context){
         return CompletableFuture.supplyAsync(()->{
             Map<String,?> val=new HashMap<String,Object>(){{
                 put("valutazione",valutazione);
@@ -1405,10 +1405,10 @@ public class Dao {
             }
 
             if(!query.isSuccessful()){
-                return context.getString(R.string.insertArticleValuationFailed);
+                return context.getString(R.string.insertArticleEvalutationFailed);
             }
 
-            return context.getString(R.string.insertArticleValuationSuccessfull);
+            return context.getString(R.string.insertArticleEvalutationSuccessfull);
         });
     }
 
