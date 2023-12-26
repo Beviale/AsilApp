@@ -228,6 +228,9 @@
     <string name="insertArticleEvalutationSuccessfull">Valutazione inviata correttamente</string>
     <string name="getArticlesValuationFailed">Errore nel caricamento della valutazione</string>
     <string name="getArticleValuationSuccessfull">Valutazione caricata correttamente</string>
+    <string name="getArticlesValuationNoValuation">Nessuna valutazione</string>
+    <string name="getLatLongFailed">Si è verificato un errore nel caricamento della latitudine e della longitudine</string>
+    <string name="getLatLongSuccessfull">Latitudine e longitudine caricati correttamente</string>
 
 
 

@@ -25,14 +25,33 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Articolo;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
-
+/**
+ * Schermata che consente la visualizzazione di un articolo.
+ */
 public class DetailTipsFragment extends Fragment {
-
+    /**
+     * Titolo dell'articolo.
+     */
     TextView titleDetailTips;
+    /**
+     * Testo dell'articolo.
+     */
     TextView textDetailTips;
+    /**
+     * ProgressBar da mostrare durante il caricamento dell'articolo dal database.
+     */
     ProgressBar progressBar;
+    /**
+     * Layout dell'intero fragment.
+     */
     ConstraintLayout layoutDetailTipsFragment;
+    /**
+     * Immagine dell'articolo.
+     */
     ImageView imageDetailTips;
+    /**
+     * Identificativo dell'articolo.
+     */
     private Integer id;
 
 
@@ -108,6 +127,7 @@ public class DetailTipsFragment extends Fragment {
                 }
                 if(item.getItemId() == R.id.evaluateDetailTips)
                 {
+                    // Apro il DialogFragment di valutazione.
                     EvaluateTipsDialogFragment dialogFragment = EvaluateTipsDialogFragment.newInstance(id);
                     dialogFragment.show(getActivity().getSupportFragmentManager(), "EvaluateFragment");
                 }
@@ -123,6 +143,9 @@ public class DetailTipsFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Carica dal database tutti i dati relativi all'articolo.
+     */
     private void getData()
     {
         progressBar.setVisibility(View.VISIBLE);
@@ -146,7 +169,5 @@ public class DetailTipsFragment extends Fragment {
 
             });
         });
-
-
     }
 }

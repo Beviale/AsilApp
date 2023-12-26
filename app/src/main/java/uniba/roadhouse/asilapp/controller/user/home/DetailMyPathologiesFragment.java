@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -23,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Handler;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -64,38 +62,94 @@ import uniba.roadhouse.asilapp.model.dao.Farmaco;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link DetailMyPathologiesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Schermata di dettaglio di una patologia. Può essere aperta sia tramite account utente che account dottore.
  */
 public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDialogFragment.closeListenerAddDrugs, EditPriorityDialogFragment.closeListenerEditPriority, EditDoctorNotesDialogFragment.closeEditDoctorNotes {
+    /**
+     * Titolo della schermata. Indica il nome della patologia.
+     */
     TextView detailMyPathologiesTitle;
+    /**
+     * ScrollView dell'intera schermata.
+     */
     ScrollView scrollView;
+    /**
+     * Data dell'ultima visita associata alla patologia.
+     */
     TextView dateLastVisitMyPathologies;
+    /**
+     * Ora dell'ultima visita associata alla patologia.
+     */
     TextView timeLastVisitMyPathologies;
+    /**
+     * Priorità assegnata dal medico alla patologia.
+     */
     TextView priorityLastVisitMyPathologies;
-
+    /**
+     * Note assegnate dal medico per la patologia.
+     */
     EditText doctorNotesLastVisitMyPahologies;
+    /**
+     * Icona di condivisione dati.
+     */
     ImageView shareDetailMyPathologies;
+    /**
+     * Icona di modifica della data di ultima visita [Account dottore]
+     */
     ImageView editButtonMyPathologiesDate;
+    /**
+     * Icona di modifica dell'ora relativa all'ultima visita [Account dottore]
+     */
     ImageView editButtonMyPathologiesTime;
+    /**
+     * Icona di modifica della priorità della patologia [Account dottore]
+     */
     ImageView editButtonMyPahologiesPriority;
+    /**
+     * Icona di modifica delle note del medico associate alla patologia [Account dottore]
+     */
     ImageView editButtonMyPathologiesDoctorNotes;
+    /**
+     * Button che permette l'aggiunta di un farmaco [Account dottore]
+     */
     Button addDrugsMyPathologies;
+    /**
+     * Layout relativa ai farmaci associati alla patologia.
+     */
     LinearLayout linearLayoutDrugs;
-
+    /**
+     * ProgressBar da mostrare durante il caricamento dei dati dal database.
+     */
     ProgressBar progressBar;
+    /**
+     * Layout dell'intero fragment.
+     */
     ConstraintLayout layoutMyPathologies;
-    HashMap<View, String> mappaViewNomeFarmaco;
-    HashMap<View, String> mappaViewNotaFarmaco;
+    /**
+     * Le chavi sono le view dei farmaci mentre i valori i rispettivi nomi.
+     */
+    HashMap<View, String> mapViewDrugName;
+    /**
+     * Le chiavi sono le view dei farmaci mentre i valori le rispettive note del medico.
+     */
+    HashMap<View, String> mapViewDoctorNotes;
 
 
     /**
      * Nome della patologia passata in input al fragment.
      */
     private static String namePathology;
+    /**
+     * Request code per il DialogFragment di aggiunta farmaco.
+     */
     private final static Integer REQUEST_CODE_ADD_DRUGS=1;
+    /**
+     * Request code per il DialogFragment di modifica della priorità.
+     */
     private final static Integer REQUEST_CODE_EDIT_PRIORITY=2;
+    /**
+     * Request code per il DialogFragment di modifica delle note del medico.
+     */
     private final static Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=3;
 
 
@@ -103,16 +157,18 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
     /**
      * Indica se il fragment è stato avviato dopo l'eliminazione di un farmaco.
      */
-    Boolean deleteDrugs=false;
+    private static Boolean deleteDrugs=false;
     /**
      * Indica se il fragment è stato avviato con un account dottore oppure no.
      */
-    Boolean openDoctor=false;
+    private static Boolean openDoctor=false;
     /**
-     * Indica se il fragment è stato avviato con la condivisione.
+     * Indica se il fragment è stato avviato per la condivisione dei dati.
      */
-    Boolean share=false;
-
+    private static Boolean share=false;
+    /**
+     * Indica la view del farmaco cliccata dall'utente tramite menu contestuale.
+     */
     private static View drugsClicked;
 
 
@@ -123,8 +179,6 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
 
     public static DetailMyPathologiesFragment newInstance(String param1, String param2) {
         DetailMyPathologiesFragment fragment = new DetailMyPathologiesFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -159,7 +213,6 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
         dateLastVisitMyPathologies = view.findViewById(R.id.dateLastVisitMyPathologies);
         detailMyPathologiesTitle = view.findViewById(R.id.detailMyPathologiesTitle);
         priorityLastVisitMyPathologies = view.findViewById(R.id.priorityLastVisitMyPathologies);
-        Utility.enableScroll(doctorNotesLastVisitMyPahologies);
         shareDetailMyPathologies = view.findViewById(R.id.shareDetailMyPathologies);
         editButtonMyPathologiesDate = view.findViewById(R.id.editButtonMyPathologiesDate);
         editButtonMyPathologiesTime = view.findViewById(R.id.editButtonMyPathologiesTime);
@@ -183,12 +236,13 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
         }
 
 
-        // Attivo la condivisione se il fragment è stato aperto con il menu contestuale relativo alla condivisione.
+
+        Utility.enableScroll(doctorNotesLastVisitMyPahologies);
+        // Attivo la condivisione se il fragment è stato aperto per la condivisione dei dati.
         if(share==true)
         {
             showCheckboxDialogForSharePrivacy();
         }
-
         getData();
         getDrugsData(false);
     }
@@ -214,8 +268,6 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
                 showCheckboxDialogForSharePrivacy();
             }
         });
-
-
         editButtonMyPathologiesDoctorNotes.setOnClickListener(v->openEditDoctorNotes());
         editButtonMyPathologiesDate.setOnClickListener(v->openEditDate());
         editButtonMyPathologiesTime.setOnClickListener(v->openEditTime());
@@ -239,6 +291,7 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
                 }
             });
         }
+        // Se il fragment è stato aperto con l'account dottore, permetto l'eliminazione della patologia tramite action overflow.
         if(openDoctor==true)
         {
             Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
@@ -298,12 +351,21 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
         super.onResume();
     }
 
+    @Override
+    public void onPause() {
+        progressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
 
+
+    /**
+     * Mostra la finestra di dialogo per la condivisione dei dati relativi alla patologia.
+     * Permette all'utente/dottore di selezionare singolarmente gli elementi da condivididere.
+     */
     private void showCheckboxDialogForSharePrivacy() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleShare);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.checkbox_dialog_pathologies, null);
-
         CheckBox checkBoxDate = view.findViewById(R.id.dialogShareDetailPathologiesDate);
         CheckBox checkBoxTime = view.findViewById(R.id.dialogShareDetailPathologiesTime);
         CheckBox checkBoxPriority = view.findViewById(R.id.dialogShareDetailPathologiesPriority);
@@ -370,12 +432,9 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
         alertDialog.show();
     }
 
-    @Override
-    public void onPause() {
-        progressBar.setVisibility(View.GONE);
-        super.onPause();
-    }
-
+    /**
+     * Apre il DialogFragment relativo alla modifica delle note del medico [Account dottore]
+     */
     private void openEditDoctorNotes()
     {
         EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstancePathology(AccessUser.getUsername(), namePathology);
@@ -384,6 +443,10 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     }
 
+
+    /**
+     * Permette la modifica della data dell'ultima visita mediante un DatePickerDialog [Account Dottore]
+     */
     private void openEditDate() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
         Calendar currentDate = Calendar.getInstance();
@@ -394,13 +457,13 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 selectedDate.set(year, month, dayOfMonth);
                 Utility.clearTime(selectedDate);
                 Utility.clearTime(currentDate);
+                // Se la data inserita è posteriore a quella attuale, mostro un errore con una finestra di dialogo.
                 if (selectedDate.after(currentDate)) {
                     Utility.showAlertDialog(getActivity(), getString(R.string.futureCalendarErrorTitle), getString(R.string.futureCalendarError));
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 String newDate = dateFormat.format(selectedDate.getTime());
-
                 CompletableFuture<String> future = Dao.editPatologyDate(AccessUser.getUsername(), namePathology, newDate, getActivity());
                 future.thenAccept(result -> {
                     getActivity().runOnUiThread(() -> {
@@ -416,7 +479,9 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
 
 
-
+    /**
+     * Permette la modifica dell'orario dell'ultima visita mediante un TimePickerDialog [Account Dottore]
+     */
     private void openEditTime()
     {
         Calendar c = Calendar.getInstance();
@@ -446,6 +511,9 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     }
 
 
+    /**
+     * Apre il DialogFragment relativo alla modifica della priorità della patologia.
+     */
     private void editPriority()
     {
         EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance(AccessUser.getUsername(), namePathology);
@@ -455,6 +523,9 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     }
 
 
+    /**
+     * Apre il DialogFragment relativo all'aggiunta di un nuovo farmaco associato alla patologia.
+     */
     private void addDrugs()
     {
        AddDrugsDialogFragment addDrugsDialogFragment = AddDrugsDialogFragment.newInstance(namePathology);
@@ -463,7 +534,9 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     }
 
-
+    /**
+     * Prende del database tutti i dati relativi alla patologia e setta tutte le varie View.
+     */
     private void getData()
     {
         progressBar.setVisibility(View.VISIBLE);
@@ -498,9 +571,13 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 }
             });
         });
-
     }
 
+
+    /**
+     * Prende dal database tutti i dati relativi ai farmaci creando delle View dinamicamente.
+     * @param scroll, se true, la scrollview del fragment deve essere automaticamente portata in basso.
+     */
     @SuppressLint("RestrictedApi")
     private void getDrugsData(Boolean scroll)
     {
@@ -518,15 +595,15 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 else
                 {
                     ArrayList<Farmaco> farmaci = (ArrayList<Farmaco>)result.get("farmaci");
-                    mappaViewNomeFarmaco = new HashMap<View, String>();
-                    mappaViewNotaFarmaco = new HashMap<View, String>();
+                    mapViewDrugName = new HashMap<View, String>();
+                    mapViewDoctorNotes = new HashMap<View, String>();
                     for(Farmaco farmaco: farmaci)
                     {
                         // Creo il constraintLayout
                         ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
                         registerForContextMenu(constraintLayout);
-                        mappaViewNomeFarmaco.put(constraintLayout, farmaco.getNome());
-                        mappaViewNotaFarmaco.put(constraintLayout, farmaco.getNota());
+                        mapViewDrugName.put(constraintLayout, farmaco.getNome());
+                        mapViewDoctorNotes.put(constraintLayout, farmaco.getNota());
                         Utility.activeAnimationOnClick(getActivity(), constraintLayout);
                         constraintLayout.setId(View.generateViewId());
                         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -581,6 +658,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                         constraintSetNote.applyTo(constraintLayout);
                     }
                 }
+                // Porto la scrollview del fragment in basso.
                 if(scroll==true)
                 {
                     scrollView.post(new Runnable() {
@@ -593,15 +671,16 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
             });
         });
-
     }
 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();
         drugsClicked = v;
+        // Con l'account utente è possibile esclusivamente condividere i dati della patologia.
         if(openDoctor==false)
             inflater.inflate(R.menu.share_menu, menu);
+        // Con l'account dottore è possibile sia condividere i dati che eliminare la patologia.
         if(openDoctor==true)
             inflater.inflate(R.menu.share_and_delete_menu, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -617,7 +696,6 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
 
-            // Set the dialog title and message
             builder.setTitle(getString(R.string.deleteMessageTitle))
                     .setMessage(getString(R.string.deleteMessage))
                     .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -628,7 +706,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                     .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             progressBar.setVisibility(View.VISIBLE);
-                            CompletableFuture<String> future = Dao.deleteFarmaco(AccessUser.getUsername(), namePathology, mappaViewNomeFarmaco.get(drugsClicked).toString(), getActivity());
+                            CompletableFuture<String> future = Dao.deleteFarmaco(AccessUser.getUsername(), namePathology, mapViewDrugName.get(drugsClicked).toString(), getActivity());
                             future.thenAccept(result -> {
                                 getActivity().runOnUiThread(() -> {
                                     progressBar.setVisibility(View.INVISIBLE);
@@ -646,9 +724,6 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
                         }
                     });
-
-
-            // Create and show the AlertDialog
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
@@ -658,7 +733,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
 
     /**
-     * Comportamento del tasto back quando il fragment è stato aperto con l'account dottore.
+     * Comportamento del tasto back quando il fragment viene aperto con l'account dottore.
      */
     private OnBackPressedCallback onBackPressedCallbackDoctor = new OnBackPressedCallback(true) {
         @Override
@@ -673,29 +748,41 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     };
 
 
+    /**
+     * Si attiva alla chiusura del DialogFragment di aggiunta farmaco.
+     */
     @Override
     public void closeAddDrugs() {
         linearLayoutDrugs.removeAllViews();
         getDrugsData(true);
     }
 
-
+    /**
+     * Consente la condivisione dei dati di un singolo famrmaco associato alla patologia.
+     */
     private  void openShareDrugs()
     {
         String share="";
-        share = getString(R.string.nameAddDrugPlaceholder).concat(": ").concat(mappaViewNomeFarmaco.get(drugsClicked).toString().concat("\n"));
-        share = share.concat(getString(R.string.noteAddDrugPlaceholder)).concat(": ").concat(mappaViewNotaFarmaco.get(drugsClicked).toString());
+        share = getString(R.string.nameAddDrugPlaceholder).concat(": ").concat(mapViewDrugName.get(drugsClicked).toString().concat("\n"));
+        share = share.concat(getString(R.string.noteAddDrugPlaceholder)).concat(": ").concat(mapViewDoctorNotes.get(drugsClicked).toString());
         Intent intent = new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(android.content.Intent.EXTRA_TEXT, share);
         startActivity(intent);
     }
 
+
+    /**
+     * Si attiva alla chiusura del DialogFragment relativo alla modifica della priorità della patologia.
+     */
     @Override
     public void closeEditPriority() {
         getData();
     }
 
+    /**
+     * Si attiva alla chiusura del DialogFragment relativo alla modifica delle note del medico associate alla patologia.
+     */
     @Override
     public void closeEditDoctorNotes() {
         getData();

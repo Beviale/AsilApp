@@ -31,11 +31,12 @@ import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 /**
- * Fragment che consente di visualizzare le ultime registrazioni dei vari parametri.
+ * Fragment che consente di visualizzare le ultime misurazioni delle varie categorie.
+ * Può essere aperto sia con l'account utente che dottore.
  */
 public class HealthHistoryFragment extends Fragment {
 
-    // Cliccabili dall'utente
+    // Cliccabili dall'utente/dottore
     /**
      * View cliccabile relativa alla temperatura corporea.
      */
@@ -131,10 +132,6 @@ public class HealthHistoryFragment extends Fragment {
      * Valore registrato per il glucosio.
      */
     TextView resultGlucose;
-    /**
-     * Indica se il fragment è stato aperto da un account dottore o meno.
-     */
-    private static Boolean openDoctor=false;
 
 
 
@@ -164,6 +161,11 @@ public class HealthHistoryFragment extends Fragment {
      */
     private int idGlucose;
 
+    /**
+     * Indica se il fragment è stato aperto da un account dottore o meno.
+     */
+    private static Boolean openDoctor=false;
+
 
 
 
@@ -172,7 +174,6 @@ public class HealthHistoryFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
     public static HealthHistoryFragment newInstance(String param1, String param2) {
         HealthHistoryFragment fragment = new HealthHistoryFragment();
         return fragment;
@@ -290,6 +291,7 @@ public class HealthHistoryFragment extends Fragment {
         super.onResume();
     }
 
+
     /**
      * Apre il fragment relativo alla singola misurazione.
      * @param id, identificativo della misurazione da visualizzare.
@@ -321,7 +323,6 @@ public class HealthHistoryFragment extends Fragment {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.replace(R.id.doctorFragmentView, DetailHealthHistoryFragment.class, bundle);
                     fragmentTransaction.commit();
-
                 }
             });
         });
@@ -330,7 +331,7 @@ public class HealthHistoryFragment extends Fragment {
 
 
     /**
-     * Acquisice dal database i dati di tutte le ultime misurazioni e compila le view apposite.
+     * Carica dal database i dati di tutte le ultime misurazioni e compila le view apposite.
      */
     private void getData()
     {
@@ -428,6 +429,9 @@ public class HealthHistoryFragment extends Fragment {
     }
 
 
+    /**
+     * Il menu contestuale consente la condivisione di una misurazione. E' valido sia per l'account utente che dottore.
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
@@ -436,6 +440,8 @@ public class HealthHistoryFragment extends Fragment {
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.share_menu, menu);
     }
+
+
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {

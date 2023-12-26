@@ -59,6 +59,7 @@ import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
 /**
  * Fragment che permette la visualizzazione in dettaglio dell'ultima misurazione di un determinato parametro,
+ * Può essere aperto sia tramite account utente che dottore.
  */
 public class DetailHealthHistoryFragment extends Fragment implements EditEvalutationDialogFragment.closeListenerEditEvalutation, EditDoctorNotesDialogFragment.closeEditDoctorNotes {
     // Da inizializzare con in valori presenti nel database
@@ -162,7 +163,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
      */
     private static String itemClickedString;
     /**
-     * Rappresenta la view cliccata dall'utente con il menu contestuale.
+     * Rappresenta la view di una vecchia misurazione cliccata dall'utente con il menu contestuale.
      */
     private static View itemOldClicked;
     /**
@@ -236,6 +237,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
         evalutationLastRecordHealthHistory = view.findViewById(R.id.evalutationLastRecordHealthHistory);
         editButtonHealthHistoryEvalutation = view.findViewById(R.id.editButtonHealthHistoryEvalutation);
         editButtonHealthHistoryDoctorNotes = view.findViewById(R.id.editButtonHealthHistoryDoctorNotes);
+        // Se il fragment è stato aperto con l'account dottore, attivo i pulsanti di modifica dei dati.
         if(openDoctor==true)
         {
             editButtonHealthHistoryEvalutation.setVisibility((View.VISIBLE));
@@ -273,33 +275,25 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
     @Override
     public void onResume() {
+        Toolbar toolbar = null;
         if(openDoctor==false)
         {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-            toolbar.getMenu().clear();
-            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().onBackPressed();
-
-                }
-            });
+             toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         }
 
         if(openDoctor==true)
         {
-            Toolbar toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
-            toolbar.getMenu().clear();
-            toolbar.getMenu().clear();
-            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().onBackPressed();
-                }
-            });
+            toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
         }
+        toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+
+            }
+        });
 
         super.onResume();
     }
@@ -356,8 +350,6 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
         );
 
 
-
-
         builder.setView(view)
                 .setTitle(getString(R.string.titleShareDialogPrivacy))
                 .setPositiveButton(getString(R.string.share), new DialogInterface.OnClickListener() {
@@ -397,23 +389,23 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
     /**
      * Dato un TipoMisurazioneEnunm restituisce l'unità di misura ad esso associato.
-     * @param itemClicked, TipoMisurazioneEnum da cui ricavare l'unità di misura.
+     * @param tipoMisurazioneEnum, TipoMisurazioneEnum da cui ricavare l'unità di misura.
      * @return unità di misura.
      */
-    private String getUnity(TipoMisurazioneEnum itemClicked)
+    private String getUnity(TipoMisurazioneEnum tipoMisurazioneEnum)
     {
         String unity = new String();
-        if(itemClicked.equals(TipoMisurazioneEnum.TEMPERATURA))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.TEMPERATURA))
             unity=getString(R.string.unityTemperature);
-        if(itemClicked.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
             unity=getString(R.string.unityBloodPressure);
-        if(itemClicked.equals(TipoMisurazioneEnum.PESO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.PESO))
             unity=getString(R.string.unityWeight);
-        if(itemClicked.equals(TipoMisurazioneEnum.BATTITOCARDIACO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.BATTITOCARDIACO))
             unity=getString(R.string.unityBPM);
-        if(itemClicked.equals(TipoMisurazioneEnum.TREMOLIO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.TREMOLIO))
             unity=getString(R.string.unityTrembling);
-        if(itemClicked.equals(TipoMisurazioneEnum.GLUCOSIO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.GLUCOSIO))
             unity=getString(R.string.unityGlucose);
         return unity;
     }
@@ -488,7 +480,8 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                 }
                  List<Misurazione> misurazioni = (List<Misurazione>)result.get("misurazioni");
                  Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
-                 if(misurazioni.size()==1)
+                // Se la dimensione è pari a 1, significa che non ci sono misurazioni precedenti a quella mostrata in dettaglio nel fragment.
+                if(misurazioni.size()==1)
                  {
                     TextView emptyOldHealthHistory = new TextView(getActivity());
                     emptyOldHealthHistory.setText(getString(R.string.emptyHealthHistory));
@@ -503,13 +496,14 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                 Boolean flagFirst=true;
                  for(Misurazione misurazione: misurazioni)
                  {
-                     // Se è la prima misurazione, la salto.
+                     // Se è la prima misurazione, la salto in quanto è quella mostrata in dettaglio nel fragment.
                     if(flagFirst==true)
                      {
                          flagFirst=false;
                          continue;
                      }
 
+                    // Creo la textView relativa alla data di rilevazione
                      TextView textViewDate = new TextView(getActivity());
                      SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
                      String date = dateFormat.format(misurazione.getData().toDate());
@@ -528,6 +522,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                      textViewDate.setVisibility(View.VISIBLE);
                      layoutOldHealthHistory.addView(textViewDate);
 
+                     // Creo la linea che separa la data dalla card
                      View viewline = new View(getActivity());
                      viewline.setId(View.generateViewId());
                      LinearLayout.LayoutParams paramsViewLine = new LinearLayout.LayoutParams(
@@ -540,7 +535,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                      viewline.setVisibility(View.VISIBLE);
                      layoutOldHealthHistory.addView(viewline);
 
-
+                    // Creo la card
                      ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
                      registerForContextMenu(constraintLayout);
                      mappaViewIdMisurazioneOld.put(constraintLayout, misurazione.getId());
@@ -563,6 +558,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                      // Attivo l'animazione al click
                      Utility.activeAnimationOnClick(getActivity(), constraintLayout);
 
+                     // Creo il titolo della misurazione
                      TextView textViewTitle = new TextView(getActivity());
                      textViewTitle.setText(Utility.convertTipoMisurazioneEnumToString(misurazione.getTipo(), getActivity()));
                      textViewTitle.setId(View.generateViewId());
@@ -582,6 +578,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                      constraintSet.applyTo(constraintLayout);
 
 
+                     // Creo il valore registrato.
                      TextView textViewValue = new TextView(getActivity());
                      textViewValue.setId(View.generateViewId());
                      ConstraintLayout.LayoutParams paramsValue = new ConstraintLayout.LayoutParams(
@@ -598,13 +595,10 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                      constraintSetValue.connect(textViewValue.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, (int) dpToPx(getContext(), 10));
                      constraintSetValue.applyTo(constraintLayout);
 
-
                      if(!misurazione.getTipo().equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
                      {
                          textViewValue.setText(String.valueOf((int)(Math.round((misurazione.getValore())))));
                          textViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultHealthHistory));
-
-
                      }
                      else
                      {
@@ -612,7 +606,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                          textViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultBloodPressureHealthHistory));
                      }
 
-
+                     // Creo l'unità di misura
                      TextView textViewUnity = new TextView(getActivity());
                      textViewUnity.setText(getUnity(misurazione.getTipo()));
                      textViewUnity.setId(View.generateViewId());
@@ -633,6 +627,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
 
 
+                     // Creo il label di valutazione
                      TextView evalutationLabel = new TextView(getActivity());
                      evalutationLabel.setText(getString(R.string.evalutationHealthHistoryLabel));
                      evalutationLabel.setId(View.generateViewId());
@@ -652,6 +647,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                      constraintSetEvalutationLabel.applyTo(constraintLayout);
 
 
+                     // Creo la valutazione inserita dal medico.
                      TextView evalutation = new TextView(getActivity());
                      evalutation.setText(misurazione.getValutazione());
                      evalutation.setId(View.generateViewId());
@@ -703,6 +699,9 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     }
 
 
+    /**
+     * Apre il DialogFragment per la modifica della valutazione [Account dottore]
+     */
     private void openDialogEditEvalutation()
     {
         EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance(Integer.valueOf(idLastRecordHealthHistory.getText().toString()));
@@ -711,6 +710,9 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
     }
 
+    /**
+     * Apre il DialogFragment per la modifica della nota del medico [Account dottore]
+     */
     private void openDialogEditDoctorNotes()
     {
         EditDoctorNotesDialogFragment editDoctorNotesDialogFragment =EditDoctorNotesDialogFragment.newInstanceHealthHistory(Integer.valueOf(idLastRecordHealthHistory.getText().toString()));
@@ -736,7 +738,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
 
     /**
-     * Comportamento del tasto back quando il fragment è stato aperto con l'account dottore.
+     * Comportamento del tasto back quando il fragment viene aperto con l'account dottore.
      */
     private OnBackPressedCallback onBackPressedCallbackDoctor = new OnBackPressedCallback(true) {
         @Override
@@ -751,12 +753,17 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     };
 
 
-
+    /**
+     * Si attiva quando viene chiuso il DialogFragment di modifica della valutazione.
+     */
     @Override
     public void closeEditEvalutation() {
         getData();
     }
 
+    /**
+     * Si attiva quando viene chiuso il DialogFragment di modifica della nota del medico.
+     */
     @Override
     public void closeEditDoctorNotes() {
         getData();

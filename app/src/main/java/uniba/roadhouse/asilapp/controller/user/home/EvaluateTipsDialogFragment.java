@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -20,16 +21,37 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
+/**
+ * DialogFragment che consente all'utente di inviare una valutazione di un articolo.
+ */
 public class EvaluateTipsDialogFragment extends DialogFragment {
-
+    /**
+     * RatingBar che consente all'utente di esprimere la valutazione in maniera user-friendly.
+     */
     RatingBar ratingEvaluate;
+    /**
+     * Contiene la valutazione inserita dall'utente espressa sottoforma numerica.
+     */
     TextView valueRatingEvaluate;
+    /**
+     * Button che consente il salvataggio della valutazione inserita.
+     */
     Button save;
+    /**
+     * ProgressBar da mostrare durante l'esecuzione delle query del database.
+     */
     ProgressBar progressBar;
+    /**
+     * Layout dell'intero DialogFragment.
+     */
     ConstraintLayout layoutEvalutateFragment;
+    /**
+     * Id dell'articolo da valutare.
+     */
     private static Integer id;
 
     public static EvaluateTipsDialogFragment newInstance(Integer idAdd) {
@@ -59,7 +81,6 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
 
     @Override
     public void onStart() {
-        getEvalutation();
         //-------------LISTENER----------------
         ratingEvaluate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -68,11 +89,14 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
             }
         });
         save.setOnClickListener(v->saveOnDatabase());
+        getEvalutation();
         super.onStart();
     }
 
 
-
+    /**
+     * Salva nel database la valutazione inserita.
+     */
     private void saveOnDatabase()
     {
         progressBar.setVisibility(View.VISIBLE);
@@ -89,6 +113,10 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
     }
 
 
+    /**
+     * Prende dal database la valutazione inserita precedentemente dall'utente e la imposta alla ratingbar.
+     * Se non è stata inserita nessuna valutazione, la ratingbar viene impostata di default a 0.
+     */
     private void getEvalutation()
     {
         progressBar.setVisibility(View.VISIBLE);
@@ -101,6 +129,10 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
                 if(result.get("esito").toString().equals(getString(R.string.getArticleValuationSuccessfull)))
                 {
                     ratingEvaluate.setRating(Float.valueOf(result.get("valutazione").toString()));
+                }
+                if(result.get("esito").toString().equals(getString(R.string.getArticlesValuationNoValuation)))
+                {
+                    ratingEvaluate.setRating((float)0.0);
                 }
             });
         });

@@ -77,15 +77,14 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
     /**
      * ProgressBar da mostrare durante il caricamento dei dati dal database.
      */
-
     ProgressBar homeActivityProgressBar;
     /**
-     * layout da oscurare durante il caricamento dei dati dal database.
+     * Layout dell'intero fragment.
      */
     ConstraintLayout layoutOldHealthHistory;
 
     /**
-     * identificativo della misurazione da mostrare.
+     * Identificativo della misurazione da mostrare.
      */
     private static Integer id;
 
@@ -108,8 +107,14 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
      */
    private static Boolean openDoctor=false;
 
+    /**
+     * Request code per il DialogFragment relativo alla modifica della valutazione.
+     */
    private static final Integer REQUEST_CODE_EDIT_EVALUTATION=1;
-    private static final Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=2;
+    /**
+     * Request code per il DialogFragment relativo alla modifica delle note del medico.
+     */
+   private static final Integer REQUEST_CODE_EDIT_DOCTOR_NOTES=2;
 
 
 
@@ -124,11 +129,6 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
     }
 
 
-    /**
-     * Prende dal fragmente precedente l'identificativo della misurazione da mostrare.
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,7 +156,6 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
         valueLastRecordHealthHistoryOld = view.findViewById(R.id.valueLastRecordHealthHistoryOld);
         evalutationRecordHealthHistoryOld = view.findViewById(R.id.evalutationRecordHealthHistoryOld);
         doctorNotesRecordHealthHistoryOld = view.findViewById(R.id.doctorNotesRecordHealthHistoryOld);
-        Utility.enableScroll(doctorNotesRecordHealthHistoryOld);
         layoutOldHealthHistory = view.findViewById(R.id.layoutOldHealthHistory);
         if(openDoctor==false)
         {
@@ -169,10 +168,15 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
         shareDetailHealthHistoryOld = view.findViewById(R.id.shareDetailHealthHistoryOld);
         editButtonHealthHistoryOldEvalutation = view.findViewById(R.id.editButtonHealthHistoryOldEvalutation);
         editButtonHealthHistoryOldDoctorNotes = view.findViewById(R.id.editButtonHealthHistoryOldDoctorNotes);
+
+
+
+        Utility.enableScroll(doctorNotesRecordHealthHistoryOld);
         if(share==true)
         {
             showCheckboxDialogForSharePrivacy();
         }
+        // Se il fragment è stato aperto con un account dottore, rendo visibili i bottoni di modifica della valutazione e delle note.
         if(openDoctor==true)
         {
             editButtonHealthHistoryOldEvalutation.setVisibility(View.VISIBLE);
@@ -191,47 +195,37 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
     }
 
     @Override
+    public void onResume() {
+        Toolbar toolbar = null;
+        if(openDoctor==false)
+        {
+            toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
+        }
+        if(openDoctor==true)
+        {
+             toolbar = (Toolbar) getActivity().findViewById(R.id.toolbarDoctorActivity);
+        }
+        toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+
+            }
+        });
+        super.onResume();
+    }
+
+    @Override
     public void onPause() {
         homeActivityProgressBar.setVisibility(View.GONE);
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        if(openDoctor==false)
-        {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
-            toolbar.getMenu().clear();
-            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().onBackPressed();
-
-                }
-            });
-        }
-        if(openDoctor==true)
-        {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbarDoctorActivity);
-            toolbar.getMenu().clear();
-            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back_png));
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().onBackPressed();
-
-                }
-            });
-
-        }
-
-        super.onResume();
-    }
-
 
     /**
-     * Apre il dialog dei condivisione dei dati.
+     * Apre il dialog di condivisione dei dati.
      * Contiene varie checkbox che permettono all'utente di selezionare singolarmente gli elementi da condividere.
      */
     private void showCheckboxDialogForSharePrivacy() {
@@ -288,7 +282,7 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
 
 
     /**
-     * Prende dal database tutti i dati relativi alla misurazione.
+     * Carica dal database tutti i dati relativi alla misurazione rimpiendo le View apposite.
      */
     private void getData()
     {
@@ -335,35 +329,41 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
 
     /**
      * Dato un TipoMisurazioneEnunm restituisce l'unità di misura ad esso associato.
-     * @param itemClicked, TipoMisurazioneEnum da cui ricavare l'unità di misura.
+     * @param tipoMisurazioneEnum, TipoMisurazioneEnum da cui ricavare l'unità di misura.
      * @return unità di misura.
      */
-    private String getUnity(TipoMisurazioneEnum itemClicked)
+    private String getUnity(TipoMisurazioneEnum tipoMisurazioneEnum)
     {
         String unity = new String();
-        if(itemClicked.equals(TipoMisurazioneEnum.TEMPERATURA))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.TEMPERATURA))
             unity=getString(R.string.unityTemperature);
-        if(itemClicked.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
             unity=getString(R.string.unityBloodPressure);
-        if(itemClicked.equals(TipoMisurazioneEnum.PESO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.PESO))
             unity=getString(R.string.unityWeight);
-        if(itemClicked.equals(TipoMisurazioneEnum.BATTITOCARDIACO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.BATTITOCARDIACO))
             unity=getString(R.string.unityBPM);
-        if(itemClicked.equals(TipoMisurazioneEnum.TREMOLIO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.TREMOLIO))
             unity=getString(R.string.unityTrembling);
-        if(itemClicked.equals(TipoMisurazioneEnum.GLUCOSIO))
+        if(tipoMisurazioneEnum.equals(TipoMisurazioneEnum.GLUCOSIO))
             unity=getString(R.string.unityGlucose);
         return unity;
     }
 
+
+    /**
+     * Apre il DialogFragment relativo alla modifica della valutazione.
+     */
     private void openDialogEditEvalutation()
     {
         EditEvalutationDialogFragment editEvalutationDialogFragment = EditEvalutationDialogFragment.newInstance(Integer.valueOf(idRecordHealthHistoryOld.getText().toString()));
         editEvalutationDialogFragment.show(getActivity().getSupportFragmentManager(), "EditEvalutationDialogFragment");
         editEvalutationDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_EVALUTATION);
-
     }
 
+    /**
+     * Apre il DialogFragment relativo alla modifica delle note del medico.
+     */
     private void openDialogEditDoctorNotes()
     {
         EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstanceHealthHistory(Integer.valueOf(idRecordHealthHistoryOld.getText().toString()));
@@ -373,11 +373,18 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
 
     }
 
+
+    /**
+     * Si attiva quando il DialogFragment relativo alla modifica delle note del medico viene chiuso.
+     */
     @Override
     public void closeEditDoctorNotes() {
         getData();
     }
 
+    /**
+     * Si attiva quando il DialogFragment realativo alla modifica della valutazione viene chiuso.
+     */
     @Override
     public void closeEditEvalutation() {
         getData();
