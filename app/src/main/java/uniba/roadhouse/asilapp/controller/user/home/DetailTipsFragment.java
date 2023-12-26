@@ -22,6 +22,9 @@ public class DetailTipsFragment extends Fragment {
     TextView titleDetailTips;
     TextView textDetailTips;
     String type;
+    private static String title;
+    private static String text;
+    private static String image;
 
 
 
@@ -41,7 +44,7 @@ public class DetailTipsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         if (getArguments() != null) {
-            type = getArguments().getString("type");
+
         }
         super.onCreate(savedInstanceState);
     }
@@ -89,9 +92,8 @@ public class DetailTipsFragment extends Fragment {
                 }
                 if(item.getItemId() == R.id.evaluateDetailTips)
                 {
-                    EvaluateTipsDialogFragment dialogFragment = EvaluateTipsDialogFragment.newInstance(type);
+                    EvaluateTipsDialogFragment dialogFragment = EvaluateTipsDialogFragment.newInstance();
                     dialogFragment.show(getActivity().getSupportFragmentManager(), "EvaluateFragment");
-
                 }
                 return true;
             }

@@ -5,14 +5,14 @@ import android.graphics.Bitmap;
 public class Articolo {
     private String titolo;
     private String testo;
-    private String tipo;
     private Bitmap immagine;
+    private Integer id;
 
-    public Articolo(String titolo, String testo, String tipo, Bitmap immagine) {
+    public Articolo(Integer id, String titolo, String testo, Bitmap immagine) {
         this.titolo = titolo;
         this.testo = testo;
-        this.tipo = tipo;
         this.immagine = immagine;
+        this.id=id;
     }
 
     public String getTitolo() {
@@ -31,19 +31,18 @@ public class Articolo {
         this.testo = testo;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public Bitmap getImmagine() {
         return immagine;
     }
 
     public void setImmagine(Bitmap immagine) {
         this.immagine = immagine;
+    }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

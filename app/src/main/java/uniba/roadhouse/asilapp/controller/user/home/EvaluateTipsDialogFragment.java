@@ -20,11 +20,9 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
 
     RatingBar ratingEvaluate;
     TextView valueRatingEvaluate;
-    private static String type;
     Button save;
 
-    public static EvaluateTipsDialogFragment newInstance(String typeNewInstance) {
-        type = typeNewInstance;
+    public static EvaluateTipsDialogFragment newInstance() {
         return new EvaluateTipsDialogFragment();
     }
 
@@ -45,8 +43,6 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
 
         // Recupero la valutazione dell'app se già precedentemente memorizzata.
         SharedPreferences sh = getActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
-        Float ratingSharedPref = sh.getFloat("rating".concat(type), (float)0);
-        ratingEvaluate.setRating(ratingSharedPref);
         valueRatingEvaluate.setText(String.valueOf(ratingEvaluate.getRating()));
         super.onViewCreated(view, savedInstanceState);
     }
@@ -72,7 +68,6 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
     {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.putFloat("rating".concat(type), ratingEvaluate.getRating());
         myEdit.commit();
         Toast.makeText(getActivity(), getString(R.string.successfullySendEvalutation), Toast.LENGTH_SHORT).show();
         dismiss();

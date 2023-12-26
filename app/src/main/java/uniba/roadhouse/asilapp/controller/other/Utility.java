@@ -25,12 +25,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.CompoundButtonCompat;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -235,6 +242,45 @@ public class Utility
     public static UUID getAppUUID(Context context){
         ParcelUuid pd=new ParcelUuid(UUID.nameUUIDFromBytes(context.getResources().getString(R.string.bluetoothBoxName).getBytes()));
         return pd.getUuid();
+    }
+
+
+    /**
+     * Avvalora un piechart relativo alla spese dell'utente.
+     * @param pieChart, PieChart da avvalorare.
+     * @param foodPercent, percentuale del cibo.
+     * @param drugsPercent, percentuale dei farmaci.
+     * @param otherPercent, percentuale di altro.
+     * @param context, contesto.
+     */
+    public static void setPieChartOutgoings(PieChart pieChart, Float foodPercent, Float drugsPercent, Float otherPercent, Context context)
+    {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        if(drugsPercent>0)
+        {
+            entries.add(new PieEntry(drugsPercent, context.getString(R.string.drugs)));
+        }
+        if(foodPercent>0)
+        {
+            entries.add(new PieEntry(foodPercent, context.getString(R.string.food)));
+        }
+        if(otherPercent>0)
+        {
+            entries.add(new PieEntry(otherPercent, context.getString(R.string.other)));
+        }
+        Description desc = new Description();
+        desc.setText("");
+        pieChart.setDescription(desc);
+        pieChart.setUsePercentValues(true);
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setValueTextSize((float)15);
+        dataSet.setValueTextColor(context.getResources().getColor(R.color.white));
+        dataSet.setColors(context.getResources().getColor(R.color.drugsColor), context.getResources().getColor(R.color.foodColor), context.getResources().getColor(R.color.otherColor));
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setRotationEnabled(false);
+        pieChart.setData(data);
+        pieChart.invalidate();
     }
 
 }

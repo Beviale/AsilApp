@@ -83,6 +83,7 @@
 
     <!-- AllTipsFragment-->
     <dimen name="marginAllTipsFragment">20dp</dimen>
+    <dimen name="marginBetweenArticles">20dp</dimen>
 
 
 

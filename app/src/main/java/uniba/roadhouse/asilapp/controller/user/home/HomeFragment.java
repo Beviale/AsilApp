@@ -189,35 +189,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void setPieChartOutgoings(PieChart pieChart, Float foodPercent, Float drugsPercent, Float otherPercent)
-    {
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        if(drugsPercent>0)
-        {
-            entries.add(new PieEntry(drugsPercent, getString(R.string.drugs)));
-        }
-        if(foodPercent>0)
-        {
-            entries.add(new PieEntry(foodPercent, getString(R.string.food)));
-        }
-        if(otherPercent>0)
-        {
-            entries.add(new PieEntry(otherPercent, getString(R.string.other)));
-        }
-        Description desc = new Description();
-        desc.setText("");
-        pieChart.setDescription(desc);
-        pieChart.setUsePercentValues(true);
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setValueTextSize((float)15);
-        dataSet.setValueTextColor(getResources().getColor(R.color.white));
-        dataSet.setColors(getResources().getColor(R.color.drugsColor), getResources().getColor(R.color.foodColor), getResources().getColor(R.color.otherColor));
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter(pieChart));
-        pieChart.setRotationEnabled(false);
-        pieChart.setData(data);
-        pieChart.invalidate();
-    }
 
 
     private void openOutgoingsFragment()
@@ -248,9 +219,7 @@ public class HomeFragment extends Fragment {
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putString("type", category);
-        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, bundle);
+        fragmentTransaction.replace(R.id.homeContainerView, DetailTipsFragment.class, null);
         fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
         fragmentTransaction.commit();
 
@@ -325,7 +294,7 @@ public class HomeFragment extends Fragment {
                     Double foodPercent = (totalFood/total) * 100;
                     Double drugsPercent = (totalDrugs/total) * 100;
                     Double otherPercent = (totalOther/total) * 100;
-                    setPieChartOutgoings(foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue());
+                    Utility.setPieChartOutgoings(pieChart, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
                 }
                 else
                 {

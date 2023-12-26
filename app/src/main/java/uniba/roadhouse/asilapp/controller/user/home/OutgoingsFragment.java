@@ -17,14 +17,17 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -42,6 +45,15 @@ public class OutgoingsFragment extends Fragment {
     TextInputEditText valueOutgoings;
     ConstraintLayout layoutOutgoinsFragment;
     ProgressBar progressBar;
+    PieChart pieChartLast7Days;
+    TextView valueFood7DaysMoney;
+    TextView valueDrugs7DaysMoney;
+    TextView valueOther7DaysMoney;
+    PieChart pieChartLast30Days;
+    TextView valueFood30DaysMoney;
+    TextView valueDrugs30DaysMoney;
+    TextView valueOther30DaysMoney;
+
     private static float MAX_VALUE=5000;
     private static float MIN_VALUE=(float)0.5;
 
@@ -82,6 +94,14 @@ public class OutgoingsFragment extends Fragment {
         progressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
         valueOutgoings = view.findViewById(R.id.valueOutgoings);
         addOutgoingButton = view.findViewById(R.id.addOutgoingButton);
+        pieChartLast7Days = view.findViewById(R.id.pieChartLast7Days);
+        valueFood7DaysMoney = view.findViewById(R.id.valueFood7DaysMoney);
+        valueDrugs7DaysMoney = view.findViewById(R.id.valueDrugs7DaysMoney);
+        valueOther7DaysMoney = view.findViewById(R.id.valueOther7DaysMoney);
+        pieChartLast30Days = view.findViewById(R.id.pieChartLast30Days);
+        valueFood30DaysMoney = view.findViewById(R.id.valueFood30DaysMoney);
+        valueDrugs30DaysMoney = view.findViewById(R.id.valueDrugs30DaysMoney);
+        valueOther30DaysMoney = view.findViewById(R.id.valueOther30DaysMoney);
         // Aggiungo i TextWatcher
         categorySelectionOutgoings.addTextChangedListener(textWatcherCategory);
         valueOutgoings.addTextChangedListener(textWacherValue);
@@ -98,6 +118,8 @@ public class OutgoingsFragment extends Fragment {
         //----------LISTENER--------------------
         addOutgoingButton.setOnClickListener(v->addOutgoing());
         super.onStart();
+        getLast7Days();
+        getLast30Days();
     }
 
     @Override
@@ -215,6 +237,8 @@ public class OutgoingsFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 layoutOutgoinsFragment.setAlpha((float)1.0);
                 Toast.makeText(getActivity(), result.toString(), Toast.LENGTH_LONG).show();
+                getLast7Days();
+                getLast30Days();
             });
         });
     }
@@ -236,5 +260,101 @@ public class OutgoingsFragment extends Fragment {
         {
             return CategoriaSpesaEnum.ALTRO;
         }
+    }
+
+
+    private void getLast7Days()
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        layoutOutgoinsFragment.setAlpha((float)0.5);
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), 7, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.GONE);
+                layoutOutgoinsFragment.setAlpha((float)1.0);
+                if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
+                {
+                    List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                    List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                    List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                    Double totalFood=0.0;
+                    Double totalDrugs=0.0;
+                    Double totalOther=0.0;
+                    Double total=0.0;
+                    for(Spesa spesa: speseCibo)
+                    {
+                        totalFood = totalFood + spesa.getCosto();
+                    }
+                    for(Spesa spesa: speseFarmaci)
+                    {
+                        totalDrugs = totalFood + spesa.getCosto();
+                    }
+                    for(Spesa spesa: speseAltro)
+                    {
+                        totalOther = totalFood + spesa.getCosto();
+                    }
+                    valueFood7DaysMoney.setText(String.valueOf(totalFood.floatValue()));
+                    valueDrugs7DaysMoney.setText(String.valueOf(totalDrugs.floatValue()));
+                    valueOther7DaysMoney.setText(String.valueOf(totalOther.floatValue()));
+                    total = totalFood + totalDrugs + totalOther;
+                    Double foodPercent = (totalFood/total) * 100;
+                    Double drugsPercent = (totalDrugs/total) * 100;
+                    Double otherPercent = (totalOther/total) * 100;
+                    Utility.setPieChartOutgoings(pieChartLast7Days, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+    }
+    private void getLast30Days()
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        layoutOutgoinsFragment.setAlpha((float)0.5);
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), 30, getActivity());
+        future.thenAccept(result -> {
+            getActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.GONE);
+                layoutOutgoinsFragment.setAlpha((float)1.0);
+                if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
+                {
+                    List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                    List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                    List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                    Double totalFood=0.0;
+                    Double totalDrugs=0.0;
+                    Double totalOther=0.0;
+                    Double total=0.0;
+                    for(Spesa spesa: speseCibo)
+                    {
+                        totalFood = totalFood + spesa.getCosto();
+                    }
+                    for(Spesa spesa: speseFarmaci)
+                    {
+                        totalDrugs = totalFood + spesa.getCosto();
+                    }
+                    for(Spesa spesa: speseAltro)
+                    {
+                        totalOther = totalFood + spesa.getCosto();
+                    }
+                    valueFood30DaysMoney.setText(String.valueOf(totalFood.floatValue()));
+                    valueDrugs30DaysMoney.setText(String.valueOf(totalDrugs.floatValue()));
+                    valueOther30DaysMoney.setText(String.valueOf(totalOther.floatValue()));
+                    total = totalFood + totalDrugs + totalOther;
+                    Double foodPercent = (totalFood/total) * 100;
+                    Double drugsPercent = (totalDrugs/total) * 100;
+                    Double otherPercent = (totalOther/total) * 100;
+                    Utility.setPieChartOutgoings(pieChartLast30Days, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
     }
 }
