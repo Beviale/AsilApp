@@ -1363,7 +1363,7 @@ public class Dao {
     public static CompletableFuture<Map<String,?>> getFirst2Articles(Context context){
         return CompletableFuture.supplyAsync(()->{
 
-            Task<QuerySnapshot> query = db.collection("articoli").get();
+            Task<QuerySnapshot> query = db.collection("articoli").limit(2).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
             }
@@ -1375,7 +1375,6 @@ public class Dao {
 
             List<Articolo> articles=new ArrayList<>();
 
-            int count=0;
             for (QueryDocumentSnapshot document:query.getResult()){
                 Bitmap immagine=Utility.StringToBitMap(document.getString("immagine"));
                 articles.add(new Articolo(
@@ -1384,8 +1383,6 @@ public class Dao {
                         document.getString("tipo"),
                         immagine
                 ));
-                count++;
-                if (count==2){break;}
             }
 
             return new HashMap<String,Object>(){{
