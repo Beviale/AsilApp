@@ -1445,9 +1445,9 @@ public class Dao {
 
             return new HashMap<String,Object>(){{
                 put("esito",context.getString(R.string.getSpeseSuccessfull));
-                put("CIBO",speseCibo);
-                put("FARMACI",speseFarmaci);
-                put("ALTRO",speseAltro);
+                put(CategoriaSpesaEnum.CIBO.toString(),speseCibo);
+                put(CategoriaSpesaEnum.FARMACI.toString(),speseFarmaci);
+                put(CategoriaSpesaEnum.ALTRO.toString(),speseAltro);
             }};
         });
     }

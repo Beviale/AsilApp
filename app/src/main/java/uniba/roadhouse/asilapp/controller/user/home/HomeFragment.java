@@ -39,10 +39,12 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.CategoriaSpesaEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Articolo;
 import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.Spesa;
 
 
 public class HomeFragment extends Fragment {
@@ -56,6 +58,8 @@ public class HomeFragment extends Fragment {
     PieChart pieChart;
     ConstraintLayout firstTips;
     ConstraintLayout secondTips;
+    ImageView imageFirstArticle;
+    ImageView imageSecondArticle;
     SwipeRefreshLayout swipeRefreshLayoutHomeFragment;
     ImageView policeNumberImage;
     TextView policeNumberValue;
@@ -91,6 +95,8 @@ public class HomeFragment extends Fragment {
         policeNumberValue = view.findViewById(R.id.policeNumberValue);
         unhcrNumberImage = view.findViewById(R.id.unhcrNumberImage);
         unhcrNumbervalue = view.findViewById(R.id.unchrNumberValue);
+        imageFirstArticle = view.findViewById(R.id.imageFirstArticle);
+        imageSecondArticle = view.findViewById(R.id.imageSecondArticle);
         arrowToAllTipsFragment = view.findViewById(R.id.arrowToAllTipsFragment);
         commissionNumberImage = view.findViewById(R.id.commissionNumberImage);
         titleFirstArticle = view.findViewById(R.id.titleFirstArticle);
@@ -262,8 +268,10 @@ public class HomeFragment extends Fragment {
                     ArrayList<Articolo> articles = (ArrayList<Articolo>) result.get("articles");
                     Articolo firstArticle = articles.get(0);
                     titleFirstArticle.setText(firstArticle.getTitolo());
+                    imageFirstArticle.setImageBitmap(firstArticle.getImmagine());
                     Articolo secondArticle = articles.get(1);
                     titleSecondArticle.setText(secondArticle.getTitolo());
+                    imageSecondArticle.setImageBitmap(secondArticle.getImmagine());
                 }
                 else
                 {
@@ -277,11 +285,24 @@ public class HomeFragment extends Fragment {
     {
         progressBarChartHome.setVisibility(View.VISIBLE);
         frameLayoutChartHome.setAlpha((float)0.5);
-        CompletableFuture<Map<String,?>> future = Dao.getFirst2Articles(getActivity());
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), 7, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBarChartHome.setVisibility(View.GONE);
                 frameLayoutChartHome.setAlpha((float)1.0);
+                if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
+                {
+                    List<Spesa> spesaCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                    List<Spesa> spesaFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                    List<Spesa> spesaAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                    
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }
+
+
 
             });
         });
