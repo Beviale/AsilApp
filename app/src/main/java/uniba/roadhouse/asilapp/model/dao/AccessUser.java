@@ -7,7 +7,6 @@ public class AccessUser
 {
     private static String username;
     private static String nome;
-    private static String tipo;
     private static String tipoAsiloProtezione;
 
     public static String getUsername()
@@ -19,14 +18,6 @@ public class AccessUser
     public static void setUsername(String usernameAdd)
     {
         username=usernameAdd;
-    }
-
-    public static String getTipo() {
-        return tipo;
-    }
-
-    public static void setTipo(String tipo) {
-        AccessUser.tipo = tipo;
     }
 
     public static String getTipoAsiloProtezione() {

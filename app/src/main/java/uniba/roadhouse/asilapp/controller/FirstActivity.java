@@ -16,6 +16,7 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
+import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
@@ -61,18 +62,18 @@ public class FirstActivity extends AppCompatActivity {
         // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
         if(verifyLogged.get("username")!="")
         {
-            AccessUser.setUsername(verifyLogged.get("username"));
-            AccessUser.setNome(verifyLogged.get("nome"));
-            AccessUser.setTipo(verifyLogged.get("tipo"));
             //vedo se l'utente loggato è un utente o dottore
-            if(verifyLogged.get("tipo")=="UTENTE"){
+            if(verifyLogged.get("tipo").equals("UTENTE")){
                 //se è un utente memorizzo il tipo di utente che è "asilo" o "protezione" e lo mando alla home
                 AccessUser.setTipoAsiloProtezione(verifyLogged.get("tipoAsiloProtezione"));
+                AccessUser.setUsername(verifyLogged.get("username"));
+                AccessUser.setNome(verifyLogged.get("nome"));
                 Intent openHome = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(openHome);
             }else{
                 //se èun dottore lo mando alla schermata di login del dottore, passandogli come parametro nell'extra un logged true
                 //in questo modo la activity di login poterà immediatamente l'utente alla home del dottore
+                AccessDoctor.setUsername(verifyLogged.get("username"));
                 Intent openHome = new Intent(getApplicationContext(), DoctorActivity.class);
                 openHome.putExtra("logged",true);
                 startActivity(openHome);
