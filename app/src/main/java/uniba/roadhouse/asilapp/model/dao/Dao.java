@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import androidx.annotation.IntegerRes;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -1340,11 +1342,11 @@ public class Dao {
             for (QueryDocumentSnapshot document:query.getResult()){
                 Bitmap immagine=Utility.StringToBitMap(document.getString("immagine"));
                 articles.add(new Articolo(
+                        Integer.parseInt(document.getId()),
                         document.getString("titolo"),
                         document.getString("testo"),
                         document.getString("tipo"),
-                        immagine
-                ));
+                        immagine));
             }
 
             return new HashMap<String,Object>(){{
@@ -1378,6 +1380,7 @@ public class Dao {
             for (QueryDocumentSnapshot document:query.getResult()){
                 Bitmap immagine=Utility.StringToBitMap(document.getString("immagine"));
                 articles.add(new Articolo(
+                        Integer.parseInt(document.getId()),
                         document.getString("titolo"),
                         document.getString("testo"),
                         document.getString("tipo"),

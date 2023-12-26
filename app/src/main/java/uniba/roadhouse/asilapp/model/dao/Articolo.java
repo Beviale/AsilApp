@@ -7,12 +7,21 @@ public class Articolo {
     private String testo;
     private Bitmap immagine;
     private Integer id;
+    private String tipo;
 
-    public Articolo(Integer id, String titolo, String testo, Bitmap immagine) {
+    public Articolo(Integer id, String titolo, String testo, String tipo, Bitmap immagine) {
         this.titolo = titolo;
         this.testo = testo;
         this.immagine = immagine;
         this.id=id;
+        this.tipo=tipo;
+    }
+
+    public Articolo(String titolo, String testo, String tipo, Bitmap immagine) {
+        this.titolo = titolo;
+        this.testo = testo;
+        this.immagine = immagine;
+        this.tipo=tipo;
     }
 
     public String getTitolo() {
@@ -44,5 +53,9 @@ public class Articolo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
     }
 }
