@@ -217,7 +217,6 @@
     <string name="emptyHealthHistory">Non ci sono rilevazioni precedenti</string>
 
 
-
     <!--SETTINGS-->
     <string name="settingsUpperCase">IMPOSTAZIONI</string>
     <string name="editProfileTitle">Modifica profilo</string>
@@ -238,8 +237,6 @@
     <string name="pendingMisurationRequest">Attualmente non risulti connesso ad una rete Internet. Se puoi collegarti ad una rete WIFI o mobile, fallo, altrimenti, puoi comunque effettuare una (e una sola) misurazione che verrà memorizzata momentaneamente sul dispositivo; non appena avrai la connessione attiva, questa verrà inviata al server.</string>
     <string name="negativeButtonPendingMisurationRequest">Connetti ad una rete</string>
     <string name="positiveButtonPendingMisurationRequest">Misurazione offline</string>
-
-
 
 
     <!--USER PROFILE-->
@@ -340,6 +337,8 @@
     <string name="onePendingRequestInfoTitle">Hai una misurazione pendente!</string>
     <string name="onePendingRequestInfo">Hai effettuato una misurazione offline e ora risulta pendente, per inviarla al server si prega di connettersi al più presto ad una rete Internet.</string>
 
+    <!-- AllTipsFragment-->
+    <string name="allTips">Tutti gli articoli</string>
 
 
 </resources>

@@ -17,9 +17,14 @@ import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.home.HealthHistoryFragment;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 
+/**
+ * Activity relativa all'account dottore. Viene aperta quando, da FirstActivity, si seleziona l'accesso come account dottore.
+ */
 public class DoctorActivity extends AppCompatActivity {
+    /**
+     * Icona dell'app situata nella toolbar.
+     */
     ImageView toolBarIconDoctorActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +35,12 @@ public class DoctorActivity extends AppCompatActivity {
         // Renndo di colore blu la StatusBar.
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
-        // Se non c'è connessione, rendo visibile l'icona di connessione assente e mostro il dialog all'utente.
+        // Se non c'è connessione, mostro il dialog all'utente.
         if (!Utility.isConnectedToInternet(this)) {
             Utility.showAlertDialog(this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
         toolBarIconDoctorActivity = findViewById(R.id.toolBarIconDoctorActivity);
         openSigningFragment();
-        if (!Utility.isConnectedToInternet(this)) {
-            Utility.showAlertDialog(DoctorActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-        }
     }
 
 
@@ -48,6 +50,9 @@ public class DoctorActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    /**
+     * Apre il fragment di login per l'account dottore (SigninDoctorFragment).
+     */
     private void openSigningFragment()
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -56,6 +61,9 @@ public class DoctorActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     * Apre il fragment "HomeDoctorFragment" se il fragment attuale non è quello di login (SinginDoctorFragment).
+     */
     private void openHomeFragment()
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -66,9 +74,5 @@ public class DoctorActivity extends AppCompatActivity {
             fragmentTransaction.commit();
         }
     }
-
-
-
-
 
 }

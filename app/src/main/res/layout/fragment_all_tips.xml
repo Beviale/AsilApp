@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".controller.user.home.AllTipsFragment">
+
+    <TextView
+        android:id="@+id/titleAllTipsFragment"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/titillium_web_bold"
+        android:textSize="@dimen/title2FontSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/marginLeftOutgoings"
+        android:text="@string/allTips"
+        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"/>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAllTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/marginAllTipsFragment"
+        android:layout_marginRight="@dimen/marginAllTipsFragment"
+        app:layout_constraintTop_toBottomOf="@+id/titleAllTipsFragment"
+        android:layout_marginTop="50dp">
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

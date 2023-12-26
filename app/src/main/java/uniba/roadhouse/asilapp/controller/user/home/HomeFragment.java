@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -43,8 +45,8 @@ public class HomeFragment extends Fragment {
     WebView secondWebView;
     HorizontalScrollView scrollBarVideo;
     PieChart pieChart;
-    ConstraintLayout cardNutritionalTips;
-    ConstraintLayout cardWellnessTips;
+    ConstraintLayout firstTips;
+    ConstraintLayout secondTips;
     SwipeRefreshLayout swipeRefreshLayoutHomeFragment;
     ImageView policeNumberImage;
     TextView policeNumberValue;
@@ -52,6 +54,12 @@ public class HomeFragment extends Fragment {
     TextView unhcrNumbervalue;
     ImageView commissionNumberImage;
     TextView commissionNumberValue;
+    FrameLayout frameLayoutVideoHome;
+    ProgressBar progressBarVideoHome;
+    FrameLayout frameLayoutChartHome;
+    ProgressBar progressBarChartHome;
+    ImageView arrowToAllTipsFragment;
+
 
 
     public HomeFragment() {
@@ -74,6 +82,7 @@ public class HomeFragment extends Fragment {
         policeNumberValue = view.findViewById(R.id.policeNumberValue);
         unhcrNumberImage = view.findViewById(R.id.unhcrNumberImage);
         unhcrNumbervalue = view.findViewById(R.id.unchrNumberValue);
+        arrowToAllTipsFragment = view.findViewById(R.id.arrowToAllTipsFragment);
         commissionNumberImage = view.findViewById(R.id.commissionNumberImage);
         commissionNumberValue = view.findViewById(R.id.commissionNumberValue);
         swipeRefreshLayoutHomeFragment = view.findViewById(R.id.swipereFreshLayoutHomeFragment);
@@ -81,21 +90,24 @@ public class HomeFragment extends Fragment {
         firstWebView = view.findViewById(R.id.firstVideoView);
         scrollBarVideo = view.findViewById(R.id.scrollBarVideo);
         pieChart = view.findViewById(R.id.pieChartHome);
-        cardNutritionalTips = view.findViewById(R.id.cardNutritionalTips);
-        cardWellnessTips = view.findViewById(R.id.cardWelnessTips);
-
-
+        firstTips = view.findViewById(R.id.firstCardTips);
+        secondTips = view.findViewById(R.id.secondCardTips);
+        frameLayoutVideoHome = view.findViewById(R.id.frameLayoutVideoHome);
+        progressBarVideoHome = view.findViewById(R.id.progressBarVideoHome);
+        frameLayoutChartHome = view.findViewById(R.id.frameLayoutChartHome);
+        progressBarChartHome = view.findViewById(R.id.progressBarChartHome);
     }
 
     @Override
     public void onStart() {
         //-------------------------LISTENER----------------
         arrowToOutgoingsFragment.setOnClickListener(V->openOutgoingsFragment());
-        cardNutritionalTips.setOnClickListener(v->openDetailTips("nutritional"));
-        cardWellnessTips.setOnClickListener(v->openDetailTips("wellness"));
+        firstTips.setOnClickListener(v->openDetailTips("nutritional"));
+        secondTips.setOnClickListener(v->openDetailTips("wellness"));
         policeNumberImage.setOnClickListener(v->call(policeNumberValue.getText().toString()));
         unhcrNumberImage.setOnClickListener(v->call(unhcrNumbervalue.getText().toString()));
         commissionNumberImage.setOnClickListener(v->call(commissionNumberValue.getText().toString()));
+        arrowToAllTipsFragment.setOnClickListener(v->openAllTipsFragment());
         swipeRefreshLayoutHomeFragment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -103,8 +115,10 @@ public class HomeFragment extends Fragment {
                 swipeRefreshLayoutHomeFragment.setRefreshing(false);
             }
         });
-
         welcomeText.setText(getString(R.string.welcome)+"\n"+ AccessUser.getNome()+"!");
+        loadVideo();
+        loadTips();
+        loadOutgoings();
         scrollBarVideo.setHorizontalScrollBarEnabled(true);
         super.onStart();
     }
@@ -209,8 +223,24 @@ public class HomeFragment extends Fragment {
     }
 
 
+    private void loadTips()
+    {
 
+    }
 
+    private void loadOutgoings()
+    {
+
+    }
+
+    private void openAllTipsFragment()
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.homeContainerView, AllTipsFragment.class, null);
+        fragmentTransaction.addToBackStack(getString(R.string.homeMenuScreen));
+        fragmentTransaction.commit();
+    }
 
 }
 

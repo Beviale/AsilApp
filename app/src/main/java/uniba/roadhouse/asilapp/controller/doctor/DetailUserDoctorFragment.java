@@ -24,9 +24,18 @@ import uniba.roadhouse.asilapp.controller.user.home.UserProfileFragment;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 
 
+/**
+ * Schermata contenente il TabLayout relativo all'utente selezionato dal Dottore.
+ */
 public class DetailUserDoctorFragment extends Fragment {
     Toolbar toolbar;
+    /**
+     * TabLayout per la selezione dei vari fragment da visualizzare.
+     */
     TabLayout tabLayoutUserDoctor;
+    /**
+     * ProgressBar da mostrare durante il caricamento dei dati dal database.
+     */
     ProgressBar progressBarDoctorActivty;
     /**
      * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment HealthHistory.
@@ -40,7 +49,6 @@ public class DetailUserDoctorFragment extends Fragment {
 
 
     public DetailUserDoctorFragment() {
-        // Required empty public constructor
     }
 
 
@@ -76,9 +84,11 @@ public class DetailUserDoctorFragment extends Fragment {
         tabLayoutUserDoctor = view.findViewById(R.id.tabLayoutUserDoctor);
         progressBarDoctorActivty = getActivity().findViewById(R.id.progressBarDoctorActivty);
 
-        openUserProfile(getActivity().getSupportFragmentManager());
+        openUserProfile();
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 
     @Override
     public void onStart() {
@@ -91,15 +101,15 @@ public class DetailUserDoctorFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 if(position==0)
                 {
-                    openUserProfile(fragmentManager);
+                    openUserProfile();
                 }
                 else if(position==1)
                 {
-                    openHealthHistory(fragmentManager);
+                    openHealthHistory();
                 }
                 else if(position==2)
                 {
-                    openMyPathologies(fragmentManager);
+                    openMyPathologies();
                 }
 
             }
@@ -118,6 +128,8 @@ public class DetailUserDoctorFragment extends Fragment {
             super.onStart();
     }
 
+
+
     @Override
     public void onResume() {
         toolbar.getMenu().clear();
@@ -133,26 +145,27 @@ public class DetailUserDoctorFragment extends Fragment {
         if(openBackHealthHistory==true)
         {
             openBackHealthHistory=false;
-            openHealthHistory(getActivity().getSupportFragmentManager());
+            openHealthHistory();
             TabLayout.Tab tab = tabLayoutUserDoctor.getTabAt(1);
             tab.select();
         }
         else if(openBackMyPathologies==true)
         {
             openBackMyPathologies=false;
-            openMyPathologies(getActivity().getSupportFragmentManager());
+            openMyPathologies();
             TabLayout.Tab tab = tabLayoutUserDoctor.getTabAt(2);
             tab.select();
 
         }
         else
         {
-            openUserProfile(getActivity().getSupportFragmentManager());
+            openUserProfile();
             TabLayout.Tab tab = tabLayoutUserDoctor.getTabAt(0);
             tab.select();
         }
         super.onResume();
     }
+
 
     @Override
     public void onPause() {
@@ -160,8 +173,13 @@ public class DetailUserDoctorFragment extends Fragment {
         super.onPause();
     }
 
-    private void openUserProfile(FragmentManager fragmentManager)
+
+    /**
+     * Apre il fragment "UserProfileFragment" passando, tramite bundle, la chiave "doctor" come true.
+     */
+    private void openUserProfile()
     {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putBoolean("doctor", true);
@@ -169,8 +187,13 @@ public class DetailUserDoctorFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void openHealthHistory(FragmentManager fragmentManager)
+
+    /**
+     * Apre il fragment "openHealthHistory" passando, tramite bundle, la chiave "doctor" come true.
+     */
+    private void openHealthHistory()
     {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putBoolean("doctor", true);
@@ -178,8 +201,13 @@ public class DetailUserDoctorFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void openMyPathologies(FragmentManager fragmentManager)
+
+    /**
+     * Apre il fragment "openMyPatholgogies" passando, tramite bundle, la chiave "doctor" come true.
+     */
+    private void openMyPathologies()
     {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putBoolean("doctor", true);
@@ -189,6 +217,9 @@ public class DetailUserDoctorFragment extends Fragment {
     }
 
 
+    /**
+     * Apre il fragment "HomeDoctorFragment" quando viene premuto il tasto indietro.
+     */
     private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {

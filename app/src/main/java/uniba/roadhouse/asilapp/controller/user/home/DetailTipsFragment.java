@@ -93,7 +93,6 @@ public class DetailTipsFragment extends Fragment {
                     dialogFragment.show(getActivity().getSupportFragmentManager(), "EvaluateFragment");
 
                 }
-
                 return true;
             }
         });

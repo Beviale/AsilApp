@@ -26,22 +26,27 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import uniba.roadhouse.asilapp.R;
 
-
+/**
+ * Schermata impostazione dell'account Dottore.
+ */
 public class SettingsDoctorFragment extends Fragment {
 
 
     /**
-     * RatingBar per la valutazione complessiva dell'app da parte del dottore..
+     * RatingBar per la valutazione complessiva dell'app da parte del dottore.
      */
     RatingBar ratingApp;
     /**
-     * Testo che rappresenta in formato numerico la valutazione complessiva dell'app da parte del dottore..
+     * Testo che rappresenta in formato numerico la valutazione complessiva dell'app da parte del dottore.
      */
     TextView valueRatingApp;
     /**
-     * Bottonce che consente l'uscita dall'account corrente.
+     * Botton che consente l'uscita dall'account corrente.
      */
     Button exitAccountButton;
+    /**
+     * Toolbar dell'activity.
+     */
     Toolbar toolbar;
 
 
@@ -78,7 +83,7 @@ public class SettingsDoctorFragment extends Fragment {
         exitAccountButton = view.findViewById(R.id.exitAccountButtonDoctor);
         toolbar = getActivity().findViewById(R.id.toolbarDoctorActivity);
 
-        // Recupero la valutazione dell'app se già precedentemente memorizzata.
+        // Recupero la valutazione dell'app se già precedentemente memorizzata. Utilizzo le Shared Prefeences.
         SharedPreferences sh = getActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
         Float ratingSharedPref = sh.getFloat("ratingAppDoctor", (float)0);
         ratingApp.setRating(ratingSharedPref);
@@ -91,6 +96,7 @@ public class SettingsDoctorFragment extends Fragment {
         //---------------LISTENER---------------
         exitAccountButton.setOnClickListener(v->exitAcctount());
         ratingApp.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            // Memorizzo in locale la nuova valutazione utilizzando le Shared Preferences.
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 valueRatingApp.setText(String.valueOf(rating));
@@ -118,7 +124,10 @@ public class SettingsDoctorFragment extends Fragment {
         super.onResume();
     }
 
-
+    /**
+     * Consente l'uscita dall'account Dottore corrente.
+     * Apre FirstActivity.
+     */
     private void exitAcctount()
     {
 

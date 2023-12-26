@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -36,21 +37,65 @@ import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
 
-
+/**
+ * Schermata che consente al dottore di inserire una nuova patologia associata ad un utente.
+ */
 public class NewPathologyFragment extends Fragment {
+    /**
+     * Layout del campo di testo per l'inserimento del nome della patologia.
+     */
     TextInputLayout nameNewPathologyLayout;
+    /**
+     * Campo di testo per l'inserimento del nome della patologia.
+     */
     TextInputEditText nameNewPathologyInput;
+    /**
+     * Layout del campo di testo per l'inserimento della data dell'ultima visita.
+     */
     TextInputLayout dateNewPathologyLayout;
+    /**
+     * AutoCompleteTextView per l'inserimento della data dell'ultima visita.
+     */
     AutoCompleteTextView dateNewPathologyInput;
+    /**
+     * Layout del campo di testo per l'inserimento dell'orario dell'ultima visita.
+     */
     TextInputLayout timeNewPathologyLayout;
+    /**
+     * AutoCompleteTextView per l'inserimento dell'orario dell'ultima visita.
+     */
     AutoCompleteTextView timeNewPathologyInput;
+    /**
+     * RadioGroup contenente le opzioni selezionabili per la priorità della patologia.
+     */
     RadioGroup priorityNewMyPathologiesRadioGroup;
+    /**
+     * RadioButton che rappresenta una priorità bassa.
+     */
     RadioButton myNewPathologiesLow;
+    /**
+     * RadioButton che rappresenta una prioprità media.
+     */
     RadioButton myNewPathologiesMedium;
+    /**
+     * RadioButton che rappresenta una priorità elevata.
+     */
     RadioButton myNewPathologiesHigh;
+    /**
+     * Campo di testo per l'inserimento delle note associate alla patologia.
+     */
     EditText doctorNotesNewPathology;
+    /**
+     * Button che consente l'aggiunta della patologia.
+     */
     Button buttonAddNewPathology;
+    /**
+     * ProgressBar da mostrare durante la memorizza della patologia nel database.
+     */
     ProgressBar progressBar;
+    /**
+     * Layout relativo all'intero fragment.
+     */
     ConstraintLayout layoutNewPathology;
 
 
@@ -67,6 +112,7 @@ public class NewPathologyFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
         super.onCreate(savedInstanceState);
     }
 
@@ -108,7 +154,17 @@ public class NewPathologyFragment extends Fragment {
         super.onStart();
     }
 
+    @Override
+    public void onPause() {
+        progressBar.setVisibility(View.GONE);
+        super.onPause();
+    }
 
+
+
+    /**
+     * Consente la selezione della data dell'ultima visita. Viene utilizzato un DatePickerDialog.
+     */
     private void selectDate()
     {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme);
@@ -134,12 +190,11 @@ public class NewPathologyFragment extends Fragment {
         datePickerDialog.show();
     }
 
-    @Override
-    public void onResume() {
-        progressBar.setVisibility(View.GONE);
-        super.onResume();
-    }
 
+
+    /**
+     * Consente la selezione dell'orario dell'ultima visita. Apre un TimePickerDialog.
+     */
     private void selectTime()
     {
         Calendar c = Calendar.getInstance();
@@ -161,6 +216,9 @@ public class NewPathologyFragment extends Fragment {
     }
 
 
+    /**
+     * Memorizza nel database la nuova patologia.
+     */
     private void addNewPathology()
     {
         if(nameNewPathologyInput.getText().toString().isEmpty())
@@ -231,11 +289,27 @@ public class NewPathologyFragment extends Fragment {
                     fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, bundle);
                     fragmentTransaction.commit();
                 }
-
             });
         });
 
     }
+
+
+    /**
+     * Apre il fragment "DetailUserDoctor" quando viene premuto il tasto indietro.
+     */
+    private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("backMyPathologies", true);
+            fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, bundle);
+            fragmentTransaction.commit();
+        }
+    };
+
 
 
 }

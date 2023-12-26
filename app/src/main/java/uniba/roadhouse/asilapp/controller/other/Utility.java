@@ -38,6 +38,9 @@ import java.util.regex.Pattern;
 
 import uniba.roadhouse.asilapp.R;
 
+/**
+ * Classe contenente alcuni metodi di utility che possono essere utilizzati da qualunque classe dell'applicazione.
+ */
 public class Utility
 {
     /**

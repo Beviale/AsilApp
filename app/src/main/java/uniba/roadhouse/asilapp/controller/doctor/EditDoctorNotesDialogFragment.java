@@ -18,27 +18,70 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
+/**
+ * DialogFragment che consente al dottore la modifica delle note relative o ad una misurazione oppure ad una patologia.
+ */
 public class EditDoctorNotesDialogFragment extends DialogFragment {
-
+    /**
+     * Campo di testo per l'inserimento delle note.
+     */
     EditText editDoctorNotesEditText;
-    Button doctorNotesHealthHistoryButtonSend;
-    Button doctorNotesHealthHistoryButtonCancel;
+    /**
+     * Button che consente il salvataggio delle nuove note.
+     */
+    Button editDoctorNotesButtonSend;
+    /**
+     * Button che consente all'utente di annullare l'intera operazione.
+     */
+    Button editDoctorNotesButtonCancel;
+    /**
+     * Layout relativo a EditDoctorNotesDialogFragment.
+     */
     LinearLayout layoutEditDoctorNotes;
+    /**
+     * Listener che avvisa il fragment che ha aperto EditDoctorNotesDialogFragment che quest'ultimo è stato chiuso.
+     */
     private closeEditDoctorNotes callbackClose;
+    /**
+     * PorgressBar da mostrare mentre le nuove note vengono salvate nel database.
+     */
     ProgressBar progressBar;
+    /**
+     * Identifica se si vogliono modificare le note di una patologia o di una misurazione.
+     */
     private static String typeEdit;
+    /**
+     * Username dell'utente.
+     */
     private static String username;
+    /**
+     * Nome della patologia dove si richiede la modifica delle note.
+     */
     private static String namePathology;
+    /**
+     * Id della misurazione dove si richiede la modifica delle note.
+     */
     private static Integer idMisuration;
 
+
+    /**
+     * Interfaccia che deve essere implementata dal fragment che ha aperto EditDoctorNotesDialogFragment.
+     * Viene utilizzato come listener per avvisare il fragment che l'EditDoctorNotesDialogFragment aperto precedenemente, è stato appena chiuso.
+     */
     public interface closeEditDoctorNotes {
         public void closeEditDoctorNotes();
     }
 
 
+    /**
+     * Crea una nuova istanza di EditDoctorNotesDialgFragment.
+     * Da utilizzare quando si devono modificare le note di una patologia.
+     * @param usernameAdd, username dell'utente.
+     * @param namePathologyAdd, nome della patologia
+     * @return
+     */
     public static EditDoctorNotesDialogFragment newInstancePathology(String usernameAdd, String namePathologyAdd) {
         username =usernameAdd;
         namePathology = namePathologyAdd;
@@ -46,6 +89,12 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         return new EditDoctorNotesDialogFragment();
     }
 
+    /**
+     * Crea una nuova istanza di EditDoctorNotesDialgFragment.
+     * Da utilizzare quando si devono modificare le note di una misurazione.
+     * @param idMisurationAdd, id della misurazione.
+     * @return
+     */
     public static EditDoctorNotesDialogFragment newInstanceHealthHistory(Integer idMisurationAdd) {
         idMisuration = idMisurationAdd;
         typeEdit="healthHistory";
@@ -59,10 +108,11 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         try {
             callbackClose = (closeEditDoctorNotes) getTargetFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
+            throw new ClassCastException("Calling Fragment must implement the closeEditDoctorNotes");
         }
         return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -70,29 +120,31 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
         editDoctorNotesEditText = view.findViewById(R.id.editDoctorNotesEditText);
         progressBar = view.findViewById(R.id.progressBarEditDoctorNotes);
         layoutEditDoctorNotes = view.findViewById(R.id.layoutEditDoctorNotes);
-        doctorNotesHealthHistoryButtonSend = view.findViewById(R.id.doctorNotesHealthHistoryButtonSend);
-        doctorNotesHealthHistoryButtonCancel = view.findViewById(R.id.doctorNotesHealthHistoryButtonCancel);
+        editDoctorNotesButtonSend = view.findViewById(R.id.editDoctorNotesButtonSend);
+        editDoctorNotesButtonCancel = view.findViewById(R.id.editDoctorNotesButtonCancel);
         super.onViewCreated(view, savedInstanceState);
     }
 
 
     @Override
     public void onStart() {
-
-        doctorNotesHealthHistoryButtonSend.setOnClickListener(v->saveData());
-        doctorNotesHealthHistoryButtonCancel.setOnClickListener(v->closeDialog());
-
-
+        //----------------LISTENER------------------
+        editDoctorNotesButtonSend.setOnClickListener(v->saveData());
+        editDoctorNotesButtonCancel.setOnClickListener(v->closeDialog());
         super.onStart();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Rendo il DialogFragment non cancellabile quando si preme lo schermo del device.
         setCancelable(false);
         return super.onCreateDialog(savedInstanceState);
     }
 
+    /**
+     * Memorizza nel database le nuove note.
+     */
     private void saveData()
     {
         if(editDoctorNotesEditText.getText().toString().isEmpty())
@@ -134,11 +186,13 @@ public class EditDoctorNotesDialogFragment extends DialogFragment {
 
     }
 
+
+    /**
+     * Chiude la finestra di dialogo.
+     */
     private void closeDialog()
     {
         getDialog().dismiss();
     }
-
-
 
 }

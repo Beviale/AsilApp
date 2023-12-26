@@ -23,23 +23,65 @@ import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
+/**
+ * DialogFragment che consente al dottore la modifica della valutazione di una misurazione.
+ */
 public class EditEvalutationDialogFragment extends DialogFragment {
+    /**
+     * RadioGruoup contenente le varie opzioni selezionabili per la valutazione.
+     */
     RadioGroup evalutationHealthHistoryRadioGroup;
+    /**
+     * Button che consente l'invio della valutazione.
+     */
     Button evalutationHealthHistoryButtonSend;
+    /**
+     * Button che annulla l'intera operazione.
+     */
     Button evalutationHealthHistoryButtonCancel;
+    /**
+     * RadioButton che rappresenta una buona valutazione.
+     */
     RadioButton healthHistoryGood;
+    /**
+     * RadioButton che rappresenta una valutazione discreta.
+     */
     RadioButton healthHistoryFairlyGood;
+    /**
+     * RadioButton che rappresenta una pessima valutazione.
+     */
     RadioButton healthHistoryFairlyNotGood;
+    /**
+     * Layout relativo all'intero DialogFragment.
+     */
     LinearLayout layoutEditEvalutation;
+    /**
+     * ProgressBar da mostreare durante l'invio e il salvataggio dei dati nel database.
+     */
     ProgressBar progressBar;
+    /**
+     * Id della misurazione su cui effettuare la modifica della valutazione.
+     */
     private static Integer id;
+    /**
+     * Listener che avvisa il fragment che ha aperto EditEvalutationDialogFragment che quest'ultimo è stato chiuso.
+     */
     private closeListenerEditEvalutation callbackClose;
 
+
+    /**
+     * Interfaccia che deve essere implementata dal fragment che ha aperto EditEvalutationDialogFragment.
+     * Viene utilizzato come listener per avvisare il fragment che l'EdiEvalutationDialogFragment aperto precedenemente, è stato appena chiuso.
+     */
     public interface closeListenerEditEvalutation {
         public void closeEditEvalutation();
     }
 
-
+    /**
+     * Crea una nuova istanza di EdiEvalutationDialogFragment.
+     * @param idAdd, id della misurazione.
+     * @return
+     */
     public static EditEvalutationDialogFragment newInstance(Integer idAdd) {
         id = idAdd;
         return new EditEvalutationDialogFragment();
@@ -74,23 +116,31 @@ public class EditEvalutationDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Rendo il DialogFragment non cancellabile quando si preme lo schermo del device.
         setCancelable(false);
         return super.onCreateDialog(savedInstanceState);
     }
 
     @Override
     public void onStart() {
+        //-----------LISTENER----------------
         evalutationHealthHistoryButtonSend.setOnClickListener(v->saveData());
         evalutationHealthHistoryButtonCancel.setOnClickListener(v->closeDialog());
         super.onStart();
     }
 
-
+    /**
+     * Chiude la finestra di dialogo.
+     */
     private void closeDialog()
     {
         getDialog().dismiss();
     }
 
+
+    /**
+     * Invia e memorizza nel database la nuova valutazione.
+     */
     private void saveData()
     {
         if(evalutationHealthHistoryRadioGroup.getCheckedRadioButtonId()==-1)
@@ -124,6 +174,4 @@ public class EditEvalutationDialogFragment extends DialogFragment {
             });
         });
     }
-
-
 }

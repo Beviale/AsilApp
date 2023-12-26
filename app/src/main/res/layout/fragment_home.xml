@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -56,32 +55,48 @@
                 app:layout_constraintTop_toBottomOf="@id/welcomeText" />
 
 
-
-            <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/scrollBarVideo"
+            <FrameLayout
+                android:id="@+id/frameLayoutVideoHome"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
                 android:layout_marginTop="0dp"
-                android:fadeScrollbars="false"
-                android:scrollbarSize="2dp"
-                android:scrollbars="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/textVideoSection">
+                app:layout_constraintTop_toBottomOf="@+id/textVideoSection"
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/layoutVideo"
+                <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/scrollBarVideo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <WebView
-                        android:id="@+id/firstVideoView"
-                        android:layout_width="@dimen/widthVideoHome"
-                        android:layout_height="match_parent" />
-                    <WebView
-                        android:id="@+id/secondVideoView"
-                        android:layout_width="@dimen/widthVideoHome"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-            </HorizontalScrollView>
+                    android:layout_height="200dp"
+                    android:layout_marginTop="0dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbarSize="2dp"
+                    android:scrollbars="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/layoutVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <WebView
+                            android:id="@+id/firstVideoView"
+                            android:layout_width="@dimen/widthVideoHome"
+                            android:layout_height="match_parent" />
+                        <WebView
+                            android:id="@+id/secondVideoView"
+                            android:layout_width="@dimen/widthVideoHome"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <ProgressBar
+                    android:id="@+id/progressBarVideoHome"
+                    android:layout_width="@dimen/progressBarDim"
+                    android:backgroundTint="@color/appMainColor"
+                    android:indeterminateTint="@color/appMainColor"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_height="@dimen/progressBarDim"/>
+            </FrameLayout>
+
 
 
 
@@ -96,11 +111,25 @@
                 android:text="@string/tips"
                 android:textSize="@dimen/title3FontSize"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollBarVideo" />
+                app:layout_constraintTop_toBottomOf="@+id/frameLayoutVideoHome" />
+
+
+            <ImageView
+                android:id="@+id/arrowToAllTipsFragment"
+                android:layout_width="@dimen/arrowDimen"
+                android:layout_height="@dimen/arrowDimen"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="30dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/arrowPadding"
+                android:src="@mipmap/arrow_forward"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayoutVideoHome" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardNutritionalTips"
+                android:id="@+id/firstCardTips"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:clickable="true"
@@ -137,7 +166,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardWelnessTips"
+                android:id="@+id/secondCardTips"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginLeft="@dimen/marginLeftHome"
@@ -150,7 +179,7 @@
                 android:elevation="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardNutritionalTips">
+                app:layout_constraintTop_toBottomOf="@+id/firstCardTips">
 
                 <ImageView
                     android:id="@+id/imageWelnessTips"
@@ -184,7 +213,7 @@
                 android:text="@string/outgoingsManagement"
                 android:textSize="@dimen/title3FontSize"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardWelnessTips" />
+                app:layout_constraintTop_toBottomOf="@+id/secondCardTips" />
 
 
             <ImageView
@@ -198,17 +227,34 @@
                 android:padding="@dimen/arrowPadding"
                 android:src="@mipmap/arrow_forward"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardWelnessTips" />
+                app:layout_constraintTop_toBottomOf="@+id/secondCardTips" />
+
+            <FrameLayout
+                android:id="@+id/frameLayoutChartHome"
+                android:layout_width="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/outgoingsHomeSection"
+                android:layout_marginTop="20dp"
+                android:layout_height="match_parent">
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChartHome"
+                android:layout_marginLeft="@dimen/marginLeftHome"
+                android:layout_marginRight= "@dimen/marginLeftHome"
+
                 android:layout_width="@dimen/pieChart"
-                android:layout_height="@dimen/pieChart"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/outgoingsHomeSection" />
+                android:layout_height="@dimen/pieChart" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarChartHome"
+                    android:layout_width="@dimen/progressBarDim"
+                    android:backgroundTint="@color/appMainColor"
+                    android:indeterminateTint="@color/appMainColor"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_height="@dimen/progressBarDim"/>
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/phoneNumberHomeSection"
@@ -221,7 +267,7 @@
                 android:text="@string/usefulPhoneNumbers"
                 android:textSize="@dimen/title3FontSize"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pieChartHome" />
+                app:layout_constraintTop_toBottomOf="@+id/frameLayoutChartHome" />
 
             <ImageView
                 android:id="@+id/policeNumberImage"
@@ -331,10 +377,6 @@
                 app:layout_constraintLeft_toRightOf="@+id/commissionNumberImage"
                 android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content"/>
-
-
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

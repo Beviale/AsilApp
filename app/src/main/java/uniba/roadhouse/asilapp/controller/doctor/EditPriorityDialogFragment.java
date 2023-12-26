@@ -22,25 +22,66 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
+/**
+ * DialogFragment che consente al dottore la modifica della priorità di una patologia.
+ */
 public class EditPriorityDialogFragment extends DialogFragment {
+    /**
+     * RadioGruoup contenente le varie opzioni selezionabili per la priorità.
+     */
     RadioGroup priorityMyPathologiesRadioGroup;
+    /**
+     * Button che consente l'invio dei dati al database.
+     */
     Button priorityMyPathologiesButtonSend;
+    /**
+     * Button che consente all'utente di annullare l'intera operazione.
+     */
     Button priorityMyPathologiesButtonCancel;
+    /**
+     * RadioButton che rappresenta una priorità bassa.
+     */
     RadioButton myPathologiesLow;
+    /**
+     * RadioButton che rappresenta una priorità media.
+     */
     RadioButton myPathologiesMedium;
+    /**
+     * RadioButton che rappresenta una priorità elevata.
+     */
     RadioButton myPathologiesHigh;
+    /**
+     * Layout relativo all'intero DialogFragment.
+     */
     LinearLayout layoutEditPriority;
-    private closeListenerEditPriority callbackClose;
-    private static String username;
-    private static String namePathology;
+    /**
+     * ProgressBar da mostrare durante l'invio dei dati al database.
+     */
     ProgressBar progressBar;
+    /**
+     * Listener che avvisa il fragment che ha aperto EditPrioritDialogFragment che quest'ultimo è stato chiuso.
+     */
+    private closeListenerEditPriority callbackClose;
+    /**
+     * Username dell'utente.
+     */
+    private static String username;
+    /**
+     * Nome della patologia a cui modificare la priorità.
+     */
+    private static String namePathology;
 
     public interface closeListenerEditPriority {
         public void closeEditPriority();
     }
 
 
-
+    /**
+     * Crea una nuova itanza di EditPriorityDialogFragment
+     * @param usernameAdd, username dell'utente.
+     * @param namePathologyAdd, nome della patologia a cui modificare la priorità.
+     * @return
+     */
     public static EditPriorityDialogFragment newInstance(String usernameAdd, String namePathologyAdd) {
         username = usernameAdd;
         namePathology = namePathologyAdd;
@@ -76,27 +117,33 @@ public class EditPriorityDialogFragment extends DialogFragment {
 
     @Override
     public void onStart() {
+        //-----------LISTENER-------------------
         priorityMyPathologiesButtonSend.setOnClickListener(v->saveData());
         priorityMyPathologiesButtonCancel.setOnClickListener(v->closeDialog());
-
-
         super.onStart();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Rendo il DialogFragment non cancellabile quando si preme lo schermo del device.
         setCancelable(false);
         return super.onCreateDialog(savedInstanceState);
     }
 
 
-
+    /**
+     * Chiude la finestra di dialogo.
+     */
     private void closeDialog()
     {
         getDialog().dismiss();
     }
 
+
+    /**
+     * Invia e memorizza nel database la nuova priorità.
+     */
     private void saveData()
     {
         if(priorityMyPathologiesRadioGroup.getCheckedRadioButtonId()==-1)
@@ -130,8 +177,5 @@ public class EditPriorityDialogFragment extends DialogFragment {
             });
         });
     }
-
-
-
 }
 

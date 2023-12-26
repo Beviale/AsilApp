@@ -36,13 +36,34 @@ import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
 import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
-
+/**
+ * Schermata home relativo all'account Dottore.
+ * Mostra un messaggio di benvenuto e la lista dei pazienti associato al medico.
+ */
 public class HomeDoctorFragment extends Fragment {
+    /**
+     * Toolbar di DoctorActivity.
+     */
     Toolbar toolbarDoctorActivity;
+    /**
+     * Testo presente nella toolbar.
+     */
     TextView textToolbarDoctor;
+    /**
+     * ProgressBar da mostrare durante il caricamento dei dati dal database.
+     */
     ProgressBar progressBar;
+    /**
+     * Layout contenente la lista dei pazienti associati al dottore.
+     */
     LinearLayout layoutCardUserDoctor;
+    /**
+     * Layout relativo all'intero fragment.
+     */
     ConstraintLayout homeLayout;
+    /**
+     * Per lo "swipe-to-refresh" dell'intero fragment.
+     */
     SwipeRefreshLayout swipereFreshLayoutHomeDoctor;
 
 
@@ -81,7 +102,6 @@ public class HomeDoctorFragment extends Fragment {
         swipereFreshLayoutHomeDoctor = view.findViewById(R.id.swipereFreshLayoutHomeDoctor);
         homeLayout = view.findViewById(R.id.homeLayout);
         getData();
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -126,6 +146,11 @@ public class HomeDoctorFragment extends Fragment {
         super.onPause();
     }
 
+
+    /**
+     * Prende dal database la lista di tutti i pazienti associati al medico.
+     * Per ciascun paziente, crea dinamicamente una card (nello specifico un ConstraintLayout).
+     */
     @SuppressLint("RestrictedApi")
     private void getData()
     {
@@ -221,6 +246,12 @@ public class HomeDoctorFragment extends Fragment {
         });
     }
 
+    /**
+     * Apre il fragment "DetailUserDoctorFragment".
+     * Il nome del paziente viene inserito nella toolbar dell'activity.
+     * @param usernameUser, username dell'utente
+     * @param nameAndSurname, nome e cognome del paziente.
+     */
     private void openDetailUserDoctor(String usernameUser, String nameAndSurname)
     {
         AccessUser.setUsername(usernameUser);
@@ -231,7 +262,5 @@ public class HomeDoctorFragment extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-
 
 }

@@ -81,6 +81,10 @@
     <dimen name="marginLeftNewPathology">30dp</dimen>
 
 
+    <!-- AllTipsFragment-->
+    <dimen name="marginAllTipsFragment">20dp</dimen>
+
+
 
 
 

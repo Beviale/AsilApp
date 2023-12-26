@@ -29,7 +29,9 @@ import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity
 import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
-
+/**
+ * Schermata che consente al dottore di autenticarsi all'app.
+ */
 public class SigninDoctorFragment extends Fragment {
 
     /**
@@ -51,7 +53,7 @@ public class SigninDoctorFragment extends Fragment {
     ProgressBar progressBar;
 
     /**
-     * Layout da oscurare durante la fase di login, mentre la progressBar è attiva.
+     * Layout dell'intero fragment.
      */
     LinearLayout layoutLogin;
     /**
@@ -121,6 +123,12 @@ public class SigninDoctorFragment extends Fragment {
         super.onStart();
     }
 
+    /**
+     * Effettuata la chiamata al database per la verifica delle credenziali inserite dal dottore.
+     * Se giuste, viene effettuato il login e salvato il JWT.
+     * Se sbagliate, viene mostrato un toast contenente il tipo di errore.
+     * Se non vi è connessione, viene mostrata una fienstra di dialogo.
+     */
     private void login()
     {
         usernameLayout.setBoxStrokeColor(getContext().getColor(R.color.appMainColor));
@@ -189,6 +197,9 @@ public class SigninDoctorFragment extends Fragment {
     }
 
 
+    /**
+     * Inserisce le credenziali predefinite per l'accesso di default e chiama il metodo login();
+     */
     private void loginDirettoProfessore()
     {
         userNameInput.setText("doctor");
