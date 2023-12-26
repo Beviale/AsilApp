@@ -1390,6 +1390,28 @@ public class Dao {
         });
     }
 
+    public static CompletableFuture<String> storeArticoleValutazione(Integer idArticolo, String username, Integer valutazione, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            Map<String,?> val=new HashMap<String,Object>(){{
+                put("valutazione",valutazione);
+                put("username",username);
+                put("idArticolo",idArticolo);
+            }};
+
+            Task query = db.collection("valutazioniArticoli").document(String.valueOf(idArticolo)+username).set(val);
+
+            while (!query.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+
+            if(!query.isSuccessful()){
+                return context.getString(R.string.insertArticleValuationFailed);
+            }
+
+            return context.getString(R.string.insertArticleValuationSuccessfull);
+        });
+    }
+
     /**
      * Metodo per prendere 2 articoli disponibili. Ritorna una Map con chiave "esito" che indica l'esito della computazione
      * e "articles" che è un List<Articolo> che inidca la lista di articoli
