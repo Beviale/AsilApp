@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -260,7 +261,7 @@ public class Dao {
                 nome=document.getString("nome");
                 tipoAsiloProtezione=document.getString("tipoUtente");
             }
-            if(tipoAsiloProtezione=="Richiedente asilo")
+            if(Objects.equals(tipoAsiloProtezione, "Richiedente asilo"))
             {
                 tipoAsiloProtezione="asilo";
             }else
