@@ -246,7 +246,6 @@ public class HomeFragment extends Fragment {
         progressBarVideoHome.setVisibility(View.VISIBLE);
         frameLayoutVideoHome.setAlpha((float)0.5);
         CompletableFuture<Map<String,?>>  future = Dao.getAllVideoByTipo(UserLogin.getTipoAsiloProtezione(), getActivity());
-        Log.d("user", UserLogin.getTipoAsiloProtezione());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBarVideoHome.setVisibility(View.GONE);
