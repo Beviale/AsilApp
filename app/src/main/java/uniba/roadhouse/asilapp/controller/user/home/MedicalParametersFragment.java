@@ -18,22 +18,19 @@ import com.google.android.material.tabs.TabLayout;
 import uniba.roadhouse.asilapp.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MedicalParametersFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment del profilo sanitario.
+ * Contiene un tabLayout che permette di visualizzare due fragment molto importanti: HealthHistoryFragment e MyPathologiesFragment, rispettivamente relativi allo storico salute e alle patologie.
+ * Può essere aprto sia tramite account utente che dottore.
  */
 public class MedicalParametersFragment extends Fragment {
-
-
-    TabLayout tabLayoutMedical;
-
     /**
-     * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment MyPathologies.
+     * TabLayout che consente di visuializzare HealthHistoryFragment e MyPathologiesFragment.
+     */
+    TabLayout tabLayoutMedical;
+    /**
+     * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment MyPathologies. [Account Dottore]
      */
     private static Boolean openBackMyPathologies = false;
-
-
-
 
 
     public MedicalParametersFragment() {
@@ -65,27 +62,26 @@ public class MedicalParametersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        openHealthHistory(fragmentManager);
+        openHealthHistory();
+        //---------RIFERIMENTI----------------------
         tabLayoutMedical = view.findViewById(R.id.tabLayoutMedical);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
+        //--------------LISTENER----------------
         tabLayoutMedical.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if(position==0)
                 {
-                    openHealthHistory(fragmentManager);
+                    openHealthHistory();
                 }
                 else
                 {
-                    openMyPahtologies(fragmentManager);
+                    openMyPahtologies();
                 }
 
             }
@@ -119,13 +115,13 @@ public class MedicalParametersFragment extends Fragment {
         if(openBackMyPathologies==true)
         {
             openBackMyPathologies=false;
-            openHealthHistory(getActivity().getSupportFragmentManager());
+            openHealthHistory();
             TabLayout.Tab tab = tabLayoutMedical.getTabAt(1);
             tab.select();
         }
         else
         {
-            openHealthHistory(getActivity().getSupportFragmentManager());
+            openHealthHistory();
             TabLayout.Tab tab = tabLayoutMedical.getTabAt(0);
             tab.select();
         }
@@ -133,20 +129,27 @@ public class MedicalParametersFragment extends Fragment {
     }
 
 
-
-    private void openHealthHistory(FragmentManager fragmentManager)
+    /**
+     * Apre il fragment "HealthHistoryFragment", ossia lo storico salute.
+     */
+    private void openHealthHistory()
     {
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.medicalTabFragmentContainer,HealthHistoryFragment.class, null);
+        fragmentTransaction.replace(R.id.medicalTabFragmentContainer, HealthHistoryFragment.class, null);
         fragmentTransaction.commit();
     }
-    private void openMyPahtologies(FragmentManager fragmentManager)
+
+
+    /**
+     * Apre il fragment "MyPathologiesFragment", ossia quello relativo alle patologie.
+     */
+    private void openMyPahtologies()
     {
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.medicalTabFragmentContainer, MyPathologiesFragment.class, null);
         fragmentTransaction.commit();
     }
-
-
 
 }

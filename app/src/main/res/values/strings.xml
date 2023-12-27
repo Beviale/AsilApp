@@ -251,7 +251,9 @@
     <string name="searching">Ricerca...</string>
     <string name="medicalDataWaiting">In Attesa Della Misurazione Sulla Box</string>
     <string name="pendingMisurationRequestTitle">Non sei connesso a internet!</string>
-    <string name="pendingMisurationRequest">Attualmente non risulti connesso ad una rete Internet. Se puoi collegarti ad una rete WIFI o mobile, fallo, altrimenti, puoi comunque effettuare una (e una sola) misurazione che verrà memorizzata momentaneamente sul dispositivo; non appena avrai la connessione attiva, questa verrà inviata al server.</string>
+    <string name="pendingMisurationRequest">Attualmente non risulti connesso ad una rete Internet. Puoi comunque effettuare una (e una sola) misurazione che verrà memorizzata momentaneamente sul dispositivo; non appena avrai la connessione attiva, questa verrà inviata al database.</string>
+    <string name="pendingMisurationRequestTitleDuplicati">Non sei connesso a internet!</string>
+    <string name="pendingMisurationRequestDuplicati">Attualmente non risulti connesso ad una rete Internet. Puoi comunque effettuare una misurazione offline che sovrascriverà quella attualmente memorizzata sul dispositivo.</string>
     <string name="negativeButtonPendingMisurationRequest">Scarta</string>
     <string name="positiveButtonPendingMisurationRequest">Misurazione offline</string>
 

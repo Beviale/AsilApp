@@ -430,7 +430,9 @@ public class HealthHistoryFragment extends Fragment {
 
 
     /**
-     * Il menu contestuale consente la condivisione di una misurazione. E' valido sia per l'account utente che dottore.
+     * Menu contestuale relativo alla pressione prolungata di una View (ovvero di una misurazione).
+     * Il menu contestuale consente la condivisione di una misurazione.
+     * E' lo stesso sia per l'account utente che dottore.
      */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)

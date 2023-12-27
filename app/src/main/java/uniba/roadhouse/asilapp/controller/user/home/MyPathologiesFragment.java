@@ -46,12 +46,27 @@ import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
 
-
+/**
+ * Schermata che contiene l'elenco di tutte le patologie associate all'utente e registrate dal dottore.
+ * Può essere aperto sia tramite account utente che dottore.
+ * L'utente può solo visualizzare l'elenco delle patologie, mentre il dottore può anche eseguire azioni di rimozione e aggiunta.
+ */
 public class MyPathologiesFragment extends Fragment {
-
+    /**
+     * Bottone che consente l'aggiunta di una nuova patologia. [Account dottore]
+     */
     FloatingActionButton openNewPathology;
+    /**
+     * Layout dell'intero fragment.
+     */
     LinearLayout linearLayoutMyPathologies;
+    /**
+     * ProgressBar da mostrare durante il caricamento delle patologie dal database.
+     */
     ProgressBar progressBar;
+    /**
+     * Consente lo "swipe-to-refresh" dell'intero fragment.
+     */
     SwipeRefreshLayout swipereFreshMyPathologies;
 
     /**
@@ -60,12 +75,12 @@ public class MyPathologiesFragment extends Fragment {
     private static Boolean openDoctor=false;
 
     /**
-     * Contiene il nome della patologia associata a ciascuna view (ConstraintLayout).
+     * Le chiavi sono le view (ovvero le patologie) mentre i valori i rispettivi nomi.
      */
-    private static HashMap<View, String> mappaViewNomePatologia;
+    private static HashMap<View, String> mapViewNamePathology;
 
     /**
-     * View cliccata dall'utente o dal dottore.
+     * View (ovvero patologia) cliccata dall'utente o dal dottore tramite menu contestuale.
      */
     private static View pathologyClicked;
 
@@ -112,9 +127,8 @@ public class MyPathologiesFragment extends Fragment {
             progressBar= getActivity().findViewById(R.id.progressBarDoctorActivty);
         }
 
-
         getData();
-        // Attivo gli elementi per l'account dottore
+        // Attivo il pulsante di aggiunta patologia per l'account dottore.
         if(openDoctor==true)
         {
             openNewPathology.setVisibility((View.VISIBLE));
@@ -126,7 +140,6 @@ public class MyPathologiesFragment extends Fragment {
         super.onStart();
         //--------------LISTENER--------------
         openNewPathology.setOnClickListener(v->openNewPathologyFragment());
-        // Permette di aggiornare i dati dal database facendo una pull to refresh
         swipereFreshMyPathologies.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -171,9 +184,11 @@ public class MyPathologiesFragment extends Fragment {
     }
 
 
-
-
-
+    /**
+     * Apre il fragment "DetailMyPathologiesFragment" che consente la visualizzazione in dettaglio di una specifica patologia,
+     * @param share, se all'apertura del fragment bisogna mostrare la finestra di dialog relativa alla condivisione dei dati.
+     * @param nomePatologia, nome della patologia da visualizzare.
+     */
     private void openDetailFragment(Boolean share, String nomePatologia)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -198,10 +213,12 @@ public class MyPathologiesFragment extends Fragment {
             fragmentTransaction.replace(R.id.doctorFragmentView, DetailMyPathologiesFragment.class, bundle);
         }
         fragmentTransaction.commit();
-
-
     }
 
+
+    /**
+     * Apre il fragment "NewPathologyFragment" che consente l'aggiunta di una nuova patologia [Account dottore]
+     */
     private void openNewPathologyFragment()
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -212,11 +229,13 @@ public class MyPathologiesFragment extends Fragment {
 
     }
 
-
+    /**
+     * Prende i dati delle patologie dal database. Per ogni patologia, crea dinamicamente una view.
+     */
     @SuppressLint("RestrictedApi")
     private void getData()
     {
-        mappaViewNomePatologia = new HashMap<View, String>();
+        mapViewNamePathology = new HashMap<View, String>();
         progressBar.setVisibility(View.VISIBLE);
         linearLayoutMyPathologies.setAlpha((float)0.5);
         CompletableFuture<Map<String, Object>> future = Dao.getAllPatologies(AccessUser.getUsername(), getActivity());
@@ -249,7 +268,7 @@ public class MyPathologiesFragment extends Fragment {
                         // Creo il constraintLayout
                         ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
                         constraintLayout.setOnClickListener(v->openDetailFragment(false, patologia.getPatologia()));
-                        mappaViewNomePatologia.put(constraintLayout, patologia.getPatologia());
+                        mapViewNamePathology.put(constraintLayout, patologia.getPatologia());
                         registerForContextMenu(constraintLayout);
                         constraintLayout.setId(View.generateViewId());
                         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -365,10 +384,14 @@ public class MyPathologiesFragment extends Fragment {
 
             });
         });
-
     }
 
 
+    /**
+     * Menu contestuale relativo alla pressione prolungata di una View (ovvero di una patologia).
+     * Il menu contestuale dell'account utente permette solo la condivisione dei dati di una patologia.
+     * Il menu contestuale dell'account dottore permette sia la condivisione dei dati che la rimozione di una patologia.
+     */
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         if(openDoctor==false){
@@ -395,12 +418,11 @@ public class MyPathologiesFragment extends Fragment {
             return false;
         }
         if(item.getItemId()==R.id.action_share || item.getItemId()==R.id.action_share_menu)
-            openDetailFragment(true, mappaViewNomePatologia.get(pathologyClicked));
+            openDetailFragment(true, mapViewNamePathology.get(pathologyClicked));
         if(item.getItemId()==R.id.action_delete_menu)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
 
-            // Set the dialog title and message
             builder.setTitle(getString(R.string.deleteMessageTitle))
                     .setMessage(getString(R.string.deleteMessage))
                     .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -412,7 +434,7 @@ public class MyPathologiesFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int id) {
                             progressBar.setVisibility(View.VISIBLE);
                             linearLayoutMyPathologies.setAlpha((float)0.5);
-                            CompletableFuture<String> future = Dao.deletePatology(AccessUser.getUsername(), mappaViewNomePatologia.get(pathologyClicked), getActivity());
+                            CompletableFuture<String> future = Dao.deletePatology(AccessUser.getUsername(), mapViewNamePathology.get(pathologyClicked), getActivity());
                             future.thenAccept(result -> {
                                 getActivity().runOnUiThread(() -> {
                                     progressBar.setVisibility(View.INVISIBLE);
@@ -433,7 +455,6 @@ public class MyPathologiesFragment extends Fragment {
                         }
                     });
 
-            // Create and show the AlertDialog
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }

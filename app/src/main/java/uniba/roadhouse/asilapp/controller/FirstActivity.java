@@ -57,7 +57,7 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //verifica se l'uteteè loggato o meno
+        //verifica se l'utente è loggato o meno
         Map<String,String> verifyLogged= Dao.checkIsLogged(this);
         // Se l'utente risulta già loggato, salvo il suo username e passo direttamente ad HomeActivity.
         if(verifyLogged.get("username")!="")

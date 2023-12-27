@@ -39,6 +39,7 @@ public class DoctorActivity extends AppCompatActivity {
         if (!Utility.isConnectedToInternet(this)) {
             Utility.showAlertDialog(this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
+        //RIFERIMENTI
         toolBarIconDoctorActivity = findViewById(R.id.toolBarIconDoctorActivity);
         openSigningFragment();
     }
@@ -51,6 +52,7 @@ public class DoctorActivity extends AppCompatActivity {
             //se il dottore è loggato lo porto alla home
             openHomeFragment();
         }
+        // LISTENER
         toolBarIconDoctorActivity.setOnClickListener(v->openHomeFragment());
         super.onStart();
     }

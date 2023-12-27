@@ -173,8 +173,6 @@ public class SigninFragment extends Fragment {
 
         }
 
-
-
         progressBar.setVisibility(View.VISIBLE);
         layoutLogin.setAlpha((float)0.5);
         CompletableFuture<Map<String,String>> future = Dao.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString(), getActivity());
@@ -183,11 +181,11 @@ public class SigninFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
                 layoutLogin.setAlpha(1);
                 Toast.makeText(getActivity(), result.get("esito"), Toast.LENGTH_SHORT).show();
-
                 if(result.get("esito")==getString(R.string.loginCompleted))
                 {
                     AccessUser.setUsername(userNameInput.getText().toString());
                     AccessUser.setNome(result.get("nome"));
+                    AccessUser.setTipoAsiloProtezione(result.get("tipoAsiloProtezione"));
                     Intent openHome = new Intent(getActivity(), HomeActivity.class);
                     startActivity(openHome);
                 }

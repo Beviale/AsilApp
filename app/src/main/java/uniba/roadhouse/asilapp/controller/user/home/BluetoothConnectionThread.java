@@ -136,57 +136,26 @@ public class BluetoothConnectionThread extends Thread {
 
     /**
      * Metodo che memorizza la misurazione effettuata nel db, oppure nelle Shared Preferences se non c'è connessione (Misurazione pendente)
-     * @param misurazione
-     * @param parametro
+     * @param misurazione, valore delle misurazione effettuata.
+     * @param parametro, parametro della misurazione.
      */
     private void storeMisuration(Double misurazione, String parametro){
-        Misurazione mis=new Misurazione(AccessUser.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
-
-        //se non ce la connessione memorizzo la misurazione nello shared preferences
+        // Se non c'è connessione, creo una misurazione pendente da memorizzare temporaneamente nelle Shared Preferences
         if (!Utility.isConnectedToInternet((Activity) context)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyleCritical);
-
-            // Set the dialog title and message
-            builder.setTitle(context.getString(R.string.pendingMisurationRequestTitle))
-                    .setMessage(context.getString(R.string.pendingMisurationRequest))
-                    .setNegativeButton(context.getString(R.string.negativeButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //se ha premuto il pulsante scarta non accade nulla e la misurazione viene scartata e non memorizzata
-                        }
-                    })
-                    .setPositiveButton(context.getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            TextView bannerPendingMisuration = currentFragment.getActivity().findViewById(R.id.textBannerOnePendingMisuration);
-                            bannerPendingMisuration.setVisibility(View.VISIBLE);
-                            //memorizzo lmisurazione localmente
-                            SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("valutazione","NON VALUTATO");
-                            editor.putFloat("valore",round(misurazione,2).floatValue());
-                            editor.putString("valoreMax",null);
-                            editor.putString("valoreMin",null);
-                            editor.putLong("data",Timestamp.now().getSeconds());
-                            editor.putString("tipo",parametro);
-                            editor.putString("notaMedico","");
-                            editor.commit();
-                            returnToClient(context.getString(R.string.misurationStoredSuccessfully));
-                        }
-                    });
-
-
-
-            // Create and show the AlertDialog
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setOnCancelListener(
-                    new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            ((Activity) context).onBackPressed();
-                        }
-                    }
-            );
-        }else{  //se la connessione sta memorizzo la misuazione nel db
+            SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
+            String valutazione = sharedPref.getString("valutazione","NO");
+            if(valutazione.equals("NO")) {
+                // Se non c'è alcune misurazione pendente
+                pendingMisuration(currentFragment.getString(R.string.pendingMisurationRequestTitle), currentFragment.getString(R.string.pendingMisurationRequest), misurazione, parametro);
+            }
+            else{
+                // Se c'è già un'altra misurazione pendente, chiedo all'utente se vuole sovrascriverla
+                pendingMisuration(currentFragment.getString(R.string.pendingMisurationRequestTitleDuplicati), currentFragment.getString(R.string.pendingMisurationRequestDuplicati), misurazione, parametro);
+            }
+        }
+        else{
+            //se c'è connessione memorizzo la misuazione nel db
+            Misurazione mis=new Misurazione(AccessUser.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
             CompletableFuture<String> future = Dao.storeMisuration(mis,context);
             future.thenAccept(result -> {
                 currentFragment.getActivity().runOnUiThread(() -> {
@@ -195,6 +164,59 @@ public class BluetoothConnectionThread extends Thread {
                 });});
         }
     }
+
+
+    /**
+     * Chiede all'utente se salvare una misurazione pendente,
+     * @param title, titolo della finestra di dialogo.
+     * @param message, messaggio della finestra di dialogo.
+     * @param misurazione, valore della misurazione.
+     * @param parametro, parametro della misurazione.
+     */
+    private void pendingMisuration(String title, String message, Double misurazione, String parametro)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyleCritical);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(context.getString(R.string.negativeButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //se ha premuto il pulsante scarta non accade nulla e la misurazione viene scartata e non memorizzata
+                    }
+                })
+                .setPositiveButton(context.getString(R.string.positiveButtonPendingMisurationRequest), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        TextView bannerPendingMisuration = currentFragment.getActivity().findViewById(R.id.textBannerOnePendingMisuration);
+                        bannerPendingMisuration.setVisibility(View.VISIBLE);
+                        // memorizzo la misurazione localmente
+                        SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("valutazione","NON VALUTATO");
+                        editor.putFloat("valore",round(misurazione,2).floatValue());
+                        editor.putString("valoreMax",null);
+                        editor.putString("valoreMin",null);
+                        editor.putLong("data",Timestamp.now().getSeconds());
+                        editor.putString("tipo",parametro);
+                        editor.putString("notaMedico","");
+                        editor.commit();
+                        returnToClient(context.getString(R.string.misurationStoredSuccessfully));
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.setOnCancelListener(
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        ((Activity) context).onBackPressed();
+                    }
+                }
+        );
+    }
+
+
+
+
+
 
     public static Double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();

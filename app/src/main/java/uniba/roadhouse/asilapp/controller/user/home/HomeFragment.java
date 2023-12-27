@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,31 +47,105 @@ import uniba.roadhouse.asilapp.model.dao.Articolo;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Spesa;
 
-
+/**
+ * Schermata home principale dell'account utente.
+ */
 public class HomeFragment extends Fragment {
+    /**
+     * Icona che consente di aprire il fragment di gestione spese.
+     */
     ImageView arrowToOutgoingsFragment;
+    /**
+     * Testo di benvenuto.
+     */
     TextView welcomeText;
+    /**
+     * Titolo del primo articolo della sezione "Tips"
+     */
     TextView titleFirstArticle;
+    /**
+     * Titolo del secondo articolo della sezione "Tips"
+     */
     TextView titleSecondArticle;
+    /**
+     * Prima webview relativa ai video.
+     */
     WebView firstWebView;
+    /**
+     * Seconda webview relativa ai video.
+     */
     WebView secondWebView;
+    /**
+     * Contiene i video.
+     */
     HorizontalScrollView scrollBarVideo;
+    /**
+     * Grafico a torta che mostra tutte le spese associate all'utente suddivise per categoria.
+     */
     PieChart pieChart;
+    /**
+     * Card del primo articolo.
+     */
     ConstraintLayout firstTips;
+    /**
+     * Card del secondo articolo.
+     */
     ConstraintLayout secondTips;
+    /**
+     * Immagine del primo articolo.
+     */
     ImageView imageFirstArticle;
+    /**
+     * Immagine del secondo articolo.
+     */
     ImageView imageSecondArticle;
+    /**
+     * Consente lo "swipe-to-refresh" dell'intero fragment.
+     */
     SwipeRefreshLayout swipeRefreshLayoutHomeFragment;
+    /**
+     * Immagine del numero di telefono di emergenza nazionale.
+     */
     ImageView policeNumberImage;
+    /**
+     * Numero di telefono di emergenza nazionale.
+     */
     TextView policeNumberValue;
+    /**
+     * Immagine del numero di telefono dell'UNHCR
+     */
     ImageView unhcrNumberImage;
+    /**
+     * Numero di telefono dell'UNHCR
+     */
     TextView unhcrNumbervalue;
+    /**
+     * Immagine del numero di telefono della commissione per il diritto di asilo.
+     */
     ImageView commissionNumberImage;
+    /**
+     * Numero di telefono della commissione per il diritto di asilo.
+     */
     TextView commissionNumberValue;
+    /**
+     * Framelayout della sezione video.
+     */
     FrameLayout frameLayoutVideoHome;
+    /**
+     * ProgressBar della sezione video.
+     */
     ProgressBar progressBarVideoHome;
+    /**
+     * Framelayout della sezione di gestione spese.
+     */
     FrameLayout frameLayoutChartHome;
+    /**
+     * ProgressBar della sezione di gestione spese.
+     */
     ProgressBar progressBarChartHome;
+    /**
+     * Icona che consente di aprire il fragment contenente tutti gli articolo della sezione "Tips"
+     */
     ImageView arrowToAllTipsFragment;
 
 
@@ -131,10 +206,13 @@ public class HomeFragment extends Fragment {
             }
         });
         welcomeText.setText(getString(R.string.welcome)+"\n"+ AccessUser.getNome()+"!");
-        loadVideo();
-        loadTips();
-        loadOutgoings();
         scrollBarVideo.setHorizontalScrollBarEnabled(true);
+        // Prendo i video dal db.
+        loadVideo();
+        // Prendo i primi due articolo dal db.
+        loadTips();
+        // Prendo i dati delle spese associate all'utente dal DB. Servono per la creazione del grafico a torta.
+        loadOutgoings();
         super.onStart();
     }
 
@@ -145,6 +223,7 @@ public class HomeFragment extends Fragment {
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
         toolbar.inflateMenu(R.menu.settings_menu);
+        // Attivo le impostazioni da action overflow
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -159,10 +238,13 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-        loadVideo();
         super.onResume();
     }
 
+    /**
+     * Prende dal database i link dei due video associati alla categoria di utente (se richiedente asilo o titolare di protezione internazionale).
+     * Una volta presi i link, chiama il metodo openVideo().
+     */
     private void loadVideo()
     {
 
@@ -176,7 +258,10 @@ public class HomeFragment extends Fragment {
                 if(result.get("esito").toString().equals(getString(R.string.getVideoSuccessfull)))
                 {
                    ArrayList<String> links = (ArrayList<String>) result.get("links");
-                   openVideo(links.get(0), links.get(1));
+                   if(links.size()==2)
+                   {
+                       openVideo(links.get(0), links.get(1));
+                   }
                 }
                 else
                 {
@@ -187,8 +272,9 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-
+    /**
+     * Apre il fragment "OutgoingsFragment", ossia quello relativo alla gestione delle spese.
+     */
     private void openOutgoingsFragment()
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -199,6 +285,11 @@ public class HomeFragment extends Fragment {
     }
 
 
+    /**
+     * Presi due link Youtube, li mostra attraverso le due webview del fragment.
+     * @param firstLink, primo link Youtube.
+     * @param secondLink, secondo link Youtube.
+     */
     private void openVideo(String firstLink, String secondLink)
     {
         String firstVideo = "<iframe width=\100%\" height=\100%\" src=\" https://www.youtube.com/embed/" + firstLink +"\" \" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"></iframe>";
@@ -213,6 +304,10 @@ public class HomeFragment extends Fragment {
     }
 
 
+    /**
+     * Apre il fragment "DetailTipsFragment", ossia quello che consente la visualizzazione di un articolo specifico.
+     * @param id
+     */
     private void openDetailTips(Integer id)
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -237,6 +332,9 @@ public class HomeFragment extends Fragment {
     }
 
 
+    /**
+     * Prende dal database i primi due articoli e li mostra nelle due card del fragment.
+     */
     private void loadTips()
     {
        CompletableFuture<Map<String,?>>  future = Dao.getFirst2Articles(getActivity());
@@ -263,6 +361,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+    /**
+     * Carica dal database tutte le spese associate all'utente, li trasforma in percentuali e crea il grafico a torta.
+     */
     private void loadOutgoings()
     {
         progressBarChartHome.setVisibility(View.VISIBLE);
@@ -303,14 +405,15 @@ public class HomeFragment extends Fragment {
                 {
                     Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
                 }
-
-
-
             });
         });
 
     }
 
+
+    /**
+     * Apre il fragment "AllTipsFragment", ossia quello che consente la visualizzazione di tutti gli articoli.
+     */
     private void openAllTipsFragment()
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

@@ -260,6 +260,13 @@ public class Dao {
                 nome=document.getString("nome");
                 tipoAsiloProtezione=document.getString("tipoUtente");
             }
+            if(tipoAsiloProtezione=="Richiedente asilo")
+            {
+                tipoAsiloProtezione="asilo";
+            }else
+            {
+                tipoAsiloProtezione="protezione";
+            }
 
             //verifico che l'ash della password immessa dall'utente è uguale a quella del db
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -280,7 +287,7 @@ public class Dao {
                         .withExpiresAt(DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY).parse("01/01/25"))
                         .withClaim("nome",nome)
                         .withClaim("tipo","UTENTE")
-                        .withClaim("tipoAsiloProtezione",(tipoAsiloProtezione=="Richiedente asilo")?"asilo":"protezione")
+                        .withClaim("tipoAsiloProtezione",tipoAsiloProtezione)
                         .sign(algorithm);
                 Log.d("DB", token);
 
@@ -296,9 +303,11 @@ public class Dao {
             }
 
             String finalNome = nome;
+            String finalTipoAsiloProtezione = tipoAsiloProtezione;
             return new HashMap<String,String>() {{
                 put("esito", context.getString(R.string.loginCompleted));
                 put("nome", finalNome);
+                put("tipoAsiloProtezione", finalTipoAsiloProtezione);
             }};
         });
     }
@@ -1294,7 +1303,6 @@ public class Dao {
      */
     public static CompletableFuture<Map<String,?>> getAllVideoByTipo(String tipo, Context context){
         return CompletableFuture.supplyAsync(()->{
-
             Task<QuerySnapshot> query = db.collection("video").whereEqualTo("tipo",tipo).get();
             while (!query.isComplete()) {
                 //attenendo che la funzione asincrona chaimata termini la sua computazione
@@ -1436,7 +1444,7 @@ public class Dao {
             if(query.getResult()!=null){
                 return new HashMap<String,Object>(){{
                     put("esito",context.getString(R.string.getArticleValuationSuccessfull));
-                    put("valutazione", query.getResult().getString("valutazione"));
+                    put("valutazione", query.getResult().getDouble("valutazione"));
                 }};
             }else{
                 return new HashMap<String,Object>(){{

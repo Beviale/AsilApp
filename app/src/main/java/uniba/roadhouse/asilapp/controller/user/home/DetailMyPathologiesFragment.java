@@ -673,14 +673,18 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
         });
     }
 
+    /**
+     * Menu contestuale relativoa alla pressione prolungata della view di un farmaco.
+     * L'account utente può solo condividere i dati di un farmaco, mentre l'account dottore può anche rimuovere un farmaco.
+     */
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();
         drugsClicked = v;
-        // Con l'account utente è possibile esclusivamente condividere i dati della patologia.
+        // Con l'account utente è possibile esclusivamente condividere i dati del farmaco.
         if(openDoctor==false)
             inflater.inflate(R.menu.share_menu, menu);
-        // Con l'account dottore è possibile sia condividere i dati che eliminare la patologia.
+        // Con l'account dottore è possibile sia condividere i dati che eliminare un farmaco.
         if(openDoctor==true)
             inflater.inflate(R.menu.share_and_delete_menu, menu);
         super.onCreateContextMenu(menu, v, menuInfo);

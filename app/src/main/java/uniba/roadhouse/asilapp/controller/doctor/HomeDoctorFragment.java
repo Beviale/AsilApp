@@ -124,6 +124,7 @@ public class HomeDoctorFragment extends Fragment {
         toolbarDoctorActivity.getMenu().clear();
         toolbarDoctorActivity.setNavigationIcon(null);
         toolbarDoctorActivity.inflateMenu(R.menu.settings_menu);
+        // Attivo le impostazioni da action overflow
         toolbarDoctorActivity.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

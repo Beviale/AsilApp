@@ -37,24 +37,79 @@ import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Spesa;
 
+
+/**
+ * Schermata relativa all'aggiunta e alla visualizzazione delle spese.
+ */
 public class OutgoingsFragment extends Fragment {
+    /**
+     * Button che consente l'aggiunta di una nuova spesa.
+     */
     Button addOutgoingButton;
+    /**
+     * Layout per l'inserimento della categoria di spesa da aggiungere.
+     */
     TextInputLayout categorySelectionOutgoingsLayout;
+    /**
+     * AutoCompleteTextView per l'inserimento della categoria di spesa da aggiungere.
+     */
     AutoCompleteTextView categorySelectionOutgoings;
+    /**
+     * Layout per l'inserimento del valore della spesa da aggiungere.
+     */
     TextInputLayout valueOutgoingsLayout;
+    /**
+     * Campo di testo per l'inserimento del valore della spesa da aggiungere.
+     */
     TextInputEditText valueOutgoings;
+    /**
+     * Layout dell'intero fragment.
+     */
     ConstraintLayout layoutOutgoinsFragment;
+    /**
+     * ProgressBar da mostrare durante il caricamento dei dati dal database.
+     */
     ProgressBar progressBar;
+    /**
+     * Grafico a torta che mostra la suddivisione in categorie delle spese effettuate negli utlimi 7 giorni.
+     */
     PieChart pieChartLast7Days;
+    /**
+     * Mostra l'importo speso in cibo negli utlimi 7 giorni.
+     */
     TextView valueFood7DaysMoney;
+    /**
+     * Mostra l'importo speso in farmaci negli ultimi 7 giorni.
+     */
     TextView valueDrugs7DaysMoney;
+    /**
+     * Mostra l'importo speso in altro negli ultimi 7 giorni.
+     */
     TextView valueOther7DaysMoney;
+    /**
+     * Grafico a torta che mostra la suddivisione in categorie delle spese effettuate negli utlimi 30 giorni.
+     */
     PieChart pieChartLast30Days;
+    /**
+     * Mostra l'importo speso in cibo negli ultimi 30 giorni.
+     */
     TextView valueFood30DaysMoney;
+    /**
+     * Mostra l'importo speso in farmaci negli ultimi 30 giorni.
+     */
     TextView valueDrugs30DaysMoney;
+    /**
+     * Mostra l'importo speso in altro neglu ultimi 30 giorni.
+     */
     TextView valueOther30DaysMoney;
 
+    /**
+     * Valore massimo inseribile come nuova spesa.
+     */
     private static float MAX_VALUE=5000;
+    /**
+     * Valore minimo inseribile come nuova spesa
+     */
     private static float MIN_VALUE=(float)0.5;
 
 

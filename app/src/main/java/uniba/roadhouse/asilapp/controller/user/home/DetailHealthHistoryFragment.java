@@ -721,7 +721,11 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
     }
 
-
+    /**
+     * Menu contestuale relativo alla pressione prolungata di una misurazione precedente.
+     * Consente la condivisione dei dati di una misurazione precedente.
+     * E' lo stesso sia per l'account utente che dottore.
+     */
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();

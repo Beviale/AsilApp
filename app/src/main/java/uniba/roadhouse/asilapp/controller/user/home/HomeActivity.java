@@ -35,27 +35,39 @@ import uniba.roadhouse.asilapp.model.dao.AccessUser;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
-
+/**
+ * Activity contenente tutti i vari fragment accessibili da un account utente.
+ */
 public class HomeActivity extends AppCompatActivity {
     Map<String,Integer> screenIcons;
     Map<String,Integer> screenIconsBg;
     Map<String,Class> screenFragments;
     Map<String,Integer> screenActiveMipmapIcons;
     Map<String,Integer> screenMipmapIcons;
+    /**
+     * Banner da mostrare se vi è una misurazione pendenente da memorizzare nel database.
+     */
     TextView textBannerOnePendingMisuration;
-
+    /**
+     * Testo della toolbar;
+     */
     TextView homeText;
+    /**
+     * Icona della toolbar che segnala l'assenza di connessione ad Internet.
+     */
     ImageView noConnectionIconHome;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_activity);
         // Disattivo il tema scuro
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        setContentView(R.layout.home_activity);
+        // Coloro la statusBar
         Window window = this.getWindow();
         window.setStatusBarColor(getColor(R.color.appBarColor));
+        // RIFERIMENTI
         noConnectionIconHome = findViewById(R.id.noConnectionIconHome);
         homeText=findViewById(R.id.homeScreenTextView);
         textBannerOnePendingMisuration = findViewById(R.id.textBannerOnePendingMisuration);
@@ -63,9 +75,11 @@ public class HomeActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
         // Registra il metodo di callback relativo alla connessione.
         registerNetworkCallback();
+        // Se non c'è connessione, mostro un messaggio di dialog.
         if (!Utility.isConnectedToInternet(this)) {
             Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
+        // Verifico se vi è una misurazione pendente.
         verifyPendingMisuration();
     }
 
@@ -114,14 +128,21 @@ public class HomeActivity extends AppCompatActivity {
             put(getResources().getString(R.string.healthBoxMenuScreen), HealthBoxFragment.class);
             put(getResources().getString(R.string.positionMenuScreen), PositionFragment.class);
         }};
-
+        // LISTENER
         findViewById(R.id.user_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.userMenuScreen)));
         findViewById(R.id.home_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.homeMenuScreen)));
         findViewById(R.id.health_box_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.healthBoxMenuScreen)));
         findViewById(R.id.health_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.healthMenuScreen)));
         findViewById(R.id.position_icon_layout).setOnClickListener(v->changeScreen(getResources().getString(R.string.positionMenuScreen)));
-
         findViewById(R.id.toolBarIconHomeActivity).setOnClickListener(v->{if(!(getSupportFragmentManager().findFragmentById(R.id.homeContainerView) instanceof HomeFragment)) changeScreen(getResources().getString(R.string.homeMenuScreen));});
+        noConnectionIconHome.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
+            }
+        });
+        textBannerOnePendingMisuration.setOnClickListener(v->openDialogOnePendingRequest());
 
         //avvio il fragment di home che schermata da aprire all'avvio dell'activity
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -132,16 +153,6 @@ public class HomeActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(getResources().getString(R.string.homeMenuScreen));
             fragmentTransaction.commit();
         }
-
-        //------LISTENER-----------
-        noConnectionIconHome.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-            Utility.showAlertDialog(HomeActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
-        }
-        });
-        textBannerOnePendingMisuration.setOnClickListener(v->openDialogOnePendingRequest());
     }
 
     @Override
@@ -204,8 +215,8 @@ public class HomeActivity extends AppCompatActivity {
 
     /**
      * Verifica la presenza di connessione in maniera costante.
-     * Se la connessione è assente, mostra la relativa icona e il dialog solo se non è stato già mostrato in precedenza.
-     * Se la connessione è presente, elimina l'icona.
+     * Se la connessione è assente, mostra la relativa icona nella toolbar.
+     * Se la connessione è presente, elimina l'icona nella toolbar e verifica se vi è una misurazione pendentente memorizzata nelle Shared Preferences. In tal caso, la invia subito al database.
      */
     private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
         @Override
@@ -277,14 +288,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Mostra la finestra di dialog relativa alla misurazione pendenente.
+     */
     private void openDialogOnePendingRequest()
     {
         Utility.showAlertDialog(this, getString(R.string.onePendingRequestInfoTitle), getString(R.string.onePendingRequestInfo));
     }
 
     /**
-     * Se vi è una misurazione pendente, attiva il relativo banner.
+     * Se vi è una misurazione pendente, rende visibile il relativo banner.
      */
     private void verifyPendingMisuration()
     {
@@ -294,7 +307,6 @@ public class HomeActivity extends AppCompatActivity {
         {
             textBannerOnePendingMisuration.setVisibility(View.VISIBLE);
         }
-
     }
 
 }
