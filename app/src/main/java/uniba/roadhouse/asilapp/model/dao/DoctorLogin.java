@@ -1,6 +1,9 @@
 package uniba.roadhouse.asilapp.model.dao;
 
-public class AccessDoctor {
+/**
+ * Classe singleton che memorizza l'username del dottore che ha effettuato il login.
+ */
+public class DoctorLogin {
     private static String username;
     public static void setUsername(String usernameInput)
     {
@@ -10,6 +13,4 @@ public class AccessDoctor {
     {
         return username;
     }
-
-
 }

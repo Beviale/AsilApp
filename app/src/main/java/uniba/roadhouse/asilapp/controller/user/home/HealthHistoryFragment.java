@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
@@ -337,7 +337,7 @@ public class HealthHistoryFragment extends Fragment {
     {
         homeActivityProgressBar.setVisibility(View.VISIBLE);
         swipereFreshLayout.setAlpha((float)0.5);
-        CompletableFuture<Map<String, ?>> future = Dao.getAllLastMisurationsUsername(AccessUser.getUsername(), getActivity());
+        CompletableFuture<Map<String, ?>> future = Dao.getAllLastMisurationsUsername(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 homeActivityProgressBar.setVisibility(View.GONE);

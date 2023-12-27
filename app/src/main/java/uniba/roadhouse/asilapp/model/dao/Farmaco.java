@@ -1,5 +1,8 @@
 package uniba.roadhouse.asilapp.model.dao;
 
+/**
+ * Classe che rappresenta un farmaco associato ad una patologia.
+ */
 public class Farmaco {
     private String nome;
     private String nota;

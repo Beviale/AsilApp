@@ -1,8 +1,8 @@
 package uniba.roadhouse.asilapp.model.dao;
 
-
-import com.google.firebase.Timestamp;
-
+/**
+ * Classe che rappresenta una patologia.
+ */
 public class Patologia {
     String username;
     String patologia;

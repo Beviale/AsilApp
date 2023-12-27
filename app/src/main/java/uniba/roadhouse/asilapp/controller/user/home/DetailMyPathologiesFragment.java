@@ -56,7 +56,7 @@ import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditPriorityDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Farmaco;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
@@ -325,7 +325,7 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
                                     public void onClick(DialogInterface dialog, int id) {
                                         progressBar.setVisibility(View.VISIBLE);
                                         layoutMyPathologies.setAlpha((float)0.5);
-                                        CompletableFuture<String> future = Dao.deletePatology(AccessUser.getUsername(), namePathology, getActivity());
+                                        CompletableFuture<String> future = Dao.deletePatology(UserLogin.getUsername(), namePathology, getActivity());
                                         future.thenAccept(result -> {
                                             getActivity().runOnUiThread(() -> {
                                                 progressBar.setVisibility(View.INVISIBLE);
@@ -437,7 +437,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
      */
     private void openEditDoctorNotes()
     {
-        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstancePathology(AccessUser.getUsername(), namePathology);
+        EditDoctorNotesDialogFragment editDoctorNotesDialogFragment = EditDoctorNotesDialogFragment.newInstancePathology(UserLogin.getUsername(), namePathology);
         editDoctorNotesDialogFragment.show(getActivity().getSupportFragmentManager(), "EditDoctorNotesDialogFragment");
         editDoctorNotesDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_DOCTOR_NOTES);
 
@@ -464,7 +464,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 progressBar.setVisibility(View.VISIBLE);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 String newDate = dateFormat.format(selectedDate.getTime());
-                CompletableFuture<String> future = Dao.editPatologyDate(AccessUser.getUsername(), namePathology, newDate, getActivity());
+                CompletableFuture<String> future = Dao.editPatologyDate(UserLogin.getUsername(), namePathology, newDate, getActivity());
                 future.thenAccept(result -> {
                     getActivity().runOnUiThread(() -> {
                         progressBar.setVisibility(View.INVISIBLE);
@@ -493,7 +493,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
                         progressBar.setVisibility(View.GONE);
-                        CompletableFuture<String> future = Dao.editPatologyHour(AccessUser.getUsername(), namePathology, selectedTime, getActivity());
+                        CompletableFuture<String> future = Dao.editPatologyHour(UserLogin.getUsername(), namePathology, selectedTime, getActivity());
                         future.thenAccept(result -> {
                             getActivity().runOnUiThread(() -> {
                                 progressBar.setVisibility(View.INVISIBLE);
@@ -516,7 +516,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
      */
     private void editPriority()
     {
-        EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance(AccessUser.getUsername(), namePathology);
+        EditPriorityDialogFragment editPriorityDialogFragment = EditPriorityDialogFragment.newInstance(UserLogin.getUsername(), namePathology);
         editPriorityDialogFragment.show(getActivity().getSupportFragmentManager(), "EditPriorityDialogFragment");
         editPriorityDialogFragment.setTargetFragment(this, REQUEST_CODE_EDIT_PRIORITY);
 
@@ -541,7 +541,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     {
         progressBar.setVisibility(View.VISIBLE);
         layoutMyPathologies.setAlpha((float)0.5);
-        CompletableFuture<Map<String, ?>> future = Dao.getPathology(namePathology, AccessUser.getUsername(), getActivity());
+        CompletableFuture<Map<String, ?>> future = Dao.getPathology(namePathology, UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
@@ -583,7 +583,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
     {
         progressBar.setVisibility(View.VISIBLE);
         linearLayoutDrugs.setAlpha((float)0.5);
-        CompletableFuture<Map<String, ?>> future = Dao.getAllFarmaci(AccessUser.getUsername(), namePathology, getActivity());
+        CompletableFuture<Map<String, ?>> future = Dao.getAllFarmaci(UserLogin.getUsername(), namePathology, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.INVISIBLE);
@@ -710,7 +710,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                     .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             progressBar.setVisibility(View.VISIBLE);
-                            CompletableFuture<String> future = Dao.deleteFarmaco(AccessUser.getUsername(), namePathology, mapViewDrugName.get(drugsClicked).toString(), getActivity());
+                            CompletableFuture<String> future = Dao.deleteFarmaco(UserLogin.getUsername(), namePathology, mapViewDrugName.get(drugsClicked).toString(), getActivity());
                             future.thenAccept(result -> {
                                 getActivity().runOnUiThread(() -> {
                                     progressBar.setVisibility(View.INVISIBLE);

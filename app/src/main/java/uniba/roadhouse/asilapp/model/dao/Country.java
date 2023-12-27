@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Classe che rappresenta i vari paesi visualizzabili dall'utente.
+ * Classe che rappresenta un Paese.
  */
 public class Country {
     private String name;
@@ -14,7 +14,7 @@ public class Country {
     }
 
     /**
-     * Classe che prende i paesi dalle API.
+     * Classe che prende i paesi dalle API di RestCountries.
      */
     public static class RetrofitInstance {
         private static final String BASE_URL = "https://restcountries.com/v2/";

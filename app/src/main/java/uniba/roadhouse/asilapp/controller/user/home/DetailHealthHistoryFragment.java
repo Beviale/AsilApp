@@ -50,10 +50,9 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditEvalutationDialogFragment;
-import uniba.roadhouse.asilapp.controller.doctor.EditPriorityDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
@@ -469,7 +468,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     {
         oldProgressBar.setVisibility(View.VISIBLE);
         mappaViewIdMisurazioneOld = new HashMap<View, Integer>();
-        CompletableFuture<Map<String, Object>> future = Dao.getAllPastMisurationByUsername(AccessUser.getUsername(), itemClickedString, getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getAllPastMisurationByUsername(UserLogin.getUsername(), itemClickedString, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 oldProgressBar.setVisibility(View.GONE);

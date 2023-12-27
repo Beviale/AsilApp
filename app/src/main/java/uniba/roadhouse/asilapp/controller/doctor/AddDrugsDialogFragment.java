@@ -22,8 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.controller.user.home.DetailMyPathologiesFragment;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Farmaco;
 
@@ -155,7 +154,7 @@ public class AddDrugsDialogFragment extends DialogFragment {
         {
             note = noteAddDrugLayoutInput.getText().toString();
         }
-        Farmaco addFarmaco = new Farmaco(name, note, AccessUser.getUsername(), namePathology);
+        Farmaco addFarmaco = new Farmaco(name, note, UserLogin.getUsername(), namePathology);
         progressBar.setVisibility(View.VISIBLE);
         linearLayoutDoctoActivity.setAlpha((float)0.5);
         CompletableFuture<String> future = Dao.addFarmaco(addFarmaco, getActivity());

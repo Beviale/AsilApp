@@ -5,7 +5,7 @@ import com.google.firebase.Timestamp;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 
 /**
- * Rappresenta una misurazione effettuata dall'utente. Puè riguardare un determinato parametro.
+ * Classe che rappresenta una misurazione.
  */
 public class Misurazione {
     private String username;

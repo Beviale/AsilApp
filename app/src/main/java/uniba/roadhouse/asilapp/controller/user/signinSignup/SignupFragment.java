@@ -24,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.model.dao.Dao;
-import uniba.roadhouse.asilapp.model.dao.User;
+import uniba.roadhouse.asilapp.model.dao.UserSignup;
 
 /**
  * Fragment relativo alla schermata principale di registrazione.
@@ -136,36 +136,36 @@ public class SignupFragment extends Fragment {
                 TextInputEditText surnameInputRegister = getActivity().findViewById(R.id.surnameInputSignup);
                 AutoCompleteTextView genderSelection = getActivity().findViewById(R.id.genderSelectionSignup);
                 AutoCompleteTextView birthDateSelection = getActivity().findViewById(R.id.birtDateSelectionSignup);
-                User.setName(nameInputRegister.getText().toString());
-                User.setSurname(surnameInputRegister.getText().toString());
-                User.setGender(genderSelection.getText().toString());
-                User.setBirthDate(birthDateSelection.getText().toString());
+                UserSignup.setName(nameInputRegister.getText().toString());
+                UserSignup.setSurname(surnameInputRegister.getText().toString());
+                UserSignup.setGender(genderSelection.getText().toString());
+                UserSignup.setBirthDate(birthDateSelection.getText().toString());
                 break;
             case "class uniba.roadhouse.asilapp.controller.user.signinSignup.SignupPlaceOriginFragment":
                 AutoCompleteTextView typeUserSelection = getActivity().findViewById(R.id.typeUserSelectionSignup);
                 AutoCompleteTextView citizenSelection = getActivity().findViewById(R.id.citizenSelectionSignup);
                 AutoCompleteTextView countrySelection = getActivity().findViewById(R.id.countrySelectionSignup);
 
-                User.setTypeUser(typeUserSelection.getText().toString());
-                User.setCitizen(citizenSelection.getText().toString());
-                User.setCountry(countrySelection.getText().toString());
+                UserSignup.setTypeUser(typeUserSelection.getText().toString());
+                UserSignup.setCitizen(citizenSelection.getText().toString());
+                UserSignup.setCountry(countrySelection.getText().toString());
                 break;
             case "class uniba.roadhouse.asilapp.controller.user.signinSignup.SignupOrganizationFragment":
                 AutoCompleteTextView cityOrganizationSelection = getActivity().findViewById(R.id.cityOrganizationSelectionSignup);
                 AutoCompleteTextView nameOrganizationSelection = getActivity().findViewById(R.id.nameOrganizationSelectionSignup);
 
-                User.setCityOrganization(cityOrganizationSelection.getText().toString());
-                User.setNameOrganization(nameOrganizationSelection.getText().toString());
+                UserSignup.setCityOrganization(cityOrganizationSelection.getText().toString());
+                UserSignup.setNameOrganization(nameOrganizationSelection.getText().toString());
                 break;
             case "class uniba.roadhouse.asilapp.controller.user.signinSignup.SignupUsernamePasswordFragment":
                 TextInputEditText usernameInputRegister = getActivity().findViewById(R.id.usernameInputSignup);
                 TextInputEditText passwordInputRegister = getActivity().findViewById(R.id.passwordInputSignup);
 
 
-                User.setUsername(usernameInputRegister.getText().toString());
-                User.setPassword(passwordInputRegister.getText().toString());
+                UserSignup.setUsername(usernameInputRegister.getText().toString());
+                UserSignup.setPassword(passwordInputRegister.getText().toString());
                 progressBar.setVisibility(View.VISIBLE);
-                CompletableFuture<String> future = Dao.registerUser(User.getUsername(), User.getPassword(), User.getName(), User.getUsername(), User.getCitizen(), User.getGender(), User.getCountry(), User.getNameOrganization(), User.getTypeUser(), User.getBirthDate(), getActivity());
+                CompletableFuture<String> future = Dao.registerUser(UserSignup.getUsername(), UserSignup.getPassword(), UserSignup.getName(), UserSignup.getUsername(), UserSignup.getCitizen(), UserSignup.getGender(), UserSignup.getCountry(), UserSignup.getNameOrganization(), UserSignup.getTypeUser(), UserSignup.getBirthDate(), getActivity());
                 future.thenAccept(result -> {
                     getActivity().runOnUiThread(() -> {
                         progressBar.setVisibility(View.GONE);

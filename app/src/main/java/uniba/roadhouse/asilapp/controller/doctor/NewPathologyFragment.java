@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
 
@@ -273,7 +273,7 @@ public class NewPathologyFragment extends Fragment {
         {
             noteAdd = doctorNotesNewPathology.getText().toString();
         }
-        Patologia patologia = new Patologia(AccessUser.getUsername(), namePathologyAdd, priorityAdd, dateAdd, timeAdd, noteAdd);
+        Patologia patologia = new Patologia(UserLogin.getUsername(), namePathologyAdd, priorityAdd, dateAdd, timeAdd, noteAdd);
         CompletableFuture<String> future = Dao.storePatology(patologia,getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {

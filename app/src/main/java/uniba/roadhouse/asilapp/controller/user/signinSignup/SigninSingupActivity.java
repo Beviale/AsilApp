@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
@@ -15,13 +14,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
-import java.util.Map;
-
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
-import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
-import uniba.roadhouse.asilapp.model.dao.Dao;
 
 
 /**

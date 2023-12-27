@@ -8,10 +8,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -33,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
@@ -155,7 +153,7 @@ public class BluetoothConnectionThread extends Thread {
         }
         else{
             //se c'è connessione memorizzo la misuazione nel db
-            Misurazione mis=new Misurazione(AccessUser.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
+            Misurazione mis=new Misurazione(UserLogin.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
             CompletableFuture<String> future = Dao.storeMisuration(mis,context);
             future.thenAccept(result -> {
                 currentFragment.getActivity().runOnUiThread(() -> {

@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.CategoriaSpesaEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Spesa;
 
@@ -124,7 +124,6 @@ public class OutgoingsFragment extends Fragment {
 
     public static OutgoingsFragment newInstance(String param1, String param2) {
         OutgoingsFragment fragment = new OutgoingsFragment();
-        Bundle args = new Bundle();
         return fragment;
     }
 
@@ -200,6 +199,9 @@ public class OutgoingsFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Inserisce in categorySelectionOutgoings l'elenco delle categorie.
+     */
     private void getCategory()
     {
         List<String> allCategory = new ArrayList<String>();
@@ -225,7 +227,9 @@ public class OutgoingsFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
+            // Dopo aver selezionato la cateogoria, sposoto il focus sull'importo.
             valueOutgoingsLayout.requestFocus();
+            // Se il campo relativo all'importo non è vuoto, il bottore di aggiunta spesa viene attivato.
             if(!valueOutgoings.getText().toString().isEmpty())
             {
                 addOutgoingButton.setEnabled(true);
@@ -250,33 +254,37 @@ public class OutgoingsFragment extends Fragment {
         public void afterTextChanged(Editable s) {
             if(!s.toString().isEmpty())
             {
+                // Dopo aver inserito il valore, se il campo relativo alla categoria non è vuoto, il bottone di aggiunta spesa viene attivato.
                 if(!categorySelectionOutgoings.getText().toString().isEmpty())
                 {
                     addOutgoingButton.setEnabled(true);
                     addOutgoingButton.setAlpha((float)1.0);
                 }
             }
+            // Altrimenti viene disattivato
             else
             {
                 addOutgoingButton.setEnabled(false);
                 addOutgoingButton.setAlpha((float)0.5);
             }
-
-
         }
     };
 
 
-
+    /**
+     * Permette l'upload al database della nuova spesa.
+     */
     private void addOutgoing()
     {
         String category = categorySelectionOutgoings.getText().toString();
         Float value = Float.valueOf(valueOutgoings.getText().toString());
+        // Se l'importo inserito è maggiore del massimo consentito, non effettuo l'upload e informo l'utente con un dialog.
         if(value>MAX_VALUE)
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.valueOutgoindTooHightTitle), getString(R.string.valueOutgoindTooHight).concat(" ").concat(String.valueOf(MAX_VALUE)).concat("."));
             return;
         }
+        // Se l'importo inserito è minore del minimo consentito, non effettuo l'upload e informo l'utente con un dialog.
         if(value<MIN_VALUE)
         {
             Utility.showAlertDialog(getActivity(), getString(R.string.valueOutgoindTooLowTitle), getString(R.string.valueOutgoindTooLow).concat(" ").concat(String.valueOf(MIN_VALUE)).concat("."));
@@ -285,20 +293,26 @@ public class OutgoingsFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         layoutOutgoinsFragment.setAlpha((float)0.5);
         String categoryToEnum =  categorySelectionOutgoings.getText().toString();
-        Spesa addSpesa = new Spesa(convertCategoryStringToEnum(categoryToEnum), Double.valueOf(valueOutgoings.getText().toString()), Timestamp.now(), AccessUser.getUsername());
+        Spesa addSpesa = new Spesa(convertCategoryStringToEnum(categoryToEnum), Double.valueOf(valueOutgoings.getText().toString()), Timestamp.now(), UserLogin.getUsername());
         CompletableFuture<String> future = Dao.storeSpesa(addSpesa, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
                 layoutOutgoinsFragment.setAlpha((float)1.0);
                 Toast.makeText(getActivity(), result.toString(), Toast.LENGTH_LONG).show();
+                // Aggiorno la sezione dei 7 giorni.
                 getLast7Days();
+                // Aggiorno la sezione dei 30 giorni.
                 getLast30Days();
             });
         });
     }
 
-
+    /**
+     * Data una stringa relativa alla cateogoria di una spesa, la converte nel tipo enumerativo.
+     * @param category
+     * @return
+     */
     private CategoriaSpesaEnum convertCategoryStringToEnum(String category)
     {
         String cibo = getString(R.string.food);
@@ -318,11 +332,15 @@ public class OutgoingsFragment extends Fragment {
     }
 
 
+    /**
+     * Prende dal database tutte le spese effettuate negli ultimi 7 giorni suddivise in base alla loro cateogoria.
+     * Riempie le varie TextView e crea il grafico a torta.
+     */
     private void getLast7Days()
     {
         progressBar.setVisibility(View.VISIBLE);
         layoutOutgoinsFragment.setAlpha((float)0.5);
-        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), 7, getActivity());
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(UserLogin.getUsername(), 7, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
@@ -363,13 +381,19 @@ public class OutgoingsFragment extends Fragment {
                 }
             });
         });
-
     }
+
+
+
+    /**
+     * Prende dal database tutte le spese effettuate negli ultimi 30 giorni suddivise in base alla loro cateogoria.
+     * Riempie le varie TextView e crea il grafico a torta.
+     */
     private void getLast30Days()
     {
         progressBar.setVisibility(View.VISIBLE);
         layoutOutgoinsFragment.setAlpha((float)0.5);
-        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), 30, getActivity());
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(UserLogin.getUsername(), 30, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
@@ -410,6 +434,5 @@ public class OutgoingsFragment extends Fragment {
                 }
             });
         });
-
     }
 }

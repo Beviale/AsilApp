@@ -4,6 +4,9 @@ import com.google.firebase.Timestamp;
 
 import uniba.roadhouse.asilapp.controller.other.CategoriaSpesaEnum;
 
+/**
+ * Classe che rappresenta una spesa.
+ */
 public class Spesa {
     private CategoriaSpesaEnum categoria;
     private Double costo;

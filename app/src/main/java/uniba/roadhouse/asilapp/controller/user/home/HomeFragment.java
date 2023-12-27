@@ -28,11 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.CategoriaSpesaEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Articolo;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Spesa;
@@ -205,7 +200,7 @@ public class HomeFragment extends Fragment {
                 swipeRefreshLayoutHomeFragment.setRefreshing(false);
             }
         });
-        welcomeText.setText(getString(R.string.welcome)+"\n"+ AccessUser.getNome()+"!");
+        welcomeText.setText(getString(R.string.welcome)+"\n"+ UserLogin.getNome()+"!");
         scrollBarVideo.setHorizontalScrollBarEnabled(true);
         // Prendo i video dal db.
         loadVideo();
@@ -250,7 +245,8 @@ public class HomeFragment extends Fragment {
 
         progressBarVideoHome.setVisibility(View.VISIBLE);
         frameLayoutVideoHome.setAlpha((float)0.5);
-        CompletableFuture<Map<String,?>>  future = Dao.getAllVideoByTipo(AccessUser.getTipoAsiloProtezione(), getActivity());
+        CompletableFuture<Map<String,?>>  future = Dao.getAllVideoByTipo(UserLogin.getTipoAsiloProtezione(), getActivity());
+        Log.d("user", UserLogin.getTipoAsiloProtezione());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBarVideoHome.setVisibility(View.GONE);
@@ -369,7 +365,7 @@ public class HomeFragment extends Fragment {
     {
         progressBarChartHome.setVisibility(View.VISIBLE);
         frameLayoutChartHome.setAlpha((float)0.5);
-        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(AccessUser.getUsername(), -1, getActivity());
+        CompletableFuture<Map<String,?>> future = Dao.getAllSpese(UserLogin.getUsername(), -1, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBarChartHome.setVisibility(View.GONE);

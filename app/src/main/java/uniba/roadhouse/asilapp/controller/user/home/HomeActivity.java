@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -23,15 +22,13 @@ import com.google.firebase.Timestamp;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
 
@@ -239,7 +236,7 @@ public class HomeActivity extends AppCompatActivity {
                     && !valore.equals("NO") && !data.equals("NO") && !tipo.equals("NO") && !notaMedico.equals("NO")){
                         //se ho preso correttamente tutti i dati dalla shared preferences della misurazione
                         //memorizzo la misurazione sul db
-                        CompletableFuture<String> future = Dao.storeMisuration(new Misurazione(AccessUser.getUsername(),valutazione,Double.parseDouble(valore),Double.parseDouble(valoreMax),Double.parseDouble(valoreMin),new Timestamp(new Date(Long.parseLong(data)*1000)), TipoMisurazioneEnum.valueOf(tipo),notaMedico),getApplicationContext());
+                        CompletableFuture<String> future = Dao.storeMisuration(new Misurazione(UserLogin.getUsername(),valutazione,Double.parseDouble(valore),Double.parseDouble(valoreMax),Double.parseDouble(valoreMin),new Timestamp(new Date(Long.parseLong(data)*1000)), TipoMisurazioneEnum.valueOf(tipo),notaMedico),getApplicationContext());
                         future.thenAccept(result -> {
                             runOnUiThread(() -> {
                                 textBannerOnePendingMisuration.setVisibility(View.GONE);

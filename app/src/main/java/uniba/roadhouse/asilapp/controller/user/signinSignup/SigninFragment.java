@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
@@ -183,9 +183,9 @@ public class SigninFragment extends Fragment {
                 Toast.makeText(getActivity(), result.get("esito"), Toast.LENGTH_SHORT).show();
                 if(result.get("esito")==getString(R.string.loginCompleted))
                 {
-                    AccessUser.setUsername(userNameInput.getText().toString());
-                    AccessUser.setNome(result.get("nome"));
-                    AccessUser.setTipoAsiloProtezione(result.get("tipoAsiloProtezione"));
+                    UserLogin.setUsername(userNameInput.getText().toString());
+                    UserLogin.setNome(result.get("nome"));
+                    UserLogin.setTipoAsiloProtezione(result.get("tipoAsiloProtezione"));
                     Intent openHome = new Intent(getActivity(), HomeActivity.class);
                     startActivity(openHome);
                 }

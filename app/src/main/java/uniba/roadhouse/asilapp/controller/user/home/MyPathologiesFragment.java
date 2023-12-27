@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.NewPathologyFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Patologia;
 
@@ -237,7 +237,7 @@ public class MyPathologiesFragment extends Fragment {
         mapViewNamePathology = new HashMap<View, String>();
         progressBar.setVisibility(View.VISIBLE);
         linearLayoutMyPathologies.setAlpha((float)0.5);
-        CompletableFuture<Map<String, Object>> future = Dao.getAllPatologies(AccessUser.getUsername(), getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getAllPatologies(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
@@ -437,7 +437,7 @@ public class MyPathologiesFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int id) {
                             progressBar.setVisibility(View.VISIBLE);
                             linearLayoutMyPathologies.setAlpha((float)0.5);
-                            CompletableFuture<String> future = Dao.deletePatology(AccessUser.getUsername(), mapViewNamePathology.get(pathologyClicked), getActivity());
+                            CompletableFuture<String> future = Dao.deletePatology(UserLogin.getUsername(), mapViewNamePathology.get(pathologyClicked), getActivity());
                             future.thenAccept(result -> {
                                 getActivity().runOnUiThread(() -> {
                                     progressBar.setVisibility(View.INVISIBLE);

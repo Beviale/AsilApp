@@ -1,9 +1,10 @@
 package uniba.roadhouse.asilapp.model.dao;
 
 /**
- * Classe singleton che rappresenta l'utente che accede all'app.
+ * Classe singleton che rappresenta l'utente che intende registrarsi.
+ * Contiene tutti i vari dati necessari alla registrazione.
  */
-public class User {
+public class UserSignup {
     private static String name;
     private static String surname;
     private static String gender;
@@ -110,9 +111,5 @@ public class User {
     public static void setPassword(String passwordAdd) {
         password=passwordAdd;
     }
-
-
-
-
 
 }

@@ -1,9 +1,9 @@
 package uniba.roadhouse.asilapp.model.dao;
 
 /**
- * Classe singleton che memorizza l'username e il nome dell'utente che ha effettuato il login.
+ * Classe singleton che memorizza l'username, il nome e il tipo (se richiedente asilo o titolare di protezione internazionel) dell'utente che ha effettuato il login.
  */
-public class AccessUser
+public class UserLogin
 {
     private static String username;
     private static String nome;
@@ -25,7 +25,7 @@ public class AccessUser
     }
 
     public static void setTipoAsiloProtezione(String tipoAsiloProtezione) {
-        AccessUser.tipoAsiloProtezione = tipoAsiloProtezione;
+        UserLogin.tipoAsiloProtezione = tipoAsiloProtezione;
     }
 }
 

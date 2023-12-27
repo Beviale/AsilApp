@@ -1,11 +1,8 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -21,8 +18,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
-import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
@@ -101,7 +97,7 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
     {
         progressBar.setVisibility(View.VISIBLE);
         layoutEvalutateFragment.setAlpha((float)0.5);
-        CompletableFuture<String> future = Dao.storeArticoleValutazione(id, AccessUser.getUsername(), Float.valueOf(valueRatingEvaluate.getText().toString()), getActivity()) ;
+        CompletableFuture<String> future = Dao.storeArticoleValutazione(id, UserLogin.getUsername(), Float.valueOf(valueRatingEvaluate.getText().toString()), getActivity()) ;
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
@@ -121,7 +117,7 @@ public class EvaluateTipsDialogFragment extends DialogFragment {
     {
         progressBar.setVisibility(View.VISIBLE);
         layoutEvalutateFragment.setAlpha((float)0.5);
-        CompletableFuture<Map<String, ?>> future = Dao.getArticleValutazione(id, AccessUser.getUsername(), getActivity());
+        CompletableFuture<Map<String, ?>> future = Dao.getArticleValutazione(id, UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);

@@ -32,8 +32,8 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.DoctorLogin;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
@@ -157,7 +157,7 @@ public class HomeDoctorFragment extends Fragment {
     {
         progressBar.setVisibility(View.VISIBLE);
         homeLayout.setAlpha((float)0.5);
-        CompletableFuture<List<String>> future = Dao.getAllDoctorsPatients(AccessDoctor.getUsername(), getActivity());
+        CompletableFuture<List<String>> future = Dao.getAllDoctorsPatients(DoctorLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 for(String usernameUser: result)
@@ -255,7 +255,7 @@ public class HomeDoctorFragment extends Fragment {
      */
     private void openDetailUserDoctor(String usernameUser, String nameAndSurname)
     {
-        AccessUser.setUsername(usernameUser);
+        UserLogin.setUsername(usernameUser);
         textToolbarDoctor.setText(nameAndSurname);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

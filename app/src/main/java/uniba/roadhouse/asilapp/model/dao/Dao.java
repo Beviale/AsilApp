@@ -313,10 +313,10 @@ public class Dao {
     }
 
     /**
-     * Questo metodo verifica se un utente ha gia effettuato il login, verificando l'autenticità del token JWT memorizzato nelle shared preferences
+     * Questo metodo verifica se un utente/dottore ha gia effettuato il login, verificando l'autenticità del token JWT memorizzato nelle shared preferences
      *
      * @param context contesto attuale (this)
-     * @return ritorna una Map con valore "" per la key "username" se l'utente non è loggato (token non valido o non trovato) o come valore lo username dell'utente se esso è loggato.
+     * @return ritorna una Map con valore "" per la key "username" se l'utente/dottore non è loggato (token non valido o non trovato).
      * inoltre vi è la chiave "nome" per il nome dell'utente e una chiave "tipo" che indica se l'utente è un "UTENTE" o un "DOTTORE"
      */
     public static Map<String,String> checkIsLogged(Context context){
@@ -1353,7 +1353,6 @@ public class Dao {
                         Integer.parseInt(document.getId()),
                         document.getString("titolo"),
                         document.getString("testo"),
-                        document.getString("tipo"),
                         immagine));
             }
 
@@ -1388,7 +1387,6 @@ public class Dao {
                     Integer.parseInt(query.getResult().getId()),
                     query.getResult().getString("titolo"),
                     query.getResult().getString("testo"),
-                    query.getResult().getString("tipo"),
                     immagine);
 
             return new HashMap<String,Object>(){{
@@ -1520,7 +1518,6 @@ public class Dao {
                         Integer.parseInt(document.getId()),
                         document.getString("titolo"),
                         document.getString("testo"),
-                        document.getString("tipo"),
                         immagine
                 ));
             }

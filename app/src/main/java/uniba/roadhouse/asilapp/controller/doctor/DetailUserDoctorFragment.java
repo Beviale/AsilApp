@@ -21,7 +21,6 @@ import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.user.home.HealthHistoryFragment;
 import uniba.roadhouse.asilapp.controller.user.home.MyPathologiesFragment;
 import uniba.roadhouse.asilapp.controller.user.home.UserProfileFragment;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
 
 
 /**

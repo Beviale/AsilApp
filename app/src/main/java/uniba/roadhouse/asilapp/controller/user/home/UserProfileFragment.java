@@ -29,38 +29,99 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
-
+/**
+ * Schermata che permette la visualizzazione dei dati (anagrafici e non) di un utente.
+ * E' accessibile sia da account utente che dottore.
+ */
 public class UserProfileFragment extends Fragment {
-
+    /**
+     * Label del nome dell'utente.
+     */
     TextView profileNameTitle;
+    /**
+     * Nome dell'utente.
+     */
     TextView profileName;
+    /**
+     * Label del cognome dell'utente.
+     */
     TextView profileSurnameTitle;
+    /**
+     * Cognome dell'utente.
+     */
     TextView profileSurname;
+    /**
+     * Label del genere dell'utente.
+     */
     TextView profileGenderTitle;
+    /**
+     * Genere dell'utente.
+     */
     TextView profileGender;
+    /**
+     * Label della data di nascita dell'utente.
+     */
     TextView profileBirthDateTitle;
+    /**
+     * Data di nascita dell'utente.
+     */
     TextView profileBirthDate;
+    /**
+     * Label della cittadinanza dell'utente.
+     */
     TextView profileCitizenTitle;
+    /**
+     * Cittadinanza dell'utente..
+     */
     TextView profileCitizen;
+    /**
+     * Label del paese di provenienza dell'utente.
+     */
     TextView profileCountryTitle;
+    /**
+     * Paese di provenienza dell'utente.
+     */
     TextView profileCountry;
+    /**
+     * Label del nome della struttura di accoglienza dell'utente.
+     */
     TextView profileResidenceTitle;
+    /**
+     * Struttura di accoglienza dell'utente.
+     */
     TextView profileResidence;
+    /**
+     * Contenitore del QRCode che identifica univocamente l'utente.
+     */
     ImageView profileQRCode;
+    /**
+     * ProgressBad da mostrare mentre i dati vengono caricati dal database.
+     */
     ProgressBar progressBar;
+    /**
+     * Layout dell'intero fragment.
+     */
     ConstraintLayout layoutUserProfile;
+    /**
+     * Label per il dottore dell'utente.
+     */
     TextView profileDoctorTitle;
+    /**
+     * Dottore dell'utente.
+     */
     TextView profileDoctor;
 
     /**
      * Indica se il fragment è stato aperto da un account dottore o meno.
      */
     private static Boolean openDoctor=false;
-
-    Map<String, Object> DatiCorrenti;
+    /**
+     * Mappa restituitda dal Dao nell'esecuzione della query per il caricamento dei dati dal database.
+     */
+    Map<String, Object> currentData;
 
 
     public UserProfileFragment() {
@@ -91,6 +152,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //-----------RIFERIMENTI------------------
         profileNameTitle = view.findViewById(R.id.profileNameTitle);
         profileName = view.findViewById(R.id.profileName);
         profileSurnameTitle = view.findViewById(R.id.profileSurnameTitle);
@@ -118,29 +180,30 @@ public class UserProfileFragment extends Fragment {
             progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         }
         layoutUserProfile.setAlpha((float)0.5);
-
-
     }
 
 
+    /**
+     * Recupera dal database tutti i dati dell'utente e setta i vari campi.
+     */
     @Override
     public void onStart() {
         progressBar.setVisibility(View.VISIBLE);
-        CompletableFuture<Map<String, Object>> future = Dao.getUserData(AccessUser.getUsername(), getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getUserData(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 layoutUserProfile.setAlpha((float)1.0);
                 progressBar.setVisibility(View.GONE);
-                DatiCorrenti = result;
-                profileName.setText(DatiCorrenti.get("nome").toString());
-                profileSurname.setText(DatiCorrenti.get("cognome").toString());
-                profileGender.setText(DatiCorrenti.get("sesso").toString());
-                profileBirthDate.setText((DatiCorrenti.get("dataNascita").toString()));
-                profileCitizen.setText(DatiCorrenti.get("cittadinanza").toString());
-                profileCountry.setText(DatiCorrenti.get("paeseDiProvenienza").toString());
-                profileResidence.setText(DatiCorrenti.get("nomeResidenza").toString());
-                profileQRCode.setImageBitmap((Bitmap) DatiCorrenti.get("qrCode"));
-                profileDoctor.setText(DatiCorrenti.get("dottore").toString());
+                currentData = result;
+                profileName.setText(currentData.get("nome").toString());
+                profileSurname.setText(currentData.get("cognome").toString());
+                profileGender.setText(currentData.get("sesso").toString());
+                profileBirthDate.setText((currentData.get("dataNascita").toString()));
+                profileCitizen.setText(currentData.get("cittadinanza").toString());
+                profileCountry.setText(currentData.get("paeseDiProvenienza").toString());
+                profileResidence.setText(currentData.get("nomeResidenza").toString());
+                profileQRCode.setImageBitmap((Bitmap) currentData.get("qrCode"));
+                profileDoctor.setText(currentData.get("dottore").toString());
 
             });
         });
@@ -170,6 +233,7 @@ public class UserProfileFragment extends Fragment {
                 }
             });
         }
+        // Attivo la condivisione dei dati nell'action overflow.
         toolbar.inflateMenu(R.menu.share_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -181,6 +245,8 @@ public class UserProfileFragment extends Fragment {
         super.onResume();
     }
 
+
+
     @Override
     public void onPause() {
         progressBar.setVisibility(View.GONE);
@@ -188,6 +254,10 @@ public class UserProfileFragment extends Fragment {
     }
 
 
+    /**
+     * Apre il dialog che consente la condivisione dei dati dell'utente.
+     * Permette di selezionare e condividere tutti i dati o una parte (è possibile selezionarli singolarmente).
+     */
     private void openDialogShareUserProfile()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleShare);

@@ -39,11 +39,11 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.FirstActivity;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.model.dao.AccessUser;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
- * Schermata delle impostazioni dell'app.
+ * Schermata delle impostazioni dell'app accessibili mediante account utente.
  */
 public class SettingsFragment extends Fragment {
     /**
@@ -59,7 +59,7 @@ public class SettingsFragment extends Fragment {
      */
     AutoCompleteTextView nameOrganizationModify;
     /**
-     * Bottone che avvia la modifica dei dati.
+     * Button che avvia la modifica dei dati.
      */
     Button editProfileButton;
     /**
@@ -160,7 +160,7 @@ public class SettingsFragment extends Fragment {
         ratingApp.setRating(ratingSharedPref);
         valueRatingApp.setText(String.valueOf(ratingApp.getRating()));
 
-
+        // Disattivo il bottone di modifica
         editProfileButton.setEnabled(false);
         getData();
 
@@ -184,7 +184,6 @@ public class SettingsFragment extends Fragment {
 
         exitAccountButton.setOnClickListener(v->exitAccount());
         editProfileButton.setOnClickListener(v->applyChanges());
-
         passwordResultTextModify.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -211,6 +210,7 @@ public class SettingsFragment extends Fragment {
         changePasswordInput.addTextChangedListener(textWatcherPassword);
     }
 
+
     @Override
     public void onPause() {
         homeActivityProgressBar.setVisibility(View.GONE);
@@ -235,13 +235,13 @@ public class SettingsFragment extends Fragment {
 
 
     /**
-     * Recupero dal database i dati correnti.
+     * Recupero dal database i dati correnti relativi alla città e al nome della struttura.
      */
     private void getData()
     {
         homeActivityProgressBar.setVisibility(View.VISIBLE);
         settingsLayout.setAlpha((float)0.5);
-        CompletableFuture<Map<String, Object>> future = Dao.getUserData(AccessUser.getUsername(), getActivity());
+        CompletableFuture<Map<String, Object>> future = Dao.getUserData(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 if(result!=null) {
@@ -304,6 +304,7 @@ public class SettingsFragment extends Fragment {
                 passwordResultImageModify.setVisibility(View.GONE);
                 passwordResultTextModify.setVisibility(View.GONE);
                 passwordChanged=false;
+                // Se il campo password è vuoto e il nome della struttura è diverso rispetto a quello corrente, allora il bottone di modifica viene attivato per consentire la modifica della struttura.
                 if(!nameOrganizationModify.equals(currentNameOrganization))
                 {
                     editProfileButton.setEnabled(true);
@@ -313,6 +314,7 @@ public class SettingsFragment extends Fragment {
             layoutPasswordCheckModify.setVisibility(View.VISIBLE);
             passwordResultImageModify.setVisibility(View.VISIBLE);
             passwordResultTextModify.setVisibility(View.VISIBLE);
+            // Se la password rispetta i criteri, il bottone di modifica viene attivato.
             if(Utility.checkRegexPassword(changePasswordInput.getText().toString())==true)
             {
                 passwordResultTextModify.setText(getString(R.string.passwordRegexOk));
@@ -320,7 +322,7 @@ public class SettingsFragment extends Fragment {
                 passwordChanged=true;
                 editProfileButton.setEnabled(true);
             }
-            else
+            else // Se la password non rispetta i criteri, il bottone di modifica viene disattivato.
             {
                 Utility.textViewUnderlineText(passwordResultTextModify,getString(R.string.passwordRegexError));
                 passwordResultImageModify.setClickable(true);
@@ -347,14 +349,15 @@ public class SettingsFragment extends Fragment {
      */
     private void applyChanges()
     {
+        // Se sia la password che il nome della struttura sono stati modificati, allora li modifico entrambi.
         if(passwordChanged==true && (!currentNameOrganization.equals(nameOrganizationModify.getText().toString())) && (!changePasswordInput.getText().toString().isEmpty()))
         {
             homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
-            CompletableFuture<String> future = Dao.editResidenzaUtente(AccessUser.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
+            CompletableFuture<String> future = Dao.editResidenzaUtente(UserLogin.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
-                    CompletableFuture<String> futurePassword = Dao.editPasswordUtente(AccessUser.getUsername(), changePasswordInput.getText().toString(), getActivity());
+                    CompletableFuture<String> futurePassword = Dao.editPasswordUtente(UserLogin.getUsername(), changePasswordInput.getText().toString(), getActivity());
                     futurePassword.thenAccept(resultPassword -> {
                         getActivity().runOnUiThread(() -> {
                             homeActivityProgressBar.setVisibility(View.GONE);
@@ -382,12 +385,12 @@ public class SettingsFragment extends Fragment {
                 });
             });
         }
-
+        // Se è stata modificata solo la password (rispettando i criteri), modific solo la password.
         else if(passwordChanged==true)
         {
             homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
-            CompletableFuture<String> future = Dao.editPasswordUtente(AccessUser.getUsername(), changePasswordInput.getText().toString(), getActivity());
+            CompletableFuture<String> future = Dao.editPasswordUtente(UserLogin.getUsername(), changePasswordInput.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
                     homeActivityProgressBar.setVisibility(View.GONE);
@@ -396,13 +399,13 @@ public class SettingsFragment extends Fragment {
                     exitAccount();
                 });
             });
-
         }
+        // Altrimenti se è stato modificiato solo il nome della struttura, aggiorno solo quello.
         else if(!currentNameOrganization.equals(nameOrganizationModify.getText().toString()))
         {
             homeActivityProgressBar.setVisibility(View.VISIBLE);
             settingsLayout.setAlpha((float)0.5);
-            CompletableFuture<String> future = Dao.editResidenzaUtente(AccessUser.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
+            CompletableFuture<String> future = Dao.editResidenzaUtente(UserLogin.getUsername(), nameOrganizationModify.getText().toString(), getActivity());
             future.thenAccept(result -> {
                 getActivity().runOnUiThread(() -> {
                     homeActivityProgressBar.setVisibility(View.GONE);
@@ -415,9 +418,7 @@ public class SettingsFragment extends Fragment {
                     }
                 });
             });
-
         }
-
     }
 
 
@@ -512,7 +513,6 @@ public class SettingsFragment extends Fragment {
             {
                 editProfileButton.setEnabled(false);
             }
-
         }
     };
 }

@@ -25,8 +25,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
-import uniba.roadhouse.asilapp.controller.user.signinSignup.SigninSingupActivity;
-import uniba.roadhouse.asilapp.model.dao.AccessDoctor;
+import uniba.roadhouse.asilapp.model.dao.DoctorLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
 /**
@@ -173,7 +172,7 @@ public class SigninDoctorFragment extends Fragment {
                 Toast.makeText(getActivity(), result.get("esito"), Toast.LENGTH_SHORT).show();
                 if(result.get("esito")==getString(R.string.loginCompleted))
                 {
-                    AccessDoctor.setUsername(userNameInput.getText().toString());
+                    DoctorLogin.setUsername(userNameInput.getText().toString());
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransactin = fragmentManager.beginTransaction();
                     fragmentTransactin.replace(R.id.doctorFragmentView, HomeDoctorFragment.class, null);
