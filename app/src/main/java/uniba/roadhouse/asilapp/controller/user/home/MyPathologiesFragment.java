@@ -124,15 +124,14 @@ public class MyPathologiesFragment extends Fragment {
         }
         if(openDoctor==true)
         {
-            progressBar= getActivity().findViewById(R.id.progressBarDoctorActivty);
+            progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         }
-
-        getData();
         // Attivo il pulsante di aggiunta patologia per l'account dottore.
         if(openDoctor==true)
         {
             openNewPathology.setVisibility((View.VISIBLE));
         }
+        getData();
     }
 
     @Override
@@ -243,6 +242,10 @@ public class MyPathologiesFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
                 linearLayoutMyPathologies.setAlpha((float)1.0);
+                if(getActivity()==null)
+                {
+                    return;
+                }
                 if(!(result.get("esito").toString().equals(getString(R.string.patologiesGetSuccessfull))))
                 {
                     Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
