@@ -135,10 +135,15 @@ public class AllTipsFragment extends Fragment {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 (int) dpToPx(getContext(), 200)
                         );
-                        layoutParamsCard.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenArticles);
+                        layoutParamsCard.bottomMargin = (int) dpToPx(getContext(), 10);
+                        layoutParamsCard.topMargin = (int) dpToPx(getContext(), 10);
+                        layoutParamsCard.leftMargin = getResources().getDimensionPixelSize(R.dimen.marginAllTipsFragment);
+                        layoutParamsCard.rightMargin = getResources().getDimensionPixelSize(R.dimen.marginAllTipsFragment);
+
+
                         card.setLayoutParams(layoutParamsCard);
-                        card.setBackground(getResources().getDrawable(R.drawable.rounded_all_tips));
-                        card.setElevation(100);
+                        card.setBackground(getResources().getDrawable(R.drawable.rounded_cards));
+                        card.setElevation(20);
                         layoutAllTips.addView(card);
 
                         // Creo l'immagine dell'articolo
@@ -165,7 +170,8 @@ public class AllTipsFragment extends Fragment {
                                 (int) dpToPx(getContext(), 70)
                         );
                         Integer padding =   (int) dpToPx(getContext(), 10);
-                        titleArticle.setBackground(getResources().getDrawable(R.drawable.rounded_all_tips));
+                        titleArticle.setElevation(50);
+                        titleArticle.setBackground(getResources().getDrawable(R.drawable.rounded_cards));
 
                         titleArticle.setPadding(padding, padding, padding, padding);
                         card.addView(titleArticle);

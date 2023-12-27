@@ -1436,7 +1436,7 @@ public class Dao {
             if(query.getResult()!=null){
                 return new HashMap<String,Object>(){{
                     put("esito",context.getString(R.string.getArticleValuationSuccessfull));
-                    put("valutazione",query.getResult().getString("valutazione"));
+                    put("valutazione", query.getResult().getString("valutazione"));
                 }};
             }else{
                 return new HashMap<String,Object>(){{
