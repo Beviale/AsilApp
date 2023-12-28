@@ -3,6 +3,7 @@ package uniba.roadhouse.asilapp.controller.user.home;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -48,6 +49,7 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
+import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
 import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditEvalutationDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
@@ -418,40 +420,53 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
         CompletableFuture<Map<String, ?>> future = Dao.getMisuration(id, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                if(share)
-                {
-                    showCheckboxDialogForSharePrivacy();
-                }
-                homeActivityProgressBar.setVisibility(View.INVISIBLE);
-                detailHealthHistoryLayout.setAlpha((float) 1);
-                if(!result.get("esito").equals(getActivity().getString(R.string.misurationGetSuccessfully)))
-                {
-                    getActivity().onBackPressed();
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
-                }
-                Misurazione misurazione = (Misurazione)result.get("misurazione");
-                itemClicked = misurazione.getTipo();
-                detailHealthHistoryTitle.setText(Utility.convertTipoMisurazioneEnumToString(itemClicked, getActivity()));
-                idLastRecordHealthHistory.setText(misurazione.getId().toString());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
-                dateLastRecordHealthHistory.setText(dateFormat.format(misurazione.getData().toDate()));
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                timeLastRecordHealthHistory.setText(timeFormat.format(misurazione.getData().toDate()));
-                if(!itemClicked.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
-                    valueLastRecordHealthHistory.setText(misurazione.getValore().toString().concat(getUnity(itemClicked)));
-                else
-                {
-                    valueLastRecordHealthHistory.setText(misurazione.getValoreMax().toString().concat("/").concat(misurazione.getValoreMin().toString().concat(" ").concat(getUnity(itemClicked))));
-                }
-                evalutationLastRecordHealthHistory.setText(misurazione.getValutazione());
-                if(misurazione.getNotaMedico().toString().isEmpty())
-                {
-                    doctorNotesLastRecordHealthHistory.setText(getString(R.string.emptyDoctorNotes));
+                try{
+                    if(share)
+                    {
+                        showCheckboxDialogForSharePrivacy();
+                    }
+                    homeActivityProgressBar.setVisibility(View.INVISIBLE);
+                    detailHealthHistoryLayout.setAlpha((float) 1);
+                    if(!result.get("esito").equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                    {
+                        getActivity().onBackPressed();
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                    }
+                    Misurazione misurazione = (Misurazione)result.get("misurazione");
+                    itemClicked = misurazione.getTipo();
+                    detailHealthHistoryTitle.setText(Utility.convertTipoMisurazioneEnumToString(itemClicked, getActivity()));
+                    idLastRecordHealthHistory.setText(misurazione.getId().toString());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+                    dateLastRecordHealthHistory.setText(dateFormat.format(misurazione.getData().toDate()));
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    timeLastRecordHealthHistory.setText(timeFormat.format(misurazione.getData().toDate()));
+                    if(!itemClicked.equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
+                        valueLastRecordHealthHistory.setText(misurazione.getValore().toString().concat(getUnity(itemClicked)));
+                    else
+                    {
+                        valueLastRecordHealthHistory.setText(misurazione.getValoreMax().toString().concat("/").concat(misurazione.getValoreMin().toString().concat(" ").concat(getUnity(itemClicked))));
+                    }
+                    evalutationLastRecordHealthHistory.setText(misurazione.getValutazione());
+                    if(misurazione.getNotaMedico().toString().isEmpty())
+                    {
+                        doctorNotesLastRecordHealthHistory.setText(getString(R.string.emptyDoctorNotes));
 
-                }
-                else
-                {
-                    doctorNotesLastRecordHealthHistory.setText(misurazione.getNotaMedico());
+                    }
+                    else
+                    {
+                        doctorNotesLastRecordHealthHistory.setText(misurazione.getNotaMedico());
+                    }
+                }catch (Exception e){
+                    if(openDoctor==false)
+                    {
+                        Activity activity = new HomeActivity();
+                        activity.onBackPressed();
+                    }
+                    if(openDoctor==true)
+                    {
+                        Activity activity = new DoctorActivity();
+                        activity.onBackPressed();
+                    }
                 }
             });
         });
@@ -471,200 +486,214 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
         CompletableFuture<Map<String, Object>> future = Dao.getAllPastMisurationByUsername(UserLogin.getUsername(), itemClickedString, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                oldProgressBar.setVisibility(View.GONE);
-                if(!result.get("esito").equals(getActivity().getString(R.string.misurationGetSuccessfully)))
-                {
-                    getActivity().onBackPressed();
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                try{
+                    oldProgressBar.setVisibility(View.GONE);
+                    if(!result.get("esito").equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                    {
+                        getActivity().onBackPressed();
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                    }
+                    List<Misurazione> misurazioni = (List<Misurazione>)result.get("misurazioni");
+                    Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
+                    // Se la dimensione è pari a 1, significa che non ci sono misurazioni precedenti a quella mostrata in dettaglio nel fragment.
+                    if(misurazioni.size()==1)
+                    {
+                        TextView emptyOldHealthHistory = new TextView(getActivity());
+                        emptyOldHealthHistory.setText(getString(R.string.emptyHealthHistory));
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(0,50,0,0);
+                        params.gravity = Gravity.CENTER_HORIZONTAL;
+                        emptyOldHealthHistory.setLayoutParams(params);
+                        emptyOldHealthHistory.setTypeface(typeface);
+                        layoutOldHealthHistory.addView(emptyOldHealthHistory);
+                        return;
+                    }
+                    Boolean flagFirst=true;
+                    for(Misurazione misurazione: misurazioni)
+                    {
+                        // Se è la prima misurazione, la salto in quanto è quella mostrata in dettaglio nel fragment.
+                        if(flagFirst==true)
+                        {
+                            flagFirst=false;
+                            continue;
+                        }
+
+                        // Creo la textView relativa alla data di rilevazione
+                        TextView textViewDate = new TextView(getActivity());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+                        String date = dateFormat.format(misurazione.getData().toDate());
+                        textViewDate.setText(date);
+                        textViewDate.setId(View.generateViewId());
+                        LinearLayout.LayoutParams paramsDate = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        textViewDate.setTypeface(typeface);
+                        textViewDate.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
+                        paramsDate.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
+                        textViewDate.setPadding((int) dpToPx(getContext(), 5), (int) dpToPx(getContext(), 3), (int) dpToPx(getContext(), 5), (int) dpToPx(getContext(), 3));
+                        textViewDate.setTextColor(getResources().getColor(R.color.white));
+                        textViewDate.setLayoutParams(paramsDate);
+                        textViewDate.setVisibility(View.VISIBLE);
+                        layoutOldHealthHistory.addView(textViewDate);
+
+                        // Creo la linea che separa la data dalla card
+                        View viewline = new View(getActivity());
+                        viewline.setId(View.generateViewId());
+                        LinearLayout.LayoutParams paramsViewLine = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                (int) dpToPx(getContext(), 2)
+                        );
+                        paramsViewLine.topMargin=0;
+                        viewline.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
+                        viewline.setLayoutParams(paramsViewLine);
+                        viewline.setVisibility(View.VISIBLE);
+                        layoutOldHealthHistory.addView(viewline);
+
+                        // Creo la card
+                        ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+                        registerForContextMenu(constraintLayout);
+                        mappaViewIdMisurazioneOld.put(constraintLayout, misurazione.getId());
+                        constraintLayout.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
+                        );
+                        layoutParams.topMargin=0;
+                        constraintLayout.setLayoutParams(layoutParams);
+                        constraintLayout.setBackgroundColor(getResources().getColor(R.color.colodOldHealthHistory));
+                        layoutOldHealthHistory.addView(constraintLayout);
+                        constraintLayout.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v) {
+                                openOldHealthHistory(misurazione.getId(), false);
+                            }
+                        });
+                        // Attivo l'animazione al click
+                        Utility.activeAnimationOnClick(getActivity(), constraintLayout);
+
+                        // Creo il titolo della misurazione
+                        TextView textViewTitle = new TextView(getActivity());
+                        textViewTitle.setText(Utility.convertTipoMisurazioneEnumToString(misurazione.getTipo(), getActivity()));
+                        textViewTitle.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        textViewTitle.setTypeface(typeface);
+                        textViewTitle.setTextColor(getResources().getColor(R.color.white));
+                        textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
+                        textViewTitle.setLayoutParams(paramsTitle);
+                        constraintLayout.addView(textViewTitle);
+                        ConstraintSet constraintSet = new ConstraintSet();
+                        constraintSet.clone(constraintLayout);
+                        constraintSet.connect(textViewTitle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
+                        constraintSet.connect(textViewTitle.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 20));
+                        constraintSet.applyTo(constraintLayout);
+
+
+                        // Creo il valore registrato.
+                        TextView textViewValue = new TextView(getActivity());
+                        textViewValue.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsValue = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        textViewValue.setTypeface(typeface);
+                        textViewValue.setTextColor(getResources().getColor(R.color.white));
+                        textViewValue.setLayoutParams(paramsValue);
+                        constraintLayout.addView(textViewValue);
+                        ConstraintSet constraintSetValue = new ConstraintSet();
+                        constraintSetValue.clone(constraintLayout);
+                        constraintSetValue.connect(textViewValue.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 10));
+                        constraintSetValue.connect(textViewValue.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, (int) dpToPx(getContext(), 10));
+                        constraintSetValue.applyTo(constraintLayout);
+
+                        if(!misurazione.getTipo().equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
+                        {
+                            textViewValue.setText(String.valueOf((int)(Math.round((misurazione.getValore())))));
+                            textViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultHealthHistory));
+                        }
+                        else
+                        {
+                            textViewValue.setText(String.valueOf((int)(Math.round((misurazione.getValoreMax())))).concat("/").concat(String.valueOf((int)(Math.round((misurazione.getValoreMin()))))));
+                            textViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultBloodPressureHealthHistory));
+                        }
+
+                        // Creo l'unità di misura
+                        TextView textViewUnity = new TextView(getActivity());
+                        textViewUnity.setText(getUnity(misurazione.getTipo()));
+                        textViewUnity.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsUnity = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        textViewUnity.setTypeface(typeface);
+                        textViewUnity.setTextColor(getResources().getColor(R.color.white));
+                        textViewUnity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultUnityHealthHistory));
+                        textViewUnity.setLayoutParams(paramsUnity);
+                        constraintLayout.addView(textViewUnity);
+                        ConstraintSet constraintSetUnity = new ConstraintSet();
+                        constraintSetUnity.clone(constraintLayout);
+                        constraintSetUnity.connect(textViewUnity.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
+                        constraintSetUnity.connect(textViewUnity.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, (int) dpToPx(getContext(), 5));
+                        constraintSetUnity.applyTo(constraintLayout);
+
+
+
+                        // Creo il label di valutazione
+                        TextView evalutationLabel = new TextView(getActivity());
+                        evalutationLabel.setText(getString(R.string.evalutationHealthHistoryLabel));
+                        evalutationLabel.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsEvalutationLabel = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        evalutationLabel.setTypeface(typeface);
+                        evalutationLabel.setTextColor(getResources().getColor(R.color.white));
+                        evalutationLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+                        evalutationLabel.setLayoutParams(paramsEvalutationLabel);
+                        constraintLayout.addView(evalutationLabel);
+                        ConstraintSet constraintSetEvalutationLabel = new ConstraintSet();
+                        constraintSetEvalutationLabel.clone(constraintLayout);
+                        constraintSetEvalutationLabel.connect( evalutationLabel.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 25));
+                        constraintSetEvalutationLabel.connect( evalutationLabel.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
+                        constraintSetEvalutationLabel.applyTo(constraintLayout);
+
+
+                        // Creo la valutazione inserita dal medico.
+                        TextView evalutation = new TextView(getActivity());
+                        evalutation.setText(misurazione.getValutazione());
+                        evalutation.setId(View.generateViewId());
+                        ConstraintLayout.LayoutParams paramsEvalutation = new ConstraintLayout.LayoutParams(
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        evalutation.setTypeface(typeface);
+                        evalutation.setTextColor(getResources().getColor(R.color.white));
+                        evalutation.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+                        evalutation.setLayoutParams(paramsEvalutation);
+                        constraintLayout.addView(evalutation);
+                        ConstraintSet constraintSetEvalutation = new ConstraintSet();
+                        constraintSetEvalutation.clone(constraintLayout);
+                        constraintSetEvalutation.connect( evalutation.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 25));
+                        constraintSetEvalutation.connect( evalutation.getId(), ConstraintSet.LEFT, evalutationLabel.getId(), ConstraintSet.RIGHT, (int) dpToPx(getContext(), 3));
+                        constraintSetEvalutation.applyTo(constraintLayout);
+                    }
+                }catch (Exception e){
+                    if(openDoctor==false)
+                    {
+                        Activity activity = new HomeActivity();
+                        activity.onBackPressed();
+                    }
+                    if(openDoctor==true)
+                    {
+                        Activity activity = new DoctorActivity();
+                        activity.onBackPressed();
+                    }
                 }
-                 List<Misurazione> misurazioni = (List<Misurazione>)result.get("misurazioni");
-                 Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
-                // Se la dimensione è pari a 1, significa che non ci sono misurazioni precedenti a quella mostrata in dettaglio nel fragment.
-                if(misurazioni.size()==1)
-                 {
-                    TextView emptyOldHealthHistory = new TextView(getActivity());
-                    emptyOldHealthHistory.setText(getString(R.string.emptyHealthHistory));
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(0,50,0,0);
-                    params.gravity = Gravity.CENTER_HORIZONTAL;
-                    emptyOldHealthHistory.setLayoutParams(params);
-                    emptyOldHealthHistory.setTypeface(typeface);
-                    layoutOldHealthHistory.addView(emptyOldHealthHistory);
-                    return;
-                }
-                Boolean flagFirst=true;
-                 for(Misurazione misurazione: misurazioni)
-                 {
-                     // Se è la prima misurazione, la salto in quanto è quella mostrata in dettaglio nel fragment.
-                    if(flagFirst==true)
-                     {
-                         flagFirst=false;
-                         continue;
-                     }
 
-                    // Creo la textView relativa alla data di rilevazione
-                     TextView textViewDate = new TextView(getActivity());
-                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
-                     String date = dateFormat.format(misurazione.getData().toDate());
-                     textViewDate.setText(date);
-                     textViewDate.setId(View.generateViewId());
-                     LinearLayout.LayoutParams paramsDate = new LinearLayout.LayoutParams(
-                             LinearLayout.LayoutParams.WRAP_CONTENT,
-                             LinearLayout.LayoutParams.WRAP_CONTENT
-                     );
-                     textViewDate.setTypeface(typeface);
-                     textViewDate.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
-                     paramsDate.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
-                     textViewDate.setPadding((int) dpToPx(getContext(), 5), (int) dpToPx(getContext(), 3), (int) dpToPx(getContext(), 5), (int) dpToPx(getContext(), 3));
-                     textViewDate.setTextColor(getResources().getColor(R.color.white));
-                     textViewDate.setLayoutParams(paramsDate);
-                     textViewDate.setVisibility(View.VISIBLE);
-                     layoutOldHealthHistory.addView(textViewDate);
-
-                     // Creo la linea che separa la data dalla card
-                     View viewline = new View(getActivity());
-                     viewline.setId(View.generateViewId());
-                     LinearLayout.LayoutParams paramsViewLine = new LinearLayout.LayoutParams(
-                             LinearLayout.LayoutParams.WRAP_CONTENT,
-                             (int) dpToPx(getContext(), 2)
-                     );
-                     paramsViewLine.topMargin=0;
-                     viewline.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
-                     viewline.setLayoutParams(paramsViewLine);
-                     viewline.setVisibility(View.VISIBLE);
-                     layoutOldHealthHistory.addView(viewline);
-
-                    // Creo la card
-                     ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
-                     registerForContextMenu(constraintLayout);
-                     mappaViewIdMisurazioneOld.put(constraintLayout, misurazione.getId());
-                     constraintLayout.setId(View.generateViewId());
-                     ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                             ConstraintLayout.LayoutParams.MATCH_PARENT,
-                             getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
-                     );
-                     layoutParams.topMargin=0;
-                     constraintLayout.setLayoutParams(layoutParams);
-                     constraintLayout.setBackgroundColor(getResources().getColor(R.color.colodOldHealthHistory));
-                     layoutOldHealthHistory.addView(constraintLayout);
-                     constraintLayout.setOnClickListener(new View.OnClickListener()
-                     {
-                         @Override
-                         public void onClick(View v) {
-                             openOldHealthHistory(misurazione.getId(), false);
-                         }
-                     });
-                     // Attivo l'animazione al click
-                     Utility.activeAnimationOnClick(getActivity(), constraintLayout);
-
-                     // Creo il titolo della misurazione
-                     TextView textViewTitle = new TextView(getActivity());
-                     textViewTitle.setText(Utility.convertTipoMisurazioneEnumToString(misurazione.getTipo(), getActivity()));
-                     textViewTitle.setId(View.generateViewId());
-                     ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT
-                     );
-                     textViewTitle.setTypeface(typeface);
-                     textViewTitle.setTextColor(getResources().getColor(R.color.white));
-                     textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
-                     textViewTitle.setLayoutParams(paramsTitle);
-                     constraintLayout.addView(textViewTitle);
-                     ConstraintSet constraintSet = new ConstraintSet();
-                     constraintSet.clone(constraintLayout);
-                     constraintSet.connect(textViewTitle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
-                     constraintSet.connect(textViewTitle.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 20));
-                     constraintSet.applyTo(constraintLayout);
-
-
-                     // Creo il valore registrato.
-                     TextView textViewValue = new TextView(getActivity());
-                     textViewValue.setId(View.generateViewId());
-                     ConstraintLayout.LayoutParams paramsValue = new ConstraintLayout.LayoutParams(
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT
-                     );
-                     textViewValue.setTypeface(typeface);
-                     textViewValue.setTextColor(getResources().getColor(R.color.white));
-                     textViewValue.setLayoutParams(paramsValue);
-                     constraintLayout.addView(textViewValue);
-                     ConstraintSet constraintSetValue = new ConstraintSet();
-                     constraintSetValue.clone(constraintLayout);
-                     constraintSetValue.connect(textViewValue.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 10));
-                     constraintSetValue.connect(textViewValue.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, (int) dpToPx(getContext(), 10));
-                     constraintSetValue.applyTo(constraintLayout);
-
-                     if(!misurazione.getTipo().equals(TipoMisurazioneEnum.PRESSIONESANGUIGNA))
-                     {
-                         textViewValue.setText(String.valueOf((int)(Math.round((misurazione.getValore())))));
-                         textViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultHealthHistory));
-                     }
-                     else
-                     {
-                         textViewValue.setText(String.valueOf((int)(Math.round((misurazione.getValoreMax())))).concat("/").concat(String.valueOf((int)(Math.round((misurazione.getValoreMin()))))));
-                         textViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultBloodPressureHealthHistory));
-                     }
-
-                     // Creo l'unità di misura
-                     TextView textViewUnity = new TextView(getActivity());
-                     textViewUnity.setText(getUnity(misurazione.getTipo()));
-                     textViewUnity.setId(View.generateViewId());
-                     ConstraintLayout.LayoutParams paramsUnity = new ConstraintLayout.LayoutParams(
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT
-                     );
-                     textViewUnity.setTypeface(typeface);
-                     textViewUnity.setTextColor(getResources().getColor(R.color.white));
-                     textViewUnity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.resultUnityHealthHistory));
-                     textViewUnity.setLayoutParams(paramsUnity);
-                     constraintLayout.addView(textViewUnity);
-                     ConstraintSet constraintSetUnity = new ConstraintSet();
-                     constraintSetUnity.clone(constraintLayout);
-                     constraintSetUnity.connect(textViewUnity.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
-                     constraintSetUnity.connect(textViewUnity.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, (int) dpToPx(getContext(), 5));
-                     constraintSetUnity.applyTo(constraintLayout);
-
-
-
-                     // Creo il label di valutazione
-                     TextView evalutationLabel = new TextView(getActivity());
-                     evalutationLabel.setText(getString(R.string.evalutationHealthHistoryLabel));
-                     evalutationLabel.setId(View.generateViewId());
-                     ConstraintLayout.LayoutParams paramsEvalutationLabel = new ConstraintLayout.LayoutParams(
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT
-                     );
-                     evalutationLabel.setTypeface(typeface);
-                     evalutationLabel.setTextColor(getResources().getColor(R.color.white));
-                     evalutationLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
-                     evalutationLabel.setLayoutParams(paramsEvalutationLabel);
-                     constraintLayout.addView(evalutationLabel);
-                     ConstraintSet constraintSetEvalutationLabel = new ConstraintSet();
-                     constraintSetEvalutationLabel.clone(constraintLayout);
-                     constraintSetEvalutationLabel.connect( evalutationLabel.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 25));
-                     constraintSetEvalutationLabel.connect( evalutationLabel.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
-                     constraintSetEvalutationLabel.applyTo(constraintLayout);
-
-
-                     // Creo la valutazione inserita dal medico.
-                     TextView evalutation = new TextView(getActivity());
-                     evalutation.setText(misurazione.getValutazione());
-                     evalutation.setId(View.generateViewId());
-                     ConstraintLayout.LayoutParams paramsEvalutation = new ConstraintLayout.LayoutParams(
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                             ConstraintLayout.LayoutParams.WRAP_CONTENT
-                     );
-                     evalutation.setTypeface(typeface);
-                     evalutation.setTextColor(getResources().getColor(R.color.white));
-                     evalutation.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
-                     evalutation.setLayoutParams(paramsEvalutation);
-                     constraintLayout.addView(evalutation);
-                     ConstraintSet constraintSetEvalutation = new ConstraintSet();
-                     constraintSetEvalutation.clone(constraintLayout);
-                     constraintSetEvalutation.connect( evalutation.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 25));
-                     constraintSetEvalutation.connect( evalutation.getId(), ConstraintSet.LEFT, evalutationLabel.getId(), ConstraintSet.RIGHT, (int) dpToPx(getContext(), 3));
-                     constraintSetEvalutation.applyTo(constraintLayout);
-                 }
             });
         });
 

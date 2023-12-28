@@ -3,6 +3,7 @@ package uniba.roadhouse.asilapp.controller.user.home;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -53,6 +54,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.AddDrugsDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.DetailUserDoctorFragment;
+import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
 import uniba.roadhouse.asilapp.controller.doctor.EditDoctorNotesDialogFragment;
 import uniba.roadhouse.asilapp.controller.doctor.EditPriorityDialogFragment;
 import uniba.roadhouse.asilapp.controller.other.Utility;
@@ -544,30 +546,44 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
         CompletableFuture<Map<String, ?>> future = Dao.getPathology(namePathology, UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.GONE);
-                layoutMyPathologies.setAlpha((float)1.0);
-                // Se è stato eliminato un farmaco, faccio in modo che il fragment, una volta riaperto, vada nella sezione relativa ai farmaci.
-                if(deleteDrugs==true)
-                {
-                    scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollView.smoothScrollTo(0, 999999);
-                        }
-                    });
-                }
-                if(!(result.get("esito").toString().equals(getString(R.string.misurationGetSuccessfully))))
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Patologia patologia = (Patologia) result.get("patologia");
-                    detailMyPathologiesTitle.setText(namePathology);
-                    dateLastVisitMyPathologies.setText(patologia.getData());
-                    timeLastVisitMyPathologies.setText(patologia.getOra());
-                    priorityLastVisitMyPathologies.setText(patologia.getPriorita());
-                    doctorNotesLastVisitMyPahologies.setText(patologia.getNota());
+                try{
+                    progressBar.setVisibility(View.GONE);
+                    layoutMyPathologies.setAlpha((float)1.0);
+                    // Se è stato eliminato un farmaco, faccio in modo che il fragment, una volta riaperto, vada nella sezione relativa ai farmaci.
+                    if(deleteDrugs==true)
+                    {
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.smoothScrollTo(0, 999999);
+                            }
+                        });
+                    }
+                    if(!(result.get("esito").toString().equals(getString(R.string.misurationGetSuccessfully))))
+                    {
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Patologia patologia = (Patologia) result.get("patologia");
+                        detailMyPathologiesTitle.setText(namePathology);
+                        dateLastVisitMyPathologies.setText(patologia.getData());
+                        timeLastVisitMyPathologies.setText(patologia.getOra());
+                        priorityLastVisitMyPathologies.setText(patologia.getPriorita());
+                        doctorNotesLastVisitMyPahologies.setText(patologia.getNota());
+                    }
+                }catch (Exception e) {
+                    if(openDoctor==false)
+                    {
+                        Activity activity = new HomeActivity();
+                        activity.onBackPressed();
+                    }
+                    if(openDoctor==true)
+                    {
+                        Activity activity = new DoctorActivity();
+                        activity.onBackPressed();
+                    }
+
                 }
             });
         });
@@ -586,89 +602,101 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
         CompletableFuture<Map<String, ?>> future = Dao.getAllFarmaci(UserLogin.getUsername(), namePathology, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.INVISIBLE);
-                linearLayoutDrugs.setAlpha((float)1.0);
-                if(!(result.get("esito").toString().equals(getString(R.string.getFarmaciSuccessfull))))
-                {
-                    Toast.makeText(getActivity(),result.get("esito").toString(), Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    ArrayList<Farmaco> farmaci = (ArrayList<Farmaco>)result.get("farmaci");
-                    mapViewDrugName = new HashMap<View, String>();
-                    mapViewDoctorNotes = new HashMap<View, String>();
-                    for(Farmaco farmaco: farmaci)
+                try{
+                    progressBar.setVisibility(View.INVISIBLE);
+                    linearLayoutDrugs.setAlpha((float)1.0);
+                    if(!(result.get("esito").toString().equals(getString(R.string.getFarmaciSuccessfull))))
                     {
-                        // Creo il constraintLayout
-                        ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
-                        registerForContextMenu(constraintLayout);
-                        mapViewDrugName.put(constraintLayout, farmaco.getNome());
-                        mapViewDoctorNotes.put(constraintLayout, farmaco.getNota());
-                        Utility.activeAnimationOnClick(getActivity(), constraintLayout);
-                        constraintLayout.setId(View.generateViewId());
-                        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
-                        );
-                        layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);;
-                        constraintLayout.setLayoutParams(layoutParams);
-                        constraintLayout.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
-                        linearLayoutDrugs.addView(constraintLayout);
+                        Toast.makeText(getActivity(),result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        ArrayList<Farmaco> farmaci = (ArrayList<Farmaco>)result.get("farmaci");
+                        mapViewDrugName = new HashMap<View, String>();
+                        mapViewDoctorNotes = new HashMap<View, String>();
+                        for(Farmaco farmaco: farmaci)
+                        {
+                            // Creo il constraintLayout
+                            ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
+                            registerForContextMenu(constraintLayout);
+                            mapViewDrugName.put(constraintLayout, farmaco.getNome());
+                            mapViewDoctorNotes.put(constraintLayout, farmaco.getNota());
+                            Utility.activeAnimationOnClick(getActivity(), constraintLayout);
+                            constraintLayout.setId(View.generateViewId());
+                            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                    getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
+                            );
+                            layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);;
+                            constraintLayout.setLayoutParams(layoutParams);
+                            constraintLayout.setBackgroundColor(getResources().getColor(R.color.appMainColorDark));
+                            linearLayoutDrugs.addView(constraintLayout);
 
-                        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
-
-
-                        // Creo la textView relativa al nome del farmaco
-                        TextView textViewTitle = new TextView(getActivity());
-                        textViewTitle.setText(farmaco.getNome());
-                        textViewTitle.setId(View.generateViewId());
-                        ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        textViewTitle.setTypeface(typeface);
-                        textViewTitle.setTextColor(getResources().getColor(R.color.white));
-                        textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
-                        textViewTitle.setLayoutParams(paramsTitle);
-                        constraintLayout.addView(textViewTitle);
-                        ConstraintSet constraintSet = new ConstraintSet();
-                        constraintSet.clone(constraintLayout);
-                        constraintSet.connect(textViewTitle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
-                        constraintSet.connect(textViewTitle.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 20));
-                        constraintSet.applyTo(constraintLayout);
+                            Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
 
 
-                        // Creo la textView relativa alle note sul farmaco
-                        TextView textViewNote = new TextView(getActivity());
-                        textViewNote.setText(farmaco.getNota());
-                        textViewNote.setId(View.generateViewId());
-                        ConstraintLayout.LayoutParams paramsNote = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        textViewNote.setPadding(0, 0,(int) dpToPx(getContext(), 40), 0);
-                        textViewNote.setTextColor(getResources().getColor(R.color.white));
-                        textViewNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
-                        textViewNote.setLayoutParams(paramsNote);
-                        constraintLayout.addView(textViewNote);
-                        ConstraintSet constraintSetNote = new ConstraintSet();
-                        constraintSetNote.clone(constraintLayout);
-                        constraintSetNote.connect(textViewNote.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
-                        constraintSetNote.connect(textViewNote.getId(), ConstraintSet.TOP, textViewTitle.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
-                        constraintSetNote.applyTo(constraintLayout);
+                            // Creo la textView relativa al nome del farmaco
+                            TextView textViewTitle = new TextView(getActivity());
+                            textViewTitle.setText(farmaco.getNome());
+                            textViewTitle.setId(View.generateViewId());
+                            ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
+                                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+                            );
+                            textViewTitle.setTypeface(typeface);
+                            textViewTitle.setTextColor(getResources().getColor(R.color.white));
+                            textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.textTitleHealthHistory));
+                            textViewTitle.setLayoutParams(paramsTitle);
+                            constraintLayout.addView(textViewTitle);
+                            ConstraintSet constraintSet = new ConstraintSet();
+                            constraintSet.clone(constraintLayout);
+                            constraintSet.connect(textViewTitle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
+                            constraintSet.connect(textViewTitle.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 20));
+                            constraintSet.applyTo(constraintLayout);
+
+
+                            // Creo la textView relativa alle note sul farmaco
+                            TextView textViewNote = new TextView(getActivity());
+                            textViewNote.setText(farmaco.getNota());
+                            textViewNote.setId(View.generateViewId());
+                            ConstraintLayout.LayoutParams paramsNote = new ConstraintLayout.LayoutParams(
+                                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+                            );
+                            textViewNote.setPadding(0, 0,(int) dpToPx(getContext(), 40), 0);
+                            textViewNote.setTextColor(getResources().getColor(R.color.white));
+                            textViewNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) dpToPx(getContext(), 13));
+                            textViewNote.setLayoutParams(paramsNote);
+                            constraintLayout.addView(textViewNote);
+                            ConstraintSet constraintSetNote = new ConstraintSet();
+                            constraintSetNote.clone(constraintLayout);
+                            constraintSetNote.connect(textViewNote.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, getResources().getDimensionPixelSize(R.dimen.marginLeftRightDetailHealthHistory));
+                            constraintSetNote.connect(textViewNote.getId(), ConstraintSet.TOP, textViewTitle.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 3));
+                            constraintSetNote.applyTo(constraintLayout);
+                        }
+                    }
+                    // Porto la scrollview del fragment in basso.
+                    if(scroll==true)
+                    {
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.smoothScrollTo(0, 999999);
+                            }
+                        });
+                    }
+                }catch (Exception e){
+                    if(openDoctor==false)
+                    {
+                        Activity activity = new HomeActivity();
+                        activity.onBackPressed();
+                    }
+                    if(openDoctor==true)
+                    {
+                        Activity activity = new DoctorActivity();
+                        activity.onBackPressed();
                     }
                 }
-                // Porto la scrollview del fragment in basso.
-                if(scroll==true)
-                {
-                    scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollView.smoothScrollTo(0, 999999);
-                        }
-                    });
-                }
-
             });
         });
     }

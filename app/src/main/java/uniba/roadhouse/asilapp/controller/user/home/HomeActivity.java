@@ -162,24 +162,28 @@ public class HomeActivity extends AppCompatActivity {
     private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
-            //quando premo il back..
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            //verifico se sta solo un fragment nel backstack, cioè sto alla home
-            if(fragmentManager.getBackStackEntryCount()==1){
-                //in quetso caso chiudo l'activiy, in quanto ho premuto back e non ho altri fragment (shermate) da mostrare
-                finishAffinity();
-            }else{  //se ho un fragment prima di quello attualmente visibile
-                //prendo il nome della sezione del fragment attuale con cui lo ho memorizzato
-                String currScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
-                //prendo il nome della sezione del fragment che devo aprira andando back
-                String prevScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
-                //elimino dal backstack il fragment attualmentein visione
-                fragmentManager.popBackStack();
+            try{
+                //quando premo il back..
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                //verifico se sta solo un fragment nel backstack, cioè sto alla home
+                if(fragmentManager.getBackStackEntryCount()==1){
+                    //in quetso caso chiudo l'activiy, in quanto ho premuto back e non ho altri fragment (shermate) da mostrare
+                    finishAffinity();
+                }else{  //se ho un fragment prima di quello attualmente visibile
+                    //prendo il nome della sezione del fragment attuale con cui lo ho memorizzato
+                    String currScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
+                    //prendo il nome della sezione del fragment che devo aprira andando back
+                    String prevScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
+                    //elimino dal backstack il fragment attualmentein visione
+                    fragmentManager.popBackStack();
 
-                //se la sezione del fragment da aprire è diversa da quella del fragment attuale, cambio il colore dell'icona nel menu
-                if(prevScreenOpenSection!=currScreenOpenSection){
-                    changeIcons(prevScreenOpenSection);
+                    //se la sezione del fragment da aprire è diversa da quella del fragment attuale, cambio il colore dell'icona nel menu
+                    if(prevScreenOpenSection!=currScreenOpenSection){
+                        changeIcons(prevScreenOpenSection);
+                    }
                 }
+            }catch (Exception e){
+                recreate();
             }
         }
     };

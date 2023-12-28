@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -340,90 +342,104 @@ public class HealthHistoryFragment extends Fragment {
         CompletableFuture<Map<String, ?>> future = Dao.getAllLastMisurationsUsername(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                homeActivityProgressBar.setVisibility(View.GONE);
-                swipereFreshLayout.setAlpha((float)1);
-                //Disattivo la temperatura
-                bodyTemperatureView.setEnabled(false);
-                bodyTemperatureView.setAlpha((float)0.5);
-                evalutationHealthHistoryTemperature.setText(getString(R.string.notRegistered));
-                // Disattivo la pressione sanguigna
-                bloodPressureView.setEnabled(false);
-                bloodPressureView.setAlpha((float)0.5);
-                evalutationHealthHistoryBloodPressure.setText(getString(R.string.notRegistered));
-                // Disattivo il peso
-                weightView.setEnabled(false);
-                weightView.setAlpha((float)0.5);
-                evalutationHealthHistoryWeight.setText(getString(R.string.notRegistered));
-                // Disattivo il battito cardiaco
-                bpmView.setEnabled(false);
-                bpmView.setAlpha((float)0.5);
-                evalutationHealthHistoryBPM.setText(getString(R.string.notRegistered));
-                // Disattivo il tremolio
-                tremblingView.setEnabled(false);
-                tremblingView.setAlpha((float)0.5);
-                evalutationHealthHistoryTrembling.setText(getString(R.string.notRegistered));
-                // Disattivo il glucosio
-                glucoseView.setEnabled(false);
-                glucoseView.setAlpha((float)0.5);
-                evalutationHealthHistoryGlucose.setText(getString(R.string.notRegistered));
-                for(String key: result.keySet())
-                {
-                    if(!key.equals("esito"))
+                try{
+
+                    homeActivityProgressBar.setVisibility(View.GONE);
+                    swipereFreshLayout.setAlpha((float)1);
+                    //Disattivo la temperatura
+                    bodyTemperatureView.setEnabled(false);
+                    bodyTemperatureView.setAlpha((float)0.5);
+                    evalutationHealthHistoryTemperature.setText(getString(R.string.notRegistered));
+                    // Disattivo la pressione sanguigna
+                    bloodPressureView.setEnabled(false);
+                    bloodPressureView.setAlpha((float)0.5);
+                    evalutationHealthHistoryBloodPressure.setText(getString(R.string.notRegistered));
+                    // Disattivo il peso
+                    weightView.setEnabled(false);
+                    weightView.setAlpha((float)0.5);
+                    evalutationHealthHistoryWeight.setText(getString(R.string.notRegistered));
+                    // Disattivo il battito cardiaco
+                    bpmView.setEnabled(false);
+                    bpmView.setAlpha((float)0.5);
+                    evalutationHealthHistoryBPM.setText(getString(R.string.notRegistered));
+                    // Disattivo il tremolio
+                    tremblingView.setEnabled(false);
+                    tremblingView.setAlpha((float)0.5);
+                    evalutationHealthHistoryTrembling.setText(getString(R.string.notRegistered));
+                    // Disattivo il glucosio
+                    glucoseView.setEnabled(false);
+                    glucoseView.setAlpha((float)0.5);
+                    evalutationHealthHistoryGlucose.setText(getString(R.string.notRegistered));
+                    for(String key: result.keySet())
                     {
-                        switch(TipoMisurazioneEnum.valueOf(key))
+                        if(!key.equals("esito"))
                         {
-                            case TEMPERATURA:
-                                evalutationHealthHistoryTemperature.setText(((Misurazione) result.get(key)).getValutazione());
-                                resultTemperature.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))).concat("°"));
-                                idTemperature = ((Misurazione) result.get(key)).getId();
-                                bodyTemperatureView.setEnabled(true);
-                                bodyTemperatureView.setAlpha((float)1.0);
-                                break;
-                            case PRESSIONESANGUIGNA:
-                                evalutationHealthHistoryBloodPressure.setText(((Misurazione) result.get(key)).getValutazione());
-                                resultBloodPressureMax.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMax()))).concat("/"));
-                                resultBloodPressureMin.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMin()))));
-                                idBloodPressure = ((Misurazione) result.get(key)).getId();
-                                bloodPressureView.setEnabled(true);
-                                bloodPressureView.setAlpha((float)1.0);
-                                break;
-                            case PESO:
-                                evalutationHealthHistoryWeight.setText(((Misurazione) result.get(key)).getValutazione());
-                                resultWeight.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
-                                idWeight = ((Misurazione) result.get(key)).getId();
-                                weightView.setEnabled(true);
-                                weightView.setAlpha((float)1.0);
-                                break;
-                            case BATTITOCARDIACO:
-                                evalutationHealthHistoryBPM.setText(((Misurazione) result.get(key)).getValutazione());
-                                resultBPM.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
-                                idBPM = ((Misurazione) result.get(key)).getId();
-                                bpmView.setEnabled(true);
-                                bpmView.setAlpha((float)1.0);
-                                break;
-                            case TREMOLIO:
-                                evalutationHealthHistoryTrembling.setText(((Misurazione) result.get(key)).getValutazione());
-                                resultTrembling.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
-                                idTrembling = ((Misurazione) result.get(key)).getId();
-                                tremblingView.setEnabled(true);
-                                tremblingView.setAlpha((float)1.0);
-                                break;
-                            case GLUCOSIO:
-                                evalutationHealthHistoryGlucose.setText(((Misurazione) result.get(key)).getValutazione());
-                                resultGlucose.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
-                                idGlucose = ((Misurazione) result.get(key)).getId();
-                                glucoseView.setEnabled(true);
-                                glucoseView.setAlpha((float)1.0);
-                                break;
+                            switch(TipoMisurazioneEnum.valueOf(key))
+                            {
+                                case TEMPERATURA:
+                                    evalutationHealthHistoryTemperature.setText(((Misurazione) result.get(key)).getValutazione());
+                                    resultTemperature.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))).concat("°"));
+                                    idTemperature = ((Misurazione) result.get(key)).getId();
+                                    bodyTemperatureView.setEnabled(true);
+                                    bodyTemperatureView.setAlpha((float)1.0);
+                                    break;
+                                case PRESSIONESANGUIGNA:
+                                    evalutationHealthHistoryBloodPressure.setText(((Misurazione) result.get(key)).getValutazione());
+                                    resultBloodPressureMax.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMax()))).concat("/"));
+                                    resultBloodPressureMin.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMin()))));
+                                    idBloodPressure = ((Misurazione) result.get(key)).getId();
+                                    bloodPressureView.setEnabled(true);
+                                    bloodPressureView.setAlpha((float)1.0);
+                                    break;
+                                case PESO:
+                                    evalutationHealthHistoryWeight.setText(((Misurazione) result.get(key)).getValutazione());
+                                    resultWeight.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                    idWeight = ((Misurazione) result.get(key)).getId();
+                                    weightView.setEnabled(true);
+                                    weightView.setAlpha((float)1.0);
+                                    break;
+                                case BATTITOCARDIACO:
+                                    evalutationHealthHistoryBPM.setText(((Misurazione) result.get(key)).getValutazione());
+                                    resultBPM.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                    idBPM = ((Misurazione) result.get(key)).getId();
+                                    bpmView.setEnabled(true);
+                                    bpmView.setAlpha((float)1.0);
+                                    break;
+                                case TREMOLIO:
+                                    evalutationHealthHistoryTrembling.setText(((Misurazione) result.get(key)).getValutazione());
+                                    resultTrembling.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                    idTrembling = ((Misurazione) result.get(key)).getId();
+                                    tremblingView.setEnabled(true);
+                                    tremblingView.setAlpha((float)1.0);
+                                    break;
+                                case GLUCOSIO:
+                                    evalutationHealthHistoryGlucose.setText(((Misurazione) result.get(key)).getValutazione());
+                                    resultGlucose.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
+                                    idGlucose = ((Misurazione) result.get(key)).getId();
+                                    glucoseView.setEnabled(true);
+                                    glucoseView.setAlpha((float)1.0);
+                                    break;
+                            }
+                        }
+                        else if(!result.get(key).equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                        {
+                            getActivity().onBackPressed();
+                            Toast.makeText(getActivity(), result.get(key).toString(), Toast.LENGTH_LONG).show();
                         }
                     }
-                    else if(!result.get(key).equals(getActivity().getString(R.string.misurationGetSuccessfully)))
+                }catch (Exception e)
+                {
+                    if(openDoctor==false)
                     {
-                        getActivity().onBackPressed();
-                        Toast.makeText(getActivity(), result.get(key).toString(), Toast.LENGTH_LONG).show();
+                        Activity activity = new HomeActivity();
+                        activity.onBackPressed();
+                    }
+                    if(openDoctor==true)
+                    {
+                        Activity activity = new DoctorActivity();
+                        activity.onBackPressed();
                     }
                 }
-
             });
         });
     }

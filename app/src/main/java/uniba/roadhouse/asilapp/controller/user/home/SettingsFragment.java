@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -244,23 +245,26 @@ public class SettingsFragment extends Fragment {
         CompletableFuture<Map<String, Object>> future = Dao.getUserData(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                if(result!=null) {
-                    currentNameOrganization =  result.get("nomeResidenza").toString();
-                    nameOrganizationModify.setText(currentNameOrganization);
-                    CompletableFuture<String> futureCity = Dao.getCittaResidenza(currentNameOrganization, getActivity());
-                    futureCity.thenAccept(resultCity -> {
-                        getActivity().runOnUiThread(() -> {
-                            homeActivityProgressBar.setVisibility(View.GONE);
-                            settingsLayout.setAlpha((float)1);
-                            currentCityOrganization = resultCity;
-                            cityModify.setText(currentCityOrganization);
-                            loadAllCity();
-                            Editable editable = new SpannableStringBuilder(currentCityOrganization);
-                            textWatcherCity.afterTextChanged(editable);
-
+                try{
+                    if(result!=null) {
+                        currentNameOrganization =  result.get("nomeResidenza").toString();
+                        nameOrganizationModify.setText(currentNameOrganization);
+                        CompletableFuture<String> futureCity = Dao.getCittaResidenza(currentNameOrganization, getActivity());
+                        futureCity.thenAccept(resultCity -> {
+                            getActivity().runOnUiThread(() -> {
+                                homeActivityProgressBar.setVisibility(View.GONE);
+                                settingsLayout.setAlpha((float)1);
+                                currentCityOrganization = resultCity;
+                                cityModify.setText(currentCityOrganization);
+                                loadAllCity();
+                                Editable editable = new SpannableStringBuilder(currentCityOrganization);
+                                textWatcherCity.afterTextChanged(editable);
+                            });
                         });
-                    });
-
+                    }
+                }catch(Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
             });
         });

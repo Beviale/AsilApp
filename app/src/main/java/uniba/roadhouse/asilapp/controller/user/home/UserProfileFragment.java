@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -192,19 +193,23 @@ public class UserProfileFragment extends Fragment {
         CompletableFuture<Map<String, Object>> future = Dao.getUserData(UserLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                layoutUserProfile.setAlpha((float)1.0);
-                progressBar.setVisibility(View.GONE);
-                currentData = result;
-                profileName.setText(currentData.get("nome").toString());
-                profileSurname.setText(currentData.get("cognome").toString());
-                profileGender.setText(currentData.get("sesso").toString());
-                profileBirthDate.setText((currentData.get("dataNascita").toString()));
-                profileCitizen.setText(currentData.get("cittadinanza").toString());
-                profileCountry.setText(currentData.get("paeseDiProvenienza").toString());
-                profileResidence.setText(currentData.get("nomeResidenza").toString());
-                profileQRCode.setImageBitmap((Bitmap) currentData.get("qrCode"));
-                profileDoctor.setText(currentData.get("dottore").toString());
-
+                try{
+                    layoutUserProfile.setAlpha((float)1.0);
+                    progressBar.setVisibility(View.GONE);
+                    currentData = result;
+                    profileName.setText(currentData.get("nome").toString());
+                    profileSurname.setText(currentData.get("cognome").toString());
+                    profileGender.setText(currentData.get("sesso").toString());
+                    profileBirthDate.setText((currentData.get("dataNascita").toString()));
+                    profileCitizen.setText(currentData.get("cittadinanza").toString());
+                    profileCountry.setText(currentData.get("paeseDiProvenienza").toString());
+                    profileResidence.setText(currentData.get("nomeResidenza").toString());
+                    profileQRCode.setImageBitmap((Bitmap) currentData.get("qrCode"));
+                    profileDoctor.setText(currentData.get("dottore").toString());
+                }catch (Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
+                }
             });
         });
         super.onStart();

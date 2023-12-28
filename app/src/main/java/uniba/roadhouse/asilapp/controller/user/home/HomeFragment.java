@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -242,25 +243,29 @@ public class HomeFragment extends Fragment {
      */
     private void loadVideo()
     {
-
         progressBarVideoHome.setVisibility(View.VISIBLE);
         frameLayoutVideoHome.setAlpha((float)0.5);
         CompletableFuture<Map<String,?>>  future = Dao.getAllVideoByTipo(UserLogin.getTipoAsiloProtezione(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBarVideoHome.setVisibility(View.GONE);
-                frameLayoutVideoHome.setAlpha((float)1.0);
-                if(result.get("esito").toString().equals(getString(R.string.getVideoSuccessfull)))
-                {
-                   ArrayList<String> links = (ArrayList<String>) result.get("links");
-                   if(links.size()==2)
-                   {
-                       openVideo(links.get(0), links.get(1));
-                   }
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                try{
+                    progressBarVideoHome.setVisibility(View.GONE);
+                    frameLayoutVideoHome.setAlpha((float)1.0);
+                    if(result.get("esito").toString().equals(getString(R.string.getVideoSuccessfull)))
+                    {
+                        ArrayList<String> links = (ArrayList<String>) result.get("links");
+                        if(links.size()==2)
+                        {
+                            openVideo(links.get(0), links.get(1));
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch(Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
             });
         });
@@ -335,22 +340,27 @@ public class HomeFragment extends Fragment {
        CompletableFuture<Map<String,?>>  future = Dao.getFirst2Articles(getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
-                {
-                    ArrayList<Articolo> articles = (ArrayList<Articolo>) result.get("articles");
-                    Articolo firstArticle = articles.get(0);
-                    titleFirstArticle.setText(firstArticle.getTitolo());
-                    imageFirstArticle.setImageBitmap(firstArticle.getImmagine());
-                    firstTips.setOnClickListener(v->openDetailTips(firstArticle.getId()));
-                    Articolo secondArticle = articles.get(1);
-                    titleSecondArticle.setText(secondArticle.getTitolo());
-                    imageSecondArticle.setImageBitmap(secondArticle.getImmagine());
-                    secondTips.setOnClickListener(v->openDetailTips(secondArticle.getId()));
+                try{
+                    if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
+                    {
+                        ArrayList<Articolo> articles = (ArrayList<Articolo>) result.get("articles");
+                        Articolo firstArticle = articles.get(0);
+                        titleFirstArticle.setText(firstArticle.getTitolo());
+                        imageFirstArticle.setImageBitmap(firstArticle.getImmagine());
+                        firstTips.setOnClickListener(v->openDetailTips(firstArticle.getId()));
+                        Articolo secondArticle = articles.get(1);
+                        titleSecondArticle.setText(secondArticle.getTitolo());
+                        imageSecondArticle.setImageBitmap(secondArticle.getImmagine());
+                        secondTips.setOnClickListener(v->openDetailTips(secondArticle.getId()));
 
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch(Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
             });
         });
@@ -367,38 +377,43 @@ public class HomeFragment extends Fragment {
         CompletableFuture<Map<String,?>> future = Dao.getAllSpese(UserLogin.getUsername(), -1, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBarChartHome.setVisibility(View.GONE);
-                frameLayoutChartHome.setAlpha((float)1.0);
-                if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
-                {
-                    List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
-                    List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
-                    List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
-                    Double totalFood=0.0;
-                    Double totalDrugs=0.0;
-                    Double totalOther=0.0;
-                    Double total=0.0;
-                    for(Spesa spesa: speseCibo)
+                try{
+                    progressBarChartHome.setVisibility(View.GONE);
+                    frameLayoutChartHome.setAlpha((float)1.0);
+                    if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
                     {
-                        totalFood = totalFood + spesa.getCosto();
+                        List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                        List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                        List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                        Double totalFood=0.0;
+                        Double totalDrugs=0.0;
+                        Double totalOther=0.0;
+                        Double total=0.0;
+                        for(Spesa spesa: speseCibo)
+                        {
+                            totalFood = totalFood + spesa.getCosto();
+                        }
+                        for(Spesa spesa: speseFarmaci)
+                        {
+                            totalDrugs = totalFood + spesa.getCosto();
+                        }
+                        for(Spesa spesa: speseAltro)
+                        {
+                            totalOther = totalFood + spesa.getCosto();
+                        }
+                        total = totalFood + totalDrugs + totalOther;
+                        Double foodPercent = (totalFood/total) * 100;
+                        Double drugsPercent = (totalDrugs/total) * 100;
+                        Double otherPercent = (totalOther/total) * 100;
+                        Utility.setPieChartOutgoings(pieChart, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
                     }
-                    for(Spesa spesa: speseFarmaci)
+                    else
                     {
-                        totalDrugs = totalFood + spesa.getCosto();
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
                     }
-                    for(Spesa spesa: speseAltro)
-                    {
-                        totalOther = totalFood + spesa.getCosto();
-                    }
-                    total = totalFood + totalDrugs + totalOther;
-                    Double foodPercent = (totalFood/total) * 100;
-                    Double drugsPercent = (totalDrugs/total) * 100;
-                    Double otherPercent = (totalOther/total) * 100;
-                    Utility.setPieChartOutgoings(pieChart, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
             });
         });
