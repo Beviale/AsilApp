@@ -83,7 +83,7 @@ public class PositionFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        setupTabListener();
         if(this.Instance == null){Instance = this;}
     }
 
@@ -196,7 +196,6 @@ public class PositionFragment extends Fragment {
             }
 
             this.residenzaUtenteAttuale = new ResidenzaUtenteAttuale(cittaResidenza, nomeResidenza, descrizioneResidenza, (Double) datiResidenza.get("latitudine"), (Double) datiResidenza.get("longitudine"));
-            setupTabListener();
             openMapFragment();
         }));
 

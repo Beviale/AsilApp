@@ -174,7 +174,7 @@ public class HomeActivity extends AppCompatActivity {
                     String currScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
                     //prendo il nome della sezione del fragment che devo aprira andando back
                     String prevScreenOpenSection=fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getName();
-                    //elimino dal backstack il fragment attualmentein visione
+                    //elimino dal backstack il fragment attualment ein visione
                     fragmentManager.popBackStack();
 
                     //se la sezione del fragment da aprire è diversa da quella del fragment attuale, cambio il colore dell'icona nel menu

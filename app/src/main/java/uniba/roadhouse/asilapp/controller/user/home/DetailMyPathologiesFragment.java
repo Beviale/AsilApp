@@ -196,6 +196,10 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
         {
             getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallbackDoctor);
         }
+        if(openDoctor==false)
+        {
+            getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallbackUser);
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -776,6 +780,24 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
             Bundle bundle = new Bundle();
             bundle.putBoolean("backMyPathologies", true);
             fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, bundle);
+            fragmentTransaction.commit();
+        }
+    };
+
+    /**
+     * Comportamento del tasto back quando il fragment viene aperto con l'account utente.
+     * Avvisa MedicalParametersFragment che deve selezionare il tab relativo alle patologie.
+     */
+    private OnBackPressedCallback onBackPressedCallbackUser = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("backMyPathologies", true);
+            fragmentTransaction.replace(R.id.homeContainerView, MedicalParametersFragment.class, bundle);
+            fragmentTransaction.addToBackStack(getString(R.string.healthMenuScreen));
             fragmentTransaction.commit();
         }
     };

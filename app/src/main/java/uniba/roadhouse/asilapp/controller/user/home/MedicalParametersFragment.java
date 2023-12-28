@@ -47,7 +47,7 @@ public class MedicalParametersFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments()!=null)
         {
-            openBackMyPathologies = getArguments().getBoolean("backHealthHistory");
+            openBackMyPathologies = getArguments().getBoolean("backMyPathologies");
         }
     }
 
@@ -62,7 +62,6 @@ public class MedicalParametersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        openHealthHistory();
         //---------RIFERIMENTI----------------------
         tabLayoutMedical = view.findViewById(R.id.tabLayoutMedical);
     }
@@ -111,11 +110,9 @@ public class MedicalParametersFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
-
         if(openBackMyPathologies==true)
         {
             openBackMyPathologies=false;
-            openHealthHistory();
             TabLayout.Tab tab = tabLayoutMedical.getTabAt(1);
             tab.select();
         }
