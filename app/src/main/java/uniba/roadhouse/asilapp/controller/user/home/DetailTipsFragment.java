@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -153,20 +154,24 @@ public class DetailTipsFragment extends Fragment {
         CompletableFuture<Map<String,?>> future = Dao.getArticle(id, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.GONE);
-                layoutDetailTipsFragment.setAlpha((float)1.0);
-                if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
-                {
-                    Articolo articolo = (Articolo) result.get("article");
-                    titleDetailTips.setText(articolo.getTitolo());
-                    textDetailTips.setText(articolo.getTesto());
-                    imageDetailTips.setImageBitmap(articolo.getImmagine());
+                try{
+                    progressBar.setVisibility(View.GONE);
+                    layoutDetailTipsFragment.setAlpha((float)1.0);
+                    if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
+                    {
+                        Articolo articolo = (Articolo) result.get("article");
+                        titleDetailTips.setText(articolo.getTitolo());
+                        textDetailTips.setText(articolo.getTesto());
+                        imageDetailTips.setImageBitmap(articolo.getImmagine());
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_LONG).show();
-                }
-
             });
         });
     }

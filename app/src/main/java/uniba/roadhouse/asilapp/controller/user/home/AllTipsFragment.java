@@ -3,6 +3,7 @@ package uniba.roadhouse.asilapp.controller.user.home;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -118,77 +119,82 @@ public class AllTipsFragment extends Fragment {
         CompletableFuture<Map<String,?>> future = Dao.getAllArticles(getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.GONE);
-                layoutAllTipsFragment.setAlpha((float)1.0);
-                if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
-                {
-                    ArrayList<Articolo> articles = (ArrayList<Articolo>) result.get("articles");
-                    for(Articolo articolo: articles)
+                try{
+                    progressBar.setVisibility(View.GONE);
+                    layoutAllTipsFragment.setAlpha((float)1.0);
+                    if(result.get("esito").toString().equals(getString(R.string.getArticlesSuccessfull)))
                     {
-                        // Creo la card
-                        ConstraintLayout card = new ConstraintLayout(requireContext());
-                        Utility.activeAnimationOnClick(getActivity(), card);
-                        card.setOnClickListener(v->openDetailTips(articolo.getId()));
-                        card.setId(View.generateViewId());
-                        LinearLayout.LayoutParams layoutParamsCard = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) dpToPx(getContext(), 200)
-                        );
-                        layoutParamsCard.bottomMargin = (int) dpToPx(getContext(), 10);
-                        layoutParamsCard.topMargin = (int) dpToPx(getContext(), 10);
-                        layoutParamsCard.leftMargin = getResources().getDimensionPixelSize(R.dimen.marginAllTipsFragment);
-                        layoutParamsCard.rightMargin = getResources().getDimensionPixelSize(R.dimen.marginAllTipsFragment);
+                        ArrayList<Articolo> articles = (ArrayList<Articolo>) result.get("articles");
+                        for(Articolo articolo: articles)
+                        {
+                            // Creo la card
+                            ConstraintLayout card = new ConstraintLayout(requireContext());
+                            Utility.activeAnimationOnClick(getActivity(), card);
+                            card.setOnClickListener(v->openDetailTips(articolo.getId()));
+                            card.setId(View.generateViewId());
+                            LinearLayout.LayoutParams layoutParamsCard = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    (int) dpToPx(getContext(), 200)
+                            );
+                            layoutParamsCard.bottomMargin = (int) dpToPx(getContext(), 10);
+                            layoutParamsCard.topMargin = (int) dpToPx(getContext(), 10);
+                            layoutParamsCard.leftMargin = getResources().getDimensionPixelSize(R.dimen.marginAllTipsFragment);
+                            layoutParamsCard.rightMargin = getResources().getDimensionPixelSize(R.dimen.marginAllTipsFragment);
 
 
-                        card.setLayoutParams(layoutParamsCard);
-                        card.setBackground(getResources().getDrawable(R.drawable.rounded_cards));
-                        card.setElevation(20);
-                        layoutAllTips.addView(card);
+                            card.setLayoutParams(layoutParamsCard);
+                            card.setBackground(getResources().getDrawable(R.drawable.rounded_cards));
+                            card.setElevation(20);
+                            layoutAllTips.addView(card);
 
-                        // Creo l'immagine dell'articolo
-                        ImageView imageFirstCard = new ImageView(requireContext());
-                        imageFirstCard.setId(View.generateViewId());
-                        imageFirstCard.setImageBitmap(articolo.getImmagine());
-                        ConstraintLayout.LayoutParams paramsImage = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                (int) dpToPx(getContext(), 130)
-                        );
-                        imageFirstCard.setLayoutParams(paramsImage);
-                        ConstraintSet constraintImage = new ConstraintSet();
-                        constraintImage.clone(card);
-                        constraintImage.connect(imageFirstCard.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 0));
-                        constraintImage.connect(imageFirstCard.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 0));
-                        constraintImage.applyTo(card);
-                        card.addView(imageFirstCard);
+                            // Creo l'immagine dell'articolo
+                            ImageView imageFirstCard = new ImageView(requireContext());
+                            imageFirstCard.setId(View.generateViewId());
+                            imageFirstCard.setImageBitmap(articolo.getImmagine());
+                            ConstraintLayout.LayoutParams paramsImage = new ConstraintLayout.LayoutParams(
+                                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                    (int) dpToPx(getContext(), 130)
+                            );
+                            imageFirstCard.setLayoutParams(paramsImage);
+                            ConstraintSet constraintImage = new ConstraintSet();
+                            constraintImage.clone(card);
+                            constraintImage.connect(imageFirstCard.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, (int) dpToPx(getContext(), 0));
+                            constraintImage.connect(imageFirstCard.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 0));
+                            constraintImage.applyTo(card);
+                            card.addView(imageFirstCard);
 
-                        // Creo la TextView relativa al label della data di nascita del paziente.
-                        TextView titleArticle = new TextView(requireContext());
-                        titleArticle.setId(View.generateViewId());
-                        ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
-                                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                (int) dpToPx(getContext(), 70)
-                        );
-                        Integer padding =   (int) dpToPx(getContext(), 10);
-                        titleArticle.setElevation(50);
-                        titleArticle.setBackground(getResources().getDrawable(R.drawable.rounded_cards));
+                            // Creo la TextView relativa al label della data di nascita del paziente.
+                            TextView titleArticle = new TextView(requireContext());
+                            titleArticle.setId(View.generateViewId());
+                            ConstraintLayout.LayoutParams paramsTitle = new ConstraintLayout.LayoutParams(
+                                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                    (int) dpToPx(getContext(), 70)
+                            );
+                            Integer padding =   (int) dpToPx(getContext(), 10);
+                            titleArticle.setElevation(50);
+                            titleArticle.setBackground(getResources().getDrawable(R.drawable.rounded_cards));
 
-                        titleArticle.setPadding(padding, padding, padding, padding);
-                        card.addView(titleArticle);
-                        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
-                        titleArticle.setTypeface(typeface);
-                        titleArticle.setText(articolo.getTitolo());
-                        titleArticle.setTextColor(getResources().getColor(R.color.black));
-                        titleArticle.setLayoutParams(paramsTitle);
-                        ConstraintSet constraintTitle = new ConstraintSet();
-                        constraintTitle.clone(card);
-                        constraintTitle.connect(titleArticle.getId(), ConstraintSet.TOP, imageFirstCard.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 0));
-                        constraintTitle.connect(titleArticle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 0));
-                        constraintTitle.applyTo(card);
+                            titleArticle.setPadding(padding, padding, padding, padding);
+                            card.addView(titleArticle);
+                            Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.titillium_web_bold);
+                            titleArticle.setTypeface(typeface);
+                            titleArticle.setText(articolo.getTitolo());
+                            titleArticle.setTextColor(getResources().getColor(R.color.black));
+                            titleArticle.setLayoutParams(paramsTitle);
+                            ConstraintSet constraintTitle = new ConstraintSet();
+                            constraintTitle.clone(card);
+                            constraintTitle.connect(titleArticle.getId(), ConstraintSet.TOP, imageFirstCard.getId(), ConstraintSet.BOTTOM, (int) dpToPx(getContext(), 0));
+                            constraintTitle.connect(titleArticle.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, (int) dpToPx(getContext(), 0));
+                            constraintTitle.applyTo(card);
+                        }
                     }
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString() , Toast.LENGTH_LONG).show();
+                    else
+                    {
+                        Toast.makeText(getActivity(), result.get("esito").toString() , Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
 
             });

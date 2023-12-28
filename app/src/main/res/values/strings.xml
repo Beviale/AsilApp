@@ -231,6 +231,7 @@
     <string name="getArticlesValuationNoValuation">Nessuna valutazione</string>
     <string name="getLatLongFailed">Si è verificato un errore nel caricamento della latitudine e della longitudine</string>
     <string name="getLatLongSuccessfull">Latitudine e longitudine caricati correttamente</string>
+    <string name="emptyDrugs">Nessun farmaco inserito</string>
 
 
     <!--SETTINGS-->

@@ -128,6 +128,10 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
      */
     ConstraintLayout layoutMyPathologies;
     /**
+     * Scritta che avvisa l'utente che attualmente non risultano inseriti dei farmaci per la patologia.
+     */
+    TextView emptyDrugs;
+    /**
      * Le chavi sono le view dei farmaci mentre i valori i rispettivi nomi.
      */
     HashMap<View, String> mapViewDrugName;
@@ -216,6 +220,7 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
         doctorNotesLastVisitMyPahologies = view.findViewById(R.id.doctorNotesLastVisitMyPahologies);
         timeLastVisitMyPathologies = view.findViewById(R.id.timeLastVisitMyPathologies);
         layoutMyPathologies = view.findViewById(R.id.layoutMyPathologies);
+        emptyDrugs = view.findViewById(R.id.emptyDrugs);
         dateLastVisitMyPathologies = view.findViewById(R.id.dateLastVisitMyPathologies);
         detailMyPathologiesTitle = view.findViewById(R.id.detailMyPathologiesTitle);
         priorityLastVisitMyPathologies = view.findViewById(R.id.priorityLastVisitMyPathologies);
@@ -620,6 +625,8 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                         mapViewDoctorNotes = new HashMap<View, String>();
                         for(Farmaco farmaco: farmaci)
                         {
+                            // Nasscondo la scritta che indica l'assenza di farmaci
+                            emptyDrugs.setVisibility(View.GONE);
                             // Creo il constraintLayout
                             ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
                             registerForContextMenu(constraintLayout);

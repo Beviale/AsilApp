@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -343,41 +344,46 @@ public class OutgoingsFragment extends Fragment {
         CompletableFuture<Map<String,?>> future = Dao.getAllSpese(UserLogin.getUsername(), 7, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.GONE);
-                layoutOutgoinsFragment.setAlpha((float)1.0);
-                if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
-                {
-                    List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
-                    List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
-                    List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
-                    Double totalFood=0.0;
-                    Double totalDrugs=0.0;
-                    Double totalOther=0.0;
-                    Double total=0.0;
-                    for(Spesa spesa: speseCibo)
+                try{
+                    progressBar.setVisibility(View.GONE);
+                    layoutOutgoinsFragment.setAlpha((float)1.0);
+                    if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
                     {
-                        totalFood = totalFood + spesa.getCosto();
+                        List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                        List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                        List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                        Double totalFood=0.0;
+                        Double totalDrugs=0.0;
+                        Double totalOther=0.0;
+                        Double total=0.0;
+                        for(Spesa spesa: speseCibo)
+                        {
+                            totalFood = totalFood + spesa.getCosto();
+                        }
+                        for(Spesa spesa: speseFarmaci)
+                        {
+                            totalDrugs = totalFood + spesa.getCosto();
+                        }
+                        for(Spesa spesa: speseAltro)
+                        {
+                            totalOther = totalFood + spesa.getCosto();
+                        }
+                        valueFood7DaysMoney.setText(String.valueOf(totalFood.floatValue()));
+                        valueDrugs7DaysMoney.setText(String.valueOf(totalDrugs.floatValue()));
+                        valueOther7DaysMoney.setText(String.valueOf(totalOther.floatValue()));
+                        total = totalFood + totalDrugs + totalOther;
+                        Double foodPercent = (totalFood/total) * 100;
+                        Double drugsPercent = (totalDrugs/total) * 100;
+                        Double otherPercent = (totalOther/total) * 100;
+                        Utility.setPieChartOutgoings(pieChartLast7Days, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
                     }
-                    for(Spesa spesa: speseFarmaci)
+                    else
                     {
-                        totalDrugs = totalFood + spesa.getCosto();
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
                     }
-                    for(Spesa spesa: speseAltro)
-                    {
-                        totalOther = totalFood + spesa.getCosto();
-                    }
-                    valueFood7DaysMoney.setText(String.valueOf(totalFood.floatValue()));
-                    valueDrugs7DaysMoney.setText(String.valueOf(totalDrugs.floatValue()));
-                    valueOther7DaysMoney.setText(String.valueOf(totalOther.floatValue()));
-                    total = totalFood + totalDrugs + totalOther;
-                    Double foodPercent = (totalFood/total) * 100;
-                    Double drugsPercent = (totalDrugs/total) * 100;
-                    Double otherPercent = (totalOther/total) * 100;
-                    Utility.setPieChartOutgoings(pieChartLast7Days, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
             });
         });
@@ -396,41 +402,46 @@ public class OutgoingsFragment extends Fragment {
         CompletableFuture<Map<String,?>> future = Dao.getAllSpese(UserLogin.getUsername(), 30, getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                progressBar.setVisibility(View.GONE);
-                layoutOutgoinsFragment.setAlpha((float)1.0);
-                if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
-                {
-                    List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
-                    List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
-                    List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
-                    Double totalFood=0.0;
-                    Double totalDrugs=0.0;
-                    Double totalOther=0.0;
-                    Double total=0.0;
-                    for(Spesa spesa: speseCibo)
+                try{
+                    progressBar.setVisibility(View.GONE);
+                    layoutOutgoinsFragment.setAlpha((float)1.0);
+                    if(result.get("esito").toString().equals(getString(R.string.getSpeseSuccessfull)))
                     {
-                        totalFood = totalFood + spesa.getCosto();
+                        List<Spesa> speseCibo = (List<Spesa>) result.get(CategoriaSpesaEnum.CIBO.toString());
+                        List<Spesa> speseFarmaci = (List<Spesa>) result.get(CategoriaSpesaEnum.FARMACI.toString());
+                        List<Spesa> speseAltro = (List<Spesa>) result.get(CategoriaSpesaEnum.ALTRO.toString());
+                        Double totalFood=0.0;
+                        Double totalDrugs=0.0;
+                        Double totalOther=0.0;
+                        Double total=0.0;
+                        for(Spesa spesa: speseCibo)
+                        {
+                            totalFood = totalFood + spesa.getCosto();
+                        }
+                        for(Spesa spesa: speseFarmaci)
+                        {
+                            totalDrugs = totalFood + spesa.getCosto();
+                        }
+                        for(Spesa spesa: speseAltro)
+                        {
+                            totalOther = totalFood + spesa.getCosto();
+                        }
+                        valueFood30DaysMoney.setText(String.valueOf(totalFood.floatValue()));
+                        valueDrugs30DaysMoney.setText(String.valueOf(totalDrugs.floatValue()));
+                        valueOther30DaysMoney.setText(String.valueOf(totalOther.floatValue()));
+                        total = totalFood + totalDrugs + totalOther;
+                        Double foodPercent = (totalFood/total) * 100;
+                        Double drugsPercent = (totalDrugs/total) * 100;
+                        Double otherPercent = (totalOther/total) * 100;
+                        Utility.setPieChartOutgoings(pieChartLast30Days, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
                     }
-                    for(Spesa spesa: speseFarmaci)
+                    else
                     {
-                        totalDrugs = totalFood + spesa.getCosto();
+                        Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
                     }
-                    for(Spesa spesa: speseAltro)
-                    {
-                        totalOther = totalFood + spesa.getCosto();
-                    }
-                    valueFood30DaysMoney.setText(String.valueOf(totalFood.floatValue()));
-                    valueDrugs30DaysMoney.setText(String.valueOf(totalDrugs.floatValue()));
-                    valueOther30DaysMoney.setText(String.valueOf(totalOther.floatValue()));
-                    total = totalFood + totalDrugs + totalOther;
-                    Double foodPercent = (totalFood/total) * 100;
-                    Double drugsPercent = (totalDrugs/total) * 100;
-                    Double otherPercent = (totalOther/total) * 100;
-                    Utility.setPieChartOutgoings(pieChartLast30Days, foodPercent.floatValue(), drugsPercent.floatValue(), otherPercent.floatValue(), getActivity());
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), result.get("esito").toString(), Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+                    Activity activity = new HomeActivity();
+                    activity.onBackPressed();
                 }
             });
         });
