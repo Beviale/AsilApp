@@ -766,6 +766,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
 
     /**
      * Comportamento del tasto back quando il fragment viene aperto con l'account dottore.
+     * Avvisa DetailUserDoctorFragment che deve selezionare il tab relativo alle patologie.
      */
     private OnBackPressedCallback onBackPressedCallbackDoctor = new OnBackPressedCallback(true) {
         @Override
