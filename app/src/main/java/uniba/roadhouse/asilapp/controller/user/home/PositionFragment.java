@@ -1,15 +1,45 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,45 +47,23 @@ import uniba.roadhouse.asilapp.R;
  * create an instance of this fragment.
  */
 public class PositionFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    /**
+     * TabLayout che consente di visuializzare MapFragment e MyRecidencyFragment.
+     */
+    private TabLayout tabLayoutPosition;
+    private Map<String, Object> utenteAttuale;
+    private ResidenzaUtenteAttuale residenzaUtenteAttuale;
+    private ProgressBar progressBar;
+    public static PositionFragment Instance;
+    private static Boolean openBackMyResidency = false;
 
     public PositionFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PositionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PositionFragment newInstance(String param1, String param2) {
+    public static PositionFragment newInstance() {
         PositionFragment fragment = new PositionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -66,10 +74,162 @@ public class PositionFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        tabLayoutPosition = view.findViewById(R.id.tabLayoutPosition);
+        progressBar = getActivity().findViewById(R.id.homeActivityProgressBar);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if(this.Instance == null){Instance = this;}
+    }
+
+    @Override
     public void onResume() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
+
+        if(openBackMyResidency)
+        {
+            openBackMyResidency=false;
+            openResidencyFragment();
+            TabLayout.Tab tab = tabLayoutPosition.getTabAt(1);
+            tab.select();
+        }
+        else
+        {
+            progressBar.setVisibility(View.VISIBLE);
+            fetchUtente();
+            TabLayout.Tab tab = tabLayoutPosition.getTabAt(0);
+            tab.select();
+        }
+
         super.onResume();
     }
+
+    @Override
+    public void onPause() {
+        getActivity().findViewById(R.id.homeActivityProgressBar).setVisibility(View.GONE);
+        super.onPause();
+    }
+
+    private void openMapFragment() {
+        openBackMyResidency = false;
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.positionTabFragmentContainer, MapFragment.class, null);
+        fragmentTransaction.commit();
+    }
+
+    private void openResidencyFragment(){
+        openBackMyResidency = true;
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.positionTabFragmentContainer, MyRecidencyFragment.class, null);
+        fragmentTransaction.commit();
+    }
+
+    protected class ResidenzaUtenteAttuale{
+        private final String cittaResidenza;
+        private final String nomeResidenza;
+        private final String descrizioneResidenza;
+        private final Double latitudine;
+        private final Double longitudine;
+
+        ResidenzaUtenteAttuale(String cittaResidenza, String nomeResidenza, String descrizioneResidenza, Double latitudine, Double longitudine){
+            this.cittaResidenza = cittaResidenza;
+            this.nomeResidenza = nomeResidenza;
+            this.descrizioneResidenza = descrizioneResidenza;
+            this.latitudine = latitudine;
+            this.longitudine = longitudine;
+        }
+
+        public String getCittaResidenza(){ return this.cittaResidenza; }
+        public String getNomeResidenza(){ return this.nomeResidenza; }
+        public String getDescrizioneResidenza(){ return this.descrizioneResidenza; }
+        public Double getLatitudine(){ return this.latitudine; }
+        public Double getLongitudine(){ return this.longitudine; }
+    }
+
+    private void fetchUtente() {
+        // prendo il riferimento all'utente attuale
+        CompletableFuture<Map<String, Object>> utenteFuture = Dao.getUserData(UserLogin.getUsername(), getActivity());
+        utenteFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+           this.utenteAttuale = result;
+           fetchResidenza(utenteAttuale.get("nomeResidenza").toString());
+        }));
+        Log.d("FETCH", "FETCHING UTENTE");
+    }
+
+    private void fetchResidenza(final String nomeResidenza){
+        // prendo il riferimento alla città di residenza
+        CompletableFuture<String> cittaFuture = Dao.getCittaResidenza(nomeResidenza, getActivity());
+        cittaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+            fetchDatiResidenza(result, utenteAttuale.get("nomeResidenza").toString());
+        }));
+    }
+
+    private void fetchDatiResidenza(final String cittaResidenza, final String nomeResidenza){
+        // prendo le coordinate della città di residenza
+        CompletableFuture<Map<String, ?>> datiResidenzaFuture = Dao.getDatiResidenza(nomeResidenza, getActivity());
+        datiResidenzaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+            progressBar.setVisibility(View.GONE);
+            Map<String, ?> datiResidenza = result;
+
+            // prendo la lingua attuale del dispositivo (default inglese)
+            String descrizioneResidenza;
+            switch(Locale.getDefault().getLanguage()){
+                case "it":
+                    descrizioneResidenza = (String) datiResidenza.get("descrizione_it");
+                    break;
+                case "de":
+                    descrizioneResidenza = (String) datiResidenza.get("descrizione_de");
+                    break;
+                case "en":
+                default:
+                    descrizioneResidenza = (String) datiResidenza.get("descrizione_en");
+                    break;
+            }
+
+            this.residenzaUtenteAttuale = new ResidenzaUtenteAttuale(cittaResidenza, nomeResidenza, descrizioneResidenza, (Double) datiResidenza.get("latitudine"), (Double) datiResidenza.get("longitudine"));
+            setupTabListener();
+            openMapFragment();
+        }));
+
+    }
+
+    private void setupTabListener(){
+        tabLayoutPosition.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if(position==0){
+                    openMapFragment();
+                }
+                else{
+                    openResidencyFragment();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                //do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                //do nothing
+            }
+        });
+    }
+
+    public ResidenzaUtenteAttuale getResidenzaUtenteAttuale(){
+        return this.residenzaUtenteAttuale;
+    }
+    public Map<String, Object> getUtenteAttuale(){ return this.utenteAttuale; }
+
 }

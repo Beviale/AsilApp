@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.user.home.PositionFragment"
+    android:orientation="vertical"
+    android:layout_margin="5dp">
+
+    <FrameLayout
+        android:id="@+id/mapViewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+
+        <WebView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="1dp" />
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyLine"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/hospital_map_icon"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/hospital_building"
+            android:layout_margin="2.5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+        <ImageView
+            android:id="@+id/police_map_icon"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/police_station"
+            android:layout_margin="2.5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+        <ImageView
+            android:id="@+id/pharmacy_map_icon"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/pharmacy"
+            android:layout_margin="2.5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+        <ImageView
+            android:id="@+id/town_hall_map_icon"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/town_hall"
+            android:layout_margin="2.5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

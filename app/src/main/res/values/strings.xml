@@ -233,7 +233,6 @@
     <string name="getLatLongSuccessfull">Latitudine e longitudine caricati correttamente</string>
 
 
-
     <!--SETTINGS-->
     <string name="settingsUpperCase">IMPOSTAZIONI</string>
     <string name="editProfileTitle">Modifica profilo</string>
@@ -293,6 +292,20 @@
     <string name="misurationSuccessfull">Misurazione Avvenuta Con Successo</string>
     <string name="misurationFailed">Misurazione Fallita</string>
 
+    <!--POSIZIONE-->
+    <string name="positionPermissionTitle">Perchè chiediamo la Posizione?</string>
+    <string name="positionInformativa">Eccomi qua, sono posizionato!</string>
+    <string name="positionGivePermissionMessage">Consentire il permesso ed attivare la Posizione per continuare</string>
+    <string name="myCity">La mia città</string>
+    <string name="myRecidency">La mia residenza</string>
+    <string name="whereILive">Dove vivo</string>
+    <string name="rulesAndMore">Regolamenti</string>
+    <string name="housingRules">Regolamento servizi abitativi.pdf</string>
+    <string name="docRules">Regolamento documentazione.pdf</string>
+    <string name="map_hospital">ospedale</string>
+    <string name="map_police">polizia</string>
+    <string name="map_pharmacy">farmacia</string>
+    <string name="map_townhall">comune</string>
 
     <!-- OutgoingsFragment-->
     <string name="categorySelectionOutgoings">Categoria</string>

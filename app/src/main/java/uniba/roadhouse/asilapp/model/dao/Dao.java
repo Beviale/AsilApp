@@ -1460,7 +1460,7 @@ public class Dao {
      * @param context
      * @return
      */
-    public static CompletableFuture<Map<String,?>> getLatLongResidenza(String residenza, Context context){
+    public static CompletableFuture<Map<String,?>> getDatiResidenza(String residenza, Context context){
         return CompletableFuture.supplyAsync(()->{
             Task<QuerySnapshot> query = db.collection("residenze").whereEqualTo("nome",residenza).get();
 
@@ -1476,18 +1476,31 @@ public class Dao {
 
             double latitutide= 0;
             double longitudine=0;
+            String descrizione_it="";
+            String descrizione_en="";
+            String descrizione_de="";
 
             for (QueryDocumentSnapshot document:query.getResult()){
                 latitutide=document.getDouble("latitudine");
                 longitudine=document.getDouble("longitudine");
+                descrizione_it=document.getString("descrizione_it");
+                descrizione_en=document.getString("descrizione_en");
+                descrizione_de=document.getString("descrizione_de");
             }
 
             double finalLatitutide = latitutide;
             double finalLongitudine = longitudine;
+            String finalDescrizioneIt=descrizione_it;
+            String finalDescrizioneEn=descrizione_en;
+            String finalDescrizioneDe=descrizione_de;
+
             return new HashMap<String,Object>(){{
                 put("esito",context.getString(R.string.getLatLongSuccessfull));
                 put("latitudine", finalLatitutide);
                 put("longitudine", finalLongitudine);
+                put("descrizione_it", finalDescrizioneIt);
+                put("descrizione_en", finalDescrizioneEn);
+                put("descrizione_de", finalDescrizioneDe);
             }};
         });
     }
