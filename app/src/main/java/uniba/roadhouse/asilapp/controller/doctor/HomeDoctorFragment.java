@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -67,9 +68,6 @@ public class HomeDoctorFragment extends Fragment {
     SwipeRefreshLayout swipereFreshLayoutHomeDoctor;
 
 
-
-
-
     public HomeDoctorFragment() {
         // Required empty public constructor
     }
@@ -83,6 +81,8 @@ public class HomeDoctorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+
     }
 
     @Override
@@ -128,8 +128,7 @@ public class HomeDoctorFragment extends Fragment {
         toolbarDoctorActivity.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.settings)
-                {
+                if (item.getItemId() == R.id.settings) {
                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.addToBackStack(getString(R.string.settingsMenuScreen));
                     fragmentTransaction.replace(R.id.doctorFragmentView, SettingsDoctorFragment.class, null);
@@ -153,31 +152,29 @@ public class HomeDoctorFragment extends Fragment {
      * Per ciascun paziente, crea dinamicamente una card (nello specifico un ConstraintLayout).
      */
     @SuppressLint("RestrictedApi")
-    private void getData()
-    {
+    private void getData() {
         progressBar.setVisibility(View.VISIBLE);
-        homeLayout.setAlpha((float)0.5);
+        homeLayout.setAlpha((float) 0.5);
         CompletableFuture<List<String>> future = Dao.getAllDoctorsPatients(DoctorLogin.getUsername(), getActivity());
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
-                for(String usernameUser: result)
-                {
+                for (String usernameUser : result) {
                     CompletableFuture<Map<String, Object>> futureUserData = Dao.getUserData(usernameUser, getActivity());
                     futureUserData.thenAccept(resultUserData -> {
                         getActivity().runOnUiThread(() -> {
                             progressBar.setVisibility(View.GONE);
-                            homeLayout.setAlpha((float)1.0);
+                            homeLayout.setAlpha((float) 1.0);
                             String nanemAndSurname = resultUserData.get("nome").toString().concat(" ").concat(resultUserData.get("cognome").toString());
                             // Creo il constraintLayout
                             ConstraintLayout constraintLayout = new ConstraintLayout(requireContext());
                             Utility.activeAnimationOnClick(getActivity(), constraintLayout);
-                            constraintLayout.setOnClickListener(v->openDetailUserDoctor(usernameUser, nanemAndSurname));
+                            constraintLayout.setOnClickListener(v -> openDetailUserDoctor(usernameUser, nanemAndSurname));
                             constraintLayout.setId(View.generateViewId());
                             ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
                                     ConstraintLayout.LayoutParams.MATCH_PARENT,
                                     getResources().getDimensionPixelSize(R.dimen.heightHealthHistory)
                             );
-                            layoutParams.topMargin=getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
+                            layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.marginBetweenInputs);
                             constraintLayout.setLayoutParams(layoutParams);
                             constraintLayout.setBackgroundColor(getResources().getColor(R.color.colorCardUserDoctor));
                             layoutCardUserDoctor.addView(constraintLayout);
@@ -250,18 +247,25 @@ public class HomeDoctorFragment extends Fragment {
     /**
      * Apre il fragment "DetailUserDoctorFragment".
      * Il nome del paziente viene inserito nella toolbar dell'activity.
-     * @param usernameUser, username dell'utente
+     *
+     * @param usernameUser,   username dell'utente
      * @param nameAndSurname, nome e cognome del paziente.
      */
-    private void openDetailUserDoctor(String usernameUser, String nameAndSurname)
-    {
+    private void openDetailUserDoctor(String usernameUser, String nameAndSurname) {
         UserLogin.setUsername(usernameUser);
         textToolbarDoctor.setText(nameAndSurname);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, null);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
+
+    // Se si preme il tasto back, chiudo l'applicazione.
+    private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+                getActivity().finishAffinity();
+        }
+    };
 }
