@@ -72,17 +72,17 @@ public class MyPathologiesFragment extends Fragment {
     /**
      * Indica se il fragment è stato aperto con un account dottore.
      */
-    private static Boolean openDoctor=false;
+    private Boolean openDoctor=false;
 
     /**
      * Le chiavi sono le view (ovvero le patologie) mentre i valori i rispettivi nomi.
      */
-    private static HashMap<View, String> mapViewNamePathology;
+    private HashMap<View, String> mapViewNamePathology;
 
     /**
      * View (ovvero patologia) cliccata dall'utente o dal dottore tramite menu contestuale.
      */
-    private static View pathologyClicked;
+    private View pathologyClicked;
 
 
 

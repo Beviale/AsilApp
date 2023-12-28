@@ -138,7 +138,7 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
     /**
      * Nome della patologia passata in input al fragment.
      */
-    private static String namePathology;
+    private String namePathology;
     /**
      * Request code per il DialogFragment di aggiunta farmaco.
      */
@@ -157,19 +157,19 @@ public class DetailMyPathologiesFragment extends Fragment implements AddDrugsDia
     /**
      * Indica se il fragment è stato avviato dopo l'eliminazione di un farmaco.
      */
-    private static Boolean deleteDrugs=false;
+    private Boolean deleteDrugs=false;
     /**
      * Indica se il fragment è stato avviato con un account dottore oppure no.
      */
-    private static Boolean openDoctor=false;
+    private Boolean openDoctor=false;
     /**
      * Indica se il fragment è stato avviato per la condivisione dei dati.
      */
-    private static Boolean share=false;
+    private Boolean share=false;
     /**
      * Indica la view del farmaco cliccata dall'utente tramite menu contestuale.
      */
-    private static View drugsClicked;
+    private View drugsClicked;
 
 
 

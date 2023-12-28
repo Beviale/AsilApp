@@ -87,7 +87,7 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
     /**
      * Identificativo della misurazione da mostrare.
      */
-    private static Integer id;
+    private Integer id;
 
     /**
      * Consente la modifica della valutazione da parte del medico
@@ -101,12 +101,12 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
     /**
      * Indica se il fragment è stato aperto in modalità condivisione.
      */
-   private static Boolean share;
+   private Boolean share;
 
     /**
      * Indica se il fragment è stato aperto con un account dottore.
      */
-   private static Boolean openDoctor=false;
+   private Boolean openDoctor=false;
 
     /**
      * Request code per il DialogFragment relativo alla modifica della valutazione.

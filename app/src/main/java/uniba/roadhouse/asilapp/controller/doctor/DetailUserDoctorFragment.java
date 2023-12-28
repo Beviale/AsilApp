@@ -39,11 +39,11 @@ public class DetailUserDoctorFragment extends Fragment {
     /**
      * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment HealthHistory.
      */
-    private static Boolean openBackHealthHistory = false;
+    private Boolean openBackHealthHistory = false;
     /**
      * Indica se il fragment è stato aperto in quanto l'utente ha premuto il tasto indietro dal fragment MyPathologies.
      */
-    private static Boolean openBackMyPathologies = false;
+    private Boolean openBackMyPathologies = false;
 
 
 

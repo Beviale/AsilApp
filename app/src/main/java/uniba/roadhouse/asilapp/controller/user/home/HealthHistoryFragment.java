@@ -164,7 +164,7 @@ public class HealthHistoryFragment extends Fragment {
     /**
      * Indica se il fragment è stato aperto da un account dottore o meno.
      */
-    private static Boolean openDoctor=false;
+    private Boolean openDoctor=false;
 
 
 

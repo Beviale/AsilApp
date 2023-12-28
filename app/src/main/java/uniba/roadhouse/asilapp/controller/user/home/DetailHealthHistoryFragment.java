@@ -116,16 +116,16 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
     /**
      * is dell'ultima misurazione
      */
-    private static int id;
+    private int id;
     /**
      * Se il fragment è stato aperto con l'intenzione di condividere i dati,
      */
-    private static Boolean share;
+    private Boolean share;
 
     /**
      * Indica se il fragment è stato aperto con l'account dottore.
      */
-    private static Boolean openDoctor=false;
+    private Boolean openDoctor=false;
     /**
      * Request code per la modifica delle valutazione [Account dottore]
      */

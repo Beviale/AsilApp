@@ -117,7 +117,7 @@ public class UserProfileFragment extends Fragment {
     /**
      * Indica se il fragment è stato aperto da un account dottore o meno.
      */
-    private static Boolean openDoctor=false;
+    private Boolean openDoctor=false;
     /**
      * Mappa restituitda dal Dao nell'esecuzione della query per il caricamento dei dati dal database.
      */
