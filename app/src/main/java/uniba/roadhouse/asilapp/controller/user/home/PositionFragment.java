@@ -42,9 +42,7 @@ import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link PositionFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment relativo alle informazioni sulla città e sulla struttura di residenza dell'utente.
  */
 public class PositionFragment extends Fragment {
     /**
@@ -159,17 +157,26 @@ public class PositionFragment extends Fragment {
         // prendo il riferimento all'utente attuale
         CompletableFuture<Map<String, Object>> utenteFuture = Dao.getUserData(UserLogin.getUsername(), getActivity());
         utenteFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
-           this.utenteAttuale = result;
-           fetchResidenza(utenteAttuale.get("nomeResidenza").toString());
+            try{
+                this.utenteAttuale = result;
+                fetchResidenza(utenteAttuale.get("nomeResidenza").toString());
+            }catch (Exception e){
+                Activity activity = new HomeActivity();
+                activity.onBackPressed();
+            }
         }));
-        Log.d("FETCH", "FETCHING UTENTE");
     }
 
     private void fetchResidenza(final String nomeResidenza){
         // prendo il riferimento alla città di residenza
         CompletableFuture<String> cittaFuture = Dao.getCittaResidenza(nomeResidenza, getActivity());
         cittaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
-            fetchDatiResidenza(result, utenteAttuale.get("nomeResidenza").toString());
+            try{
+                fetchDatiResidenza(result, utenteAttuale.get("nomeResidenza").toString());
+            }catch (Exception e){
+                Activity activity = new HomeActivity();
+                activity.onBackPressed();
+            }
         }));
     }
 
@@ -177,26 +184,31 @@ public class PositionFragment extends Fragment {
         // prendo le coordinate della città di residenza
         CompletableFuture<Map<String, ?>> datiResidenzaFuture = Dao.getDatiResidenza(nomeResidenza, getActivity());
         datiResidenzaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
-            progressBar.setVisibility(View.GONE);
-            Map<String, ?> datiResidenza = result;
+            try{
+                progressBar.setVisibility(View.GONE);
+                Map<String, ?> datiResidenza = result;
 
-            // prendo la lingua attuale del dispositivo (default inglese)
-            String descrizioneResidenza;
-            switch(Locale.getDefault().getLanguage()){
-                case "it":
-                    descrizioneResidenza = (String) datiResidenza.get("descrizione_it");
-                    break;
-                case "de":
-                    descrizioneResidenza = (String) datiResidenza.get("descrizione_de");
-                    break;
-                case "en":
-                default:
-                    descrizioneResidenza = (String) datiResidenza.get("descrizione_en");
-                    break;
+                // prendo la lingua attuale del dispositivo (default inglese)
+                String descrizioneResidenza;
+                switch(Locale.getDefault().getLanguage()){
+                    case "it":
+                        descrizioneResidenza = (String) datiResidenza.get("descrizione_it");
+                        break;
+                    case "de":
+                        descrizioneResidenza = (String) datiResidenza.get("descrizione_de");
+                        break;
+                    case "en":
+                    default:
+                        descrizioneResidenza = (String) datiResidenza.get("descrizione_en");
+                        break;
+                }
+
+                this.residenzaUtenteAttuale = new ResidenzaUtenteAttuale(cittaResidenza, nomeResidenza, descrizioneResidenza, (Double) datiResidenza.get("latitudine"), (Double) datiResidenza.get("longitudine"));
+                openMapFragment();
+            }catch (Exception e){
+                Activity activity = new HomeActivity();
+                activity.onBackPressed();
             }
-
-            this.residenzaUtenteAttuale = new ResidenzaUtenteAttuale(cittaResidenza, nomeResidenza, descrizioneResidenza, (Double) datiResidenza.get("latitudine"), (Double) datiResidenza.get("longitudine"));
-            openMapFragment();
         }));
 
     }

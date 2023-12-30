@@ -39,11 +39,9 @@ public class MapFragment extends Fragment {
                 if (result) {
                     // PERMISSION GRANTED
                     checkGPSEnabled();
-                    Log.d("PERMISSION", "GRANTED");
                 } else {
                     // PERMISSION NOT GRANTED
                     returnHome();
-                    Log.d("PERMISSION", "DENIED");
                 }
             }
     );
@@ -153,7 +151,7 @@ public class MapFragment extends Fragment {
      * @param permission
      */
     private void showExplanation(int title, int message, final String permission) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
         builder.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, (dialog, id) -> requestPermissionLauncher.launch(permission))
