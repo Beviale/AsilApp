@@ -42,16 +42,21 @@ import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
 
 /**
- * Fragment relativo alle informazioni sulla città e sulla struttura di residenza dell'utente.
+ * A simple {@link Fragment} subclass.
+ * Use the {@link PositionFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
 public class PositionFragment extends Fragment {
-    /**
-     * TabLayout che consente di visuializzare MapFragment e MyRecidencyFragment.
-     */
+    /** TabLayout che consente di visuializzare MapFragment e MyRecidencyFragment. */
     private TabLayout tabLayoutPosition;
+
+    /** Utente attualmente autenticato. */
     private Map<String, Object> utenteAttuale;
+
+    /** Residenza attuale dell'utente attualmente autenticato. */
     private ResidenzaUtenteAttuale residenzaUtenteAttuale;
     private ProgressBar progressBar;
+    /** Istanza corrente del PositionFragment usata per accedere all'utente da tutte le sotto-schermate. */
     public static PositionFragment Instance;
     private static Boolean openBackMyResidency = false;
 
@@ -91,15 +96,13 @@ public class PositionFragment extends Fragment {
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
 
-        if(openBackMyResidency)
-        {
+        // Torno all'ultima schermata aperta dall'utente (default schermata mappa)
+        if(openBackMyResidency) {
             openBackMyResidency=false;
             openResidencyFragment();
             TabLayout.Tab tab = tabLayoutPosition.getTabAt(1);
             tab.select();
-        }
-        else
-        {
+        } else {
             progressBar.setVisibility(View.VISIBLE);
             fetchUtente();
             TabLayout.Tab tab = tabLayoutPosition.getTabAt(0);
@@ -115,6 +118,9 @@ public class PositionFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Metodo per l'apertura del fragment relativo la mappa interattiva.
+     */
     private void openMapFragment() {
         openBackMyResidency = false;
         FragmentManager fragmentManager = getChildFragmentManager();
@@ -123,6 +129,9 @@ public class PositionFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    /**
+     * Metodo per l'apertura del fragment relativo la residenza attuale dell'utente autenticato.
+     */
     private void openResidencyFragment(){
         openBackMyResidency = true;
         FragmentManager fragmentManager = getChildFragmentManager();
@@ -131,6 +140,10 @@ public class PositionFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    /**
+     * Classe di utility per la registrazione della residenza attuale dell'utente autenticato.
+     * La uso per poter avere tutti i riferimenti necessari in un unico "luogo".
+     */
     protected class ResidenzaUtenteAttuale{
         private final String cittaResidenza;
         private final String nomeResidenza;
@@ -153,38 +166,54 @@ public class PositionFragment extends Fragment {
         public Double getLongitudine(){ return this.longitudine; }
     }
 
+    /**
+     * Eseguo il fetch dei dati dell'utente dal DB per poter trovare i dati relativi alla sua residenza.
+     * Ottengo l'utente dai dati di login effettuati in modo da prendere l'utente attualmente autenticato.
+     */
     private void fetchUtente() {
-        // prendo il riferimento all'utente attuale
-        CompletableFuture<Map<String, Object>> utenteFuture = Dao.getUserData(UserLogin.getUsername(), getActivity());
-        utenteFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
-            try{
+        try{
+            // prendo il riferimento all'utente attuale
+            CompletableFuture<Map<String, Object>> utenteFuture = Dao.getUserData(UserLogin.getUsername(), getActivity());
+            utenteFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
                 this.utenteAttuale = result;
                 fetchResidenza(utenteAttuale.get("nomeResidenza").toString());
-            }catch (Exception e){
-                Activity activity = new HomeActivity();
-                activity.onBackPressed();
-            }
-        }));
+            }));
+            Log.d("FETCH", "FETCHING UTENTE");
+        }catch(Exception e){
+            Activity activity = new HomeActivity();
+            activity.onBackPressed();
+        }
     }
 
+    /**
+     * Eseguo il fetch del nome della città in cui si trova la residenza di afferenza dell'utente al fine di
+     * poter usare il dato nella query per mostrare la mappa all'utente.
+     * @param nomeResidenza
+     */
     private void fetchResidenza(final String nomeResidenza){
-        // prendo il riferimento alla città di residenza
-        CompletableFuture<String> cittaFuture = Dao.getCittaResidenza(nomeResidenza, getActivity());
-        cittaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
-            try{
+        try{
+            // prendo il riferimento alla città di residenza
+            CompletableFuture<String> cittaFuture = Dao.getCittaResidenza(nomeResidenza, getActivity());
+            cittaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
                 fetchDatiResidenza(result, utenteAttuale.get("nomeResidenza").toString());
-            }catch (Exception e){
-                Activity activity = new HomeActivity();
-                activity.onBackPressed();
-            }
-        }));
+            }));
+        }catch(Exception e){
+            Activity activity = new HomeActivity();
+            activity.onBackPressed();
+        }
     }
 
+    /**
+     * Eseguo il fetch dei dati relativi alla residenza (coordinate e descrizione) al fine di poter popolare
+     * le varie sezioni della schermata inerente la residenza attuale dell'utente.
+     * @param cittaResidenza
+     * @param nomeResidenza
+     */
     private void fetchDatiResidenza(final String cittaResidenza, final String nomeResidenza){
-        // prendo le coordinate della città di residenza
-        CompletableFuture<Map<String, ?>> datiResidenzaFuture = Dao.getDatiResidenza(nomeResidenza, getActivity());
-        datiResidenzaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
-            try{
+        try{
+            // prendo le coordinate della città di residenza
+            CompletableFuture<Map<String, ?>> datiResidenzaFuture = Dao.getDatiResidenza(nomeResidenza, getActivity());
+            datiResidenzaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
                 Map<String, ?> datiResidenza = result;
 
@@ -205,14 +234,16 @@ public class PositionFragment extends Fragment {
 
                 this.residenzaUtenteAttuale = new ResidenzaUtenteAttuale(cittaResidenza, nomeResidenza, descrizioneResidenza, (Double) datiResidenza.get("latitudine"), (Double) datiResidenza.get("longitudine"));
                 openMapFragment();
-            }catch (Exception e){
-                Activity activity = new HomeActivity();
-                activity.onBackPressed();
-            }
-        }));
-
+            }));
+        }catch(Exception e){
+            Activity activity = new HomeActivity();
+            activity.onBackPressed();
+        }
     }
 
+    /**
+     * Metodo per impostare i listener dei Tab del TabLayout.
+     */
     private void setupTabListener(){
         tabLayoutPosition.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

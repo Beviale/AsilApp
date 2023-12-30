@@ -1,52 +1,143 @@
 <resources>
-    <string name="app_name">AsilApp</string>
+
+    <!--GENERAL-->
+    <string name="serverErrorTitle">Server error</string>
+    <string name="serverError">Please try again later</string>
+    <string name="nullValue">Unknown</string>
+    <string name="genericErrorTitle">Error</string>
+    <string name="genericError">Unexpected error</string>
+    <string name="share">Share</string>
+    <string name="cancel">Cancel</string>
+    <string name="open">Open</string>
+    <string name="connection">Connection</string>
+    <string name="edit">Edit</string>
+    <string name="exit">Log out</string>
+    <string name="iAmLoading">Loading</string>
+    <string name="add">Add</string>
+    <string name="food">Food</string>
+    <string name="drugs">Medicines</string>
+    <string name="other">Miscellaneous</string>
+    <string name="evaluate">Rate</string>
+    <string name="save">Save</string>
+    <string name="send">Send</string>
+    <string name="successfullySaved">Saved successfully</string>
+    <string name="delete">Delete</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="selectAll">Select all</string>
+
+
+    <!--SigninSignupActivity-->
+    <string name="noConnectionTitle">No Internet connection found</string>
+    <string name="noConnection">
+        Your device seems to be disconnected.
+        This will not allow us to guarantee all the supported features in the App.
+        Please connect your device to a WiFi or mobile network.
+    </string>
+    <string name="user">User</string>
+
 
     <!--LOGIN FRAGMENT-->
-    <string name="loginFragmentTitle">LOGIN</string>
-    <string name="loginFragmentProfLabel">Login Professore</string>
+    <string name="usernameEmpty">Insert username</string>
+    <string name="passwordEmpty">Insert password</string>
+    <string name="usernameAndPasswordEmpty">Insert username and password</string>
+    <string name="successfulLogin">Logged in successfully</string>
+
+    <string name="loginFragmentProfLabel">Teacher Login</string>
     <string name="loginButtonLabel">Login</string>
-    <string name="loginRegistrationLabel">Do not have an account? Register</string>
     <string name="loginRegistrationButtonLabel">Signup</string>
-    <string name="usernamePlaceholder">Insert your name...</string>
-    <string name="passwordPlaceholder">Insert password...</string>
+    <string name="loginRegistrationLabel">Need an account? Signup</string>
+    <string name="usernamePlaceholder">Username</string>
+    <string name="passwordPlaceholder">Password</string>
+    <string name="noConnectionTitleLogin">Cannot Login</string>
+    <string name="noConnectionLogin">Cannot Login. Your device is disconnected</string>
     <string name="orText">Or</string>
 
-    <!--REGISTER FRAGMENT-->
+
+    <!--REGISTER FRAGMENTS-->
     <string name="nameSignupText">Name</string>
+    <string name="registrationCompleteError">Something went wrong :(</string>
+    <string name="returnBack">Go back</string>
     <string name="surnameSignupText">Surname</string>
-    <string name="birthDateSignupText">Your birth date is</string>
+    <string name="birthDateSignupText">Date of birth</string>
     <string name="usernameSignupText">Username</string>
     <string name="passwordSignupText">Password</string>
-    <string name="nextButton">Next</string>
-    <string name="registrationComplete">Registration Complete!</string>
+    <string name="nextButton">Next ➤</string>
+    <string name="registrationComplete">Signup completed!</string>
     <string name="returnLoginButton">Login</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="otherGender">Other</string>
     <string name="genderSignupText">Gender</string>
     <string name="citizenSignupText">Citizenship</string>
-    <string name="countrySignupText">Country of origin</string>
-    <string name="personalData">1. Personale data</string>
-    <string name="placeData">2. Provenance data</string>
+    <string name="countrySignupText">Nation of origin</string>
+    <string name="personalData">1. Personal data</string>
+    <string name="placeData">2. Nationality data</string>
+    <string name="typeUserSignupText">User type</string>
     <string name="cityOrganizationSignupText">City</string>
-    <string name="nameOrganizationSignupText">Organization</string>
-    <string name="organizationData">3. Organization data</string>
+    <string name="nameOrganizationSignupText">Welcoming facility</string>
+    <string name="organizationData">3. Welcoming facility data</string>
     <string name="loginData">4. Login data</string>
+    <string name="mandatoryFields">All fields are mandatory</string>
+    <string name="asylumUser">Political Asylum seeker</string>
+    <string name="internationalUser">International protection seeker</string>
+    <string name="passwordRegexOk">Password matches minimum criteria</string>
+    <string name="passwordRegexError">Password DOES NOT match minimum criteria</string>
+    <string name="passwordExplantationTitle">Password security criteria</string>
+    <string name="passwordExplanation">
+        A password is considered safe when is at least 8 characters long.
+        You must include at least one uppercase letter, one lowercase letter, a number and a special character (#\?!\@$%^&amp;*-).
+    </string>
+    <string name="ageLess18">You must be 18 or older to signup!</string>
+
 
     <!--MESSAGGES-->
-    <string name="regstrationComplete">Registration Complete!</string>
-    <string name="userAlreadyExists">A user with this username already exists</string>
-    <string name="passwordDoNotMatchRegEx">Password do not match the criterias</string>
-    <string name="insertUserFailed">User insert falied</string>
-    <string name="noUserExists">No user exists with this username</string>
+    <string name="regstrationComplete">Signup completed!</string>
+    <string name="userAlreadyExists">Username not available</string>
+    <string name="insertUserFailed">User signup failed</string>
+    <string name="noUserExists">User does not exist</string>
+    <string name="passwordDoNotMatchRegEx">Password DOES NOT match criteria</string>
     <string name="usernameAvailable">Username available</string>
-    <string name="wrongPassword">Wrong password!</string>
-    <string name="loginCompleted">Login completed!</string>
-    <string name="authFailed">Authentication failed, please login</string>
+    <string name="wrongPassword">Incorrect Password!</string>
+    <string name="loginCompleted">Signin completed!</string>
+    <string name="authFailed">Authentication failed. Try again</string>
     <string name="authSuccess">Authentication success!</string>
-    <string name="qrStoreError">Error while storing QR code in Database</string>
-    <string name="qrReadError">Error while reading QR code in Database</string>
-    <string name="qrGenerateError">Error in Qr code generation</string>
+    <string name="qrStoreError">Error during QR Code save on Database</string>
+    <string name="qrReadError">Error during QR Code fetch from Database</string>
+    <string name="qrGenerateError">Error during QR Code generation</string>
+    <string name="insertMisurationFailed">Measurement insert failed</string>
+    <string name="misurationStoredSuccessfully">Measurement saved successfully</string>
+    <string name="misurationGetSuccessfully">Measurement fetched successfully</string>
+    <string name="misurationGetFailed">Error during measurement fetching</string>
+    <string name="changeResidenceError">Error during residency change</string>
+    <string name="changeResidenzaSuccessfully">Residency changed successfully</string>
+    <string name="logoutSuccessfull">Logged out successfully</string>
+    <string name="cityError">Error during city fetching</string>
+    <string name="editPasswordFailed">Error during password change</string>
+    <string name="editPasswordSuccessfull">Password edited successfully</string>
+    <string name="patologiesGetFailed">Pathologies fetch failed</string>
+    <string name="patologiesGetSuccessfull">Pathologies fetched successfully</string>
+    <string name="insertPatologyFailed">Pathology insert failed</string>
+    <string name="insertPatologySuccessfull">Pathology saved successfully</string>
+    <string name="misurationEditSuccessfull">Measurement edited successfully</string>
+    <string name="misurationEditFailed">Measurement edit failed</string>
+    <string name="insertFarmacoSuccessfull">Medicine added successfully</string>
+    <string name="insertFarmacoFailed">Error during medicine insert</string>
+    <string name="getFarmaciSuccessfull">Medicines fetched successfully</string>
+    <string name="getFarmaciFailed">Error during medicines fetching</string>
+    <string name="deleteFarmacoSuccessfull">Medicine deleted successfully</string>
+    <string name="deleteFarmacoFailed">Medicine delete failed</string>
+    <string name="editPatologyFailed">Pathology edit failed</string>
+    <string name="editPatologySuccessfull">Pathology edited successfully</string>
+    <string name="getVideoSuccessfull">Video fetched successfully</string>
+    <string name="getVideoFailed">Video fetching failed</string>
+    <string name="getArticlesSuccessfull">Articles fetched successfully</string>
+    <string name="getArticlesFailed">Articles fetching failed</string>
+    <string name="getSpeseFailed">Expenses fetching failed</string>
+    <string name="getSpeseSuccessfull">Expenses fetched successfully</string>
+    <string name="storeSpesaFailed">Failure during expenses saving</string>
+    <string name="storeSpesaSuccessfull">Expenses saved successfully</string>
+    <string name="misurationStoredDB">Measurement successfully saved in Database</string>
 
     <!--HOME-->
     <string name="healthMenuScreen">Health</string>
@@ -54,6 +145,238 @@
     <string name="userMenuScreen">User</string>
     <string name="healthBoxMenuScreen">Health Box</string>
     <string name="settingsMenuScreen">Settings</string>
+    <string name="positionMenuScreen">Position</string>
     <string name="welcome">Welcome</string>
+    <string name="video">Video</string>
+    <string name="tips">Advices</string>
+    <string name="outgoingsManagement">Expenses Management</string>
+    <string name="usefulPhoneNumbers">Useful numbers</string>
+    <string name="emergencyNumber">National Emergency number</string>
+    <string name="emergencyNumberCommission">Political Asylum rights committee</string>
+
+
+    <!--MedicalParameters-->
+    <string name="healthHistory">Health History</string>
+    <string name="myPathologies">My Pathologies</string>
+    <string name="temperatureHealthHistory">Body temperature</string>
+    <string name="bloodPressureHealthHistory">Blood pressure</string>
+    <string name="weightHealthHistory">Body weight</string>
+    <string name="bpmHealthHistory">Heartbeat</string>
+    <string name="evalutationHealthHistoryLabel">Evaluation:</string>
+    <string name="tremblingHealthHistory">Trembling</string>
+    <string name="glucoseHealthHistory">Glucose</string>
+    <string name="lastRecordHealtHistory">Last measurement</string>
+    <string name="dateLastRecordHealthHistoryLabel">Date:</string>
+    <string name="valueLastRecordHealthHistoryLabel">Registered value:</string>
+    <string name="timeLastRecordHealthHistoryLabel">Time:</string>
+    <string name="evalutationLastRecordHealthHistoryLabel">Evaluation:</string>
+    <string name="doctorNotesLastRecordHealthHistoryLabel">Doctor notes</string>
+    <string name="diabete">Diabetes</string>
+    <string name="dermatitis">Dermatitis</string>
+    <string name="brochitis">Bronchitis</string>
+    <string name="lastVisitLabel">Last checkup:</string>
+    <string name="titleShareDialogPrivacy">Choose what to share</string>
+    <string name="dateLastRecordHealthHistoryShare">Date</string>
+    <string name="timeLastRecordHealthHistoryShare">Time</string>
+    <string name="valueLastRecordHealthHistoryShare">Registered value</string>
+    <string name="evalutationHealthHistoryShare">Evaluation</string>
+    <string name="doctorNotesLastRecordHealthHistoryShare">Doctor notes</string>
+    <string name="dateLastVisitMyPathologiesLabel">Date: </string>
+    <string name="timeLastVisitMyPathologiesLabel">Time: </string>
+    <string name="priorityLastVisitMyPathologiesLabel">Priority: </string>
+    <string name="doctorNotesLastVisitMyPahologiesLabel">Doctor notes</string>
+    <string name="lastVisitsMyPathologiesLabel">Previous checkups</string>
+    <string name="dateLastVisitMyPathologiesShare">Date</string>
+    <string name="timeLastVisitMyPathologiesShare">Time</string>
+    <string name="priorityLastVisitMyPathologiesShare">Priority</string>
+    <string name="doctorNotesLastVisitMyPathologiesShare">Doctor notes</string>
+    <string name="recordHealthHistoryOld">Measurement data</string>
+    <string name="typeHealthHistory">Measurement category</string>
+    <string name="notRegistered">Unregistered parameter</string>
+    <string name="evalutationHealthHistoryValueGood">Good 🟢</string>
+    <string name="evalutationHealthHistoryValueFairlyGood">Not bad 🟠</string>
+    <string name="evalutationHealthHistoryValueNotGood">Bad 🔴</string>
+    <string name="chooseEvalutationHealthHistory">Select evaluation</string>
+    <string name="editDoctorNotes">Insert notes</string>
+    <string name="emptyEditDoctorNotesTitle">Empty text field</string>
+    <string name="emptyEditDoctorNotes">Fill in the text field to save the notes</string>
+    <string name="emptyEditEvalutationTitle">No evaluation selected</string>
+    <string name="emptyEditEvalutation">Select an element to save the evaluation</string>
+    <string name="drugsMyPathologies">Medicines</string>
+    <string name="futureCalendarErrorTitle">Invalid date</string>
+    <string name="futureCalendarError">Selected date in invalid. It is higher than the current date.</string>
+    <string name="choosePriorityMyPathologies">Select priority</string>
+    <string name="priorityMyPathologiesValueLow">Low 🟢</string>
+    <string name="priorityMyPathologiesValueMedium">Medium 🟠</string>
+    <string name="priorityMyPathologiesValueHigh">High 🔴</string>
+    <string name="emptyEditPriorityTitle">Priority missing</string>
+    <string name="emptyEditPriority">Select an element to save the priority</string>
+    <string name="deleteMessageTitle">Are you sure you want to delete?</string>
+    <string name="deleteMessage">This action cannot be undone</string>
+    <string name="priorityLabel">Priority</string>
+    <string name="emptyDoctorNotes">
+        No notes to show.
+        Please contact your doctor for any further information.
+    </string>
+    <string name="emptyPriority">PRIORITY NOT SELECTED</string>
+    <string name="emptyDate">DATE NOT SELECTED</string>
+    <string name="emptyTime">TIME NOT SELECTED</string>
+    <string name="emptyMyPathologies">No pathologies currently registered</string>
+    <string name="emptyHealthHistory">No previous measurements currently available</string>
+    <string name="insertArticleEvalutationFailed">Error during article evaluation submit</string>
+    <string name="insertArticleEvalutationSuccessfull">Evaluation submitted successfully</string>
+    <string name="getArticlesValuationFailed">Error during evaluation fetching</string>
+    <string name="getArticleValuationSuccessfull">Evaluation fetched successfully</string>
+    <string name="getArticlesValuationNoValuation">No evaluation available</string>
+    <string name="getLatLongFailed">An error occured during latitude and longitude fetching</string>
+    <string name="getLatLongSuccessfull">Latitude and longitude fetched successfully</string>
+    <string name="emptyDrugs">No medicines available</string>
+
+
+    <!--SETTINGS-->
+    <string name="settingsUpperCase">SETTINGS</string>
+    <string name="editProfileTitle">Edit profile</string>
+    <string name="evalutationAppTitle">Evaluate App</string>
+    <string name="exitAccountTitle">Logout</string>
+    <string name="allApplyCHanged">Changes successfully saved</string>
+
+
+    <!--HEALTHBOX-->
+    <string name="bluetoothNotSupportedTitle">You cannot use this feature!</string>
+    <string name="bluetoothNotSupported">
+        Your device does not support Bluetooth, therefore you cannot use the \"Health Box\" feature+
+        We invite you to use the other available features of the App.
+    </string>
+    <string name="bluetoothNotEnabledTitle">Bluetooth not enabled</string>
+    <string name="bluetoothNotEnabled">
+        To use this feature you must enable Bluetooth on your device!
+    </string>
+    <string name="activateBluetooth">Enable Bluetooth</string>
+    <string name="searching">Searching...</string>
+    <string name="medicalDataWaiting">Waiting for data from Health Box</string>
+    <string name="pendingMisurationRequestTitle">You are not connected to the Internet!</string>
+    <string name="pendingMisurationRequest">
+        You are not currently connected to a network.
+        You can still execute one (and only one) measurement that will be saved locally on your device.
+        As soon as you will connect to a network it will be stored in the Database.
+    </string>
+    <string name="pendingMisurationRequestTitleDuplicati">You are not connected to the Internet!</string>
+    <string name="pendingMisurationRequestDuplicati">
+        Your are not currentlz connected to a network.
+        You can still execute one measurement that will override the previous one saved locally on your device.
+    </string>
+    <string name="negativeButtonPendingMisurationRequest">Scrap</string>
+    <string name="positiveButtonPendingMisurationRequest">Offline measurement</string>
+
+
+    <!--USER PROFILE-->
+    <string name="profileTitle">User profile</string>
+    <string name="profileUserName">Name</string>
+    <string name="profileUserSurname">Surname</string>
+    <string name="profileUserGender">Gender</string>
+    <string name="profileUserBirthDate">Date of birth</string>
+    <string name="profileUserCitizen">Citizenship</string>
+    <string name="profileUserCountry">Nation of origin</string>
+    <string name="profileUserResidence">Residency</string>
+
+
+    <!--BLUETOOTH-->
+    <string name="bluetoothPermissionTitle">Why do we need Bluetooth?</string>
+    <string name="bluetoothInformativa">
+        Bluetooth permissions are necessary to connect this App with the Health Box and receive measurement data.
+    </string>
+    <string name="bluetoothGivePermissionMessage">Grant permission and enable Bluetooth to continue</string>
+    <string name="bluetoothSearchFinished">Health Box search ended</string>
+    <string name="bluetoothSearchStarted">Health Box search started</string>
+    <string name="bluetoothConnectionFailed">Connection to Health Box failed</string>
+    <string name="bluetoothConnectionEnded">Connection to Health Box ended</string>
+    <string name="bluetoothDataWaiting">Waiting for measurements...</string>
+    <string name="bluetoothConnectionStarted">Connection...</string>
+    <string name="misurationSuccessfull">Measurement successfully executed</string>
+    <string name="misurationFailed">Measurement failed</string>
+
+    <!--POSIZIONE-->
+    <string name="positionPermissionTitle">Whz do we need Position?</string>
+    <string name="positionInformativa">
+        Position permissions are necessary to understand in which city you are located and help you easily navigate around it.
+    </string>
+    <string name="positionGivePermissionMessage">Grant permission and enable Position to continue</string>
+    <string name="myCity">My city</string>
+    <string name="myRecidency">My residency</string>
+    <string name="whereILive">Where I live</string>
+    <string name="rulesAndMore">Guidelines</string>
+    <string name="housingRules">Housing guidelines.pdf</string>
+    <string name="docRules">Documents guidelines.pdf</string>
+    <string name="map_hospital">hospital</string>
+    <string name="map_police">police</string>
+    <string name="map_pharmacy">pharmacy</string>
+    <string name="map_townhall">town+hall</string>
+
+    <!-- OutgoingsFragment-->
+    <string name="categorySelectionOutgoings">Category</string>
+    <string name="addOutgoings">Add new expenses</string>
+    <string name="valueOutgoings">Amount</string>
+    <string name="last7daysOutgoings">Last 7 days</string>
+    <string name="valueFood">Food expenses:</string>
+    <string name="valueDrugs">Medicines expenses:</string>
+    <string name="valueOther">Miscellaneous expenses:</string>
+    <string name="last30daysOutgoings">Last 30 days</string>
+    <string name="valueOutgoindTooHightTitle">Amount too high!</string>
+    <string name="valueOutgoindTooHight">You must insert an amount lower than: </string>
+    <string name="valueOutgoindTooLowTitle">Amount too low!</string>
+    <string name="valueOutgoindTooLow">You must insert an amount higher than: </string>
+
+
+    <!-- AddDrugsDialogFragment-->
+    <string name="addDrugTitle">Add new medicine</string>
+    <string name="nameAddDrugPlaceholder">Medicine name</string>
+    <string name="noteAddDrugPlaceholder">Notes</string>
+    <string name="emptyNameAddDrugTitle">Medicine name missing</string>
+    <string name="emptyNameAddDrug">To insert a new medicine you must insert its name</string>
+    <string name="emptyNoteDrug">NOTES MISSING</string>
+
+    <!-- DetailTipsFragment-->
+    <string name="evalutationContent">Rate content</string>
+
+    <!-- EvaluateTipsDialogFragment-->
+    <string name="successfullySendEvalutation">Rating successfully submitted</string>
+
+
+    <!-- FIRSTACTIVITY-->
+    <string name="accessUser">Signin as User</string>
+    <string name="accessDoctor">Signin as Doctor</string>
+
+    <!-- DOCTORACTIVITY-->
+    <string name="doctor">Doctor</string>
+    <string name="noDoctorExists">Doctor does not exist</string>
+
+    <!-- New Pathology Fragment-->
+    <string name="newPathologyTitle">Pathology data</string>
+    <string name="namePathologyPlaceholder">Pathology name</string>
+    <string name="dateNewPathology">Last checkup date</string>
+    <string name="timeNewPathology">Last checkup time</string>
+    <string name="priorityNewPathologyLabel">Priority</string>
+    <string name="doctorNotesNewPathologyLabel">Notes</string>
+    <string name="addNewPathology">Add new pathology</string>
+    <string name="emptyNameNewPathologyTitle">Pathology name missing!</string>
+    <string name="emptyNameNewPathology">To add a new pathology you must insert its name.</string>
+
+
+    <!-- Home Doctor Fragment-->
+    <string name="allUserDoctorTitle">Current patients</string>
+    <string name="cardUserDoctorOrganizationLabel">Structure: </string>
+
+    <!-- Detail User Doctor Fragment-->
+    <string name="pathologies">Pathologies</string>
+
+    <!-- HOMEACTIVITY-->
+    <string name="bannerOnePendingMisuration">You have a pending measurement, please connect to a network!</string>
+    <string name="onePendingRequestInfoTitle">You have a pending measurement!</string>
+    <string name="onePendingRequestInfo">
+        You have an offline pending measurement, please connect to a network as soon as possible to send the data.
+    </string>
+
+    <!-- AllTipsFragment-->
+    <string name="allTips">All the Articles</string>
 
 </resources>
