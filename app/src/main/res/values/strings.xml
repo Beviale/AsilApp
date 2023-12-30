@@ -1,7 +1,7 @@
 <resources>
 
     <!--GENERAL-->
-    <string name="app_name">AsilApp</string>
+    <string name="app_name" translatable="false">AsilApp</string>
     <string name="serverErrorTitle">Errore server</string>
     <string name="serverError">Si prega di riprovare più tardi</string>
     <string name="nullValue">Non specificato</string>
@@ -14,7 +14,7 @@
     <string name="edit">Modifica</string>
     <string name="exit">Esci</string>
     <string name="iAmLoading">Sto caricando</string>
-    <string name="ok">Ok</string>
+    <string name="ok" translatable="false">Ok</string>
     <string name="add">Aggiungi</string>
     <string name="food">Cibo</string>
     <string name="drugs">Farmaci</string>
@@ -38,7 +38,7 @@
 
 
     <!--LOGIN FRAGMENT-->
-    <string name="loginFragmentTitle">Login</string>
+    <string name="loginFragmentTitle" translatable="false">Login</string>
     <string name="usernameEmpty">Inserisci il nome utente</string>
     <string name="passwordEmpty">Inserisci la password</string>
     <string name="usernameAndPasswordEmpty">Inserisci il nome utente e la password</string>
@@ -151,7 +151,7 @@
     <string name="outgoingsManagement">Gestione spesa</string>
     <string name="usefulPhoneNumbers">Numeri utili</string>
     <string name="emergencyNumber">Numero di emergenza nazionale</string>
-    <string name="emergencyNumberUnhcr">UNHCR (The Un Refugee Agency)</string>
+    <string name="emergencyNumberUnhcr" translatable="false">UNHCR (The Un Refugee Agency)</string>
     <string name="emergencyNumberCommission">Commissione per il diritto di asilo</string>
 
 
@@ -190,10 +190,10 @@
     <string name="timeLastVisitMyPathologiesShare">Ora</string>
     <string name="priorityLastVisitMyPathologiesShare">Priorità</string>
     <string name="doctorNotesLastVisitMyPathologiesShare">Note del medico</string>
-    <string name="idLastVisitMyPathologiesLabel">ID:</string>
-    <string name="idLastRecordHealthHistoryLabel">ID:</string>
-    <string name="idLastRecordHealthHistoryShare">ID</string>
-    <string name="idLastVisitMyPathologiesShare">ID</string>
+    <string name="idLastVisitMyPathologiesLabel" translatable="false">ID:</string>
+    <string name="idLastRecordHealthHistoryLabel" translatable="false">ID:</string>
+    <string name="idLastRecordHealthHistoryShare" translatable="false">ID</string>
+    <string name="idLastVisitMyPathologiesShare" translatable="false">ID</string>
     <string name="recordHealthHistoryOld">Dati rilevazione</string>
     <string name="typeHealthHistory">Tipo di registrazione</string>
     <string name="notRegistered">Parametro non registrato</string>
@@ -267,16 +267,15 @@
     <string name="profileUserCitizen">Cittadinanza</string>
     <string name="profileUserCountry">Paese di Origine</string>
     <string name="profileUserResidence">Residenza</string>
-    <string name="profileEmptyLine">-</string>
+    <string name="profileEmptyLine" translatable="false">-</string>
 
     <!-- Unity of Measure-->
-    <string name="unityTemperature">C</string>
-    <string name="unityBloodPressure">mmHg</string>
-    <string name="unityWeight">KG</string>
-    <string name="unityBPM">BPM</string>
-    <string name="unityTrembling">Hz</string>
-    <string name="unityGlucose">mg/dL</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unityTemperature" translatable="false">C</string>
+    <string name="unityBloodPressure" translatable="false">mmHg</string>
+    <string name="unityWeight" translatable="false">KG</string>
+    <string name="unityBPM" translatable="false">BPM</string>
+    <string name="unityTrembling" translatable="false">Hz</string>
+    <string name="unityGlucose" translatable="false">mg/dL</string>
 
 
     <!--BLUETOOTH-->
@@ -289,7 +288,7 @@
     <string name="bluetoothConnectionEnded">Connessione Alla Box Terminata</string>
     <string name="bluetoothDataWaiting">In Attesa Delle Misurazioni...</string>
     <string name="bluetoothConnectionStarted">Connessione...</string>
-    <string name="bluetoothBoxName">AsilApp Box</string>
+    <string name="bluetoothBoxName" translatable="false">AsilApp Box</string>
     <string name="misurationSuccessfull">Misurazione Avvenuta Con Successo</string>
     <string name="misurationFailed">Misurazione Fallita</string>
 
