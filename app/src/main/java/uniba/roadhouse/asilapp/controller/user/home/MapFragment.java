@@ -33,6 +33,7 @@ public class MapFragment extends Fragment {
     private LocationManager locationManager;
     private WebView mapView;
 
+    /** Launcher per la richiesta dei permessi per la Posizion */
     private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
             result -> {
@@ -46,7 +47,7 @@ public class MapFragment extends Fragment {
             }
     );
 
-    //launcher per la richiesta di intent perl'attivazione della posizione
+    /** Launcher per la richiesta di intent perl'attivazione della posizione */
     private ActivityResultLauncher<Intent> positionEnableResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             (ActivityResultCallback<ActivityResult>) result -> {
@@ -114,6 +115,7 @@ public class MapFragment extends Fragment {
         mapView.onResume();
     }
 
+    /** Metodo per la richiesta dei permessi per la Posizione e gestione della richiesta */
     private void requestPositionPermissionAndEnabling() {
         //se la posizione non è supportata torno alla home
         if (locationManager == null) { returnHome(); }
@@ -133,6 +135,7 @@ public class MapFragment extends Fragment {
         }
     }
 
+    /** Metodo per la verifica che il GPS (posizione) sia attiva */
     private void checkGPSEnabled() {
         //verifico che ho la posizione attiva altrimenti richiedo l'attivazione
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -193,6 +196,11 @@ public class MapFragment extends Fragment {
         this.mapSearchPOIAroundCoordinatesQuery(getResources().getString(R.string.map_townhall));
     }
 
+    /**
+     * Metodo che permette di caricare all'interno della mappa un determinato POI (Point Of Interest).
+     * Il POI dipende dall'icona premuta dall'utente durante l'interazione.
+     * @param poi il punto di interesse desiderato
+     */
     private void mapSearchPOIAroundCoordinatesQuery(String poi){
 
         String str = "https://www.google.com/maps/search/" + poi + String.format("/@%s,%s",
@@ -200,7 +208,6 @@ public class MapFragment extends Fragment {
                 PositionFragment.Instance.getResidenzaUtenteAttuale().getLongitudine().toString() + ",11z");
 
         mapView.loadUrl(str);
-        Log.d("MAP", "HOSPITAL LOADED");
 
     }
 

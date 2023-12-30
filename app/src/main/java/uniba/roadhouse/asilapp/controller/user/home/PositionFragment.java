@@ -171,18 +171,18 @@ public class PositionFragment extends Fragment {
      * Ottengo l'utente dai dati di login effettuati in modo da prendere l'utente attualmente autenticato.
      */
     private void fetchUtente() {
-        try{
-            // prendo il riferimento all'utente attuale
-            CompletableFuture<Map<String, Object>> utenteFuture = Dao.getUserData(UserLogin.getUsername(), getActivity());
-            utenteFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+        // prendo il riferimento all'utente attuale
+        CompletableFuture<Map<String, Object>> utenteFuture = Dao.getUserData(UserLogin.getUsername(), getActivity());
+        utenteFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+            try{
                 this.utenteAttuale = result;
                 fetchResidenza(utenteAttuale.get("nomeResidenza").toString());
-            }));
-            Log.d("FETCH", "FETCHING UTENTE");
-        }catch(Exception e){
-            Activity activity = new HomeActivity();
-            activity.onBackPressed();
-        }
+            }catch(Exception e){
+                Activity activity = new HomeActivity();
+                activity.onBackPressed();
+            }
+        }));
+        Log.d("FETCH", "FETCHING UTENTE");
     }
 
     /**
@@ -191,16 +191,16 @@ public class PositionFragment extends Fragment {
      * @param nomeResidenza
      */
     private void fetchResidenza(final String nomeResidenza){
-        try{
-            // prendo il riferimento alla città di residenza
-            CompletableFuture<String> cittaFuture = Dao.getCittaResidenza(nomeResidenza, getActivity());
-            cittaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+        // prendo il riferimento alla città di residenza
+        CompletableFuture<String> cittaFuture = Dao.getCittaResidenza(nomeResidenza, getActivity());
+        cittaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+            try{
                 fetchDatiResidenza(result, utenteAttuale.get("nomeResidenza").toString());
-            }));
-        }catch(Exception e){
-            Activity activity = new HomeActivity();
-            activity.onBackPressed();
-        }
+            }catch(Exception e){
+                Activity activity = new HomeActivity();
+                activity.onBackPressed();
+            }
+        }));
     }
 
     /**
@@ -210,10 +210,10 @@ public class PositionFragment extends Fragment {
      * @param nomeResidenza
      */
     private void fetchDatiResidenza(final String cittaResidenza, final String nomeResidenza){
-        try{
-            // prendo le coordinate della città di residenza
-            CompletableFuture<Map<String, ?>> datiResidenzaFuture = Dao.getDatiResidenza(nomeResidenza, getActivity());
-            datiResidenzaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+        // prendo le coordinate della città di residenza
+        CompletableFuture<Map<String, ?>> datiResidenzaFuture = Dao.getDatiResidenza(nomeResidenza, getActivity());
+        datiResidenzaFuture.thenAccept(result -> getActivity().runOnUiThread(() -> {
+            try{
                 progressBar.setVisibility(View.GONE);
                 Map<String, ?> datiResidenza = result;
 
@@ -234,11 +234,11 @@ public class PositionFragment extends Fragment {
 
                 this.residenzaUtenteAttuale = new ResidenzaUtenteAttuale(cittaResidenza, nomeResidenza, descrizioneResidenza, (Double) datiResidenza.get("latitudine"), (Double) datiResidenza.get("longitudine"));
                 openMapFragment();
-            }));
-        }catch(Exception e){
-            Activity activity = new HomeActivity();
-            activity.onBackPressed();
-        }
+            }catch(Exception e){
+                Activity activity = new HomeActivity();
+                activity.onBackPressed();
+            }
+        }));
     }
 
     /**
