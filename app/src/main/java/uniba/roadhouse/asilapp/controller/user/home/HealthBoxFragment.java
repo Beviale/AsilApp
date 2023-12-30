@@ -389,8 +389,7 @@ public class HealthBoxFragment extends Fragment {
 
     private void endBluetoothConnection(){
         //se la connessione con la box è terminata elimino la BluetoothSocket
-        Log.d("BLUETOOTH_", "CONNECTION_ENDED");
-        btConnThread.cancel();
+        if(btConnThread!=null)btConnThread.cancel();
         //e avvio l'animazione di termina della ricerca
         stopPulse();
         buttonOpenBox.setText(getResources().getString(R.string.open));
