@@ -471,6 +471,7 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                 // Se la data inserita è posteriore a quella attuale, mostro un errore con una finestra di dialogo.
                 if (selectedDate.after(currentDate)) {
                     Utility.showAlertDialog(getActivity(), getString(R.string.futureCalendarErrorTitle), getString(R.string.futureCalendarError));
+                    return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
