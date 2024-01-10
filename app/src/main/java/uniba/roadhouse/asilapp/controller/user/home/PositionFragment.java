@@ -87,7 +87,7 @@ public class PositionFragment extends Fragment {
     public void onStart() {
         super.onStart();
         setupTabListener();
-        if(this.Instance == null){Instance = this;}
+        Instance = this;
     }
 
     @Override
@@ -96,6 +96,10 @@ public class PositionFragment extends Fragment {
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
 
+        // Fetch dei dati utente
+        progressBar.setVisibility(View.VISIBLE);
+        fetchUtente();
+
         // Torno all'ultima schermata aperta dall'utente (default schermata mappa)
         if(openBackMyResidency) {
             openBackMyResidency=false;
@@ -103,8 +107,6 @@ public class PositionFragment extends Fragment {
             TabLayout.Tab tab = tabLayoutPosition.getTabAt(1);
             tab.select();
         } else {
-            progressBar.setVisibility(View.VISIBLE);
-            fetchUtente();
             TabLayout.Tab tab = tabLayoutPosition.getTabAt(0);
             tab.select();
         }
