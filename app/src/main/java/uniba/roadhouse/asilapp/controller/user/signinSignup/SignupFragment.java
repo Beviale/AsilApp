@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -31,6 +32,10 @@ import uniba.roadhouse.asilapp.model.dao.UserSignup;
  * */
 public class SignupFragment extends Fragment {
     /**
+     * Layout dell'intero fragment.
+     */
+    LinearLayout layoutFragmentSignup;
+    /**
      * Button che permette di passare da un fragment di compilazione di registrazione a un altro.
      */
     Button nextButton;
@@ -38,7 +43,6 @@ public class SignupFragment extends Fragment {
      * ProgressBar da mostrare mentre l'utente sta effettuando la registrazione con tutti i campi compilati.
      */
     ProgressBar progressBar;
-
     /**
      * Lista di tutti i fragment di compilazione di registrazione.
      */
@@ -160,15 +164,15 @@ public class SignupFragment extends Fragment {
             case "class uniba.roadhouse.asilapp.controller.user.signinSignup.SignupUsernamePasswordFragment":
                 TextInputEditText usernameInputRegister = getActivity().findViewById(R.id.usernameInputSignup);
                 TextInputEditText passwordInputRegister = getActivity().findViewById(R.id.passwordInputSignup);
-
-
                 UserSignup.setUsername(usernameInputRegister.getText().toString());
                 UserSignup.setPassword(passwordInputRegister.getText().toString());
                 progressBar.setVisibility(View.VISIBLE);
-                CompletableFuture<String> future = Dao.registerUser(UserSignup.getUsername(), UserSignup.getPassword(), UserSignup.getName(), UserSignup.getUsername(), UserSignup.getCitizen(), UserSignup.getGender(), UserSignup.getCountry(), UserSignup.getNameOrganization(), UserSignup.getTypeUser(), UserSignup.getBirthDate(), getActivity());
+                layoutFragmentSignup.setAlpha((float)0.5);
+                CompletableFuture<String> future = Dao.registerUser(UserSignup.getUsername(), UserSignup.getPassword(), UserSignup.getName(), UserSignup.getSurname(), UserSignup.getCitizen(), UserSignup.getGender(), UserSignup.getCountry(), UserSignup.getNameOrganization(), UserSignup.getTypeUser(), UserSignup.getBirthDate(), getActivity());
                 future.thenAccept(result -> {
                     getActivity().runOnUiThread(() -> {
                         progressBar.setVisibility(View.GONE);
+                        layoutFragmentSignup.setAlpha((float)1.0);
                         if(result.equals(getString(R.string.registrationComplete)))
                         {
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -186,6 +190,5 @@ public class SignupFragment extends Fragment {
                 });
                 break;
         }
-
     }
 }
