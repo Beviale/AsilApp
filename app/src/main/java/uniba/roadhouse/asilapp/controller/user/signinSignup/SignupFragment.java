@@ -84,6 +84,8 @@ public class SignupFragment extends Fragment {
         nextButton=view.findViewById(R.id.nextButtonSignup);
         // Riferimento alla progressBar che viene visualizzata durante l'ultimo step di registrazione.
         progressBar = getActivity().findViewById(R.id.progressBarSigninSignupActivity);
+        // Riferimento al layout dell'intero fragment
+        layoutFragmentSignup = view.findViewById(R.id.layoutFragmentSignup);
 
 
         // Si passa al primo fragment di compilazione di registrazione, ovvero quello relativo all'inserimento dei dati personali (nome, cognome, etc..)..
