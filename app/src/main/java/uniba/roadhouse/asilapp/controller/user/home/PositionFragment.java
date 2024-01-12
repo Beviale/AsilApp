@@ -58,7 +58,6 @@ public class PositionFragment extends Fragment {
     private ProgressBar progressBar;
     /** Istanza corrente del PositionFragment usata per accedere all'utente da tutte le sotto-schermate. */
     public static PositionFragment Instance;
-    private static Boolean openBackMyResidency = false;
 
     public PositionFragment() {
         // Required empty public constructor
@@ -99,18 +98,6 @@ public class PositionFragment extends Fragment {
         // Fetch dei dati utente
         progressBar.setVisibility(View.VISIBLE);
         fetchUtente();
-
-        // Torno all'ultima schermata aperta dall'utente (default schermata mappa)
-        if(openBackMyResidency) {
-            openBackMyResidency=false;
-            openResidencyFragment();
-            TabLayout.Tab tab = tabLayoutPosition.getTabAt(1);
-            tab.select();
-        } else {
-            TabLayout.Tab tab = tabLayoutPosition.getTabAt(0);
-            tab.select();
-        }
-
         super.onResume();
     }
 
@@ -124,7 +111,6 @@ public class PositionFragment extends Fragment {
      * Metodo per l'apertura del fragment relativo la mappa interattiva.
      */
     private void openMapFragment() {
-        openBackMyResidency = false;
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.positionTabFragmentContainer, MapFragment.class, null);
@@ -135,7 +121,6 @@ public class PositionFragment extends Fragment {
      * Metodo per l'apertura del fragment relativo la residenza attuale dell'utente autenticato.
      */
     private void openResidencyFragment(){
-        openBackMyResidency = true;
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.positionTabFragmentContainer, MyRecidencyFragment.class, null);
