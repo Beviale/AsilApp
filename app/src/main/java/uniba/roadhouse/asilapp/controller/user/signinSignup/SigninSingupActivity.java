@@ -52,7 +52,7 @@ public class SigninSingupActivity extends AppCompatActivity {
             Utility.showAlertDialog(SigninSingupActivity.this, getString(R.string.noConnectionTitle), getString(R.string.noConnection));
             noConnectionIcon.setVisibility(View.VISIBLE);
         }
-
+        openSigninFragment();
     }
 
 
@@ -68,14 +68,6 @@ public class SigninSingupActivity extends AppCompatActivity {
             }
         });
         toolBarIconSigninSisngupActivity.setOnClickListener(v->openSigninFragment());
-
-
-
-        // Se l'utente non risulta loggato, apro il fragment di login.
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.signinFragmentView, SigninFragment.class, null);
-        fragmentTransaction.commit();
     }
 
     /**
@@ -85,17 +77,6 @@ public class SigninSingupActivity extends AppCompatActivity {
     protected void onDestroy() {
         unregisterNetworkCallback();
         super.onDestroy();
-    }
-
-    /**
-     * Sostituisce il fragment di login con quello di registrazione.
-     */
-    public void callRegisterFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.replace(R.id.signinFragmentView, SignupFragment.class, null);
-        fragmentTransaction.commit();
     }
 
 

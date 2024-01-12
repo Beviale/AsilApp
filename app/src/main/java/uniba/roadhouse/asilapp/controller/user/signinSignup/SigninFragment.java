@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,7 +132,7 @@ public class SigninFragment extends Fragment {
         super.onStart();
 
         //------LISTENER----------------------
-        registerLabel.setOnClickListener(v->callRegisterFragment());
+        registerLabel.setOnClickListener(v-> openSignupFragment());
         buttonLogin.setOnClickListener(v->login());
         loginProfessore.setOnClickListener(v->loginDirettoProfessore());
     }
@@ -212,14 +214,17 @@ public class SigninFragment extends Fragment {
      * Se la connessione è assente, mostra un dialog.
      * Se la connessione è presente, apre il fragment di registrazione.
      */
-    private void callRegisterFragment(){
+    private void openSignupFragment(){
         if(!Utility.isConnectedToInternet(getActivity())) {
             Utility.showAlertDialog(getActivity(), getString(R.string.noConnectionTitle), getString(R.string.noConnection));
         }
         else
         {
-            //prendo l'activity parent e richiamo il metodo per sostituire il fragment di login con quello di registrazione
-            ((SigninSingupActivity) getActivity()).callRegisterFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.replace(R.id.signinFragmentView, SignupFragment.class, null);
+            fragmentTransaction.commit();
         }
     }
 

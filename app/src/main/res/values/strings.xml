@@ -92,7 +92,7 @@
 
     <!--MESSAGGES-->
     <string name="regstrationComplete">Registrazione Completata!</string>
-    <string name="userAlreadyExists">Username non dispinibile</string>
+    <string name="userAlreadyExists">Username non disponibile</string>
     <string name="insertUserFailed">Inserimento dell\'utente fallito</string>
     <string name="noUserExists">Non esiste nessun utente con questo username</string>
     <string name="passwordDoNotMatchRegEx">Password non rispetta i criteri</string>
