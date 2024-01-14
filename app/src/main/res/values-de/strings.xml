@@ -192,7 +192,7 @@
     <string name="doctorNotesLastVisitMyPathologiesShare">Arztnotizen</string>
     <string name="recordHealthHistoryOld">Messdaten</string>
     <string name="typeHealthHistory">Messkategorie</string>
-    <string name="notRegistered">Nicht registrierter Parameter</string>
+    <string name="notRegistered">NICHT REGISTRIERTER PARAMETER</string>
     <string name="evalutationHealthHistoryValueGood">Gut 🟢</string>
     <string name="evalutationHealthHistoryValueFairlyGood">Nicht schlecht 🟠</string>
     <string name="evalutationHealthHistoryValueNotGood">Schlecht 🔴</string>

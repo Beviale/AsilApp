@@ -196,7 +196,7 @@
     <string name="idLastVisitMyPathologiesShare" translatable="false">ID</string>
     <string name="recordHealthHistoryOld">Dati rilevazione</string>
     <string name="typeHealthHistory">Tipo di registrazione</string>
-    <string name="notRegistered">Parametro non registrato</string>
+    <string name="notRegistered">PARAMETRO NON REGISTRATO</string>
     <string name="evalutationHealthHistoryValueGood">Buono 🟢</string>
     <string name="evalutationHealthHistoryValueFairlyGood">Discreto 🟠</string>
     <string name="evalutationHealthHistoryValueNotGood">Cattivo 🔴</string>

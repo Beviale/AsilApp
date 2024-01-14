@@ -343,7 +343,6 @@ public class HealthHistoryFragment extends Fragment {
         future.thenAccept(result -> {
             getActivity().runOnUiThread(() -> {
                 try{
-
                     homeActivityProgressBar.setVisibility(View.GONE);
                     swipereFreshLayout.setAlpha((float)1);
                     //Disattivo la temperatura
