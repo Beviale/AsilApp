@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
+import uniba.roadhouse.asilapp.controller.user.home.AllTipsFragment;
+import uniba.roadhouse.asilapp.controller.user.home.OutgoingsFragment;
 import uniba.roadhouse.asilapp.model.dao.DoctorLogin;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -65,6 +68,7 @@ public class HomeDoctorFragment extends Fragment {
     /**
      * Per lo "swipe-to-refresh" dell'intero fragment.
      */
+    ImageButton QRButton;
     SwipeRefreshLayout swipereFreshLayoutHomeDoctor;
 
 
@@ -99,6 +103,7 @@ public class HomeDoctorFragment extends Fragment {
         textToolbarDoctor.setText(getString(R.string.homeMenuScreen));
         progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         layoutCardUserDoctor = view.findViewById(R.id.layoutCardUserDoctor);
+        QRButton = view.findViewById(R.id.QRSearchButton);
         swipereFreshLayoutHomeDoctor = view.findViewById(R.id.swipereFreshLayoutHomeDoctor);
         homeLayout = view.findViewById(R.id.homeLayout);
         getData();
@@ -121,6 +126,16 @@ public class HomeDoctorFragment extends Fragment {
 
     @Override
     public void onResume() {
+        QRButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.doctorFragmentView, QRCameraFragment.class, null);
+                fragmentTransaction.addToBackStack("HomeDoct");
+                fragmentTransaction.commit();
+            }
+        });
         toolbarDoctorActivity.getMenu().clear();
         toolbarDoctorActivity.setNavigationIcon(null);
         toolbarDoctorActivity.inflateMenu(R.menu.settings_menu);
