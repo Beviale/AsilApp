@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.controller.user.home;
 
+import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Bundle;
 
@@ -40,10 +41,15 @@ public class MyRecidencyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Imposto il test a seconda della residenza attuale
-        ((TextView) getView().findViewById(R.id.nome_residenza)).setText(PositionFragment.Instance.getResidenzaUtenteAttuale().getNomeResidenza().toUpperCase());
-        ((EditText) getView().findViewById(R.id.residencyDescription)).setText(PositionFragment.Instance.getResidenzaUtenteAttuale().getDescrizioneResidenza());
-
+        try{
+            // Imposto il test a seconda della residenza attuale
+            ((TextView) getView().findViewById(R.id.nome_residenza)).setText(PositionFragment.Instance.getResidenzaUtenteAttuale().getNomeResidenza().toUpperCase());
+            ((EditText) getView().findViewById(R.id.residencyDescription)).setText(PositionFragment.Instance.getResidenzaUtenteAttuale().getDescrizioneResidenza());
+        }catch (Exception e)
+        {
+            Activity activity = new HomeActivity();
+            activity.onBackPressed();
+        }
         // Imposto stile e listener per i download
         ((TextView)getView().findViewById(R.id.download_servizi_abitativi)).setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         ((TextView)getView().findViewById(R.id.download_documentazione)).setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);

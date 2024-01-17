@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -121,10 +122,20 @@ public class PositionFragment extends Fragment {
      * Metodo per l'apertura del fragment relativo la residenza attuale dell'utente autenticato.
      */
     private void openResidencyFragment(){
-        FragmentManager fragmentManager = getChildFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.positionTabFragmentContainer, MyRecidencyFragment.class, null);
-        fragmentTransaction.commit();
+        if(getResidenzaUtenteAttuale()!=null)
+        {
+            FragmentManager fragmentManager = getChildFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.positionTabFragmentContainer, MyRecidencyFragment.class, null);
+            fragmentTransaction.commit();
+        }
+        else
+        {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.homeContainerView, PositionFragment.class, null);
+            fragmentTransaction.commit();
+        }
     }
 
     /**
@@ -169,7 +180,6 @@ public class PositionFragment extends Fragment {
                 activity.onBackPressed();
             }
         }));
-        Log.d("FETCH", "FETCHING UTENTE");
     }
 
     /**
