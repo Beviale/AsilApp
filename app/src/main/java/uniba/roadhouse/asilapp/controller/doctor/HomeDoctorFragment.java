@@ -51,11 +51,11 @@ public class HomeDoctorFragment extends Fragment {
      */
     Toolbar toolbarDoctorActivity;
     /**
-     * Testo presente nella toolbar.
+     * Testo presente nella toolbar per DetailUserDoctorFragment.
      */
     TextView textToolbarDoctor;
     /**
-     * Testo presente nella toolbar.
+     * Testo presente nella toolbar per SettingsDoctorFragment e HomeDoctorFragment.
      */
     TextView textToolbarDoctorHome;
     /**
