@@ -46,6 +46,18 @@
                 android:text="@string/doctor"
                 android:textColor="@color/white"
                 android:textSize="@dimen/title2FontSize" />
+
+            <TextView
+                android:id="@+id/textToolbarDoctorHome"
+                android:visibility="gone"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:fontFamily="@font/titillium_web_bold"
+                android:text="@string/doctor"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title2FontSize" />
         </androidx.appcompat.widget.Toolbar>
 
 

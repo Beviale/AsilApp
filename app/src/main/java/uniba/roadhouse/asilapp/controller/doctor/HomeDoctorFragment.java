@@ -55,6 +55,10 @@ public class HomeDoctorFragment extends Fragment {
      */
     TextView textToolbarDoctor;
     /**
+     * Testo presente nella toolbar.
+     */
+    TextView textToolbarDoctorHome;
+    /**
      * ProgressBar da mostrare durante il caricamento dei dati dal database.
      */
     ProgressBar progressBar;
@@ -101,7 +105,10 @@ public class HomeDoctorFragment extends Fragment {
         //--------RIFERIMENTI------------
         toolbarDoctorActivity = getActivity().findViewById(R.id.toolbarDoctorActivity);
         textToolbarDoctor = getActivity().findViewById(R.id.textToolbarDoctor);
-        textToolbarDoctor.setText(getString(R.string.homeMenuScreen));
+        textToolbarDoctorHome = getActivity().findViewById(R.id.textToolbarDoctorHome);
+        textToolbarDoctorHome.setText(getString(R.string.homeMenuScreen));
+        textToolbarDoctor.setVisibility(View.GONE);
+        textToolbarDoctorHome.setVisibility(View.VISIBLE);
         progressBar = getActivity().findViewById(R.id.progressBarDoctorActivty);
         layoutCardUserDoctor = view.findViewById(R.id.layoutCardUserDoctor);
         QRButton = view.findViewById(R.id.QRSearchButton);
@@ -266,6 +273,8 @@ public class HomeDoctorFragment extends Fragment {
      */
     private void openDetailUserDoctor(String usernameUser, String nameAndSurname) {
         UserLogin.setUsername(usernameUser);
+        textToolbarDoctorHome.setVisibility(View.GONE);
+        textToolbarDoctor.setVisibility(View.VISIBLE);
         textToolbarDoctor.setText(nameAndSurname);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
