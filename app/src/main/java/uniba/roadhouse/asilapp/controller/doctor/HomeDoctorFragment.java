@@ -3,6 +3,7 @@ package uniba.roadhouse.asilapp.controller.doctor;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -121,21 +122,18 @@ public class HomeDoctorFragment extends Fragment {
                 swipereFreshLayoutHomeDoctor.setRefreshing(false);
             }
         });
+
+        QRButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DoctorActivity) getActivity()).qrcode();
+            }
+        });
         super.onStart();
     }
 
     @Override
     public void onResume() {
-        QRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.doctorFragmentView, QRCameraFragment.class, null);
-                fragmentTransaction.addToBackStack("HomeDoct");
-                fragmentTransaction.commit();
-            }
-        });
         toolbarDoctorActivity.getMenu().clear();
         toolbarDoctorActivity.setNavigationIcon(null);
         toolbarDoctorActivity.inflateMenu(R.menu.settings_menu);

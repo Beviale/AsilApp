@@ -1,6 +1,7 @@
 package uniba.roadhouse.asilapp.controller.doctor;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +12,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+
+import org.checkerframework.checker.guieffect.qual.UIType;
 
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
@@ -41,21 +49,25 @@ public class DoctorActivity extends AppCompatActivity {
         }
         //RIFERIMENTI
         toolBarIconDoctorActivity = findViewById(R.id.toolBarIconDoctorActivity);
-        openSigningFragment();
+        // verifico se il dottore è loggato
+        if(getIntent().getBooleanExtra("logged",false))
+        {
+            openHomeFragment();
+        }
+        else
+        {
+            openSigningFragment();
+        }
     }
 
 
     @Override
     protected void onStart() {
-        //verifico se il dottore è loggato
-        if(getIntent().getBooleanExtra("logged",false)){
-            //se il dottore è loggato lo porto alla home
-            openHomeFragment();
-        }
         // LISTENER
         toolBarIconDoctorActivity.setOnClickListener(v->openHomeFragment());
         super.onStart();
     }
+
 
     /**
      * Apre il fragment di login per l'account dottore (SigninDoctorFragment).
@@ -67,6 +79,22 @@ public class DoctorActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.doctorFragmentView, SigninDoctorFragment.class, null);
         fragmentTransaction.commit();
     }
+
+    public void qrcode()
+    {
+        ScanOptions scanCamera = new ScanOptions();
+        scanCamera.setOrientationLocked(true);
+        scanCamera.setCaptureActivity(CaptAct.class);
+        scanResult.launch(scanCamera);
+    }
+
+    ActivityResultLauncher<ScanOptions> scanResult = registerForActivityResult(new ScanContract(), res->{
+        if(res.getContents() != null){
+            Utility.showAlertDialog(this, "a", res.getContents().toString());
+        } else {
+            Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
+        }
+    });
 
     /**
      * Apre il fragment "HomeDoctorFragment" se il fragment attuale non è quello di login (SinginDoctorFragment).
