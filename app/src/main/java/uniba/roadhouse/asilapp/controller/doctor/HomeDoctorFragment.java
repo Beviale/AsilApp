@@ -2,23 +2,30 @@ package uniba.roadhouse.asilapp.controller.doctor;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import okhttp3.internal.Util;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.home.AllTipsFragment;
@@ -133,11 +141,47 @@ public class HomeDoctorFragment extends Fragment {
         QRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DoctorActivity) getActivity()).qrcode();
+                // Se il dispositivo non ha la fotocamera
+                if (!isDeviceHasCamera(getActivity())) {
+                    Utility.showAlertDialog(getActivity(), getString(R.string.noCameraSupportTitle), getString(R.string.noCameraSupport));
+
+                }
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    //se ho il permesso
+                    ((DoctorActivity) getActivity()).qrcode();
+                } else {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                        // se devo mostrare l'informativa
+                        Utility.showAlertDialog(getActivity(), getString(R.string.permissionCameraTitle), getString(R.string.permissionCamera));
+                    } else {
+                        //se non devo mostrare l'informativa, richiedo il permesso all'utente
+                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                    }
+                }
             }
         });
         super.onStart();
     }
+
+
+    // Metodo per verificare se il dispositivo ha una fotocamera
+    public static boolean isDeviceHasCamera(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    // Richiede il permesso relativo all'utilizzo della fotocamera.
+    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            result -> {
+                if (result) {
+                    // PERMISSION GRANTED
+                    ((DoctorActivity) getActivity()).qrcode();
+                } else {
+                    // PERMISSION NOT GRANTED
+                }
+            });
+
 
     @Override
     public void onResume() {
