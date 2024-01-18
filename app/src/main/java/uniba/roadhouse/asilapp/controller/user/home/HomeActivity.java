@@ -229,23 +229,22 @@ public class HomeActivity extends AppCompatActivity {
                     //verifico se nelle shared preferences ho una misurazione pendente da memorizzare
                     SharedPreferences sharedPref = getSharedPreferences("misurazione", MODE_PRIVATE);
                     String valutazione = sharedPref.getString("valutazione","NO");
-                    String valore = sharedPref.getString("valore","NO");
+                    String valore = sharedPref.getString("valore", "NO");
                     String valoreMax = sharedPref.getString("valoreMax","NO");
                     String valoreMin = sharedPref.getString("valoreMin","NO");
-                    String data = sharedPref.getString("data","NO");
+                    long data = sharedPref.getLong("data",-1);
                     String tipo = sharedPref.getString("tipo","NO");
                     String notaMedico = sharedPref.getString("notaMedico","NO");
 
-                    if(!valutazione.equals("NO") && !valoreMin.equals("NO") && !valoreMin.equals("NO") && !valoreMax.equals("NO")
-                    && !valore.equals("NO") && !data.equals("NO") && !tipo.equals("NO") && !notaMedico.equals("NO")){
+                    if(!valutazione.equals("NO") && data!=-1 && !tipo.equals("NO") && !notaMedico.equals("NO")){
                         //se ho preso correttamente tutti i dati dalla shared preferences della misurazione
                         //memorizzo la misurazione sul db
-                        CompletableFuture<String> future = Dao.storeMisuration(new Misurazione(UserLogin.getUsername(),valutazione,Double.parseDouble(valore),Double.parseDouble(valoreMax),Double.parseDouble(valoreMin),new Timestamp(new Date(Long.parseLong(data)*1000)), TipoMisurazioneEnum.valueOf(tipo),notaMedico),getApplicationContext());
+                        CompletableFuture<String> future = Dao.storeMisuration(new Misurazione(UserLogin.getUsername(),valutazione,(valoreMax=="NO")?Double.parseDouble(valore):null,(valoreMax=="NO")?null:Double.parseDouble(valoreMax),(valoreMin=="NO")?null:Double.parseDouble(valoreMin),new Timestamp(new Date(data*1000)), TipoMisurazioneEnum.valueOf(tipo),notaMedico),getApplicationContext());
                         future.thenAccept(result -> {
                             runOnUiThread(() -> {
                                 textBannerOnePendingMisuration.setVisibility(View.GONE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.remove("valutazione");
+                                editor.clear();
                                 editor.apply();
                                 //quando ho memorizzato la misurazione mostro l'esito della computazione
                                 Toast.makeText(getApplicationContext(),getString(R.string.misurationStoredDB), Toast.LENGTH_LONG).show();

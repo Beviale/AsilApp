@@ -112,6 +112,10 @@ public class BluetoothConnectionThread extends Thread {
                     //prendo i valori passati in input
                     String parametro=messageFromServer.split("@")[0];
                     String valore=messageFromServer.split("@")[1];
+                    String valoreMax="";
+                    if(messageFromServer.split("@").length==3) {
+                        valoreMax=messageFromServer.split("@")[2];
+                    }
 
                     //se ho riscontrato un errore, lo mando al client
                     if(parametro.equals("ERROR") || parametro.equals("CLOSE")){
@@ -119,7 +123,7 @@ public class BluetoothConnectionThread extends Thread {
                         break;
                     }else{  //altrimenti mando al client la buona riuscita della misurazione e la metto nel db
                         //memprizzo la misurazione nel db
-                        storeMisuration(Double.parseDouble(valore),parametro);
+                        storeMisuration(Double.parseDouble(valore),parametro,valoreMax);
                     }
                 }
             } catch (IOException e) {
@@ -137,23 +141,23 @@ public class BluetoothConnectionThread extends Thread {
      * @param misurazione, valore delle misurazione effettuata.
      * @param parametro, parametro della misurazione.
      */
-    private void storeMisuration(Double misurazione, String parametro){
+    private void storeMisuration(Double misurazione, String parametro,String valoreMax){
         // Se non c'è connessione, creo una misurazione pendente da memorizzare temporaneamente nelle Shared Preferences
         if (!Utility.isConnectedToInternet((Activity) context)) {
             SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
             String valutazione = sharedPref.getString("valutazione","NO");
             if(valutazione.equals("NO")) {
                 // Se non c'è alcune misurazione pendente
-                pendingMisuration(currentFragment.getString(R.string.pendingMisurationRequestTitle), currentFragment.getString(R.string.pendingMisurationRequest), misurazione, parametro);
+                pendingMisuration(currentFragment.getString(R.string.pendingMisurationRequestTitle), currentFragment.getString(R.string.pendingMisurationRequest), misurazione, parametro, valoreMax);
             }
             else{
                 // Se c'è già un'altra misurazione pendente, chiedo all'utente se vuole sovrascriverla
-                pendingMisuration(currentFragment.getString(R.string.pendingMisurationRequestTitleDuplicati), currentFragment.getString(R.string.pendingMisurationRequestDuplicati), misurazione, parametro);
+                pendingMisuration(currentFragment.getString(R.string.pendingMisurationRequestTitleDuplicati), currentFragment.getString(R.string.pendingMisurationRequestDuplicati), misurazione, parametro, valoreMax);
             }
         }
         else{
             //se c'è connessione memorizzo la misuazione nel db
-            Misurazione mis=new Misurazione(UserLogin.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
+            Misurazione mis=new Misurazione(UserLogin.getUsername(),"NON VALUTATO",(valoreMax=="")?round(misurazione,2):null,(valoreMax!="")?round(misurazione,2):null,(valoreMax!="")? Double.valueOf(valoreMax) :null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
             CompletableFuture<String> future = Dao.storeMisuration(mis,context);
             future.thenAccept(result -> {
                 currentFragment.getActivity().runOnUiThread(() -> {
@@ -171,7 +175,7 @@ public class BluetoothConnectionThread extends Thread {
      * @param misurazione, valore della misurazione.
      * @param parametro, parametro della misurazione.
      */
-    private void pendingMisuration(String title, String message, Double misurazione, String parametro)
+    private void pendingMisuration(String title, String message, Double misurazione, String parametro, String valoreMax)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyleCritical);
         builder.setTitle(title)
@@ -189,9 +193,15 @@ public class BluetoothConnectionThread extends Thread {
                         SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("valutazione","NON VALUTATO");
-                        editor.putFloat("valore",round(misurazione,2).floatValue());
-                        editor.putString("valoreMax",null);
-                        editor.putString("valoreMin",null);
+                        if(valoreMax!=""){
+                            editor.putString("valoreMax", valoreMax);
+                            editor.putString("valoreMin", String.valueOf(round(misurazione,2).floatValue()));
+                            editor.putString("valore",null);
+                        }else {
+                            editor.putString("valore", String.valueOf(round(misurazione, 2).floatValue()));
+                            editor.putString("valoreMax",null);
+                            editor.putString("valoreMin",null);
+                        }
                         editor.putLong("data",Timestamp.now().getSeconds());
                         editor.putString("tipo",parametro);
                         editor.putString("notaMedico","");
@@ -199,16 +209,20 @@ public class BluetoothConnectionThread extends Thread {
                         returnToClient(context.getString(R.string.misurationStoredSuccessfully));
                     }
                 });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        alertDialog.setOnCancelListener(
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        ((Activity) context).onBackPressed();
-                    }
-                }
-        );
+        currentFragment.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                alertDialog.setOnCancelListener(
+                        new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                ((Activity) context).onBackPressed();
+                            }
+                        }
+                );
+            }
+        });
     }
 
 
