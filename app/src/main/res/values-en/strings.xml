@@ -371,6 +371,12 @@
     <!-- Home Doctor Fragment-->
     <string name="allUserDoctorTitle">Current patients</string>
     <string name="cardUserDoctorOrganizationLabel">Structure: </string>
+    <string name="permissionCameraTitle">Grant permission for the camera</string>
+    <string name="permissionCamera">To use the QRcode scanning function, you need to grant camera usage permissions.</string>
+    <string name="noCameraSupportTitle">You don\'t have a camera</string>
+    <string name="noCameraSupport">You cannot use the QRcode scanning feature as your device does not have a camera</string>
+    <string name="CameraScanErrorTitle">Error</string>
+    <string name="CameraScanError">Cannot find the user.</string>
 
     <!-- Detail User Doctor Fragment-->
     <string name="pathologies">Pathologies</string>

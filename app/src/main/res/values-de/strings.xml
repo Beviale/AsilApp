@@ -370,6 +370,12 @@
     <!-- Home Doctor Fragment-->
     <string name="allUserDoctorTitle">Aktuelle Patienten</string>
     <string name="cardUserDoctorOrganizationLabel">Struktur: </string>
+    <string name="permissionCameraTitle">Erteilen Sie der Kamera die Erlaubnis</string>
+    <string name="permissionCamera">Um die QRcode-Scanfunktion nutzen zu können, müssen Sie der Kamera Nutzungsberechtigungen erteilen.</string>
+    <string name="noCameraSupportTitle">Du hast keine Kamera</string>
+    <string name="noCameraSupport">Sie können die Funktion zum Scannen von QR-Codes nicht verwenden, da Ihr Gerät nicht über eine Kamera verfügt.</string>
+    <string name="CameraScanErrorTitle">Fehler</string>
+    <string name="CameraScanError">Benutzer kann nicht gefunden werden.</string>
 
     <!-- Detail User Doctor Fragment-->
     <string name="pathologies">Pathologien</string>
