@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.EvaluationEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
@@ -152,15 +153,15 @@ public class EditEvalutationDialogFragment extends DialogFragment {
         String newEvalutation = "-";
         if(healthHistoryGood.isChecked())
         {
-            newEvalutation = Utility.convertStringToEvalutationEnum(getActivity(), getString(R.string.evalutationHealthHistoryValueGood)).toString();
+            newEvalutation = EvaluationEnum.BUONO.toString();
         }
         else if(healthHistoryFairlyGood.isChecked())
         {
-            newEvalutation = Utility.convertStringToEvalutationEnum(getActivity(), getString(R.string.evalutationHealthHistoryValueFairlyGood)).toString();
+            newEvalutation = EvaluationEnum.DISCRETO.toString();
         }
         else
         {
-            newEvalutation = Utility.convertStringToEvalutationEnum(getActivity(), getString(R.string.evalutationHealthHistoryValueNotGood)).toString();
+            newEvalutation = EvaluationEnum.CATTIVO.toString();
         }
         CompletableFuture<String> future = Dao.editMisurationValutazione(id, newEvalutation, getActivity());
         future.thenAccept(result -> {

@@ -21,6 +21,7 @@ import org.checkerframework.checker.guieffect.qual.UIType;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.PriorityEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 
@@ -156,15 +157,15 @@ public class EditPriorityDialogFragment extends DialogFragment {
         String newPriority = "-";
         if(myPathologiesLow.isChecked())
         {
-            newPriority = Utility.convertStringToPriorityEnum(getActivity(), getString(R.string.priorityMyPathologiesValueLow)).toString();
+            newPriority = PriorityEnum.BASSA.toString();
         }
         else if (myPathologiesMedium.isChecked())
         {
-            newPriority = Utility.convertStringToPriorityEnum(getActivity(), getString(R.string.priorityMyPathologiesValueMedium)).toString();
+            newPriority = PriorityEnum.MEDIA.toString();
         }
         else if (myPathologiesHigh.isChecked())
         {
-            newPriority = Utility.convertStringToPriorityEnum(getActivity(), getString(R.string.priorityMyPathologiesValueHigh)).toString();
+            newPriority = PriorityEnum.ELEVATA.toString();
         }
         progressBar.setVisibility(View.VISIBLE);
         layoutEditPriority.setAlpha((float)0.5);

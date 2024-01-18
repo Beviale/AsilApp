@@ -284,31 +284,6 @@ public class Utility
     }
 
 
-    /**
-     * Converta una stringa in EvalutationEnum
-     * @param context, contesto.
-     * @param string, stringa da convertire
-     * @return EvalutationEnum
-     */
-    public static EvaluationEnum convertStringToEvalutationEnum(Context context, String string)
-    {
-        if(string.equals(context.getString(R.string.evalutationHealthHistoryValueGood)))
-        {
-            return EvaluationEnum.BUONO;
-
-        }else if(string.equals(context.getString(R.string.evalutationHealthHistoryValueFairlyGood)))
-        {
-            return EvaluationEnum.DISCRETO;
-
-        } else if(string.equals(context.getString(R.string.evalutationHealthHistoryValueNotGood)))
-        {
-            return EvaluationEnum.CATTIVO;
-        }
-        else
-        {
-            return EvaluationEnum.NON_VALUTATO;
-        }
-    }
 
     /**
      * Converte una Stringa di EvalutationEnum nella stringa di strings.xml
