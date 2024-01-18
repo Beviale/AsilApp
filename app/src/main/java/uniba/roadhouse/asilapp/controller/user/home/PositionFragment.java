@@ -95,6 +95,11 @@ public class PositionFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolBarHome);
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(null);
+        if(tabLayoutPosition.getSelectedTabPosition()==1){
+            TabLayout.Tab tab = tabLayoutPosition.getTabAt(0);
+            tabLayoutPosition.selectTab(tab);
+        }
+
 
         // Fetch dei dati utente
         progressBar.setVisibility(View.VISIBLE);
