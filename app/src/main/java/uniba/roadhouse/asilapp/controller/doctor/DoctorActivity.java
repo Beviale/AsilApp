@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -21,6 +22,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import org.checkerframework.checker.guieffect.qual.UIType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -43,6 +45,14 @@ public class DoctorActivity extends AppCompatActivity {
      * ProgressBar dell'intera activity.
      */
     ProgressBar progressBarDoctorActivty;
+    /**
+     * TextView della toolbar relativa al nome e al cognome del paziente.
+     */
+    TextView textToolbarDoctor;
+    /**
+     * TextView della toolbat relativo alla home.
+     */
+    TextView textToolbarDoctorHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,8 @@ public class DoctorActivity extends AppCompatActivity {
         //RIFERIMENTI
         toolBarIconDoctorActivity = findViewById(R.id.toolBarIconDoctorActivity);
         progressBarDoctorActivty = findViewById(R.id.progressBarDoctorActivty);
+        textToolbarDoctor = findViewById(R.id.textToolbarDoctor);
+        textToolbarDoctorHome = findViewById(R.id.textToolbarDoctorHome);
         // verifico se il dottore è loggato
         if(getIntent().getBooleanExtra("logged",false))
         {
@@ -91,6 +103,9 @@ public class DoctorActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     * Effettua la scansione del QRcode.
+     */
     public void qrcode()
     {
         ScanOptions scanCamera = new ScanOptions();
@@ -99,29 +114,38 @@ public class DoctorActivity extends AppCompatActivity {
         scanResult.launch(scanCamera);
     }
 
-    // Gestisco il risultato del qrcode.
+    // Gestisco il risultato del QRcode.
     ActivityResultLauncher<ScanOptions> scanResult = registerForActivityResult(new ScanContract(), res->{
         if(res.getContents() != null){
             progressBarDoctorActivty.setVisibility(View.VISIBLE);
             CompletableFuture<List<String>> future = Dao.getAllDoctorsPatients(DoctorLogin.getUsername(), this);
             future.thenAccept(patients -> {
                 this.runOnUiThread(() -> {
-                    progressBarDoctorActivty.setVisibility(View.GONE);
                     if (patients.contains(res.getContents())) {
-                        UserLogin.setUsername(res.getContents());
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        if (!(fragmentManager.findFragmentById(R.id.doctorFragmentView) instanceof SigninDoctorFragment)) {
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, null);
-                            fragmentTransaction.commit();
-                        }
+                        CompletableFuture<Map<String, Object>> futureNameSurname = Dao.getUserData(res.getContents(), this);
+                        futureNameSurname.thenAccept(resultNameSurname -> {
+                            this.runOnUiThread(() -> {
+                                String name = resultNameSurname.get("nome").toString();
+                                String surname = resultNameSurname.get("cognome").toString();
+                                textToolbarDoctorHome.setVisibility(View.GONE);
+                                textToolbarDoctor.setVisibility(View.VISIBLE);
+                                textToolbarDoctor.setText(name + " " + surname);
+                                progressBarDoctorActivty.setVisibility(View.GONE);
+                                UserLogin.setUsername(res.getContents());
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                if (!(fragmentManager.findFragmentById(R.id.doctorFragmentView) instanceof SigninDoctorFragment)) {
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, null);
+                                    fragmentTransaction.commit();
+                                }
+                            });
+                        });
                     } else {
                         Utility.showAlertDialog(this, getString(R.string.CameraScanErrorTitle), getString(R.string.CameraScanError));
                     }
                 });
             });
         }
-        Utility.showAlertDialog(this, getString(R.string.CameraScanErrorTitle), getString(R.string.CameraScanError));
     });
 
     /**

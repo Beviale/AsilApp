@@ -1,5 +1,6 @@
 package uniba.roadhouse.asilapp.model.dao;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -1164,7 +1165,7 @@ public class Dao {
     }
 
     /**
-     * Metodo per l'eliminazione della data di una patologia dato lo suername dell'utente relativo e il nome della patologia.
+     * Metodo per l'eliminazione della data di una patologia dato l'username dell'utente relativo e il nome della patologia.
      * ritorna una stringa che indica l'esito della computazione
      * @param username
      * @param patologia
@@ -1185,13 +1186,22 @@ public class Dao {
             }
 
             String id=null;
+            List<String> nomiFarmaci=new ArrayList<>();
 
             for(QueryDocumentSnapshot document:query.getResult()){
                 id=document.getId();
                 break;
             }
 
-            //modifico la priorità
+            CompletableFuture<Map<String, ?>> future = getAllFarmaci(username,patologia,context);
+            future.thenAccept(result -> {
+                ((Activity)context).runOnUiThread(() -> {
+                    for(Farmaco fr:(List<Farmaco>)result.get("farmaci")){
+                        nomiFarmaci.add(fr.getNome());
+                    }
+                });});
+
+            //elimino l patologia
             Task update = db.collection("patologie").document(id).delete();
 
             while (!update.isComplete()) {
@@ -1202,10 +1212,35 @@ public class Dao {
                 return context.getString(R.string.editPatologyFailed);
             }
 
+            //elimino i farmaci associati
+            for(String farmaco:nomiFarmaci){
+                Task<QuerySnapshot> getFarmaci = db.collection("farmaci").whereEqualTo("nome",farmaco).get();
+
+                while (!getFarmaci.isComplete()) {
+                    //attenendo che la funzione asincrona chaimata termini la sua computazione
+                }
+
+                if(!getFarmaci.isSuccessful()){
+                    return context.getString(R.string.editPatologyFailed);
+                }
+
+                for(QueryDocumentSnapshot document:query.getResult()){
+                    Task delete = db.collection("farmaci").document(document.getId()).delete();
+
+                    while (!delete.isComplete()) {
+                        //attenendo che la funzione asincrona chaimata termini la sua computazione
+                    }
+
+                    if(!delete.isSuccessful()){
+                        return context.getString(R.string.editPatologyFailed);
+                    }
+                    break;
+                }
+            }
 
             return context.getString(R.string.editPatologySuccessfull);
-        });
-    }
+ });
+}
 
     /**
      * Metodo che aggiunge un farmaco dato un oggetto Farmaco. Ritorna una stringa che indica l'esito della computazione
