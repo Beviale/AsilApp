@@ -666,7 +666,6 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                         TextView evalutation = new TextView(getActivity());
                         evalutation.setText(Utility.convertEvaluationEnumToString(getActivity(), misurazione.getValutazione()));
                         evalutation.setId(View.generateViewId());
-                        evalutation.setAutoSizeTextTypeUniformWithConfiguration(12, 20, 2, TypedValue.COMPLEX_UNIT_SP);
 
                         ConstraintLayout.LayoutParams paramsEvalutation = new ConstraintLayout.LayoutParams(
                                 ConstraintLayout.LayoutParams.WRAP_CONTENT,

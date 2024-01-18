@@ -48,7 +48,7 @@
     <dimen name="valueDetailHealthHistory">16dp</dimen>
     <dimen name ="textSizeDoctorNotes">14dp</dimen>
     <dimen name="marginLeftRightDetailHealthHistory">20dp</dimen>
-    <dimen name="resultBloodPressureHealthHistory">40dp</dimen>
+    <dimen name="resultBloodPressureHealthHistory">30dp</dimen>
     <dimen name="marginLeftMyPathologies">24dp</dimen>
     <dimen name="marginRightMyPathologies">24dp</dimen>
 
