@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -20,10 +19,16 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 import org.checkerframework.checker.guieffect.qual.UIType;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.controller.user.home.HealthHistoryFragment;
 import uniba.roadhouse.asilapp.controller.user.home.HomeActivity;
+import uniba.roadhouse.asilapp.model.dao.Dao;
+import uniba.roadhouse.asilapp.model.dao.DoctorLogin;
+import uniba.roadhouse.asilapp.model.dao.UserLogin;
 
 /**
  * Activity relativa all'account dottore. Viene aperta quando, da FirstActivity, si seleziona l'accesso come account dottore.
@@ -90,9 +95,21 @@ public class DoctorActivity extends AppCompatActivity {
 
     ActivityResultLauncher<ScanOptions> scanResult = registerForActivityResult(new ScanContract(), res->{
         if(res.getContents() != null){
-            Utility.showAlertDialog(this, "a", res.getContents().toString());
-        } else {
-            Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
+            CompletableFuture<List<String>> future = Dao.getAllDoctorsPatients(DoctorLogin.getUsername(), this);
+            future.thenAccept(patients -> {
+                if(patients.contains(res.getContents())){
+                    UserLogin.setUsername(res.getContents());
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    if(!(fragmentManager.findFragmentById(R.id.doctorFragmentView) instanceof SigninDoctorFragment))
+                    {
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.doctorFragmentView, DetailUserDoctorFragment.class, null);
+                        fragmentTransaction.commit();
+                    }
+                } else {
+                    Utility.showAlertDialog(this, getString(R.string.CameraScanErrorTitle), getString(R.string.CameraScanError));
+                }
+            });
         }
     });
 

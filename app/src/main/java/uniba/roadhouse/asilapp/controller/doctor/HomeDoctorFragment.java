@@ -326,7 +326,6 @@ public class HomeDoctorFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-
     // Se si preme il tasto back, chiudo l'applicazione.
     private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
         @Override
