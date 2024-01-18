@@ -179,6 +179,7 @@ public class HomeDoctorFragment extends Fragment {
                     ((DoctorActivity) getActivity()).qrcode();
                 } else {
                     // PERMISSION NOT GRANTED
+                    Utility.showAlertDialog(getActivity(), getString(R.string.permissionCameraTitle), getString(R.string.permissionCamera));
                 }
             });
 
