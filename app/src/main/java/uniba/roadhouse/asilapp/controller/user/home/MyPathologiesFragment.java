@@ -332,7 +332,13 @@ public class MyPathologiesFragment extends Fragment {
 
                             // Creo la TextView relativa alla data dell'ultima visita
                             TextView lastVisitData = new TextView(getActivity());
-                            lastVisitData.setText(patologia.getData());
+                            if(patologia.getData().isEmpty()){
+                                lastVisitData.setText(getString(R.string.emptyDate));
+                            }
+                            else
+                            {
+                                lastVisitData.setText(patologia.getData());
+                            }
                             lastVisitData.setId(View.generateViewId());
                             ConstraintLayout.LayoutParams paramsLastVisitData = new ConstraintLayout.LayoutParams(
                                     ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -370,7 +376,7 @@ public class MyPathologiesFragment extends Fragment {
 
                             // Creo la TextView relativa alla priorità.
                             TextView priorityResult = new TextView(getActivity());
-                            priorityResult.setText(patologia.getPriorita());
+                            priorityResult.setText(Utility.convertPriorityEnumToString(getActivity(), patologia.getPriorita()));
                             priorityResult.setId(View.generateViewId());
                             ConstraintLayout.LayoutParams paramsPriorityResult= new ConstraintLayout.LayoutParams(
                                     ConstraintLayout.LayoutParams.WRAP_CONTENT,

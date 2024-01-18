@@ -152,15 +152,15 @@ public class EditEvalutationDialogFragment extends DialogFragment {
         String newEvalutation = "-";
         if(healthHistoryGood.isChecked())
         {
-            newEvalutation = getString(R.string.evalutationHealthHistoryValueGood);
+            newEvalutation = Utility.convertStringToEvalutationEnum(getActivity(), getString(R.string.evalutationHealthHistoryValueGood)).toString();
         }
         else if(healthHistoryFairlyGood.isChecked())
         {
-            newEvalutation = getString(R.string.evalutationHealthHistoryValueFairlyGood);
+            newEvalutation = Utility.convertStringToEvalutationEnum(getActivity(), getString(R.string.evalutationHealthHistoryValueFairlyGood)).toString();
         }
         else
         {
-            newEvalutation = getString(R.string.evalutationHealthHistoryValueNotGood);
+            newEvalutation = Utility.convertStringToEvalutationEnum(getActivity(), getString(R.string.evalutationHealthHistoryValueNotGood)).toString();
         }
         CompletableFuture<String> future = Dao.editMisurationValutazione(id, newEvalutation, getActivity());
         future.thenAccept(result -> {

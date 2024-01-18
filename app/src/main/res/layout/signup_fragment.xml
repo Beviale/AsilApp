@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/titillium_web_bold"
-            android:text="Registrati"
+            android:text="@string/loginRegistrationButtonLabel"
             android:textColor="@color/titleColor"
             android:textSize="@dimen/title1FontSize"
             app:layout_constraintBottom_toBottomOf="parent"

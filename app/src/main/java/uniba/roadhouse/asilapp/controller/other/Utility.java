@@ -283,5 +283,115 @@ public class Utility
         pieChart.invalidate();
     }
 
+
+    /**
+     * Converta una stringa in EvalutationEnum
+     * @param context, contesto.
+     * @param string, stringa da convertire
+     * @return EvalutationEnum
+     */
+    public static EvaluationEnum convertStringToEvalutationEnum(Context context, String string)
+    {
+        if(string.equals(context.getString(R.string.evalutationHealthHistoryValueGood)))
+        {
+            return EvaluationEnum.BUONO;
+
+        }else if(string.equals(context.getString(R.string.evalutationHealthHistoryValueFairlyGood)))
+        {
+            return EvaluationEnum.DISCRETO;
+
+        } else if(string.equals(context.getString(R.string.evalutationHealthHistoryValueNotGood)))
+        {
+            return EvaluationEnum.CATTIVO;
+        }
+        else
+        {
+            return EvaluationEnum.NON_VALUTATO;
+        }
+    }
+
+    /**
+     * Converte una Stringa di EvalutationEnum nella stringa di strings.xml
+     * @param context, contesto.
+     * @param evalutationEnum, stringa di EvalutationEnum.
+     * @return, stringa di strings.xml
+     */
+    public static String convertEvaluationEnumToString(Context context, String evalutationEnum)
+    {
+        if(evalutationEnum.equals(EvaluationEnum.BUONO.toString()))
+        {
+            return context.getString(R.string.evalutationHealthHistoryValueGood);
+
+        }else if(evalutationEnum.equals(EvaluationEnum.DISCRETO.toString()))
+        {
+            return context.getString(R.string.evalutationHealthHistoryValueFairlyGood);
+
+        }
+        else if(evalutationEnum.equals(EvaluationEnum.CATTIVO.toString()))
+        {
+            return context.getString(R.string.evalutationHealthHistoryValueNotGood);
+        }
+        else {
+            return context.getString(R.string.notRated);
+        }
+    }
+
+
+
+
+
+
+    /**
+     * Converta una stringa in PriorityEnum
+     * @param context, contesto.
+     * @param string, stringa da convertire
+     * @return PriorityEnum
+     */
+    public static PriorityEnum convertStringToPriorityEnum(Context context, String string)
+    {
+        if(string.equals(context.getString(R.string.priorityMyPathologiesValueLow)))
+        {
+            return PriorityEnum.BASSA;
+
+        }else if(string.equals(context.getString(R.string.priorityMyPathologiesValueMedium)))
+        {
+            return PriorityEnum.MEDIA;
+
+        } else if(string.equals(context.getString(R.string.priorityMyPathologiesValueHigh)))
+        {
+            return PriorityEnum.ELEVATA;
+        }
+        else
+        {
+            return PriorityEnum.NON_INSERITA;
+        }
+    }
+
+    /**
+     * Converte una Stringa di PriorityEnum nella stringa di strings.xml
+     * @param context, contesto.
+     * @param priorityEnum, stringa di PriorityEnum.
+     * @return, stringa di strings.xml
+     */
+    public static String convertPriorityEnumToString(Context context, String priorityEnum)
+    {
+        if(priorityEnum.equals(PriorityEnum.BASSA.toString()))
+        {
+            return context.getString(R.string.priorityMyPathologiesValueLow);
+
+        }else if(priorityEnum.equals(PriorityEnum.MEDIA.toString()))
+        {
+            return context.getString(R.string.priorityMyPathologiesValueMedium);
+
+        }
+        else if(priorityEnum.equals(PriorityEnum.ELEVATA.toString()))
+        {
+            return context.getString(R.string.priorityMyPathologiesValueHigh);
+        }
+        else {
+            return context.getString(R.string.notInserted);
+        }
+    }
+
 }
 

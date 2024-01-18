@@ -231,6 +231,11 @@
     <string name="getLatLongFailed">Fehler beim Abrufen von Breiten- und Längengrad</string>
     <string name="getLatLongSuccessfull">Breiten- und Längengrad erfolgreich abgerufen</string>
     <string name="emptyDrugs">Keine Medikamente verfügbar</string>
+    <string name="previousFindings">bisherige Erkenntnisse</string>
+    <string name="notRated">NICHT BEWERTET</string>
+    <string name="notInserted">NICHT EINGEFUGT</string>
+
+
 
 
     <!--SETTINGS-->

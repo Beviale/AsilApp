@@ -283,7 +283,7 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:background="@color/appMainColorDark"
-                android:text="Rilevazioni precedenti"
+                android:text="@string/previousFindings"
                 android:layout_height="wrap_content">
             </TextView>
 

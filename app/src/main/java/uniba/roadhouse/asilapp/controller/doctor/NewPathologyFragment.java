@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.PriorityEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
@@ -232,24 +233,24 @@ public class NewPathologyFragment extends Fragment {
         String priorityAdd="-";
         if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId()==-1)
         {
-            priorityAdd = getString(R.string.emptyPriority);
+            priorityAdd = PriorityEnum.NON_INSERITA.toString();
         }
         else if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId() == R.id.myNewPathologiesLow)
         {
-            priorityAdd = getString(R.string.priorityMyPathologiesValueLow);
+            priorityAdd = PriorityEnum.BASSA.toString();
         }
         else if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId() == R.id.myNewPathologiesMedium)
         {
-            priorityAdd = getString(R.string.priorityMyPathologiesValueMedium);
+            priorityAdd = PriorityEnum.MEDIA.toString();
         }
         else if(priorityNewMyPathologiesRadioGroup.getCheckedRadioButtonId() == R.id.myNewPathologiesHigh)
         {
-            priorityAdd = getString(R.string.priorityMyPathologiesValueHigh);
+            priorityAdd = PriorityEnum.ELEVATA.toString();
         }
         String dateAdd = "-";
         if(dateNewPathologyInput.getText().toString().isEmpty())
         {
-            dateAdd = getString(R.string.emptyDate);
+            dateAdd = "";
         }
         else
         {
@@ -258,7 +259,7 @@ public class NewPathologyFragment extends Fragment {
         String timeAdd = "-";
         if(timeNewPathologyInput.getText().toString().isEmpty())
         {
-            timeAdd = getString(R.string.emptyTime);
+            timeAdd = "";
         }
         else
         {
@@ -267,7 +268,7 @@ public class NewPathologyFragment extends Fragment {
         String noteAdd = "-";
         if(doctorNotesNewPathology.getText().toString().isEmpty())
         {
-            noteAdd = getString(R.string.emptyDoctorNotes);
+            noteAdd = "";
         }
         else
         {

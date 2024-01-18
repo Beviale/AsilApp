@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
+import uniba.roadhouse.asilapp.controller.other.EvaluationEnum;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
 import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
@@ -153,7 +154,7 @@ public class BluetoothConnectionThread extends Thread {
         }
         else{
             //se c'è connessione memorizzo la misuazione nel db
-            Misurazione mis=new Misurazione(UserLogin.getUsername(),"NON VALUTATO",round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
+            Misurazione mis=new Misurazione(UserLogin.getUsername(), EvaluationEnum.NON_VALUTATO.toString(),round(misurazione,2),null,null, Timestamp.now(), TipoMisurazioneEnum.valueOf(parametro),"");
             CompletableFuture<String> future = Dao.storeMisuration(mis,context);
             future.thenAccept(result -> {
                 currentFragment.getActivity().runOnUiThread(() -> {
@@ -188,7 +189,7 @@ public class BluetoothConnectionThread extends Thread {
                         // memorizzo la misurazione localmente
                         SharedPreferences sharedPref = context.getSharedPreferences("misurazione", context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("valutazione","NON VALUTATO");
+                        editor.putString("valutazione", EvaluationEnum.NON_VALUTATO.toString());
                         editor.putFloat("valore",round(misurazione,2).floatValue());
                         editor.putString("valoreMax",null);
                         editor.putString("valoreMin",null);

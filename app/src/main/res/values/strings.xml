@@ -232,6 +232,9 @@
     <string name="getLatLongFailed">Si è verificato un errore nel caricamento della latitudine e della longitudine</string>
     <string name="getLatLongSuccessfull">Latitudine e longitudine caricati correttamente</string>
     <string name="emptyDrugs">Nessun farmaco inserito</string>
+    <string name="previousFindings">Rilevazioni precedenti</string>
+    <string name="notRated">NON VALUTATO</string>
+    <string name="notInserted">NON INSERITA</string>
 
 
     <!--SETTINGS-->

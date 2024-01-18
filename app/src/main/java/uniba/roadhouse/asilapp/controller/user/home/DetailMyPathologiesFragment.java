@@ -577,10 +577,23 @@ checkBoxSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeL
                     {
                         Patologia patologia = (Patologia) result.get("patologia");
                         detailMyPathologiesTitle.setText(namePathology);
-                        dateLastVisitMyPathologies.setText(patologia.getData());
-                        timeLastVisitMyPathologies.setText(patologia.getOra());
-                        priorityLastVisitMyPathologies.setText(patologia.getPriorita());
-                        doctorNotesLastVisitMyPahologies.setText(patologia.getNota());
+                        if(patologia.getData().isEmpty()){
+                            dateLastVisitMyPathologies.setText(getString(R.string.emptyDate));
+                        }
+                        else{
+                            dateLastVisitMyPathologies.setText(patologia.getData());
+                        }
+                        if(patologia.getOra().isEmpty()){
+                            timeLastVisitMyPathologies.setText(getString(R.string.emptyTime));
+                        }else{
+                            timeLastVisitMyPathologies.setText(patologia.getOra());
+                        }
+                        priorityLastVisitMyPathologies.setText(Utility.convertPriorityEnumToString(getActivity(), patologia.getPriorita()));
+                        if(patologia.getNota().isEmpty()){
+                            doctorNotesLastVisitMyPahologies.setText(R.string.emptyDoctorNotes);
+                        }else{
+                            doctorNotesLastVisitMyPahologies.setText(patologia.getNota());
+                        }
                     }
                 }catch (Exception e) {
                     if(openDoctor==false)

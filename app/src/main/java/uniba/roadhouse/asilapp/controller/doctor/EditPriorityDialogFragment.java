@@ -16,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import org.checkerframework.checker.guieffect.qual.UIType;
+
 import java.util.concurrent.CompletableFuture;
 
 import uniba.roadhouse.asilapp.R;
@@ -154,15 +156,15 @@ public class EditPriorityDialogFragment extends DialogFragment {
         String newPriority = "-";
         if(myPathologiesLow.isChecked())
         {
-            newPriority = getString(R.string.priorityMyPathologiesValueLow);
+            newPriority = Utility.convertStringToPriorityEnum(getActivity(), getString(R.string.priorityMyPathologiesValueLow)).toString();
         }
         else if (myPathologiesMedium.isChecked())
         {
-            newPriority = getString(R.string.priorityMyPathologiesValueMedium);
+            newPriority = Utility.convertStringToPriorityEnum(getActivity(), getString(R.string.priorityMyPathologiesValueMedium)).toString();
         }
         else if (myPathologiesHigh.isChecked())
         {
-            newPriority = getString(R.string.priorityMyPathologiesValueHigh);
+            newPriority = Utility.convertStringToPriorityEnum(getActivity(), getString(R.string.priorityMyPathologiesValueHigh)).toString();
         }
         progressBar.setVisibility(View.VISIBLE);
         layoutEditPriority.setAlpha((float)0.5);

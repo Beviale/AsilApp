@@ -446,7 +446,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
                     {
                         valueLastRecordHealthHistory.setText(misurazione.getValoreMax().toString().concat("/").concat(misurazione.getValoreMin().toString().concat(" ").concat(getUnity(itemClicked))));
                     }
-                    evalutationLastRecordHealthHistory.setText(misurazione.getValutazione());
+                    evalutationLastRecordHealthHistory.setText(Utility.convertEvaluationEnumToString(getActivity(), misurazione.getValutazione()));
                     if(misurazione.getNotaMedico().toString().isEmpty())
                     {
                         doctorNotesLastRecordHealthHistory.setText(getString(R.string.emptyDoctorNotes));
@@ -664,7 +664,7 @@ public class DetailHealthHistoryFragment extends Fragment implements EditEvaluta
 
                         // Creo la valutazione inserita dal medico.
                         TextView evalutation = new TextView(getActivity());
-                        evalutation.setText(misurazione.getValutazione());
+                        evalutation.setText(Utility.convertEvaluationEnumToString(getActivity(), misurazione.getValutazione()));
                         evalutation.setId(View.generateViewId());
                         ConstraintLayout.LayoutParams paramsEvalutation = new ConstraintLayout.LayoutParams(
                                 ConstraintLayout.LayoutParams.WRAP_CONTENT,

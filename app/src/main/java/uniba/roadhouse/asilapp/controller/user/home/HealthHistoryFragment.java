@@ -28,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
 import uniba.roadhouse.asilapp.R;
 import uniba.roadhouse.asilapp.controller.doctor.DoctorActivity;
 import uniba.roadhouse.asilapp.controller.other.TipoMisurazioneEnum;
+import uniba.roadhouse.asilapp.controller.other.Utility;
 import uniba.roadhouse.asilapp.model.dao.UserLogin;
 import uniba.roadhouse.asilapp.model.dao.Dao;
 import uniba.roadhouse.asilapp.model.dao.Misurazione;
@@ -376,14 +377,14 @@ public class HealthHistoryFragment extends Fragment {
                             switch(TipoMisurazioneEnum.valueOf(key))
                             {
                                 case TEMPERATURA:
-                                    evalutationHealthHistoryTemperature.setText(((Misurazione) result.get(key)).getValutazione());
+                                    evalutationHealthHistoryTemperature.setText(Utility.convertEvaluationEnumToString(getActivity(), ((Misurazione) result.get(key)).getValutazione()));
                                     resultTemperature.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))).concat("°"));
                                     idTemperature = ((Misurazione) result.get(key)).getId();
                                     bodyTemperatureView.setEnabled(true);
                                     bodyTemperatureView.setAlpha((float)1.0);
                                     break;
                                 case PRESSIONESANGUIGNA:
-                                    evalutationHealthHistoryBloodPressure.setText(((Misurazione) result.get(key)).getValutazione());
+                                    evalutationHealthHistoryBloodPressure.setText(Utility.convertEvaluationEnumToString(getActivity(), ((Misurazione) result.get(key)).getValutazione()));
                                     resultBloodPressureMax.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMax()))).concat("/"));
                                     resultBloodPressureMin.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValoreMin()))));
                                     idBloodPressure = ((Misurazione) result.get(key)).getId();
@@ -391,28 +392,28 @@ public class HealthHistoryFragment extends Fragment {
                                     bloodPressureView.setAlpha((float)1.0);
                                     break;
                                 case PESO:
-                                    evalutationHealthHistoryWeight.setText(((Misurazione) result.get(key)).getValutazione());
+                                    evalutationHealthHistoryWeight.setText(Utility.convertEvaluationEnumToString(getActivity(), ((Misurazione) result.get(key)).getValutazione()));
                                     resultWeight.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                     idWeight = ((Misurazione) result.get(key)).getId();
                                     weightView.setEnabled(true);
                                     weightView.setAlpha((float)1.0);
                                     break;
                                 case BATTITOCARDIACO:
-                                    evalutationHealthHistoryBPM.setText(((Misurazione) result.get(key)).getValutazione());
+                                    evalutationHealthHistoryBPM.setText(Utility.convertEvaluationEnumToString(getActivity(), ((Misurazione) result.get(key)).getValutazione()));
                                     resultBPM.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                     idBPM = ((Misurazione) result.get(key)).getId();
                                     bpmView.setEnabled(true);
                                     bpmView.setAlpha((float)1.0);
                                     break;
                                 case TREMOLIO:
-                                    evalutationHealthHistoryTrembling.setText(((Misurazione) result.get(key)).getValutazione());
+                                    evalutationHealthHistoryTrembling.setText(Utility.convertEvaluationEnumToString(getActivity(), ((Misurazione) result.get(key)).getValutazione()));;
                                     resultTrembling.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                     idTrembling = ((Misurazione) result.get(key)).getId();
                                     tremblingView.setEnabled(true);
                                     tremblingView.setAlpha((float)1.0);
                                     break;
                                 case GLUCOSIO:
-                                    evalutationHealthHistoryGlucose.setText(((Misurazione) result.get(key)).getValutazione());
+                                    evalutationHealthHistoryGlucose.setText(Utility.convertEvaluationEnumToString(getActivity(), ((Misurazione) result.get(key)).getValutazione()));
                                     resultGlucose.setText(String.valueOf((int)(Math.round(((Misurazione)result.get(key)).getValore()))));
                                     idGlucose = ((Misurazione) result.get(key)).getId();
                                     glucoseView.setEnabled(true);

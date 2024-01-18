@@ -231,6 +231,12 @@
     <string name="getLatLongFailed">An error occured during latitude and longitude fetching</string>
     <string name="getLatLongSuccessfull">Latitude and longitude fetched successfully</string>
     <string name="emptyDrugs">No medicines available</string>
+    <string name="previousFindings">Previous findings</string>
+    <string name="notRated">NOT RATED</string>
+    <string name="notInserted">NOT INSERTED</string>
+
+
+
 
 
     <!--SETTINGS-->

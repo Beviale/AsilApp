@@ -341,7 +341,7 @@ public class DetailOldHealthHistoryFragment extends Fragment implements EditEval
                 {
                    valueLastRecordHealthHistoryOld.setText(misurazione.getValoreMax().toString().concat("/").concat(misurazione.getValoreMin().toString().concat(" ").concat(getUnity(misurazione.getTipo()))));
                 }
-                evalutationRecordHealthHistoryOld.setText(misurazione.getValutazione());
+                evalutationRecordHealthHistoryOld.setText(Utility.convertEvaluationEnumToString(getActivity(), misurazione.getValutazione()));
                 if(misurazione.getNotaMedico().toString().isEmpty())
                 {
                     doctorNotesRecordHealthHistoryOld.setText(getString(R.string.emptyDoctorNotes));
