@@ -611,7 +611,7 @@ public class Dao {
                         TipoMisurazioneEnum.valueOf(document.getString("tipo")),
                         document.getString("nota"),
                         Integer.valueOf(document.getId())
-                    ));
+                ));
             }
 
             result.put("esito",context.getString(R.string.misurationGetSuccessfully));
@@ -632,9 +632,9 @@ public class Dao {
         return CompletableFuture.supplyAsync(() -> {
             Map<String,Object> misurations = new HashMap<>();
             List<String> typesMisuration=new ArrayList<String>(){{
-               add(TipoMisurazioneEnum.TEMPERATURA.toString());add(TipoMisurazioneEnum.PRESSIONESANGUIGNA.toString());
-               add(TipoMisurazioneEnum.PESO.toString());add(TipoMisurazioneEnum.BATTITOCARDIACO.toString());
-               add(TipoMisurazioneEnum.GLUCOSIO.toString());add(TipoMisurazioneEnum.TREMOLIO.toString());
+                add(TipoMisurazioneEnum.TEMPERATURA.toString());add(TipoMisurazioneEnum.PRESSIONESANGUIGNA.toString());
+                add(TipoMisurazioneEnum.PESO.toString());add(TipoMisurazioneEnum.BATTITOCARDIACO.toString());
+                add(TipoMisurazioneEnum.GLUCOSIO.toString());add(TipoMisurazioneEnum.TREMOLIO.toString());
             }};
 
             for(String tipo:typesMisuration){
@@ -1165,7 +1165,7 @@ public class Dao {
     }
 
     /**
-     * Metodo per l'eliminazione della data di una patologia dato l'username dell'utente relativo e il nome della patologia.
+     * Metodo per l'eliminazione della data di una patologia dato lo suername dell'utente relativo e il nome della patologia.
      * ritorna una stringa che indica l'esito della computazione
      * @param username
      * @param patologia
@@ -1193,13 +1193,6 @@ public class Dao {
                 break;
             }
 
-            CompletableFuture<Map<String, ?>> future = getAllFarmaci(username,patologia,context);
-            future.thenAccept(result -> {
-                ((Activity)context).runOnUiThread(() -> {
-                    for(Farmaco fr:(List<Farmaco>)result.get("farmaci")){
-                        nomiFarmaci.add(fr.getNome());
-                    }
-                });});
 
             //elimino l patologia
             Task update = db.collection("patologie").document(id).delete();
@@ -1212,35 +1205,31 @@ public class Dao {
                 return context.getString(R.string.editPatologyFailed);
             }
 
-            //elimino i farmaci associati
-            for(String farmaco:nomiFarmaci){
-                Task<QuerySnapshot> getFarmaci = db.collection("farmaci").whereEqualTo("nome",farmaco).get();
 
-                while (!getFarmaci.isComplete()) {
+            //elimino i farmaci associati
+            Task<QuerySnapshot> getFarmaci = db.collection("farmaci").whereEqualTo("username",username).whereEqualTo("patologia",patologia).get();
+            while (!getFarmaci.isComplete()) {
+                //attenendo che la funzione asincrona chaimata termini la sua computazione
+            }
+            if (!getFarmaci.isSuccessful()) {
+                return context.getString(R.string.editPatologyFailed);
+            }
+
+            for (QueryDocumentSnapshot document:getFarmaci.getResult()){
+                Task delete = db.collection("farmaci").document(document.getId()).delete();
+
+                while (!delete.isComplete()) {
                     //attenendo che la funzione asincrona chaimata termini la sua computazione
                 }
 
-                if(!getFarmaci.isSuccessful()){
+                if(!delete.isSuccessful()){
                     return context.getString(R.string.editPatologyFailed);
-                }
-
-                for(QueryDocumentSnapshot document:query.getResult()){
-                    Task delete = db.collection("farmaci").document(document.getId()).delete();
-
-                    while (!delete.isComplete()) {
-                        //attenendo che la funzione asincrona chaimata termini la sua computazione
-                    }
-
-                    if(!delete.isSuccessful()){
-                        return context.getString(R.string.editPatologyFailed);
-                    }
-                    break;
                 }
             }
 
             return context.getString(R.string.editPatologySuccessfull);
- });
-}
+        });
+    }
 
     /**
      * Metodo che aggiunge un farmaco dato un oggetto Farmaco. Ritorna una stringa che indica l'esito della computazione
@@ -1251,10 +1240,10 @@ public class Dao {
     public static CompletableFuture<String> addFarmaco(Farmaco farmaco, Context context){
         return CompletableFuture.supplyAsync(()->{
             Map<String,Object> far=new HashMap<String,Object>(){{
-               put("username",farmaco.getUsername());
-               put("patologia",farmaco.getPatologia());
-               put("nota",farmaco.getNota());
-               put("nomeFarmaco",farmaco.getNome());
+                put("username",farmaco.getUsername());
+                put("patologia",farmaco.getPatologia());
+                put("nota",farmaco.getNota());
+                put("nomeFarmaco",farmaco.getNome());
             }};
 
             //aggiungo l'utente al db
