@@ -133,6 +133,10 @@ public class BluetoothConnectionThread extends Thread {
         }
     }
 
+    /**
+     * Metodo per ritornare l'esito della computazione al client che ha avviato il therad bluetooth
+     * @param str
+     */
     private void returnToClient(String str){
         ((HealthBoxFragment)currentFragment).sendConnectionResultToFragment(str);
     }
@@ -227,10 +231,12 @@ public class BluetoothConnectionThread extends Thread {
     }
 
 
-
-
-
-
+    /**
+     * Funzione per arrotondare i valori double ad un numero di cifre passato in input
+     * @param value
+     * @param places
+     * @return
+     */
     public static Double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -250,6 +256,11 @@ public class BluetoothConnectionThread extends Thread {
         }
     }
 
+    /**
+     * Metodo per inviare i dati al server bluetooth
+     * @param msg
+     * @throws IOException
+     */
     private void sendData(String msg) throws IOException {
         outputStream.write(msg.getBytes());
     }

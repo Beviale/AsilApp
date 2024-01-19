@@ -297,7 +297,7 @@
 
     <!--POSIZIONE-->
     <string name="positionPermissionTitle">Perchè chiediamo la Posizione?</string>
-    <string name="positionInformativa">Eccomi qua, sono posizionato!</string>
+    <string name="positionInformativa">L\'accesso alla posizione è richiesta al fine di poter identificare la corretta poszione in cui si trova l\'utente al fine di poter identificare strutture di interesse vicine, come per esempio farmacie.</string>
     <string name="positionGivePermissionMessage">Consentire il permesso ed attivare la Posizione per continuare</string>
     <string name="myCity">La mia città</string>
     <string name="myRecidency">La mia residenza</string>

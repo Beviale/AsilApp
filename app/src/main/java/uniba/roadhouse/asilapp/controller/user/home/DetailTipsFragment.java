@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -161,7 +162,7 @@ public class DetailTipsFragment extends Fragment {
                     {
                         Articolo articolo = (Articolo) result.get("article");
                         titleDetailTips.setText(articolo.getTitolo());
-                        textDetailTips.setText(articolo.getTesto());
+                        textDetailTips.setText(articolo.getTesto().replace("<br>", System.getProperty("line.separator")));
                         imageDetailTips.setImageBitmap(articolo.getImmagine());
                     }
                     else
