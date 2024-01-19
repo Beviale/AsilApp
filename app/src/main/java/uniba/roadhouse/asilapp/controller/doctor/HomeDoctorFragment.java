@@ -37,6 +37,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -194,7 +195,7 @@ public class HomeDoctorFragment extends Fragment {
                     ((DoctorActivity) getActivity()).qrcode();
                 } else {
                     // PERMISSION NOT GRANTED
-                    Utility.showAlertDialog(getActivity(), getString(R.string.permissionCameraTitle), getString(R.string.permissionCamera));
+                    Toast.makeText(getActivity(), getString(R.string.shortPermissionCamera), Toast.LENGTH_SHORT).show();
                 }
             });
 
