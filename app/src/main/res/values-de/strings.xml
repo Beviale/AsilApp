@@ -376,7 +376,7 @@
     <string name="noCameraSupport">Sie können die Funktion zum Scannen von QR-Codes nicht verwenden, da Ihr Gerät nicht über eine Kamera verfügt.</string>
     <string name="CameraScanErrorTitle">Fehler</string>
     <string name="CameraScanError">Benutzer kann nicht gefunden werden.</string>
-    <string name="shortPermissionCamera">Kameraberechtigungen erteilt.</string>
+    <string name="shortPermissionCamera">Kameraberechtigungen erteilt, um fortzufahren.</string>
 
 
     <!-- Detail User Doctor Fragment-->

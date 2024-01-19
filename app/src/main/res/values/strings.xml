@@ -369,7 +369,7 @@
     <string name="noCameraSupport">Non puoi utilizzare la funzione di scansione QRcode in quanto il tuo dispositivo non possiede una fotocamera.</string>
     <string name="CameraScanErrorTitle">Errore</string>
     <string name="CameraScanError">Impossibile trovare l\'utente.</string>
-    <string name="shortPermissionCamera">Concedi i permessi per la fotocamera.</string>
+    <string name="shortPermissionCamera">Concedi i permessi per la fotocamera per continuare.</string>
 
     <!-- Detail User Doctor Fragment-->
     <string name="pathologies">Patologie</string>

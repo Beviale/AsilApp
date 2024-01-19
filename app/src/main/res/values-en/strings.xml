@@ -377,7 +377,7 @@
     <string name="noCameraSupport">You cannot use the QRcode scanning feature as your device does not have a camera</string>
     <string name="CameraScanErrorTitle">Error</string>
     <string name="CameraScanError">Cannot find the user.</string>
-    <string name="shortPermissionCamera">Granted camera permissions.</string>
+    <string name="shortPermissionCamera">Granted camera permissions to continue.</string>
 
 
     <!-- Detail User Doctor Fragment-->
