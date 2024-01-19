@@ -286,7 +286,7 @@ public class Utility
 
 
     /**
-     * Converte una Stringa di EvalutationEnum nella stringa di strings.xml
+     * Converte una Stringa di EvalutationEnum nella stringa di strings.xml (utile per il supporto multilingua).
      * @param context, contesto.
      * @param evalutationEnum, stringa di EvalutationEnum.
      * @return, stringa di strings.xml
@@ -313,37 +313,8 @@ public class Utility
 
 
 
-
-
-
     /**
-     * Converta una stringa in PriorityEnum
-     * @param context, contesto.
-     * @param string, stringa da convertire
-     * @return PriorityEnum
-     */
-    public static PriorityEnum convertStringToPriorityEnum(Context context, String string)
-    {
-        if(string.equals(context.getString(R.string.priorityMyPathologiesValueLow)))
-        {
-            return PriorityEnum.BASSA;
-
-        }else if(string.equals(context.getString(R.string.priorityMyPathologiesValueMedium)))
-        {
-            return PriorityEnum.MEDIA;
-
-        } else if(string.equals(context.getString(R.string.priorityMyPathologiesValueHigh)))
-        {
-            return PriorityEnum.ELEVATA;
-        }
-        else
-        {
-            return PriorityEnum.NON_INSERITA;
-        }
-    }
-
-    /**
-     * Converte una Stringa di PriorityEnum nella stringa di strings.xml
+     * Converte una Stringa di PriorityEnum nella stringa di strings.xml (utile per il supporto multilingua).
      * @param context, contesto.
      * @param priorityEnum, stringa di PriorityEnum.
      * @return, stringa di strings.xml
