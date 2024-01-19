@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -151,8 +153,21 @@ public class HomeDoctorFragment extends Fragment {
                     ((DoctorActivity) getActivity()).qrcode();
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                        // se devo mostrare l'informativa
-                        Utility.showAlertDialog(getActivity(), getString(R.string.permissionCameraTitle), getString(R.string.permissionCamera));
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyle);
+
+                        // Mostro l'informativa all'utente
+                        builder.setTitle(getString(R.string.permissionCameraTitle))
+                                .setMessage(getString(R.string.permissionCamera))
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                        // Richiedo il permesso
+                                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                                    }
+                                });
+                        // Create and show the AlertDialog
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     } else {
                         //se non devo mostrare l'informativa, richiedo il permesso all'utente
                         requestPermissionLauncher.launch(Manifest.permission.CAMERA);
