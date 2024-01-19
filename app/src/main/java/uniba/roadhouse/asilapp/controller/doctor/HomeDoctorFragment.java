@@ -154,21 +154,12 @@ public class HomeDoctorFragment extends Fragment {
                     ((DoctorActivity) getActivity()).qrcode();
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyle);
-
-                        // Mostro l'informativa all'utente
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialogStyleCritical);
                         builder.setTitle(getString(R.string.permissionCameraTitle))
                                 .setMessage(getString(R.string.permissionCamera))
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                        // Richiedo il permesso
-                                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
-                                    }
-                                });
-                        // Create and show the AlertDialog
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                                .setPositiveButton(android.R.string.ok, (dialog, id) -> requestPermissionLauncher.launch(Manifest.permission.CAMERA))
+                                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss());
+                        builder.create().show();
                     } else {
                         //se non devo mostrare l'informativa, richiedo il permesso all'utente
                         requestPermissionLauncher.launch(Manifest.permission.CAMERA);
